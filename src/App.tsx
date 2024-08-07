@@ -16,6 +16,10 @@ import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import DefaultLayout from './layout/DefaultLayout';
+import Products from './pages/Products';
+import Customers from './pages/Customers';
+import Users from './pages/Users';
+import DriptextAcademy from './pages/DriptextAccademy';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -35,7 +39,7 @@ function App() {
     <DefaultLayout>
       <Routes>
         <Route
-          index
+          
           element={
             <>
               <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
@@ -49,6 +53,44 @@ function App() {
             <>
               <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
               <Calendar />
+            </>
+          }
+        />
+        
+
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="Products" />
+              <Products />
+            </>
+          }
+        />
+        <Route
+          path="/customers"
+          element={
+            <>
+              <PageTitle title="Customers" />
+              <Customers />
+            </>
+          }
+        />
+                <Route
+          path="/users"
+          element={
+            <>
+              <PageTitle title="Users" />
+              <Users />
+            </>
+          }
+        />
+        <Route
+          path="/driptextacademy"
+          element={
+            <>
+              <PageTitle title="Driptext academy" />
+              <DriptextAcademy />
             </>
           }
         />
