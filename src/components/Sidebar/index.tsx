@@ -135,7 +135,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       "bg-graydark dark:bg-meta-4"
                     }`}
                   >
-                    {SidebarIcons[4].contact}
+                    {SidebarIcons[2].profile}
                     Users
                   </NavLink>
                 </li>
@@ -147,7 +147,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       "bg-graydark dark:bg-meta-4"
                     }`}
                   >
-                    {SidebarIcons[4].contact}
+                       {SidebarIcons[2].profile}
                     Customers
                   </NavLink>
                 </li>
