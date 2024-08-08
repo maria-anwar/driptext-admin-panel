@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
-import ClickOutside from '../ClickOutside';
+import ClickOutside from "../tables/ClickOutside";
 
 const DropdownNotification = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [notifying, setNotifying] = useState(true);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [notifying, setNotifying] = useState(true);
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
-      <li>
+              <li>
         <Link
           onClick={() => {
             setNotifying(false);
@@ -119,7 +119,7 @@ const DropdownNotification = () => {
         )}
       </li>
     </ClickOutside>
-  );
-};
+  )
+}
 
-export default DropdownNotification;
+export default DropdownNotification
