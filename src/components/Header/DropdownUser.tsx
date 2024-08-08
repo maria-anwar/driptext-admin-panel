@@ -1,27 +1,42 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import ClickOutside from '../ClickOutside';
-import UserOne from '../../images/user/user-01.png';
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import ClickOutside from "../tables/ClickOutside";
+
+
 
 const DropdownUser = () => {
+  const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  // const [firstName,setFirstName]=useState(user.data.user.firstName);
+  // const [lastName,setLastName]=useState(user.data.user.lastName);
 
+  const capitalizeFirstLetter = (word) => {
+    if (!word) return '';
+    return word.charAt(0).toUpperCase();
+  };
+
+  const handleLogout= ()=>{
+    localStorage.removeItem('token')
+    navigate('/')
+  }
   return (
-    <ClickOutside onClick = {() => setDropdownOpen(false)} className="relative">
+    <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
+
       <Link
         onClick={() => setDropdownOpen(!dropdownOpen)}
         className="flex items-center gap-4"
         to="#"
       >
         <span className="hidden text-right lg:block">
-          <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
+          <span className="block text-sm  font-medium text-black dark:text-white">
+            {/* {user.user.data.user.firstName} {user.user.data.user.lastName} */}fg
           </span>
-          <span className="block text-xs">UX Designer</span>
+          {/* <span className="block text-xs">UX Designer</span> */}
         </span>
 
-        <span className="h-12 w-12 rounded-full">
-          <img src={UserOne} alt="User" />
+        <span className="h-12 w-12 rounded-full font-medium flex items-center justify-center bg-zinc-100">
+        {/* {capitalizeFirstLetter(user.user.data.user.firstName)}{capitalizeFirstLetter(user.user.data.user.lastName)}   */}gf
+          {/* <img src={UserOne} alt="User" /> */}
         </span>
         <svg
           className="hidden fill-current sm:block"
@@ -39,17 +54,16 @@ const DropdownUser = () => {
           />
         </svg>
       </Link>
-
-      {/* <!-- Dropdown Start --> */}
-      {dropdownOpen && (
+            {/* <!-- Dropdown Start --> */}
+            {dropdownOpen && (
         <div
           className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark`}
         >
           <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
-            <li>
+            {/* <li>
               <Link
-                to="/profile"
-                className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+                to="profile"
+                className="flex items-center  gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
               >
                 <svg
                   className="fill-current"
@@ -70,8 +84,8 @@ const DropdownUser = () => {
                 </svg>
                 My Profile
               </Link>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <Link
                 to="#"
                 className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
@@ -91,11 +105,11 @@ const DropdownUser = () => {
                 </svg>
                 My Contacts
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link
-                to="/settings"
-                className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+                to="settings"
+                className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out text-bodydark1 hover:text-primary lg:text-base"
               >
                 <svg
                   className="fill-current"
@@ -118,7 +132,7 @@ const DropdownUser = () => {
               </Link>
             </li>
           </ul>
-          <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+          <div onClick={handleLogout}  className="cursor-pointer flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
             <svg
               className="fill-current"
               width="22"
@@ -136,13 +150,12 @@ const DropdownUser = () => {
                 fill=""
               />
             </svg>
-            Log Out
-          </button>
+            Sign Out
+          </div>
         </div>
       )}
       {/* <!-- Dropdown End --> */} 
     </ClickOutside>
   );
 };
-
 export default DropdownUser;
