@@ -1,10 +1,14 @@
 import './App.css'
 import WebRoutes from './routes'
+import { ThemeProvider } from '@material-tailwind/react';
 
 function App() {
 
   return (
-    <WebRoutes/>
+    <ThemeProvider>
+        <WebRoutes/>
+    </ThemeProvider>
+
   )
 }
 

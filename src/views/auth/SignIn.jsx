@@ -1,4 +1,3 @@
-
 import Auth2 from '../../components/authentication/Auth2'
 import LoginForm from '../../components/authentication/LoginForm'
 
