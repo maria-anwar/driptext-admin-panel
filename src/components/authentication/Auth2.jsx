@@ -49,12 +49,12 @@ const handleLogoClick = () =>{
           />
         </div>
         <div className="text-sm text-gray-700 flex justify-end border-gray-200">
-          <Link to="/imprint" className="mr-2 4xl:mr-3.5 hover:underline text-black">
+          <Link to="/imprint" className="mr-2 4xl:mr-3.5 hover:underline text-black hover:text-black">
             Imprint
           </Link>
           <Link
             to="/privacy-policy"
-            className="mr-2 4xl:mr-3.5 hover:underline text-black"
+            className="mr-2 4xl:mr-3.5 hover:underline text-black hover:text-black"
           >
             Privacy Policy
           </Link>

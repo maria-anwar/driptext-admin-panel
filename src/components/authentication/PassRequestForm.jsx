@@ -2,13 +2,6 @@ import React from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useNavigate, Link } from "react-router-dom";
-import {
-  Card,
-  Input,
-  Checkbox,
-  Button,
-  Typography,
-} from "@material-tailwind/react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
@@ -20,17 +13,16 @@ const PassRequestForm = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email().required("email is required"),
+    email: Yup.string().email().required("Email is required"),
   });
 
   const onSubmit = async (values) => {
-
     const emailData = {
-      email: values.email
-    }
+      email: values.email,
+    };
 
     const apiUrl = 'https://driptext-api.vercel.app/api/auth/forgot/password';
-    console.log('API:' , apiUrl);
+    console.log('API:', apiUrl);
     try {
       const response = await axios.post(apiUrl, emailData);
       console.log('Data submitted successfully:', response.emailData);
@@ -38,8 +30,7 @@ const PassRequestForm = () => {
     } catch (error) {
       const errorMessage = error.response?.data?.message || "Error sending the link";
       toast.error(errorMessage);
-    }    
-
+    }
   };
 
   return (
@@ -52,15 +43,14 @@ const PassRequestForm = () => {
         {(props) => (
           <Form>
             <div className="mb-1 flex flex-col gap-6">
-            <ToastContainer/>
-              <Typography
-                variant="small"
-                color="blue-gray"
-                className="-mb-3 font-medium"
+              <ToastContainer />
+              <label
+                htmlFor="email"
+                className="-mb-3 font-semibold text-sm text-blue-gray-700 text-black"
               >
                 Your email
-              </Typography>
-              <Input
+              </label>
+              <input
                 size="lg"
                 id="email"
                 value={props.values.email}
@@ -68,10 +58,7 @@ const PassRequestForm = () => {
                 type="email"
                 placeholder="jhon@gmail.com"
                 onChange={props.handleChange}
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900 focus:ring:none"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
+                className="outline-none border border-blue-gray-200 focus:border-gray-900 focus:ring-1 ring-black p-2 rounded-lg bg-transparent text-black"
               />
               {props.errors.email && (
                 <div id="email" className="-mt-4 text-sm text-red-500">
@@ -80,23 +67,20 @@ const PassRequestForm = () => {
               )}
             </div>
 
-            <Button
-              className="mt-6 bg-black text-white text-sm"
-              fullWidth
+            <button
+              className="mt-6 w-full font-semibold h-10 bg-black text-white text-sm p-2 rounded-lg"
               type="submit"
             >
               Request Link
-            </Button>
+            </button>
           </Form>
         )}
       </Formik>
-      <div className="space-y-4  mt-8">
+
+      <div className="space-y-4 mt-8">
         <Link
           to="/"
-          size="lg"
-          color="white"
-          className="flex items-center gap-2 justify-center py-2.5 shadow-md"
-          fullWidth
+          className="flex items-center justify-center gap-2 py-2.5 text-sm shadow-md text-black font-semibold hover:text-black"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -105,25 +89,16 @@ const PassRequestForm = () => {
             stroke="currentColor"
             width={16}
             height={16}
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-arrow-left"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="feather feather-arrow-left"
           >
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
           </svg>
           <span>Back to Sign in</span>
         </Link>
-        {/* <Typography
-          variant="paragraph"
-          className="text-center text-blue-gray-500 font-medium mt-4"
-        >
-          Not registered?
-          <Link to="/probetext" className="text-gray-900 ml-1">
-            Create account
-          </Link>
-        </Typography> */}
       </div>
     </div>
   );
