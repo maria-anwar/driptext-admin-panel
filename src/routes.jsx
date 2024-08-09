@@ -15,7 +15,7 @@ const WebRoutes = () => {
     <>
       <BrowserRouter>
         <Routes>
-          {/* <Route path="/" element={<SignIn />} /> */}
+          <Route path="/" element={<SignIn />} />
 
           <Route
             path="/dashboard"
