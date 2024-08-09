@@ -23,7 +23,7 @@ const handleLogoClick = () =>{
   window.location.href = 'https://driptext.de/';
 }
   return (
-    <div className="grid grid-cols-1 2xl:grid-cols-12 h-screen ">
+    <div className="grid grid-cols-1 2xl:grid-cols-12 h-screen bg-white">
       {/* Left Column */}
       <div className="col-span-1 2xl:col-span-7 flex flex-col  justify-between 2xl:justify-normal items-center  py-10 xxs:px-10 2xl:px-24 3xl:px-36 4xl:px-52 border-r border-r-zinc-200">
         <div className=" mt-10">
@@ -31,12 +31,12 @@ const handleLogoClick = () =>{
             <img src={logo} alt="Logo" className="w-12 h-12 rounded-md" />
             <div>
               <h1 className="text-[17px] 4xl:text-lg font-bold text-black">DRIPTEXT</h1>
-              <p className="text-gray-500 text-[13px] 4xl:text-sm">We love SEO & Content</p>
+              <p className="text-gray-500 text-[13px] 4xl:text-sm text-black">We love SEO & Content</p>
             </div>
           </div>
           <AuthTagline authline={authline}/>
         </div>
-        {children}
+          {children}
       </div>
 
       {/* Right Column */}
@@ -49,12 +49,12 @@ const handleLogoClick = () =>{
           />
         </div>
         <div className="text-sm text-gray-700 flex justify-end border-gray-200">
-          <Link to="/imprint" className="mr-2 4xl:mr-3.5 hover:underline">
+          <Link to="/imprint" className="mr-2 4xl:mr-3.5 hover:underline text-black">
             Imprint
           </Link>
           <Link
             to="/privacy-policy"
-            className="mr-2 4xl:mr-3.5 hover:underline"
+            className="mr-2 4xl:mr-3.5 hover:underline text-black"
           >
             Privacy Policy
           </Link>
