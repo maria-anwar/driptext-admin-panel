@@ -1,0 +1,43 @@
+/* Base styles for pagination buttons */
+.ant-pagination-prev .ant-pagination-item-link,
+.ant-pagination-next .ant-pagination-item-link {
+  @apply rounded-md text-white;
+}
+
+/* Light mode styles */
+@media (prefers-color-scheme: light) {
+  .ant-pagination-prev .ant-pagination-item-link {
+    @apply bg-green-500 border-green-500;
+  }
+
+  .ant-pagination-prev .ant-pagination-item-link:hover {
+    @apply bg-green-600 border-green-600;
+  }
+
+  .ant-pagination-next .ant-pagination-item-link {
+    @apply bg-blue-500 border-blue-500;
+  }
+
+  .ant-pagination-next .ant-pagination-item-link:hover {
+    @apply bg-blue-600 border-blue-600;
+  }
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+  .dark .ant-pagination-prev .ant-pagination-item-link {
+    @apply bg-green-700 border-green-700; /* Darker green for dark mode */
+  }
+
+  .dark .ant-pagination-prev .ant-pagination-item-link:hover {
+    @apply bg-green-800 border-green-800; /* Even darker green on hover */
+  }
+
+  .dark .ant-pagination-next .ant-pagination-item-link {
+    @apply bg-blue-700 border-blue-700; /* Darker blue for dark mode */
+  }
+
+  .dark .ant-pagination-next .ant-pagination-item-link:hover {
+    @apply bg-blue-800 border-blue-800; /* Even darker blue on hover */
+  }
+}

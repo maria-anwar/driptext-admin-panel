@@ -20,8 +20,6 @@ const WebRoutes = () => {
           <Route path="/" element={<SignIn />} />
           <Route path="/auth/lost/request" element={<PassRequest />} />
 
-          
-
           <Route
             path="/dashboard"
             element={<DefaultLayout />}
