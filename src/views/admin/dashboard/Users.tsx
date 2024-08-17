@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Breadcrumb from "../../../components/breeadcrumbs/Breadcrumb";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import PaginatedTable from "../../../components/tables/UserPaginatedTable";
+import UserPaginatedTable from "../../../components/tables/UserPaginatedTable";
 
 const users = [
   {
@@ -357,7 +357,7 @@ const Users: React.FC = () => {
             <span className="pl-2">Show inactive users</span>
           </div>
         </div>
-        <PaginatedTable users={data} />
+        <UserPaginatedTable users={data} />
       </div>
     </>
   );

@@ -75,6 +75,9 @@ export default {
         cardHeading: '#1A6694',
         buttonStart: '#33669A',
         buttonEnd: '#63B4D0',
+        'progress-blue': '#0000FF', // Custom color for the open tasks
+        'progress-green': '#008000', // Custom color for used tasks
+        'progress-darkgreen': '#006400', // Custom color for final tasks
       },
       gradientColorStops: {
         'button-gradient-start': '#33669A',
