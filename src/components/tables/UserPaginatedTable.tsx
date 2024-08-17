@@ -68,8 +68,6 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users }) => {
                 <tr className="text-left hover:bg-slate-100 dark:hover:bg-boxdark-2" key={user.id}>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex justify-start items-center">
-
-                  
                     <p className="text-black dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
                       {`${user.name.split(" ")[0][0]}${
                         user.name.split(" ").slice(-1)[0][0]
