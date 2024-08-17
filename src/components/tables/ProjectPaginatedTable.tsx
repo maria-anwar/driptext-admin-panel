@@ -34,10 +34,11 @@ interface Project {
     subdomain: string;
   };
   onboarding: string;
-  date: string;
+  performancePeriod: string;
 
   task: Task;
   worker: Worker;
+  created:string;
 }
 
 interface PaginatedTableProps {
@@ -181,7 +182,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black  dark:text-white text-sm">
-                      {project.date}
+                      {project.performancePeriod}
                     </p>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
