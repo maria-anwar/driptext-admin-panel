@@ -1,9 +1,5 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashCan, faPlay } from "@fortawesome/free-solid-svg-icons";
-import { Pagination } from "antd";
-import "antd/dist/reset.css"; // Import Ant Design styles
-import "./custompagination.css";
 import {
   faCheck,
   faTimes,
@@ -11,13 +7,15 @@ import {
   faEye,
   faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
+import { Pagination } from "antd";
+import "antd/dist/reset.css"; // Import Ant Design styles
+import "./custompagination.css";
+
 import { useNavigate } from "react-router-dom";
 
-interface Task {
-  totalTasks: number;
-  usedTasks: number;
-  openTasks: number;
-  finalTasks: number;
+interface StripeLink {
+  domain: string;
+  subdomain: string;
 }
 
 interface Worker {
@@ -27,19 +25,27 @@ interface Worker {
   metalector: string;
 }
 
+interface Customer {
+  name: string;
+  email: string;
+}
+
 interface Project {
+  projectName: string;
   status: string;
   googleLink: string;
-  stripeLink: {
-    domain: string;
-    subdomain: string;
-  };
+  stripeLink: StripeLink;
   onboarding: string;
   performancePeriod: string;
-
-  task: Task;
+  task: {
+    totalTasks: number;
+    usedTasks: number;
+    openTasks: number;
+    finalTasks: number;
+  };
   worker: Worker;
-  created:string;
+  created: string;
+  customer: Customer;
 }
 
 interface PaginatedTableProps {
@@ -49,7 +55,7 @@ interface PaginatedTableProps {
 const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handlePageChange = (page: number) => {
     setPage(page);
@@ -63,8 +69,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
   };
 
   const handleProject = (project: Project) => {
-    navigate('project-details', { state: { project: project } });
-
+    navigate("project-details", { state: { project: project } });
   };
 
   const getInitials = (name: string): string => {
@@ -127,14 +132,14 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
               </tr>
             </thead>
             <tbody>
-              {paginatedProjects.map((project, index) => (
-                <tr className="text-left" key={index}>
+              {paginatedProjects.map((project) => (
+                <tr className="text-left" key={project.projectName}>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex justify-start items-start flex-col">
                       <p className="text-black dark:text-white text-xs">
-                        {project.status}
+                        {project.projectName}
                       </p>
-                      <p className="text-sm">OPEN</p>
+                      <p className="text-sm">{project.status.toUpperCase()}</p>
                     </div>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -148,7 +153,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
                         icon={faFolder}
                         className="text-blue-500"
                       />
-                      {""} {project.status}
+                      {""} {project.projectName}
                     </a>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
