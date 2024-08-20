@@ -9,6 +9,7 @@ import DriptextAcademy from "./views/admin/dashboard/DriptextAcademy";
 import ProfileSettings from "./views/admin/dashboard/ProfileSetting";
 import SystemSettings from "./views/admin/dashboard/SystemSettings";
 import Users from "./views/admin/dashboard/Users";
+import ProjectsDetails from "./views/admin/dashboard/ProjectsDetails";
 
 
 
@@ -25,6 +26,7 @@ const WebRoutes = () => {
             element={<DefaultLayout />}
           >
             <Route index element={<Projects />} />
+            <Route path="project-details" element={<ProjectsDetails/>} />
             <Route path="customers" element={<Customers />} />
             <Route path="driptext-academy" element={<DriptextAcademy />} />
             <Route path="profile-settings" element={<ProfileSettings />} />
