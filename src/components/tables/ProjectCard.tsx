@@ -36,6 +36,7 @@ interface Task {
   
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
+  const navigate = useNavigate();
   const getInitials = (name: string): string => {
     return name
       .split(" ")
@@ -59,14 +60,15 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
     );
   };
 
-  const handleProject = () => {
-    alert("project details page")
-  }
+    const handleProject = (project: Project) => {
+      navigate('project-details', { state: { project: project } });
+
+    };
   return (
     <>
       {projects.map((project) => (
         <div
-        onClick={handleProject}
+        onClick={()=>handleProject(project)}
           key={project.status}
           className={
             "relative rounded-sm border border-stroke bg-white py-6 px-5 shadow-default dark:border-strokedark dark:bg-boxdark cursor-pointer"

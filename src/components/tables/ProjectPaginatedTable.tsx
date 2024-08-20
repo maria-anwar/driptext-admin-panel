@@ -11,6 +11,7 @@ import {
   faEye,
   faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 interface Task {
   totalTasks: number;
@@ -48,6 +49,7 @@ interface PaginatedTableProps {
 const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const navigate = useNavigate()
 
   const handlePageChange = (page: number) => {
     setPage(page);
@@ -60,8 +62,9 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
     setPage(1); // Reset to first page when rows per page changes
   };
 
-  const handleStatusToggle = (project: Project) => {
-    alert(`Status toggled for project with status: ${project.status}`);
+  const handleProject = (project: Project) => {
+    navigate('project-details', { state: { project: project } });
+
   };
 
   const getInitials = (name: string): string => {
@@ -216,7 +219,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
                       className={` bg-blue-500 w-24 h-9 flex justify-center items-center rounded cursor-pointer`}
-                      onClick={() => handleStatusToggle(project)}
+                      onClick={() => handleProject(project)}
                     >
                       <FontAwesomeIcon
                         className={`

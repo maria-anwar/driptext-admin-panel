@@ -23,12 +23,12 @@ const ProfileSettings: React.FC = () => {
         <div className="grid grid-cols-5  gap-8">
           <div className="col-span-5 3xl:col-span-8  xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
+              <div className="border-b border-stroke py-4 px-10 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
                   User Information
                 </h3>
               </div>
-              <div className="p-7">
+              <div className="px-10 py-7">
                 <form action="#">
                 <h3 className="font-medium text-black dark:text-white pb-6">1. Personal Information</h3>
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">

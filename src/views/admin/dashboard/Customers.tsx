@@ -374,7 +374,7 @@ const Customers: React.FC = () => {
           <div className="flex justify-center items-center">
             <div
               onClick={handleSearch}
-              className="h-8 w-8 ring-1 flex justify-center items-center cursor-pointer rounded mr-2 ring-slate-300 bg-slate-100 dark:bg-transparent"
+              className="h-10 w-10 ring-1 flex justify-center items-center cursor-pointer rounded mr-2 ring-slate-300 bg-slate-100 dark:bg-transparent"
             >
               <FontAwesomeIcon icon={faSearch} />
             </div>
@@ -384,7 +384,7 @@ const Customers: React.FC = () => {
                 value={search}
                 onChange={handleSearchFilter}
                 placeholder="Searching..."
-                className="rounded ring-1 outline-none py-1 px-2 ring-slate-200 bg-slate-0 dark:bg-transparent"
+                className="rounded ring-1 outline-none py-2 px-4 ring-slate-200 bg-slate-0 dark:bg-transparent w-90"
               />
             )}
           </div>
