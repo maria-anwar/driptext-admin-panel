@@ -1,39 +1,43 @@
 import React, { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface Task {
+interface StripeLink {
+  domain: string;
+  subdomain: string;
+}
+
+interface Worker {
+  texter: string;
+  lector: string;
+  SEO: string;
+  metalector: string;
+}
+
+interface Customer {
+  name: string;
+  email: string;
+}
+
+interface Project {
+  projectName: string;
+  status: string;
+  googleLink: string;
+  stripeLink: StripeLink;
+  onboarding: string;
+  performancePeriod: string;
+  task: {
     totalTasks: number;
     usedTasks: number;
     openTasks: number;
     finalTasks: number;
-  }
-  
-  interface Worker {
-    texter: string;
-    lector: string;
-    SEO: string;
-    metalector: string;
-  }
-  
-  interface Project {
-    status: string;
-    googleLink: string;
-    stripeLink: {
-      domain: string;
-      subdomain: string;
-    };
-    onboarding: string;
-    performancePeriod: string;
-  
-    task: Task;
-    worker: Worker;
-    created:string;
-  }
-  
-  interface ProjectCardProps {
-    projects: Project[];
-  }
-  
+  };
+  worker: Worker;
+  created: string;
+  customer: Customer;
+}
+interface ProjectCardProps {
+  projects: Project[];
+}
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
   const navigate = useNavigate();
@@ -60,23 +64,23 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
     );
   };
 
-    const handleProject = (project: Project) => {
-      navigate('project-details', { state: { project: project } });
+  const handleProject = (project: Project) => {
+    navigate("project-details", { state: { project: project } });
+  };
 
-    };
   return (
     <>
       {projects.map((project) => (
         <div
-        onClick={()=>handleProject(project)}
-          key={project.status}
+          onClick={() => handleProject(project)}
+          key={project.projectName}
           className={
             "relative rounded-sm border border-stroke bg-white py-6 px-5 shadow-default dark:border-strokedark dark:bg-boxdark cursor-pointer"
           }
         >
           <div className="flex justify-between items-center">
             <h4 className="text-title-md font-bold text-black dark:text-white my-3">
-              {project.status}
+              {project.projectName}
             </h4>
             <div className="flex justify-between items-center">
               <WorkerComponent label="T" name={project.worker.texter} />
@@ -92,7 +96,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
               value={project.task.finalTasks}
               max={project.task.totalTasks}
             ></progress>
-            <p>STATUS: <span className="text-blue-500">OPEN</span></p>
+            <p>
+              STATUS:{" "}
+              <span className="text-blue-500">
+                {project.status.toUpperCase()}
+              </span>
+            </p>
           </div>
 
           <div className="mt-3 mb-3 flex items-end justify-between pt-8">
@@ -101,14 +110,16 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
             </div>
             <div className="text-sm font-medium text-dark-gray">
               Created on
-              <div className="text-meta-3 flex justify-end">{project.created}</div>
+              <div className="text-meta-3 flex justify-end">
+                {project.created}
+              </div>
             </div>
           </div>
           <div className="mt-8 mb-3 flex items-end justify-between">
             <div className="text-sm font-medium text-dark-gray">
               Tasks
               <div className="text-meta-5 flex justify-end flex-col">
-                      {project.task.finalTasks}/{project.task.totalTasks}
+                {project.task.finalTasks}/{project.task.totalTasks}
               </div>
             </div>
             <div className="text-sm font-medium text-dark-gray">
