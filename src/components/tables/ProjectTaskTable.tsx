@@ -63,6 +63,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
       .map((word) => word[0].toUpperCase())
       .join("");
   };
+
   const WorkerComponent: React.FC<{ label: string; name: string }> = ({
     label,
     name,
@@ -125,7 +126,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
                   Word count
                 </th>
                 <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Topic
+                  Keywords
                 </th>
                 <th className="min-w-[120px] py-4 px-4 font-semibold text-black dark:text-white">
                   Text type
