@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 
+
 interface StripeLink {
   domain: string;
   subdomain: string;
@@ -92,11 +93,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
 
           <div className="h-3 bg-gray-200 rounded py-6">
             <progress
-              className=" w-full h-3 bg-gray-200 rounded-full "
+              className="custom-progress"
               value={project.task.finalTasks}
               max={project.task.totalTasks}
             ></progress>
-            <p>
+            <p className="py-2">
               STATUS:{" "}
               <span className="text-blue-500">
                 {project.status.toUpperCase()}

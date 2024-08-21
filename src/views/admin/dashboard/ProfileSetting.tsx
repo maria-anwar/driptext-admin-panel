@@ -376,12 +376,31 @@ const ProfileSettings: React.FC = () => {
                     >
                       VAT regulation
                     </label>
-                    <select name="options" className="w-full rounded border border-stroke bg-gray py-3 pl-6 pr-4.5  text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary ">
+                    <div className="relative">
+                    <select name="options" className="w-full rounded border border-stroke bg-gray py-3 pl-6 pr-4.5  text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 appearance-none  dark:text-white dark:focus:border-primary ">
                           <option value={'CY Company (19%)'}>CY Company (19%)</option>
                           <option value={'EU Reverse-Charge (0%)'}>EU Reverse-Charge (0%)</option>
                           <option value={'Kleinunternehmer / No VAT-Number (0%)'}>Kleinunternehmer / No VAT-Number (0%)</option>
                           <option value={'Non-EU Company (0%)'}>Non-EU Company (0%)</option>
                         </select>
+                        <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+            {/* Custom arrow icon */}
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M19 9l-7 7-7-7"
+              ></path>
+            </svg>
+          </div>
+          </div>
                   </div>
                   <div className="flex justify-end gap-4.5">
                     <button

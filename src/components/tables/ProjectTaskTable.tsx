@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFolder, faEye, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faFolder, faEye, faTimes,faCheck } from "@fortawesome/free-solid-svg-icons";
 import "antd/dist/reset.css";
 
 interface Task {
@@ -101,7 +101,10 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
           </p>
           <p className="pl-4">{name}</p>
         </div>
-        <div>{label}</div>
+        <div className="flex justify-center items-center bg-green-600 rounded-full px-2 text-white">
+           <p className=" px-1">{label}</p>
+           <FontAwesomeIcon className=" px-1" icon={faCheck}/>
+        </div>
       </div>
     );
   };
@@ -164,7 +167,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
                     </a>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white bg-red-500 px-2 rounded-full text-center">
+                    <p className="text-white bg-red-500 px-2 rounded-full text-center">
                       {task.deadline}
                     </p>
                   </td>
@@ -325,17 +328,37 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
                   >
                     Text type
                   </label>
-                  <select
-                    id="dropdown"
-                    className="w-full rounded border border-transparent bg-gray py-2.5 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                  >
-                    <option>Guide</option>
-                    <option>Shop (Category)</option>
-                    <option>Shop (Product)</option>
-                    <option>Definition/Wiki</option>
-                    <option>Shop (Home page)</option>
-                    <option>CMS page</option>
-                  </select>
+                  <div className="relative">
+                    {" "}
+                    <select
+                      id="dropdown"
+                      className="w-full appearance-none rounded border border-transparent bg-gray py-2.5 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    >
+                      <option>Guide</option>
+                      <option>Shop (Category)</option>
+                      <option>Shop (Product)</option>
+                      <option>Definition/Wiki</option>
+                      <option>Shop (Home page)</option>
+                      <option>CMS page</option>
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                      {/* Custom arrow icon */}
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M19 9l-7 7-7-7"
+                        ></path>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="w-full">

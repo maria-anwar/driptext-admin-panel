@@ -165,11 +165,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </li>
                 <li>
                   <NavLink
-                    to="driptext-academy"
-                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium hover:text-bodydark1 text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                      pathname.includes("driptext-academy") &&
-                      "bg-graydark dark:bg-meta-4"
-                    }`}
+                    to="#"
+                    className={ `group text-zinc-500 cursor-not-allowed relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out 
+                      "bg-graydark dark:bg-meta-4" : ""
+                   }`
+                    }
                   >
                     {SidebarIcons[4].contact}
                     Driptext Academy
