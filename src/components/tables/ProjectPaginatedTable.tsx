@@ -204,7 +204,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
                     </p>
                     <div className="flex h-3 bg-gray-200 rounded pt-1">
                       <progress
-                        className=" h-3 bg-gray-200 rounded-full "
+                        className="custom-progress"
                         value={project.task.finalTasks}
                         max={project.task.totalTasks}
                       ></progress>

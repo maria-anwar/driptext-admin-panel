@@ -16,6 +16,7 @@ import {
 import { useLocation } from "react-router-dom";
 import ProjectTaskTable from "../../../components/tables/ProjectTaskTable";
 
+
 interface StripeLink {
   domain: string;
   subdomain: string;
@@ -343,7 +344,7 @@ const ProjectsDetails: React.FC = () => {
                   </a>
                 </div>
                 <progress
-                  className=" w-full h-3 bg-gray-200 rounded-full "
+                  className="custom-progress"
                   value={50}
                   max={100}
                 ></progress>
