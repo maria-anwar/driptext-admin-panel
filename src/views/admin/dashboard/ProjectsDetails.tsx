@@ -16,7 +16,6 @@ import {
 import { useLocation } from "react-router-dom";
 import ProjectTaskTable from "../../../components/tables/ProjectTaskTable";
 
-
 interface StripeLink {
   domain: string;
   subdomain: string;
@@ -178,10 +177,17 @@ const ProjectsDetails: React.FC = () => {
   const location = useLocation();
   const { project } = location.state as { project: Project };
   const [memberModel, setMemberModel] = useState(false);
+  const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
+  const [selectedRoles, setSelectedRoles] = useState<{ [key: number]: string }>(
+    {}
+  );
+  const allRoles = ["Texter", "Lector", "SEO", "Meta-lector"];
 
   const handleMembers = () => {
     setMemberModel(true);
+    setDropdownVisible(null);
   };
+
   const handleCloseMemberModel = () => {
     setMemberModel(false);
   };
@@ -191,6 +197,24 @@ const ProjectsDetails: React.FC = () => {
       .split(" ")
       .map((word) => word[0].toUpperCase())
       .join("");
+  };
+
+  const handleRoleSelect = (role: string, memberId: number) => {
+    setSelectedRoles((prevRoles) => ({
+      ...prevRoles,
+      [memberId]: role,
+    }));
+    setDropdownVisible(null); // Hide dropdown after
+    alert(`Added member ${memberId} as ${role}`);
+  };
+
+  const getAvailableRoles = (memberId: number) => {
+    const usedRoles = Object.values(selectedRoles);
+    return allRoles.filter((role) => !usedRoles.includes(role));
+  };
+
+  const toggleDropdown = (memberId: number) => {
+    setDropdownVisible((prev) => (prev === memberId ? null : memberId));
   };
 
   const TaskMembers: React.FC<{ label: string; name: string }> = ({
@@ -207,18 +231,18 @@ const ProjectsDetails: React.FC = () => {
             <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
               {getInitials(name)}
             </p>
-            <p className="px-2.5  text-black dark:text-white">{name}</p>
+            <p className="px-2.5 text-black dark:text-white">{name}</p>
           </div>
           <div className="flex justify-start items-center">
             <FontAwesomeIcon
               icon={faSync}
               className="mx-6 text-blue-500 cursor-pointer"
-              onClick={() => alert(`change ${label}`)}
+              onClick={() => alert(`Change ${label}`)}
             />
             <FontAwesomeIcon
               icon={faTimes}
               className="text-lg text-red-500 cursor-pointer"
-              onClick={() => alert(`delete${label}`)}
+              onClick={() => alert(`Delete ${label}`)}
             />
           </div>
         </div>
@@ -232,7 +256,7 @@ const ProjectsDetails: React.FC = () => {
   }) => {
     return (
       <div>
-        <p className="text-xs text-slate-700 dark:text-slate-300 ">{label}</p>
+        <p className="text-xs text-slate-700 dark:text-slate-300">{label}</p>
         <p className="text-black dark:text-white">{name}</p>
       </div>
     );
@@ -253,13 +277,11 @@ const ProjectsDetails: React.FC = () => {
                     Customer
                   </h3>
                   <p className="text-sm text-black dark:text-white">
-                    {project.customer.name} {" ("}
-                    {project.customer.email}
-                    {")"}
+                    {project.customer.name} ({project.customer.email})
                   </p>
                 </div>
                 <details className="py-2">
-                  <summary className=" text-black dark:text-white">
+                  <summary className="text-black dark:text-white">
                     Description
                   </summary>
                   <div className="bg-slate-100 dark:bg-boxdark rounded py-2 px-4">
@@ -354,7 +376,6 @@ const ProjectsDetails: React.FC = () => {
                     label="Tasks"
                     name={`${project.task.finalTasks}/${project.task.totalTasks}`}
                   />
-
                   <TaskComponent
                     label="Max Tasks"
                     name={project.task.totalTasks}
@@ -376,7 +397,7 @@ const ProjectsDetails: React.FC = () => {
                   Project members
                 </h3>
                 <p
-                  className="w-5 h-5 bg-blue-500 text-white  flex items-center justify-center cursor-pointer"
+                  className="w-5 h-5 bg-blue-500 text-white flex items-center justify-center cursor-pointer"
                   onClick={handleMembers}
                 >
                   <FontAwesomeIcon icon={faPlus} className="text-sm" />
@@ -389,21 +410,20 @@ const ProjectsDetails: React.FC = () => {
                     <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
                       {getInitials("Danile John")}
                     </p>
-                    <p className="px-2.5  text-black dark:text-white">
+                    <p className="px-2.5 text-black dark:text-white">
                       Danile John
                     </p>
                   </div>
                 </div>
                 <TaskMembers label={"Texter"} name={project.worker.texter} />
                 <TaskMembers label={"Lector"} name={project.worker.lector} />
-                <TaskMembers label={"Seo"} name={project.worker.SEO} />
+                <TaskMembers label={"SEO"} name={project.worker.SEO} />
                 <TaskMembers
                   label={"Meta-lector"}
                   name={project.worker.metalector}
                 />
               </div>
               <div className="px-7 py-6">
-                {/* <button className="w-full h-10 text-center bg-green-500 text-white rounded-none my-1.5 flex justify-center items-center">Start Text<FontAwesomeIcon icon={faPlus} className="text-sm px-2"  /></button> */}
                 <button className="w-full h-10 text-center bg-blue-500 text-white rounded-none my-2 flex justify-center items-center border-none">
                   Add Text
                   <FontAwesomeIcon icon={faPlus} className="text-sm px-2" />
@@ -420,7 +440,7 @@ const ProjectsDetails: React.FC = () => {
                       className="text-sm px-2"
                     />
                   </button>
-                  <button className="w-1/2  h-10 text-center bg-slate-300 text-blue-500  rounded-none ml-1.5 flex justify-center items-center border-none">
+                  <button className="w-1/2 h-10 text-center bg-slate-300 text-blue-500 rounded-none ml-1.5 flex justify-center items-center border-none">
                     Export
                     <FontAwesomeIcon icon={faUpload} className="text-sm px-2" />
                   </button>
@@ -433,15 +453,18 @@ const ProjectsDetails: React.FC = () => {
             </div>
           </div>
         </div>
+        {/* Assuming ProjectTaskTable is defined elsewhere */}
         <ProjectTaskTable tasks={tasksWithDetails} project={project} />
       </div>
       {memberModel && (
         <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
           <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
-            <div className="flex justify-between items-center mb-2">
-              <h2 className="text-xl font-bold dark:text-white pr-12">Add members</h2>
+            <div className="flex justify-between items-center mb-5">
+              <h2 className="text-xl font-bold dark:text-white pr-12">
+                Add members
+              </h2>
               <FontAwesomeIcon
-                className="cursor-pointer text-lg dark:text-white text-black pl-12"
+                className="cursor-pointer text-lg text-red-500 pl-12"
                 onClick={handleCloseMemberModel}
                 icon={faTimes}
               />
@@ -455,21 +478,41 @@ const ProjectsDetails: React.FC = () => {
                   <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
                     {getInitials(member.name)}
                   </p>
-                  <p className="px-2.5  text-black dark:text-white">
+                  <p className="px-2.5 text-black dark:text-white">
                     {member.name}
                   </p>
                 </div>
-                <p
-                  className="w-5 h-5 bg-slate-200 text-white  flex items-center justify-center cursor-pointer"
-                  onClick={() =>
-                    alert(`added member ${member.id} ${member.name}`)
-                  }
-                >
-                  <FontAwesomeIcon
-                    icon={faPlus}
-                    className="text-sm text-blue-500"
-                  />
-                </p>
+                <div className="relative">
+                  <p
+                    className="w-5 h-5 bg-slate-200 text-white flex items-center justify-center cursor-pointer"
+                    onClick={() => toggleDropdown(member.id)}
+                  >
+                    <FontAwesomeIcon
+                      icon={faPlus}
+                      className="text-sm text-blue-500"
+                    />
+                  </p>
+                  {dropdownVisible === member.id && (
+                    <div className="absolute right-0 mt-2 z-9999 bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-lg">
+                      <ul>
+                        {getAvailableRoles(member.id).map((role) => (
+                          <li
+                            key={role}
+                            className="px-4 w-30 py-2 cursor-pointer bg-slate-100 dark:bg-dark-gray dark:rounded-none dark:text-white rounded-md hover:bg-slate-200 dark:hover:bg-slate-600"
+                            onClick={() => handleRoleSelect(role, member.id)}
+                          >
+                            {role}
+                          </li>
+                        ))}
+                        {getAvailableRoles(member.id).length === 0 && (
+                          <li className="px-4 py-2 text-gray-500">
+                            No roles available
+                          </li>
+                        )}
+                      </ul>
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
           </div>
