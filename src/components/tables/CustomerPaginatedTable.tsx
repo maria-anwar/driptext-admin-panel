@@ -71,13 +71,15 @@ const CustomerPaginatedTable: React.FC<PaginatedTableProps> = ({ users }) => {
                   key={user.id}
                 >
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <div className="flex justify-start items-center">
-                    <p className="text-black dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
-                      {`${user.name.split(" ")[0][0]}${
-                        user.name.split(" ").slice(-1)[0][0]
-                      }`}
-                    </p>
-                    <p className="text-black pl-2 dark:text-white">{user.name}</p>
+                    <div className="flex justify-start items-center">
+                      <p className="text-black dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
+                        {`${user.name.split(" ")[0][0]}${
+                          user.name.split(" ").slice(-1)[0][0]
+                        }`}
+                      </p>
+                      <p className="text-black pl-2 dark:text-white">
+                        {user.name}
+                      </p>
                     </div>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -86,8 +88,30 @@ const CustomerPaginatedTable: React.FC<PaginatedTableProps> = ({ users }) => {
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark cursor-pointer">
                     <Link
                       to={user.stripe}
-                      className="text-blue-500 hover:text-blue-400"
+                      className="text-blue-500 hover:text-blue-400 flex items-center justify-start"
                     >
+                      {/* <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-5.5 h-5.5"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          <path
+                            d="M20 4L12 12M20 4V8.5M20 4H15.5M19 12.5V16.8C19 17.9201 19 18.4802 18.782 18.908C18.5903 19.2843 18.2843 19.5903 17.908 19.782C17.4802 20 16.9201 20 15.8 20H7.2C6.0799 20 5.51984 20 5.09202 19.782C4.71569 19.5903 4.40973 19.2843 4.21799 18.908C4 18.4802 4 17.9201 4 16.8V8.2C4 7.0799 4 6.51984 4.21799 6.09202C4.40973 5.71569 4.71569 5.40973 5.09202 5.21799C5.51984 5 6.07989 5 7.2 5H11.5"
+                            stroke="#3b82f6"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>
+                        </g>
+                      </svg> */}
                       {user.stripe || "-"}
                     </Link>
                   </td>

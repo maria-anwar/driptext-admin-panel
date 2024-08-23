@@ -241,11 +241,26 @@ const ProjectsDetails: React.FC = () => {
             <p className="px-2.5 text-black dark:text-white">{name}</p>
           </div>
           <div className="flex justify-start items-center">
-            <FontAwesomeIcon
-              icon={faSync}
-              className="mx-6 text-blue-500 cursor-pointer"
-              onClick={() => alert(`Change ${label}`)}
-            />
+            <svg
+              fill="#3CB371"
+              version="1.1"
+              id="Layer_1"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              className="w-3.5 h-3.5 text-blue-500  cursor-pointer mx-6"
+              onClick={() => alert(`Edit ${label}`)}
+            >
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <path d="M447.1,86.2C400.3,33.4,332.2,0,256,0C114.6,0,0,114.6,0,256h64c0-106.1,85.9-192,192-192c58.5,0,110.4,26.5,145.5,67.8L341.3,192H512V21.3L447.1,86.2z M256,448c-58.5,0-110.4-26.5-145.5-67.8l60.2-60.2H0v170.7l64.9-64.9c46.8,52.8,115,86.2,191.1,86.2c141.4,0,256-114.6,256-256h-64C448,362.1,362.1,448,256,448z M298.7,256c0-23.6-19.1-42.7-42.7-42.7s-42.7,19.1-42.7,42.7s19.1,42.7,42.7,42.7S298.7,279.6,298.7,256z"></path>
+              </g>
+            </svg>
+
             <FontAwesomeIcon
               icon={faTimes}
               className="text-lg text-red-500 cursor-pointer"
@@ -390,19 +405,38 @@ const ProjectsDetails: React.FC = () => {
                   </AccordionItem>
                 </Accordion>
 
-                <div className="py-2">
+                <div className="pt-1 pb-3">
                   <h2>Folder</h2>
                   <a
                     href={project.googleLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-500 underline-none"
+                    className="text-blue-500 underline-none flex justify-start items-center py-1"
                   >
-                    <FontAwesomeIcon
-                      icon={faFolder}
-                      className="text-blue-500"
-                    />{" "}
-                    {project.projectName}
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-5.5 h-5.5"
+                    >
+                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></g>
+                      <g id="SVGRepo_iconCarrier">
+                        <path
+                          d="M20 4L12 12M20 4V8.5M20 4H15.5M19 12.5V16.8C19 17.9201 19 18.4802 18.782 18.908C18.5903 19.2843 18.2843 19.5903 17.908 19.782C17.4802 20 16.9201 20 15.8 20H7.2C6.0799 20 5.51984 20 5.09202 19.782C4.71569 19.5903 4.40973 19.2843 4.21799 18.908C4 18.4802 4 17.9201 4 16.8V8.2C4 7.0799 4 6.51984 4.21799 6.09202C4.40973 5.71569 4.71569 5.40973 5.09202 5.21799C5.51984 5 6.07989 5 7.2 5H11.5"
+                          stroke="#3b82f6"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></path>
+                      </g>
+                    </svg>
+
+                    <span className="px-1">{project.projectName}</span>
                   </a>
                 </div>
                 <progress
@@ -486,8 +520,39 @@ const ProjectsDetails: React.FC = () => {
                   </button>
                 </div>
                 <button className="w-full h-10 text-center bg-slate-300 text-slate-600 rounded-none my-2 flex justify-center items-center border-none">
-                  Archive Project
-                  <FontAwesomeIcon icon={faArchive} className="text-sm px-2" />
+                  <p className="px-2">Archive Project</p>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-5"
+                  >
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <path
+                        d="M9 12C9 11.5341 9 11.3011 9.07612 11.1173C9.17761 10.8723 9.37229 10.6776 9.61732 10.5761C9.80109 10.5 10.0341 10.5 10.5 10.5H13.5C13.9659 10.5 14.1989 10.5 14.3827 10.5761C14.6277 10.6776 14.8224 10.8723 14.9239 11.1173C15 11.3011 15 11.5341 15 12C15 12.4659 15 12.6989 14.9239 12.8827C14.8224 13.1277 14.6277 13.3224 14.3827 13.4239C14.1989 13.5 13.9659 13.5 13.5 13.5H10.5C10.0341 13.5 9.80109 13.5 9.61732 13.4239C9.37229 13.3224 9.17761 13.1277 9.07612 12.8827C9 12.6989 9 12.4659 9 12Z"
+                        stroke="#000000"
+                        stroke-width="1"
+                      ></path>
+                      <path
+                        opacity="0.5"
+                        d="M20.5 7V13C20.5 16.7712 20.5 18.6569 19.3284 19.8284C18.1569 21 16.2712 21 12.5 21H11.5C7.72876 21 5.84315 21 4.67157 19.8284C3.5 18.6569 3.5 16.7712 3.5 13V7"
+                        stroke="#000000"
+                        stroke-width="1"
+                        stroke-linecap="round"
+                      ></path>
+                      <path
+                        d="M2 5C2 4.05719 2 3.58579 2.29289 3.29289C2.58579 3 3.05719 3 4 3H20C20.9428 3 21.4142 3 21.7071 3.29289C22 3.58579 22 4.05719 22 5C22 5.94281 22 6.41421 21.7071 6.70711C21.4142 7 20.9428 7 20 7H4C3.05719 7 2.58579 7 2.29289 6.70711C2 6.41421 2 5.94281 2 5Z"
+                        stroke="#000000"
+                        stroke-width="1"
+                      ></path>
+                    </g>
+                  </svg>
                 </button>
               </div>
             </div>
