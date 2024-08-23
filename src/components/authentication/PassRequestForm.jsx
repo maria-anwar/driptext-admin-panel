@@ -58,7 +58,7 @@ const PassRequestForm = () => {
                 type="email"
                 placeholder="jhon@gmail.com"
                 onChange={props.handleChange}
-                className="outline-none border border-blue-gray-200 focus:border-gray-900 focus:ring-1 ring-black p-2 rounded-lg bg-transparent text-black"
+                className="outline-none border border-blue-gray-200 focus:border-gray-900 focus:ring-2 ring-1 ring-black p-2.5 rounded-lg bg-transparent text-black"
               />
               {props.errors.email && (
                 <div id="email" className="-mt-4 text-sm text-red-500">
@@ -68,7 +68,7 @@ const PassRequestForm = () => {
             </div>
 
             <button
-              className="mt-6 w-full font-semibold h-10 bg-black text-white text-sm p-2 rounded-lg"
+              className="mt-6 w-full font-semibold h-11 bg-black text-white text-sm p-2 rounded-lg"
               type="submit"
             >
               Request Link
