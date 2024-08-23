@@ -3,12 +3,14 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const LoginForm = () => {
-
   const [loading, setLoading] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
 
   const initialValues = {
@@ -27,7 +29,7 @@ const LoginForm = () => {
       email: values.email,
       password: values.password,
     };
-    const apiUrl = 'https://driptext-api.vercel.app/api/auth/login';
+    const apiUrl = "https://driptext-api.vercel.app/api/auth/login";
 
     try {
       // const response = await axios.post(apiUrl, userData);
@@ -40,10 +42,12 @@ const LoginForm = () => {
       // toast.error(`Error logging in: ${errorMessage}`);
     }
   };
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
 
   return (
-<div className="w-full flex flex-col mt-10 bg-white text-black">
-
+    <div className="w-full flex flex-col mt-10 bg-white text-black">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -67,7 +71,7 @@ const LoginForm = () => {
                 type="email"
                 placeholder="jhon@gmail.com"
                 onChange={props.handleChange}
-                className="outline-none border border-blue-gray-200 focus:border-gray-900 focus:ring-1 ring-black p-2 rounded-lg bg-transparent text-black"
+                className="outline-none border border-blue-gray-200 focus:border-gray-900 focus:ring-2 ring-1 ring-black p-2.5 rounded-lg bg-transparent text-black"
               />
               {props.errors.email && (
                 <div id="email" className="-mt-4 text-sm text-red-500">
@@ -80,15 +84,22 @@ const LoginForm = () => {
               >
                 Password
               </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                value={props.values.password}
-                onChange={props.handleChange}
-                placeholder="********"
-                className="outline-none border border-blue-gray-200 focus:border-gray-900 focus:ring-1 ring-black p-2 rounded-lg bg-transparent text-black"
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  value={props.values.password}
+                  onChange={props.handleChange}
+                  placeholder="********"
+                  className="w-full outline-none border border-blue-gray-200 focus:border-gray-900 focus:ring-2 ring-1 ring-black p-2.5 rounded-lg bg-transparent text-black"
+                />
+                <FontAwesomeIcon
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                  onClick={togglePasswordVisibility}
+                  icon={passwordVisible ? faEyeSlash : faEye}
+                />{" "}
+              </div>
               {props.errors.password && (
                 <div id="password" className="-mt-4 text-red-500 text-sm">
                   {props.errors.password}
@@ -110,12 +121,17 @@ const LoginForm = () => {
                   Save password
                 </label>
               </div>
-              <Link to="/auth/lost/request" className="text-sm text-gray-900 font-semibold text-black hover:text-black">
+              <Link
+                to="/auth/lost/request"
+                className="text-sm text-gray-900 font-semibold text-black hover:text-black"
+              >
                 Forgot Password
               </Link>
             </div>
             <button
-              className={`mt-6 w-full font-semibold h-10 bg-black text-white text-sm p-2 rounded-lg ${loading ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+              className={`mt-6 w-full font-semibold h-11 bg-black text-white text-sm p-2.5 rounded-lg ${
+                loading ? "cursor-not-allowed" : "cursor-pointer"
+              }`}
               type="submit"
             >
               Sign In
