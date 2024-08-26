@@ -27,6 +27,7 @@
     "framer-motion": "^11.3.29",
     "mdb-react-ui-kit": "^8.0.0",
     "react": "^18.2.0",
+    "react-datepicker": "^7.3.0",
     "react-dom": "^18.2.0",
     "react-paginate": "^8.2.0",
     "react-progressbar": "^15.4.1",

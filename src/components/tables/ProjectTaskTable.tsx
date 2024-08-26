@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFolder,
@@ -7,6 +7,8 @@ import {
   faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import "antd/dist/reset.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface Task {
   status: string;
@@ -49,7 +51,7 @@ interface Project {
     finalTasks: number;
   };
   worker: Worker;
-  created: string;
+  created: string | Date;
   customer: Customer;
 }
 
@@ -59,8 +61,16 @@ interface ProjectProps {
 }
 
 const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
-  const [showDetailsDialog, setShowDetailsDialog] = useState(false);
-  const [task, setTask] = useState("");
+  const [showDetailsDialog, setShowDetailsDialog] = useState<boolean>(false);
+  const [task, setTask] = useState<null>(null);
+  const [date, setDate] = useState<null>(null);
+
+  useEffect(() => {
+    if (task) {
+      const deadlineDate = new Date(task.deadline);
+      setDate(deadlineDate);
+    }
+  }, [task]);
 
   const getInitials = (name: string): string => {
     return name
@@ -69,20 +79,16 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
       .join("");
   };
 
-  const WorkerComponent: React.FC<{ label: string; name: string }> = ({
-    label,
-    name,
-  }) => {
-    return (
-      <div className="text-black dark:text-white">
-        <p className="dark:text-white text-black text-xs text-center py-1">
-          {label}
-        </p>
-        <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
-          {getInitials(name)}
-        </p>
-      </div>
-    );
+  const handleCancel = (e) => {
+    e.preventDefault();
+    alert("Cancel clicked");
+    setShowDetailsDialog(false);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert("Submit Clicked");
+    setShowDetailsDialog(false);
   };
 
   const handleTasks = (task: any) => {
@@ -110,6 +116,22 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
           <p className=" px-1">{label}</p>
           <FontAwesomeIcon className=" px-1" icon={faCheck} />
         </div>
+      </div>
+    );
+  };
+
+  const WorkerComponent: React.FC<{ label: string; name: string }> = ({
+    label,
+    name,
+  }) => {
+    return (
+      <div className="text-black dark:text-white">
+        <p className="dark:text-white text-black text-xs text-center py-1">
+          {label}
+        </p>
+        <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
+          {getInitials(name)}
+        </p>
       </div>
     );
   };
@@ -337,9 +359,13 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
                   >
                     Due until
                   </label>
-                  <p className="w-ful py-0  text-black dark:text-white">
-                    {task.deadline}
-                  </p>
+                  <DatePicker
+                    className="w-full  rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    selected={date}
+                    onChange={(date: Date | null) => setDate(date)}
+                    minDate={new Date()} // Prevents selecting past dates
+                    dateFormat="yyyy-MM-dd"
+                  />
                 </div>
                 <div className="w-1/2 ml-1">
                   <label
@@ -455,6 +481,22 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
                 <TaskMember name={task.worker.lector} label="Lector" />
                 <TaskMember name={task.worker.SEO} label="Seo" />
                 <TaskMember name={task.worker.metalector} label="Meta-Lector" />
+              </div>
+              <div className="flex justify-end items-center pt-6 pb-2 space-x-4">
+                <button
+                  className="flex justify-center bg-transparent rounded border border-stroke py-1.5 px-5 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                  type="submit"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
+                  type="submit"
+                  onClick={handleSubmit}
+                >
+                  Save
+                </button>
               </div>
             </div>
           </div>
