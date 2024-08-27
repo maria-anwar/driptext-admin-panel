@@ -9,7 +9,7 @@ import {
 import "antd/dist/reset.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import ToggleSwitch from "../buttons/ToggleButton";
 interface Task {
   status: string;
   deadline: string;
@@ -64,6 +64,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
   const [showDetailsDialog, setShowDetailsDialog] = useState<boolean>(false);
   const [task, setTask] = useState<null>(null);
   const [date, setDate] = useState<null>(null);
+  const [showCard, setShowCard] = useState(true);
 
   useEffect(() => {
     if (task) {
@@ -98,6 +99,11 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
 
   const hanldeCloseAllInfo = () => {
     setShowDetailsDialog(false);
+  };
+
+  const handlePublishedTask = () => {
+    alert("Published Task Clicked");
+    setShowCard(!showCard);
   };
 
   const TaskMember: React.FC<{ label: string; name: string }> = ({
@@ -307,6 +313,19 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
                 className="cursor-pointer text-lg dark:text-white text-black"
                 onClick={hanldeCloseAllInfo}
                 icon={faTimes}
+              />
+            </div>
+            <div className="flex justify-end items-end flex-col py-2 ">
+              <label
+                className="mb-3 block text-sm font-medium text-black dark:text-white"
+                htmlFor="wordReal"
+              >
+                Ready to Work
+              </label>
+              <ToggleSwitch
+                icon={showCard? faTimes:faCheck}
+                isOn={showCard}
+                onToggle={handlePublishedTask}
               />
             </div>
 
