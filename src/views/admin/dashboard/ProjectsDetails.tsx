@@ -184,11 +184,42 @@ const ProjectsDetails: React.FC = () => {
   const location = useLocation();
   const { project } = location.state as { project: Project };
   const [memberModel, setMemberModel] = useState(false);
+  const [deleteModel, setDeleteModel] = useState(false);
+  const [importModel, setImportModel] = useState(false);
+  const [addModel, setAddModel] = useState(false);
+  const [editModel, setEditModel] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [selectedRoles, setSelectedRoles] = useState<{ [key: number]: string }>(
     {}
   );
   const allRoles = ["Texter", "Lector", "SEO", "Meta-lector"];
+
+
+  const handleDelete = () => {
+    setDeleteModel(true);
+  };
+  const handleImport = () => {
+    setImportModel(true);
+  };
+  const handleAdd = () => {
+    setAddModel(true);
+  };
+  const handleEdit = () => {
+    setEditModel(true);
+  };
+
+  const handleCloseDelete = () => {
+    setDeleteModel(false);
+  };
+  const handleCloseImport = () => {
+    setImportModel(false);
+  };
+  const handleCloseAdd = () => {
+    setAddModel(false);
+  };
+  const handleCloseEdit = () => {
+    setEditModel(false);
+  };
 
   const handleMembers = () => {
     setMemberModel(true);
@@ -498,28 +529,28 @@ const ProjectsDetails: React.FC = () => {
                 />
               </div>
               <div className="px-7 py-6">
-                <button className="w-full h-10 text-center bg-blue-500 text-white rounded-none my-2 flex justify-center items-center border-none">
+                <button onClick={handleAdd} className="w-full h-10 text-center bg-blue-500 text-white rounded-none my-2 flex justify-center items-center border-none">
                   Add Text
                   <FontAwesomeIcon icon={faPlus} className="text-sm px-2" />
                 </button>
-                <button className="w-full h-10 text-center bg-slate-300 text-blue-500 rounded-none my-2 flex justify-center items-center border-none">
+                <button onClick={handleEdit} className="w-full h-10 text-center bg-slate-300 text-blue-500 rounded-none my-2 flex justify-center items-center border-none">
                   Edit
                   <FontAwesomeIcon icon={faEdit} className="text-sm px-2" />
                 </button>
                 <div className="w-full flex justify-between items-center my-1">
-                  <button className="w-1/2 h-10 text-center bg-slate-300 text-blue-500 rounded-none mr-1.5 flex justify-center items-center border-none">
+                  <button onClick={handleImport} className="w-1/2 h-10 text-center bg-slate-300 text-blue-500 rounded-none mr-1.5 flex justify-center items-center border-none">
                     Import
                     <FontAwesomeIcon
                       icon={faDownload}
                       className="text-sm px-2"
                     />
                   </button>
-                  <button className="w-1/2 h-10 text-center bg-slate-300 text-blue-500 rounded-none ml-1.5 flex justify-center items-center border-none">
+                  <button onClick={()=>{alert("download")}} className="w-1/2 h-10 text-center bg-slate-300 text-blue-500 rounded-none ml-1.5 flex justify-center items-center border-none">
                     Export
                     <FontAwesomeIcon icon={faUpload} className="text-sm px-2" />
                   </button>
                 </div>
-                <button className="w-full h-10 text-center bg-slate-300 text-slate-600 rounded-none my-2 flex justify-center items-center border-none">
+                <button onClick={handleDelete} className="w-full h-10 text-center bg-slate-300 text-slate-600 rounded-none my-2 flex justify-center items-center border-none">
                   <p className="px-2">Archive Project</p>
                   <svg
                     viewBox="0 0 24 24"
@@ -620,7 +651,72 @@ const ProjectsDetails: React.FC = () => {
                 </div>
               </div>
             ))}
+           
           </div>
+          {addModel && (
+              <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
+                <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
+                  <div className="flex justify-between items-center mb-5">
+                    <h2 className="text-xl font-bold dark:text-white pr-12">
+                      Add 
+                    </h2>
+                    <FontAwesomeIcon
+                      className="cursor-pointer text-lg text-red-500 pl-12"
+                      onClick={handleCloseAdd}
+                      icon={faTimes}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+            {editModel && (
+              <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
+                <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
+                  <div className="flex justify-between items-center mb-5">
+                    <h2 className="text-xl font-bold dark:text-white pr-12">
+                      Edit
+                    </h2>
+                    <FontAwesomeIcon
+                      className="cursor-pointer text-lg text-red-500 pl-12"
+                      onClick={handleCloseEdit}
+                      icon={faTimes}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+            {importModel && (
+              <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
+                <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
+                  <div className="flex justify-between items-center mb-5">
+                    <h2 className="text-xl font-bold dark:text-white pr-12">
+                      Import
+                    </h2>
+                    <FontAwesomeIcon
+                      className="cursor-pointer text-lg text-red-500 pl-12"
+                      onClick={handleCloseImport}
+                      icon={faTimes}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+            {deleteModel && (
+              <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
+                <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
+                  <div className="flex justify-between items-center mb-5">
+                    <h2 className="text-xl font-bold dark:text-white pr-12">
+                      Delete
+                    </h2>
+                    <FontAwesomeIcon
+                      className="cursor-pointer text-lg text-red-500 pl-12"
+                      onClick={handleCloseDelete}
+                      icon={faTimes}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
         </div>
       )}
     </>
