@@ -101,10 +101,10 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
     setShowDetailsDialog(false);
   };
 
-  const handlePublishedTask = () =>{
+  const handlePublishedTask = () => {
     alert("Published Task Clicked");
     setShowCard(!showCard);
-  }
+  };
 
   const TaskMember: React.FC<{ label: string; name: string }> = ({
     label,
@@ -315,12 +315,18 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
                 icon={faTimes}
               />
             </div>
-            <div className="flex justify-end items-center py-2">
-            <ToggleSwitch
-            icon={faCheck}
-            isOn={showCard}
-            onToggle={handlePublishedTask}
-          />
+            <div className="flex justify-end items-end flex-col py-2 ">
+              <label
+                className="mb-3 block text-sm font-medium text-black dark:text-white"
+                htmlFor="wordReal"
+              >
+                Ready to Work
+              </label>
+              <ToggleSwitch
+                icon={showCard? faTimes:faCheck}
+                isOn={showCard}
+                onToggle={handlePublishedTask}
+              />
             </div>
 
             <div className="space-y-4 mt-4">
