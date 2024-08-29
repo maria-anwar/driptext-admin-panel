@@ -40,7 +40,7 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users }) => {
   const paginatedUsers = users.slice(offset, offset + rowsPerPage);
 
   return (
-    <div className="mt-6">
+    <div className="mt-2">
       <div className="rounded-sm border border-stroke bg-white pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="max-w-full overflow-x-auto ">
           <table className="w-full table-auto ">

@@ -3,6 +3,7 @@ import Breadcrumb from "../../../components/breeadcrumbs/Breadcrumb";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import UserPaginatedTable from "../../../components/tables/UserPaginatedTable";
+import { Link } from "react-router-dom";
 
 const users = [
   {
@@ -328,26 +329,40 @@ const Users: React.FC = () => {
   return (
     <>
       <div className="mx-auto 3xl:px-6">
-        <Breadcrumb pageName="User" />
-        <div className="flex justify-between items-center">
-          <div className="flex justify-center items-center">
-            <div
-              onClick={handleSearch}
-              className="h-10 w-10 ring-1 flex justify-center items-center cursor-pointer rounded mr-2 ring-slate-300 bg-slate-100 dark:bg-transparent"
-            >
-              <FontAwesomeIcon icon={faSearch} />
+        <div className="flex flex-col sm:flex-row items-start justify-between lg:items-center xl:items-center">
+          <div className="flex flex-col sm:flex-row gap-2 lg:gap-30 xl:gap-30 items-start lg:items-center xl:items-center">
+            <ol className="flex items-center gap-2 text-left">
+              <li>
+                <Link
+                  className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
+                  to="/dashboard"
+                >
+                  Dashboard /
+                </Link>
+              </li>
+              <li className="font-medium text-primary">User</li>
+            </ol>
+
+            <div className="flex items-center mb-2 lg:mb-0 xl:mb-0">
+              <div
+                onClick={handleSearch}
+                className="h-8 w-8 ring-1 my-2 flex justify-center items-center cursor-pointer rounded mr-2 ring-slate-300 bg-slate-100 dark:bg-transparent"
+              >
+                <FontAwesomeIcon icon={faSearch} />
+              </div>
+              {showSearch && (
+                <input
+                  type="text"
+                  value={search}
+                  onChange={handleSearchFilter}
+                  placeholder="Searching..."
+                  className="rounded ring-1 outline-none py-1 px-4 ring-slate-200 bg-slate-0 dark:bg-transparent w-60 lg:w-80 xl:w-80"
+                />
+              )}
             </div>
-            {showSearch && (
-              <input
-                type="text"
-                value={search}
-                onChange={handleSearchFilter}
-                placeholder="Searching..."
-                className="rounded ring-1 outline-none py-2 px-4 ring-slate-200 bg-slate-0 dark:bg-transparent w-90"
-              />
-            )}
           </div>
-          <div className="flex justify-center items-center">
+
+          <div className="flex items-center text-left">
             <input
               type="checkbox"
               className="h-5 w-5"
@@ -357,6 +372,10 @@ const Users: React.FC = () => {
             <span className="pl-2">Show inactive users</span>
           </div>
         </div>
+
+        <h2 className="text-title-md2 font-semibold text-black dark:text-white py-2">
+          Users
+        </h2>
         <UserPaginatedTable users={data} />
       </div>
     </>

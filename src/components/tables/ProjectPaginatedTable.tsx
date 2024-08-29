@@ -111,12 +111,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
                 <th className="min-w-[130px] py-4 px-4 font-semibold  text-black dark:text-white">
                   Google-Link
                 </th>
-                <th className="min-w-[100px] py-4 px-4 font-medsemiboldium text-black dark:text-white">
-                  Onboarded
-                </th>
-                <th className="min-w-[130px] py-4 px-4 font-medsemiboldium text-black dark:text-white">
-                  Stripe-Link
-                </th>
+               
                 <th className="min-w-[120px] py-4 px-4 font-semibold text-black dark:text-white">
                   Date
                 </th>
@@ -125,6 +120,9 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
                   Worker
+                </th>
+                <th className="min-w-[100px] py-4 px-4 font-medsemiboldium text-black dark:text-white">
+                  Onboarded
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
                   View
@@ -135,12 +133,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
               {paginatedProjects.map((project) => (
                 <tr className="text-left" key={project.projectName}>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <div className="flex justify-start items-start flex-col">
-                      <p className="text-black dark:text-white text-xs">
-                        {project.projectName}
-                      </p>
                       <p className="text-sm">{project.status.toUpperCase()}</p>
-                    </div>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <a
@@ -175,38 +168,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
                       <span className="px-1">{project.projectName}</span>
                     </a>
                   </td>
-                  <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black  dark:text-white">
-                      {project.onboarding.toUpperCase() === "YES" ? (
-                        <FontAwesomeIcon icon={faCheck} />
-                      ) : (
-                        <FontAwesomeIcon icon={faTimes} />
-                      )}
-                    </p>
-                  </td>
-                  <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black  dark:text-white text-sm">
-                      Domain: {""}
-                      <a
-                        href={project.stripeLink.domain}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-500 underline-none"
-                      >
-                        {project.stripeLink.domain}
-                      </a>
-                    </p>
-                    <p className="text-black  dark:text-white text-sm">
-                      <a
-                        href={project.stripeLink.domain}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-500 underline-none"
-                      >
-                        {project.stripeLink.subdomain}
-                      </a>
-                    </p>
-                  </td>
+                  
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black  dark:text-white text-sm">
                       {project.performancePeriod}
@@ -239,6 +201,15 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
                         name={project.worker.metalector}
                       />
                     </div>
+                  </td>
+                  <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p className="text-black  dark:text-white flex justify-center items-center">
+                      {project.onboarding.toUpperCase() === "YES" ? (
+                        <FontAwesomeIcon icon={faCheck} className="text-green-500" />
+                      ) : (
+                        <FontAwesomeIcon icon={faTimes} className="text-red-600" />
+                      )}
+                    </p>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div

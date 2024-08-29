@@ -20,7 +20,8 @@ import {
   AccordionPanel,
 } from "@chakra-ui/accordion";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
-import * as XLSX from 'xlsx';
+import * as XLSX from "xlsx";
+import Breadcrumb from "../../../components/breeadcrumbs/Breadcrumb";
 
 interface StripeLink {
   domain: string;
@@ -193,7 +194,9 @@ const ProjectsDetails: React.FC = () => {
     {}
   );
   const [fileData, setFileData] = useState(null);
-  const [fileName, setFileName] = useState('Drag files here or click to select files');
+  const [fileName, setFileName] = useState(
+    "Drag files here or click to select files"
+  );
   const allRoles = ["Texter", "Lector", "SEO", "Meta-lector"];
 
   const handleDelete = () => {
@@ -240,16 +243,18 @@ const ProjectsDetails: React.FC = () => {
     const file = e.target.files[0];
     if (file) {
       // Check if the file is an Excel file
-      const isExcelFile = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || 
-                          file.type === 'application/vnd.ms-excel';
-      
+      const isExcelFile =
+        file.type ===
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+        file.type === "application/vnd.ms-excel";
+
       if (isExcelFile) {
         setFileName(file.name);
       } else {
-        setFileName('Please select a valid Excel file');
+        setFileName("Please select a valid Excel file");
       }
     } else {
-      setFileName('No file chosen');
+      setFileName("No file chosen");
     }
   };
 
@@ -260,14 +265,14 @@ const ProjectsDetails: React.FC = () => {
 
       reader.onload = () => {
         const data = new Uint8Array(fileData);
-        const workbook = XLSX.read(data, { type: 'array' });
+        const workbook = XLSX.read(data, { type: "array" });
         const sheetName = workbook.SheetNames[0]; // Assuming we want the first sheet
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet);
-        
+
         // Handle the parsed data here
-        console.log('Parsed Data:', jsonData);
-        
+        console.log("Parsed Data:", jsonData);
+
         // Example: store the data in a state or process it as needed
         // setFileData(jsonData);
       };
@@ -365,13 +370,14 @@ const ProjectsDetails: React.FC = () => {
   return (
     <>
       <div className="mx-auto">
-        <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-6">
-          {project.projectName}
-        </h2>
+        <Breadcrumb pageName={"Project Details"} />
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="py-6 px-7 dark:border-strokedark">
+                <p className="text-xl font-semibold text-black dark:text-white pb-2">
+                  {project.projectName}
+                </p>
                 <div className="py-2">
                   <h3 className="font-medium text-black dark:text-white">
                     Customer
@@ -901,17 +907,17 @@ const ProjectsDetails: React.FC = () => {
                           <input
                             type="file"
                             className="absolute top-0 left-0 opacity-0 w-full h-30 cursor-pointer"
-                            onClick={(e)=>{handleFileChange(e)}}
-                            accept=".xlsx, .xls" 
+                            onClick={(e) => {
+                              handleFileChange(e);
+                            }}
+                            accept=".xlsx, .xls"
                           />
                           <div className="flex justify-start items-center py-15">
                             <FontAwesomeIcon
                               icon={faCloudUploadAlt}
                               className="text-gray-600 w-12 h-12 px-4"
                             />
-                            <p className="mt-2 text-gray-700 ">
-                              {fileName}
-                            </p>
+                            <p className="mt-2 text-gray-700 ">{fileName}</p>
                           </div>
                         </div>
                         <button
