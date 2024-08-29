@@ -10,7 +10,7 @@ const SystemSettings: React.FC = () => {
         <div className="grid grid-cols-5  gap-8 mt-10">
           <div className="col-span-5 3xl:col-span-8  xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-6 px-15 dark:border-strokedark">
+              <div className="border-b border-stroke py-6 px-6 dark:border-strokedark lg:px-15 xl:px-15">
                 <div className="mb-7 mt-4">
                   <label
                     className="mb-3 block text-sm font-semibold text-black dark:text-white"
