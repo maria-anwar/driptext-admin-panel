@@ -4,7 +4,6 @@ import SignIn from "./views/auth/SignIn";
 import PassRequest from './views/auth/PassRequest'
 import DefaultLayout from "./layouts/DashboardLayout";
 import Projects from "./views/admin/dashboard/Projects";
-import Customers from "./views/admin/dashboard/Customers";
 import DriptextAcademy from "./views/admin/dashboard/DriptextAcademy";
 import ProfileSettings from "./views/admin/dashboard/ProfileSetting";
 import SystemSettings from "./views/admin/dashboard/SystemSettings";
@@ -27,7 +26,6 @@ const WebRoutes = () => {
           >
             <Route index element={<Projects />} />
             <Route path="project-details" element={<ProjectsDetails/>} />
-            <Route path="customers" element={<Customers />} />
             <Route path="driptext-academy" element={<DriptextAcademy />} />
             <Route path="profile-settings" element={<ProfileSettings />} />
             <Route path="system-settings" element={<SystemSettings />} />
