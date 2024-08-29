@@ -46,7 +46,7 @@ const Projects: React.FC = () => {
   return (
     <>
       <div className="mx-auto 3xl:px-4">
-        <div className="flex justify-between items-center pb-3">
+        <div className="flex justify-between items-start  pb-3 flex-col lg:flex-row xl:flex-row md:flex-row gap-4 ">
           {/* <ol className="flex items-center gap-2">
             <li>
               <Link
