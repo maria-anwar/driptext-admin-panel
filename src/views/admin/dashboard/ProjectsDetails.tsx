@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faFolder,
   faPlus,
   faEdit,
   faDownload,
   faUpload,
-  faArchive,
   faTimes,
-  faRedo,
-  faUndo,
-  faSync,
+  faCloudUploadAlt,
+  faGripLines,
 } from "@fortawesome/free-solid-svg-icons";
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { useLocation } from "react-router-dom";
 import ProjectTaskTable from "../../../components/tables/ProjectTaskTable";
 import {
@@ -22,6 +20,7 @@ import {
   AccordionPanel,
 } from "@chakra-ui/accordion";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import * as XLSX from 'xlsx';
 
 interface StripeLink {
   domain: string;
@@ -188,12 +187,14 @@ const ProjectsDetails: React.FC = () => {
   const [importModel, setImportModel] = useState(false);
   const [addModel, setAddModel] = useState(false);
   const [editModel, setEditModel] = useState(false);
+  const [date, setDate] = useState("");
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [selectedRoles, setSelectedRoles] = useState<{ [key: number]: string }>(
     {}
   );
+  const [fileData, setFileData] = useState(null);
+  const [fileName, setFileName] = useState('Drag files here or click to select files');
   const allRoles = ["Texter", "Lector", "SEO", "Meta-lector"];
-
 
   const handleDelete = () => {
     setDeleteModel(true);
@@ -221,6 +222,11 @@ const ProjectsDetails: React.FC = () => {
     setEditModel(false);
   };
 
+  const handleDeleteApi = () => {
+    alert("Project archived");
+    setDeleteModel(false);
+  };
+
   const handleMembers = () => {
     setMemberModel(true);
     setDropdownVisible(null);
@@ -228,6 +234,47 @@ const ProjectsDetails: React.FC = () => {
 
   const handleCloseMemberModel = () => {
     setMemberModel(false);
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Check if the file is an Excel file
+      const isExcelFile = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || 
+                          file.type === 'application/vnd.ms-excel';
+      
+      if (isExcelFile) {
+        setFileName(file.name);
+      } else {
+        setFileName('Please select a valid Excel file');
+      }
+    } else {
+      setFileName('No file chosen');
+    }
+  };
+
+  const handleImportData = () => {
+    console.log(fileData);
+    if (fileData) {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        const data = new Uint8Array(fileData);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheetName = workbook.SheetNames[0]; // Assuming we want the first sheet
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+        
+        // Handle the parsed data here
+        console.log('Parsed Data:', jsonData);
+        
+        // Example: store the data in a state or process it as needed
+        // setFileData(jsonData);
+      };
+
+      reader.readAsArrayBuffer(fileData);
+    }
+    handleCloseImport();
   };
 
   const getInitials = (name: string): string => {
@@ -529,28 +576,368 @@ const ProjectsDetails: React.FC = () => {
                 />
               </div>
               <div className="px-7 py-6">
-                <button onClick={handleAdd} className="w-full h-10 text-center bg-blue-500 text-white rounded-none my-2 flex justify-center items-center border-none">
+                <button
+                  onClick={handleAdd}
+                  className="w-full h-10 text-center bg-blue-500 text-white rounded-none my-2 flex justify-center items-center border-none"
+                >
                   Add Text
                   <FontAwesomeIcon icon={faPlus} className="text-sm px-2" />
                 </button>
-                <button onClick={handleEdit} className="w-full h-10 text-center bg-slate-300 text-blue-500 rounded-none my-2 flex justify-center items-center border-none">
+                {addModel && (
+                  <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
+                    <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
+                      <div className="flex justify-between items-center mb-5">
+                        <h2 className="text-xl font-bold dark:text-white pr-12">
+                          Add Task
+                        </h2>
+                        <FontAwesomeIcon
+                          className="cursor-pointer text-lg text-red-500 pl-12"
+                          onClick={handleCloseAdd}
+                          icon={faTimes}
+                        />
+                      </div>
+                      <div>
+                        <div className="w-full py-2">
+                          <label
+                            className="mb-3 block text-sm font-medium text-black dark:text-white"
+                            htmlFor="dueUntil"
+                          >
+                            Due until
+                          </label>
+                          <DatePicker
+                            className="w-full rounded border border-transparent bg-gray-100 py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                            minDate={new Date()}
+                            selected={date}
+                            onChange={(date: Date | null) => setDate(date)}
+                            dateFormat="yyyy-MM-dd"
+                            placeholderText="Select a date"
+                          />
+                        </div>
+
+                        <div className="w-full py-2">
+                          <label
+                            className="mb-3 block text-sm font-medium text-black dark:text-white"
+                            htmlFor="topic"
+                          >
+                            Topic
+                          </label>
+                          <input
+                            className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                            type="text"
+                            name="topic"
+                            id="topic"
+                            placeholder="topic"
+                            defaultValue={""}
+                          />
+                        </div>
+                        <div className="w-full py-2">
+                          <label
+                            className="mb-3 block text-sm font-medium text-black dark:text-white"
+                            htmlFor="Keywords"
+                          >
+                            Keyword
+                          </label>
+                          <input
+                            className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                            type="text"
+                            name="Keyword"
+                            id="Keywords"
+                            placeholder="Keywords"
+                            defaultValue={""}
+                          />
+                        </div>
+                        <div className="w-full py-2">
+                          <label
+                            className="mb-3 block text-sm font-medium text-black dark:text-white"
+                            htmlFor="dropdown"
+                          >
+                            Text type
+                          </label>
+                          <div className="relative">
+                            {" "}
+                            <select
+                              id="dropdown"
+                              className="w-full appearance-none rounded border border-transparent bg-gray py-2.5 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                            >
+                              <option>Guide</option>
+                              <option>Shop (Category)</option>
+                              <option>Shop (Product)</option>
+                              <option>Definition/Wiki</option>
+                              <option>Shop (Home page)</option>
+                              <option>CMS page</option>
+                            </select>
+                            <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                              {/* Custom arrow icon */}
+                              <svg
+                                className="w-4 h-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M19 9l-7 7-7-7"
+                                ></path>
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="w-full py-2">
+                          <label
+                            className="mb-3 block text-sm font-medium text-black dark:text-white"
+                            htmlFor="wordExpected"
+                          >
+                            Word Count Expected
+                          </label>
+                          <input
+                            className="w-full  rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                            type="number"
+                            name="wordExpected"
+                            id="wordExpected"
+                            placeholder="1500"
+                            min={0}
+                          />
+                        </div>
+                        <div className="w-full py-2">
+                          <label
+                            className="mb-3 block text-sm font-medium text-black dark:text-white "
+                            htmlFor="comment"
+                          >
+                            Comment
+                          </label>
+                          <textarea
+                            id="comment"
+                            rows={3}
+                            className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          ></textarea>
+                        </div>
+                        <button
+                          className="w-full my-3 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
+                          type="submit"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <button
+                  onClick={handleEdit}
+                  className="w-full h-10 text-center bg-slate-300 text-blue-500 rounded-none my-2 flex justify-center items-center border-none"
+                >
                   Edit
                   <FontAwesomeIcon icon={faEdit} className="text-sm px-2" />
                 </button>
+                {editModel && (
+                  <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
+                    <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
+                      <div className="flex justify-between items-center mb-5">
+                        <h2 className="text-xl font-bold dark:text-white pr-12">
+                          Edit Task
+                        </h2>
+                        <FontAwesomeIcon
+                          className="cursor-pointer text-lg text-red-500 pl-12"
+                          onClick={handleCloseEdit}
+                          icon={faTimes}
+                        />
+                      </div>
+                      <div>
+                        <div className="w-full py-2">
+                          <label
+                            className="mb-3 block text-sm font-medium text-black dark:text-white"
+                            htmlFor="dueUntil"
+                          >
+                            Due until
+                          </label>
+                          <DatePicker
+                            className="w-full rounded border border-transparent bg-gray-100 py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                            minDate={new Date()}
+                            selected={date}
+                            onChange={(date: Date | null) => setDate(date)}
+                            dateFormat="yyyy-MM-dd"
+                            placeholderText="Select a date"
+                          />
+                        </div>
+
+                        <div className="w-full py-2">
+                          <label
+                            className="mb-3 block text-sm font-medium text-black dark:text-white"
+                            htmlFor="topic"
+                          >
+                            Topic
+                          </label>
+                          <input
+                            className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                            type="text"
+                            name="topic"
+                            id="topic"
+                            placeholder="topic"
+                            defaultValue={""}
+                          />
+                        </div>
+                        <div className="w-full py-2">
+                          <label
+                            className="mb-3 block text-sm font-medium text-black dark:text-white"
+                            htmlFor="Keywords"
+                          >
+                            Keyword
+                          </label>
+                          <input
+                            className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                            type="text"
+                            name="Keyword"
+                            id="Keywords"
+                            placeholder="Keywords"
+                            defaultValue={""}
+                          />
+                        </div>
+                        <div className="w-full py-2">
+                          <label
+                            className="mb-3 block text-sm font-medium text-black dark:text-white"
+                            htmlFor="dropdown"
+                          >
+                            Text type
+                          </label>
+                          <div className="relative">
+                            {" "}
+                            <select
+                              id="dropdown"
+                              className="w-full appearance-none rounded border border-transparent bg-gray py-2.5 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                            >
+                              <option>Guide</option>
+                              <option>Shop (Category)</option>
+                              <option>Shop (Product)</option>
+                              <option>Definition/Wiki</option>
+                              <option>Shop (Home page)</option>
+                              <option>CMS page</option>
+                            </select>
+                            <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                              {/* Custom arrow icon */}
+                              <svg
+                                className="w-4 h-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M19 9l-7 7-7-7"
+                                ></path>
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="w-full py-2">
+                          <label
+                            className="mb-3 block text-sm font-medium text-black dark:text-white"
+                            htmlFor="wordExpected"
+                          >
+                            Word Count Expected
+                          </label>
+                          <input
+                            className="w-full  rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                            type="number"
+                            name="wordExpected"
+                            id="wordExpected"
+                            placeholder="1500"
+                            min={0}
+                          />
+                        </div>
+                        <div className="w-full py-2">
+                          <label
+                            className="mb-3 block text-sm font-medium text-black dark:text-white "
+                            htmlFor="comment"
+                          >
+                            Comment
+                          </label>
+                          <textarea
+                            id="comment"
+                            rows={3}
+                            className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          ></textarea>
+                        </div>
+                        <button
+                          className="w-full my-3 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
+                          type="submit"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 <div className="w-full flex justify-between items-center my-1">
-                  <button onClick={handleImport} className="w-1/2 h-10 text-center bg-slate-300 text-blue-500 rounded-none mr-1.5 flex justify-center items-center border-none">
+                  <button
+                    onClick={handleImport}
+                    className="w-1/2 h-10 text-center bg-slate-300 text-blue-500 rounded-none mr-1.5 flex justify-center items-center border-none"
+                  >
                     Import
                     <FontAwesomeIcon
                       icon={faDownload}
                       className="text-sm px-2"
                     />
                   </button>
-                  <button onClick={()=>{alert("download")}} className="w-1/2 h-10 text-center bg-slate-300 text-blue-500 rounded-none ml-1.5 flex justify-center items-center border-none">
+                  {importModel && (
+                    <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
+                      <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-3/12 xl:w-3/12 2xl:w-4/12 3xl:w-3/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
+                        <div className="flex justify-between items-center mb-5">
+                          <h2 className="text-xl font-bold dark:text-white pr-12">
+                            Import
+                          </h2>
+                          <FontAwesomeIcon
+                            className="cursor-pointer text-lg text-red-500 pl-12"
+                            onClick={handleCloseImport}
+                            icon={faTimes}
+                          />
+                        </div>
+                        <div className="relative w-full h-40 cursor-pointer border border-black dark:border-white border-dotted ">
+                          {/* Hidden file input */}
+                          <input
+                            type="file"
+                            className="absolute top-0 left-0 opacity-0 w-full h-30 cursor-pointer"
+                            onClick={(e)=>{handleFileChange(e)}}
+                            accept=".xlsx, .xls" 
+                          />
+                          <div className="flex justify-start items-center py-15">
+                            <FontAwesomeIcon
+                              icon={faCloudUploadAlt}
+                              className="text-gray-600 w-12 h-12 px-4"
+                            />
+                            <p className="mt-2 text-gray-700 ">
+                              {fileName}
+                            </p>
+                          </div>
+                        </div>
+                        <button
+                          className="w-full mt-4 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
+                          type="submit"
+                          onClick={handleImportData}
+                        >
+                          Import
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  <button
+                    onClick={() => {
+                      alert("download");
+                    }}
+                    className="w-1/2 h-10 text-center bg-slate-300 text-blue-500 rounded-none ml-1.5 flex justify-center items-center border-none"
+                  >
                     Export
                     <FontAwesomeIcon icon={faUpload} className="text-sm px-2" />
                   </button>
                 </div>
-                <button onClick={handleDelete} className="w-full h-10 text-center bg-slate-300 text-slate-600 rounded-none my-2 flex justify-center items-center border-none">
+                <button
+                  onClick={handleDelete}
+                  className="w-full h-10 text-center bg-slate-300 text-slate-600 rounded-none my-2 flex justify-center items-center border-none"
+                >
                   <p className="px-2">Archive Project</p>
                   <svg
                     viewBox="0 0 24 24"
@@ -585,6 +972,28 @@ const ProjectsDetails: React.FC = () => {
                     </g>
                   </svg>
                 </button>
+                {deleteModel && (
+                  <div className="fixed inset-0 flex items-center justify-center z-9999 bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
+                    <div className="bg-white dark:bg-black p-6 rounded shadow-lg">
+                      <h2 className="text-xl font-bold mb-4 dark:text-white">
+                        Archived Project
+                      </h2>
+                      <p>Are you sure you want to archive this project?</p>
+                      <button
+                        className=" mr-4 mt-4 bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                        onClick={handleDeleteApi}
+                      >
+                        Confirm
+                      </button>
+                      <button
+                        className="mt-4 bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                        onClick={handleCloseDelete}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -651,72 +1060,7 @@ const ProjectsDetails: React.FC = () => {
                 </div>
               </div>
             ))}
-           
           </div>
-          {addModel && (
-              <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
-                <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
-                  <div className="flex justify-between items-center mb-5">
-                    <h2 className="text-xl font-bold dark:text-white pr-12">
-                      Add 
-                    </h2>
-                    <FontAwesomeIcon
-                      className="cursor-pointer text-lg text-red-500 pl-12"
-                      onClick={handleCloseAdd}
-                      icon={faTimes}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-            {editModel && (
-              <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
-                <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
-                  <div className="flex justify-between items-center mb-5">
-                    <h2 className="text-xl font-bold dark:text-white pr-12">
-                      Edit
-                    </h2>
-                    <FontAwesomeIcon
-                      className="cursor-pointer text-lg text-red-500 pl-12"
-                      onClick={handleCloseEdit}
-                      icon={faTimes}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-            {importModel && (
-              <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
-                <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
-                  <div className="flex justify-between items-center mb-5">
-                    <h2 className="text-xl font-bold dark:text-white pr-12">
-                      Import
-                    </h2>
-                    <FontAwesomeIcon
-                      className="cursor-pointer text-lg text-red-500 pl-12"
-                      onClick={handleCloseImport}
-                      icon={faTimes}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-            {deleteModel && (
-              <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
-                <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
-                  <div className="flex justify-between items-center mb-5">
-                    <h2 className="text-xl font-bold dark:text-white pr-12">
-                      Delete
-                    </h2>
-                    <FontAwesomeIcon
-                      className="cursor-pointer text-lg text-red-500 pl-12"
-                      onClick={handleCloseDelete}
-                      icon={faTimes}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
         </div>
       )}
     </>
