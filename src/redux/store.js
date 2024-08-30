@@ -1,14 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { persistStore, persistReducer } from 'redux-persist';
+import { persistStore, persistReducer, purgeStoredState } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { combineReducers } from 'redux';
 import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import userReducer from './userSlice.js';
+import {logout} from './userSlice.js';
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['user'], //  all here will presiste
+  whitelist: ['user'], // Persist user data
 };
 
 const rootReducer = combineReducers({
@@ -26,5 +27,12 @@ export const store = configureStore({
       },
     }),
 });
+
 export const persistor = persistStore(store);
- 
+
+export const clearPersistedState = () => {
+  return (dispatch) => {
+    persistor.purge();
+    dispatch(userSlice.actions.logout());
+  };
+};

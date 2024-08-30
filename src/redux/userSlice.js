@@ -14,6 +14,9 @@ const userSlice = createSlice({
     clearUser: (state) => {
       state.user = null;
     },
+    logout: () => {
+      return initialState; 
+    },
     updateUserFields: (state, action) => {
       if (state.user) {
         const { path, value } = action.payload;
@@ -27,8 +30,6 @@ const userSlice = createSlice({
       }
     },
     updateRoleTitle: (state, action) => {
-      console.log("payload: ", action.payload)
-      console.log("inside update role", state.user)
       if (state.user) {
         console.log("insidde update role if")
         state.user.data.user.role.title = action.payload;
@@ -37,5 +38,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser, clearUser, updateUserFields, updateRoleTitle } = userSlice.actions;
+export const { setUser, clearUser,logout, updateUserFields, updateRoleTitle } = userSlice.actions;
 export default userSlice.reducer;

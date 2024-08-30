@@ -33,7 +33,7 @@ const LoginForm = () => {
       password: values.password,
     };
     `${import.meta.env.VITE_DB_URL}/auth/login`;
-    const apiUrl = "https://driptext-api.vercel.app/api/auth/login";
+   
 
     try {
       setError(false);
@@ -119,7 +119,7 @@ const LoginForm = () => {
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={passwordVisible ? "text" : "password"}
                   value={props.values.password}
                   onChange={(e) => {
                     props.handleChange(e);
