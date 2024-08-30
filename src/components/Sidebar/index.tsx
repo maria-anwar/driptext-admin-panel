@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/homeimages/driptext-logo.png";
 import SidebarIcons from "../icons/SidebarIcons";
+import { useDispatch } from "react-redux";
+import {  clearPersistedState } from '../../redux/store';
 
 
 interface SidebarProps {
@@ -13,6 +15,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const location = useLocation();
   const { pathname } = location;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
 
   const trigger = useRef<HTMLButtonElement>(null);
@@ -60,7 +63,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   const handleLogout = () => {
     localStorage.removeItem("auth");
-    navigate('/')
+    dispatch(clearPersistedState())
   };
 
   return (

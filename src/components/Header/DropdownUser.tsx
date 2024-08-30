@@ -1,12 +1,14 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ClickOutside from "../tables/ClickOutside";
-
+import {useDispatch, useSelector} from 'react-redux'
+import {clearPersistedState} from '../../redux/store'
 
 
 const DropdownUser = () => {
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dispatch = useDispatch()
   // const [firstName,setFirstName]=useState(user.data.user.firstName);
   // const [lastName,setLastName]=useState(user.data.user.lastName);
 
@@ -17,7 +19,7 @@ const DropdownUser = () => {
 
   const handleLogout= ()=>{
     localStorage.removeItem('auth')
-    navigate('/')
+    dispatch(clearPersistedState())
   }
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -132,7 +134,7 @@ const DropdownUser = () => {
               </Link>
             </li>
           </ul>
-          <div onClick={handleLogout}  className="cursor-pointer flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+          <Link to={'/'} onClick={handleLogout}  className="cursor-pointer flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
             <svg
               className="fill-current"
               width="22"
@@ -151,7 +153,7 @@ const DropdownUser = () => {
               />
             </svg>
             Sign Out
-          </div>
+          </Link>
         </div>
       )}
       {/* <!-- Dropdown End --> */} 
