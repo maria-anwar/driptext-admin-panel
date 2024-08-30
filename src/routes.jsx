@@ -9,6 +9,7 @@ import ProfileSettings from "./views/admin/dashboard/ProfileSetting";
 import SystemSettings from "./views/admin/dashboard/SystemSettings";
 import Users from "./views/admin/dashboard/Users";
 import ProjectsDetails from "./views/admin/dashboard/ProjectsDetails";
+import ProtectedRoute from "./components/Helpers/ProtectedRoutes";
 
 
 
@@ -22,7 +23,12 @@ const WebRoutes = () => {
 
           <Route
             path="/dashboard"
-            element={<DefaultLayout />}
+            element={
+              <ProtectedRoute
+              element={<DefaultLayout />}
+                allowedRoles={["projectmanger"]}
+              />
+            }
           >
             <Route index element={<Projects />} />
             <Route path="project-details" element={<ProjectsDetails/>} />
