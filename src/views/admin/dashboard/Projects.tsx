@@ -46,8 +46,38 @@ const Projects: React.FC = () => {
   return (
     <>
       <div className="mx-auto 3xl:px-4">
-        <div className="flex justify-between items-start  pb-3 flex-col lg:flex-row xl:flex-row md:flex-row gap-4 ">
-          {/* <ol className="flex items-center gap-2">
+        <div className="flex items-center justify-end space-x-4 mb-4">
+          <ToggleSwitch
+            icon={faThLarge}
+            isOn={showCard}
+            onToggle={handleCard}
+          />
+          <ToggleSwitch
+            icon={faBatteryEmpty}
+            isOn={showDraft}
+            onToggle={handleDraft}
+          />
+          <ToggleSwitch
+            icon={faTrashAlt}
+            isOn={showArchived}
+            onToggle={handleArchived}
+          />
+        </div>
+        <div className="flex justify-between items-center">
+          <h2 className="text-title-md2 font-semibold text-black dark:text-white">
+            Projects
+          </h2>
+          <Link
+            to={""}
+            className="inline-flex items-center justify-center gap-2.5 bg-boxdark py-3 text-sm xl:text-base  text-center font-medium hover:text-white text-white hover:bg-opacity-70 px-5 lg:px-8 5xl:px-10"
+          >
+            Create project
+            <FontAwesomeIcon icon={faPlus} />
+          </Link>
+        </div>
+
+        {/* <div className="flex justify-between items-start  pb-3 flex-col lg:flex-row xl:flex-row md:flex-row gap-4 ">
+           <ol className="flex items-center gap-2">
             <li>
               <Link
                 className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
@@ -57,40 +87,11 @@ const Projects: React.FC = () => {
               </Link>
             </li>
             <li className="font-medium text-primary">Projects</li>
-          </ol> */}
-          <h2 className="text-title-md2 font-semibold text-black dark:text-white pt-4">
-          Projects
-        </h2>
-          <div className="flex justify-end items-center">
-            <div className="flex items-center justify-center space-x-4">
-              <ToggleSwitch
-                icon={faThLarge}
-                isOn={showCard}
-                onToggle={handleCard}
-              />
-              <ToggleSwitch
-                icon={faBatteryEmpty}
-                isOn={showDraft}
-                onToggle={handleDraft}
-              />
-              <ToggleSwitch
-                icon={faTrashAlt}
-                isOn={showArchived}
-                onToggle={handleArchived}
-              />
-              <Link
-                to={""}
-                className="inline-flex items-center justify-center gap-2.5 bg-boxdark py-3 text-sm xl:text-base  text-center font-medium hover:text-white text-white hover:bg-opacity-70 px-5 lg:px-8 5xl:px-10"
-              >
-                Create project
-                <FontAwesomeIcon icon={faPlus} />
-              </Link>
-            </div>
-          </div>
+          </ol> 
         </div>
-        {/* <h2 className="text-title-md2 font-semibold text-black dark:text-white pt-4">
+        <h2 className="text-title-md2 font-semibold text-black dark:text-white pt-4">
           Projects
-        </h2> */}
+        </h2>  */}
         <div>
           {!showDraft &&
             !showArchived &&

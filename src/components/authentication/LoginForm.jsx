@@ -3,16 +3,19 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/userSlice";
+import useAuth from "../Helpers/useAuth";
 const LoginForm = () => {
-  const [loading, setLoading] = useState(false);
-  const [passwordVisible, setPasswordVisible] = useState(false);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMesssage] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  useAuth();
   const initialValues = {
     email: "",
     password: "",
@@ -29,17 +32,43 @@ const LoginForm = () => {
       email: values.email,
       password: values.password,
     };
+    `${import.meta.env.VITE_DB_URL}/auth/login`;
     const apiUrl = "https://driptext-api.vercel.app/api/auth/login";
 
     try {
-      // const response = await axios.post(apiUrl, userData);
-      // dispatch(setUser(response?.data));
-      // toast.success("Login successfully");
-      // localStorage.setItem("token", response.data.token);
-      navigate("/dashboard");
+      setError(false);
+      // const response = await axios.post(
+      //   `${import.meta.env.VITE_DB_URL}/auth/login`,
+      //   userData
+      // );
+
+      const response = await axios.post(apiUrl, userData);
+      if (
+        response.data.data.user.role.title.toLowerCase() === "projectmanger"
+      ) {
+        dispatch(setUser(response?.data));
+        const expirationTime = Date.now() + 5 * 60 * 1000;
+        localStorage.setItem(
+          "auth",
+          JSON.stringify({
+            token: response.data.token,
+            role: response.data.data.user.role.title,
+            expiration: expirationTime,
+          })
+        );
+        navigate("/dashboard");
+      } else {
+        const errorMessage = "you can't login as a project manager";
+        setError(true);
+        setErrorMesssage(errorMessage);
+        setLoading(false);
+      }
     } catch (error) {
-      // const errorMessage = error.response?.data?.message || error.message || 'Error logging';
-      // toast.error(`Error logging in: ${errorMessage}`);
+      const errorMessage =
+        error.response?.data?.message || error.message || "Error logging";
+      setError(true);
+      setErrorMesssage(errorMessage);
+      setLoading(false);
     }
   };
   const togglePasswordVisibility = () => {
@@ -55,7 +84,7 @@ const LoginForm = () => {
       >
         {(props) => (
           <Form>
-            <ToastContainer />
+         
             <div className="mb-1 flex flex-col gap-6">
               <label
                 htmlFor="email"
@@ -70,7 +99,11 @@ const LoginForm = () => {
                 name="email"
                 type="email"
                 placeholder="jhon@gmail.com"
-                onChange={props.handleChange}
+                onChange={(e) => {
+                  props.handleChange(e);
+                  setError(false);
+                  setErrorMesssage("");
+                }}
                 className="outline-none border border-blue-gray-200 focus:border-gray-900 focus:ring-2 ring-1 ring-black p-2.5 rounded-lg bg-transparent text-black"
               />
               {props.errors.email && (
@@ -90,7 +123,11 @@ const LoginForm = () => {
                   name="password"
                   type="password"
                   value={props.values.password}
-                  onChange={props.handleChange}
+                  onChange={(e) => {
+                    props.handleChange(e);
+                    setError(false);
+                    setErrorMesssage("");
+                  }}
                   placeholder="********"
                   className="w-full outline-none border border-blue-gray-200 focus:border-gray-900 focus:ring-2 ring-1 ring-black p-2.5 rounded-lg bg-transparent text-black"
                 />
@@ -136,6 +173,11 @@ const LoginForm = () => {
             >
               Sign In
             </button>
+            {error && (
+              <div id="email" className="mt-4 text-sm text-red-500">
+                {errorMessage}
+              </div>
+            )}
           </Form>
         )}
       </Formik>
