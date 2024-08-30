@@ -1,15 +1,16 @@
 import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ element, allowedRoles }) => {
-  const storedDataString = localStorage.getItem("key");
+  const storedDataString = localStorage.getItem("auth");
   const storedData = storedDataString ? JSON.parse(storedDataString) : null;
 
   if (!storedData || !storedData.token || Date.now() > storedData.expiration) {
-    localStorage.removeItem("key");
+    localStorage.removeItem("auth");
     return <Navigate to="/" replace />;
   }
 
   if (allowedRoles && !allowedRoles.includes(storedData.role.toLowerCase())) {
+    localStorage.removeItem("auth");
     return <Navigate to="/" replace />;
   }
 

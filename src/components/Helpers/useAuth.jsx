@@ -17,7 +17,7 @@ const useAuth = () => {
     } else {
       const role = storedData.role.toLowerCase();
 
-      if (role === 'projectmanager' && location.pathname !== "/dashboard") {
+      if (role === 'projectmanger' && location.pathname !== "/dashboard") {
         navigate("/dashboard");
       } 
     }
