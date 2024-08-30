@@ -37,12 +37,10 @@ const LoginForm = () => {
 
     try {
       setError(false);
-      // const response = await axios.post(
-      //   `${import.meta.env.VITE_DB_URL}/auth/login`,
-      //   userData
-      // );
-
-      const response = await axios.post(apiUrl, userData);
+      const response = await axios.post(
+        `${import.meta.env.VITE_DB_URL}/auth/login`,
+        userData
+      );
       if (
         response.data.data.user.role.title.toLowerCase() === "projectmanger"
       ) {
