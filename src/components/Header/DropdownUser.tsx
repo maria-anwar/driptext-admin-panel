@@ -16,7 +16,7 @@ const DropdownUser = () => {
   };
 
   const handleLogout= ()=>{
-    localStorage.removeItem('token')
+    localStorage.removeItem('auth')
     navigate('/')
   }
   return (
