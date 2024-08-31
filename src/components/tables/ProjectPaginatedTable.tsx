@@ -198,8 +198,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black  dark:text-white text-xs">
-                      {project.plan.textsCount}/
-                      {project.plan.totalTexts}
+                      {project.plan.textsCount}/{project.plan.totalTexts}
                     </p>
                     <p className="text-black  dark:text-white text-xs">
                       open: {project.openTasks} | final: {project.finalTasks} |
@@ -214,15 +213,28 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
                     </div>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <div className="flex justify-between items-center">
-                      <WorkerComponent label="T" name={project.texter ?? ""} />
-                      <WorkerComponent label="L" name={project.lector ?? ""} />
-                      <WorkerComponent label="S" name={project.seo ?? ""} />
-                      <WorkerComponent
-                        label="M"
-                        name={project.metaLector ?? ""}
-                      />
-                    </div>
+                    {!project.texter?.trim() &&
+                    !project.lector?.trim() &&
+                    !project.seo?.trim() &&
+                    !project.metaLector?.trim() ? (
+                      <p>Not assigned</p>
+                    ) : (
+                      <div className="flex justify-between items-center">
+                        <WorkerComponent
+                          label="T"
+                          name={project.texter ?? ""}
+                        />
+                        <WorkerComponent
+                          label="L"
+                          name={project.lector ?? ""}
+                        />
+                        <WorkerComponent label="S" name={project.seo ?? ""} />
+                        <WorkerComponent
+                          label="M"
+                          name={project.metaLector ?? ""}
+                        />
+                      </div>
+                    )}
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black  dark:text-white flex justify-center items-center">
