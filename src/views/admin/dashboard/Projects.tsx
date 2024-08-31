@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumb from "../../../components/breeadcrumbs/Breadcrumb";
 import ToggleSwitch from "../../../components/buttons/ToggleButton";
 import {
@@ -12,12 +12,40 @@ import ProjectPaginatedTable from "../../../components/tables/ProjectPaginatedTa
 import ProjectCard from "../../../components/tables/ProjectCard";
 import { allProjects } from "../../../components/Helpers/AllProjects";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const Projects: React.FC = () => {
+  const user = useSelector<any>((state) => state.user);
   const [data, setData] = useState(allProjects);
   const [showCard, setShowCard] = useState(false); // Default to false to show table initially
   const [showDraft, setShowDraft] = useState(false);
   const [showArchived, setShowArchived] = useState(false);
+
+  const [projectData, setProjectData] = useState([]);
+  const [userId, setUserID] = useState(user.user.data.user._id);
+  const [userToken, setUserToken] = useState(user.user.token);
+
+
+  useEffect(() => {
+    let token = userToken;
+    axios.defaults.headers.common["access-token"] = token;
+    let payload = {
+      userId: userId,
+    };
+    // "https://driptext-api.vercel.app/api/projects/detail";
+
+    axios
+      .get(`https://driptext-api.vercel.app/api/admin/getProjects`)
+      .then((response) => {
+        const projectDataArray = response.data.projects;
+        const allProjects = projectDataArray;
+        setProjectData(allProjects);
+      })
+      .catch((err) => {
+        console.error("Error fetching project details:", err);
+      });
+  }, [user, userToken, userId]);
 
   const handleCard = (isOn: boolean) => {
     setShowCard(isOn);
@@ -42,7 +70,6 @@ const Projects: React.FC = () => {
       setShowDraft(false);
     }
   };
-
   return (
     <>
       <div className="mx-auto 3xl:px-4">
@@ -97,10 +124,10 @@ const Projects: React.FC = () => {
             !showArchived &&
             (showCard ? (
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 2xl:grid-cols-3 5xl:grid-cols-4 4xl:px-14 pt-8">
-                <ProjectCard projects={data} />
+                <ProjectCard projects={projectData} />
               </div>
             ) : (
-              <ProjectPaginatedTable projects={data} />
+              <ProjectPaginatedTable projects={projectData} />
             ))}
           {showDraft && <ProjectPaginatedTable projects={data} />}
           {showArchived && <ProjectPaginatedTable projects={data} />}
