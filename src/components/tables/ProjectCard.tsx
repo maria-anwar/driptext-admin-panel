@@ -1,40 +1,54 @@
 import React, { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
+import { format } from "date-fns";
 
-
-interface StripeLink {
-  domain: string;
-  subdomain: string;
+interface Plan {
+  _id: string;
+  plan: string;
+  user: string;
+  subPlan: string;
+  project: string;
+  subscription: string;
+  startDate: string;
+  endDate: string;
+  totalTexts: number;
+  duration: number;
+  textsCount: number;
+  textsRemaining: number;
+  tasksPerMonth: number;
+  tasksPerMonthCount: number;
+  endMonthDate: string;
+  isActive: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
 
-interface Worker {
-  texter: string;
-  lector: string;
-  SEO: string;
-  metalector: string;
-}
-
-interface Customer {
-  name: string;
-  email: string;
-}
-
+// Define the Project interface to represent the main object
 interface Project {
+  _id: string;
+  projectId: string;
+  onBoarding: boolean;
   projectName: string;
-  status: string;
-  googleLink: string;
-  stripeLink: StripeLink;
-  onboarding: string;
-  performancePeriod: string;
-  task: {
-    totalTasks: number;
-    usedTasks: number;
-    openTasks: number;
-    finalTasks: number;
-  };
-  worker: Worker;
-  created: string;
-  customer: Customer;
+  tasks: number;
+  speech: string;
+  keywords: string | null;
+  perspective: string | null;
+  projectStatus: string;
+  user: string;
+  projectTasks: string[];
+  plan: Plan;
+  texter: string | null;
+  lector: string | null;
+  seo: string | null;
+  metaLector: string | null;
+  isActive: string;
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  __v: number;
+  openTasks: number;
+  finalTasks: number;
 }
 interface ProjectCardProps {
   projects: Project[];
@@ -43,6 +57,7 @@ interface ProjectCardProps {
 const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
   const navigate = useNavigate();
   const getInitials = (name: string): string => {
+    if (!name) return "";
     return name
       .split(" ")
       .map((word: string) => word[0].toUpperCase())
@@ -69,12 +84,17 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
     navigate("project-details", { state: { project: project } });
   };
 
+  const formatDate = (dateString: Date | string) => {
+    const date = new Date(dateString);
+    return format(date, "MMM dd, yyyy"); // "August 2025"
+  };
+
   return (
     <>
       {projects.map((project) => (
         <div
           onClick={() => handleProject(project)}
-          key={project.projectName}
+          key={project._id}
           className={
             "relative rounded-sm border border-stroke bg-white py-6 px-5 shadow-default dark:border-strokedark dark:bg-boxdark cursor-pointer"
           }
@@ -84,23 +104,23 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
               {project.projectName}
             </h4>
             <div className="flex justify-between items-center">
-              <WorkerComponent label="T" name={project.worker.texter} />
-              <WorkerComponent label="L" name={project.worker.lector} />
-              <WorkerComponent label="S" name={project.worker.SEO} />
-              <WorkerComponent label="M" name={project.worker.metalector} />
+              <WorkerComponent label="T" name={project.texter ?? ''} />
+              <WorkerComponent label="L" name={project.lector ?? ''} />
+              <WorkerComponent label="S" name={project.seo ?? ''} />
+              <WorkerComponent label="M" name={project.metaLector ?? ''} />
             </div>
           </div>
 
           <div className="h-3 bg-gray-200 rounded py-6">
             <progress
               className="custom-progress"
-              value={project.task.finalTasks}
-              max={project.task.totalTasks}
+              value={project.finalTasks}
+              max={project.plan.totalTexts}
             ></progress>
             <p className="py-2">
               STATUS:{" "}
               <span className="text-blue-500">
-                {project.status.toUpperCase()}
+                {project.projectStatus.toUpperCase()}
               </span>
             </p>
           </div>
@@ -112,7 +132,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
             <div className="text-sm font-medium text-dark-gray">
               Created on
               <div className="text-meta-3 flex justify-end">
-                {project.created}
+                {formatDate(project.createdAt)}
               </div>
             </div>
           </div>
@@ -120,13 +140,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
             <div className="text-sm font-medium text-dark-gray">
               Tasks
               <div className="text-meta-5 flex justify-end flex-col">
-                {project.task.finalTasks}/{project.task.totalTasks}
+                {project.plan.textsCount}/{project.plan.totalTexts}
               </div>
             </div>
             <div className="text-sm font-medium text-dark-gray">
               Performance Period{" "}
               <div className="text-meta-5 flex justify-end">
-                {project.performancePeriod}
+                {formatDate(project.plan.endDate)}
               </div>
             </div>
           </div>

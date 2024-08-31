@@ -10,42 +10,57 @@ import {
 import { Pagination } from "antd";
 import "antd/dist/reset.css"; // Import Ant Design styles
 import "./custompagination.css";
+import { format } from "date-fns";
 
 import { useNavigate } from "react-router-dom";
 
-interface StripeLink {
-  domain: string;
-  subdomain: string;
+interface Plan {
+  _id: string;
+  plan: string;
+  user: string;
+  subPlan: string;
+  project: string;
+  subscription: string;
+  startDate: string;
+  endDate: string;
+  totalTexts: number;
+  duration: number;
+  textsCount: number;
+  textsRemaining: number;
+  tasksPerMonth: number;
+  tasksPerMonthCount: number;
+  endMonthDate: string;
+  isActive: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
 
-interface Worker {
-  texter: string;
-  lector: string;
-  SEO: string;
-  metalector: string;
-}
-
-interface Customer {
-  name: string;
-  email: string;
-}
-
+// Define the Project interface to represent the main object
 interface Project {
+  _id: string;
+  projectId: string;
+  onBoarding: boolean;
   projectName: string;
-  status: string;
-  googleLink: string;
-  stripeLink: StripeLink;
-  onboarding: string;
-  performancePeriod: string;
-  task: {
-    totalTasks: number;
-    usedTasks: number;
-    openTasks: number;
-    finalTasks: number;
-  };
-  worker: Worker;
-  created: string;
-  customer: Customer;
+  tasks: number;
+  speech: string;
+  keywords: string | null;
+  perspective: string | null;
+  projectStatus: string;
+  user: string;
+  projectTasks: string[];
+  plan: Plan;
+  texter: string | null;
+  lector: string | null;
+  seo: string | null;
+  metaLector: string | null;
+  isActive: string;
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  __v: number;
+  openTasks: number;
+  finalTasks: number;
 }
 
 interface PaginatedTableProps {
@@ -56,9 +71,13 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const navigate = useNavigate();
-
+  console.log("Project data", projects);
   const handlePageChange = (page: number) => {
     setPage(page);
+  };
+  const formatDate = (dateString: Date | string) => {
+    const date = new Date(dateString);
+    return format(date, "MMM dd, yyyy"); // "August 2025"
   };
 
   const handleRowsPerPageChange = (
@@ -73,6 +92,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
   };
 
   const getInitials = (name: string): string => {
+    if (!name) return "";
     return name
       .split(" ")
       .map((word: string) => word[0].toUpperCase())
@@ -111,9 +131,9 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
                 <th className="min-w-[130px] py-4 px-4 font-semibold  text-black dark:text-white">
                   Google-Link
                 </th>
-               
+
                 <th className="min-w-[120px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Date
+                  Performance Period
                 </th>
                 <th className="min-w-[230px] py-4 px-4 font-semibold text-black dark:text-white">
                   Tasks
@@ -131,13 +151,15 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
             </thead>
             <tbody>
               {paginatedProjects.map((project) => (
-                <tr className="text-left" key={project.projectName}>
+                <tr className="text-left" key={project._id}>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
-                      <p className="text-sm">{project.status.toUpperCase()}</p>
+                    <p className="text-sm">
+                      {project.projectStatus.toUpperCase() || ""}
+                    </p>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <a
-                      href={project.googleLink}
+                      href={"#"}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-500 underline-none flex justify-start items-center"
@@ -165,49 +187,55 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
                         </g>
                       </svg>
 
-                      <span className="px-1">{project.projectName}</span>
+                      <span className="px-1">{project.projectId}</span>
                     </a>
                   </td>
-                  
+
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black  dark:text-white text-sm">
-                      {project.performancePeriod}
+                      {formatDate(project.plan.endDate)}
                     </p>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black  dark:text-white text-xs">
-                      {project.task.finalTasks}/{project.task.totalTasks}
+                      {project.plan.textsCount}/
+                      {project.plan.totalTexts}
                     </p>
                     <p className="text-black  dark:text-white text-xs">
-                      open: {project.task.openTasks} | final:{" "}
-                      {project.task.usedTasks} | total:{" "}
-                      {project.task.finalTasks}
+                      open: {project.openTasks} | final: {project.finalTasks} |
+                      total: {project.plan.textsCount}
                     </p>
                     <div className="flex h-3 bg-gray-200 rounded pt-1">
                       <progress
                         className="custom-progress"
-                        value={project.task.finalTasks}
-                        max={project.task.totalTasks}
+                        value={project.finalTasks}
+                        max={project.plan.totalTexts}
                       ></progress>
                     </div>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex justify-between items-center">
-                      <WorkerComponent label="T" name={project.worker.texter} />
-                      <WorkerComponent label="L" name={project.worker.lector} />
-                      <WorkerComponent label="S" name={project.worker.SEO} />
+                      <WorkerComponent label="T" name={project.texter ?? ""} />
+                      <WorkerComponent label="L" name={project.lector ?? ""} />
+                      <WorkerComponent label="S" name={project.seo ?? ""} />
                       <WorkerComponent
                         label="M"
-                        name={project.worker.metalector}
+                        name={project.metaLector ?? ""}
                       />
                     </div>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black  dark:text-white flex justify-center items-center">
-                      {project.onboarding.toUpperCase() === "YES" ? (
-                        <FontAwesomeIcon icon={faCheck} className="text-green-500" />
+                      {project.onBoarding === true ? (
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          className="text-green-500"
+                        />
                       ) : (
-                        <FontAwesomeIcon icon={faTimes} className="text-red-600" />
+                        <FontAwesomeIcon
+                          icon={faTimes}
+                          className="text-red-600"
+                        />
                       )}
                     </p>
                   </td>
