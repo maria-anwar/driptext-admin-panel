@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
@@ -22,41 +22,9 @@ import {
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import * as XLSX from "xlsx";
 import Breadcrumb from "../../../components/breeadcrumbs/Breadcrumb";
-
-interface StripeLink {
-  domain: string;
-  subdomain: string;
-}
-
-interface Worker {
-  texter: string;
-  lector: string;
-  SEO: string;
-  metalector: string;
-}
-
-interface Customer {
-  name: string;
-  email: string;
-}
-
-interface Project {
-  projectName: string;
-  status: string;
-  googleLink: string;
-  stripeLink: StripeLink;
-  onboarding: string;
-  performancePeriod: string;
-  task: {
-    totalTasks: number;
-    usedTasks: number;
-    openTasks: number;
-    finalTasks: number;
-  };
-  worker: Worker;
-  created: string;
-  customer: Customer;
-}
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { format } from "date-fns";
 
 const tasksWithDetails = [
   {
@@ -182,7 +150,8 @@ const freelancer = [
 
 const ProjectsDetails: React.FC = () => {
   const location = useLocation();
-  const { project } = location.state as { project: Project };
+  const user = useSelector<any>((state) => state.user);
+  const projectId = localStorage.getItem("projectID");
   const [memberModel, setMemberModel] = useState(false);
   const [deleteModel, setDeleteModel] = useState(false);
   const [importModel, setImportModel] = useState(false);
@@ -197,7 +166,46 @@ const ProjectsDetails: React.FC = () => {
   const [fileName, setFileName] = useState(
     "Drag files here or click to select files"
   );
+
+  const [projectDetails, setProjectDetails] = useState([]);
+  const [plan, setPlan] = useState({});
+  const [userData, setUserData] = useState({});
+  const [userId, setUserID] = useState(user.user.data.user._id);
+  const [userToken, setUserToken] = useState(user.user.token);
+
+  useEffect(() => {
+    let token = userToken;
+    axios.defaults.headers.common["access-token"] = token;
+    let payload = {
+      projectId: projectId,
+    };
+    // "https://driptext-api.vercel.app/api/projects/detail";
+
+    axios
+      .post(
+        `https://driptext-api.vercel.app/api/admin/getProjectDetail`,
+        payload
+      )
+      .then((response) => {
+        const projectDataArray = response.data.project;
+        const allProjects = projectDataArray;
+
+        setProjectDetails(allProjects);
+        setPlan(allProjects.plan);
+        setUserData(allProjects.user);
+        console.log(userData);
+      })
+      .catch((err) => {
+        console.error("Error fetching project details:", err);
+      });
+  }, [projectId, userId]);
+
   const allRoles = ["Texter", "Lector", "SEO", "Meta-lector"];
+
+  const formatDate = (dateString: Date | string) => {
+    const date = new Date(dateString);
+    return format(date, "MMM dd, yyyy"); // "August 2025"
+  };
 
   const handleDelete = () => {
     setDeleteModel(true);
@@ -319,9 +327,9 @@ const ProjectsDetails: React.FC = () => {
         <div className="flex justify-between items-center py-1.5">
           <div className="flex justify-start items-center">
             <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
-              {getInitials(name)}
+              {getInitials("name")}
             </p>
-            <p className="px-2.5 text-black dark:text-white">{name}</p>
+            <p className="px-2.5 text-black dark:text-white">{"name"}</p>
           </div>
           <div className="flex justify-start items-center">
             <svg
@@ -333,7 +341,7 @@ const ProjectsDetails: React.FC = () => {
               className="w-3.5 h-3.5 text-blue-500  cursor-pointer mx-6"
               onClick={() => alert(`Edit ${label}`)}
             >
-              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
               <g
                 id="SVGRepo_tracerCarrier"
                 stroke-linecap="round"
@@ -376,14 +384,16 @@ const ProjectsDetails: React.FC = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="py-6 px-7 dark:border-strokedark">
                 <p className="text-xl font-semibold text-black dark:text-white pb-2">
-                  {project.projectName}
+                  {projectDetails.projectId}
                 </p>
                 <div className="py-2">
                   <h3 className="font-medium text-black dark:text-white">
                     Customer
                   </h3>
                   <p className="text-sm text-black dark:text-white">
-                    {project.customer.name} ({project.customer.email})
+                    {userData.firstName} {userData.lastName} {"("}
+                    {userData.email}
+                    {")"}
                   </p>
                 </div>
                 <Accordion
@@ -492,7 +502,7 @@ const ProjectsDetails: React.FC = () => {
                 <div className="pt-1 pb-3">
                   <h2>Folder</h2>
                   <a
-                    href={project.googleLink}
+                    href={"project.googleLink"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 underline-none flex justify-start items-center py-1"
@@ -520,29 +530,32 @@ const ProjectsDetails: React.FC = () => {
                       </g>
                     </svg>
 
-                    <span className="px-1">{project.projectName}</span>
+                    <span className="px-1">{projectDetails.projectId}</span>
                   </a>
                 </div>
                 <progress
                   className="custom-progress"
-                  value={50}
-                  max={100}
+                  value={projectDetails.finalTasks}
+                  max={plan.totalTexts}
                 ></progress>
                 <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-x-4 py-2">
-                  <TaskComponent label="Status" name={project.status} />
+                  <TaskComponent
+                    label="Status"
+                    name={projectDetails.projectStatus}
+                  />
                   <TaskComponent
                     label="Tasks"
-                    name={`${project.task.finalTasks}/${project.task.totalTasks}`}
+                    name={`${plan.textsCount}/${plan.totalTexts}`}
                   />
+                  <TaskComponent label="Max Tasks" name={plan.totalTexts} />
+                  <TaskComponent label="Duration" name={plan.duration} />
                   <TaskComponent
-                    label="Max Tasks"
-                    name={project.task.totalTasks}
+                    label="Task per month"
+                    name={plan.tasksPerMonth}
                   />
-                  <TaskComponent label="Duration" name={"12"} />
-                  <TaskComponent label="Task per month" name={"4"} />
                   <TaskComponent
                     label="Performance Period"
-                    name={project.performancePeriod}
+                    name={plan.endDate}
                   />
                 </div>
               </div>
@@ -573,12 +586,12 @@ const ProjectsDetails: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                <TaskMembers label={"Texter"} name={project.worker.texter} />
-                <TaskMembers label={"Lector"} name={project.worker.lector} />
-                <TaskMembers label={"SEO"} name={project.worker.SEO} />
+                <TaskMembers label={"Texter"} name={"project.worker.texter"} />
+                <TaskMembers label={"Lector"} name={"project.worker.lector"} />
+                <TaskMembers label={"SEO"} name={"project.worker.SEO"} />
                 <TaskMembers
                   label={"Meta-lector"}
-                  name={project.worker.metalector}
+                  name={"project.worker.metalector"}
                 />
               </div>
               <div className="px-7 py-6">
@@ -613,8 +626,10 @@ const ProjectsDetails: React.FC = () => {
                           <DatePicker
                             className="w-full rounded border border-transparent bg-gray-100 py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                             minDate={new Date()}
-                            selected={date}
-                            onChange={(date: Date | null) => setDate(date)}
+                            selected={"2025-01-01"}
+                            onChange={(date: Date | null) =>
+                              setDate("2025-04-05")
+                            }
                             dateFormat="yyyy-MM-dd"
                             placeholderText="Select a date"
                           />
@@ -761,8 +776,10 @@ const ProjectsDetails: React.FC = () => {
                           <DatePicker
                             className="w-full rounded border border-transparent bg-gray-100 py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                             minDate={new Date()}
-                            selected={date}
-                            onChange={(date: Date | null) => setDate(date)}
+                            selected={"2024-04-06"}
+                            onChange={(date: Date | null) =>
+                              setDate("2024-04-06")
+                            }
                             dateFormat="yyyy-MM-dd"
                             placeholderText="Select a date"
                           />
@@ -1005,7 +1022,7 @@ const ProjectsDetails: React.FC = () => {
           </div>
         </div>
         {/* Assuming ProjectTaskTable is defined elsewhere */}
-        <ProjectTaskTable tasks={tasksWithDetails} project={project} />
+        {/* <ProjectTaskTable tasks={tasksWithDetails} project={project} /> */}
       </div>
       {memberModel && (
         <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">

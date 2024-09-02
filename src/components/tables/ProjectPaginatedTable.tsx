@@ -71,11 +71,12 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const navigate = useNavigate();
-  console.log("Project data", projects);
+
+
   const handlePageChange = (page: number) => {
     setPage(page);
   };
-  const formatDate = (dateString: Date | string) => {
+  const formatDate = (dateString: Date | string) => 
     const date = new Date(dateString);
     return format(date, "MMM dd, yyyy"); // "August 2025"
   };
@@ -87,8 +88,9 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
     setPage(1); // Reset to first page when rows per page changes
   };
 
-  const handleProject = (project: Project) => {
-    navigate("project-details", { state: { project: project } });
+  const handleProject = (projectId: string) => {
+    localStorage.setItem("projectID", projectId);
+    navigate("project-details");
   };
 
   const getInitials = (name: string): string => {
@@ -254,7 +256,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
                       className={` bg-blue-500 w-24 h-9 flex justify-center items-center rounded cursor-pointer`}
-                      onClick={() => handleProject(project)}
+                      onClick={() => handleProject(project._id)}
                     >
                       <FontAwesomeIcon
                         className={`
