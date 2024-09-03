@@ -6,6 +6,7 @@ import {clearPersistedState} from '../../redux/store'
 
 
 const DropdownUser = () => {
+  const user = useSelector<any>((state) => state.user);
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dispatch = useDispatch()
@@ -31,13 +32,13 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm  font-medium text-black dark:text-white">
-            {/* {user.user.data.user.firstName} {user.user.data.user.lastName} */}fg
+            {user.user.data.user.firstName} {user.user.data.user.lastName}
           </span>
           {/* <span className="block text-xs">UX Designer</span> */}
         </span>
 
         <span className="h-12 w-12 rounded-full font-medium flex items-center justify-center bg-zinc-100">
-        {/* {capitalizeFirstLetter(user.user.data.user.firstName)}{capitalizeFirstLetter(user.user.data.user.lastName)}   */}gf
+        {capitalizeFirstLetter(user.user.data.user.firstName)}{capitalizeFirstLetter(user.user.data.user.lastName)}  
           {/* <img src={UserOne} alt="User" /> */}
         </span>
         <svg

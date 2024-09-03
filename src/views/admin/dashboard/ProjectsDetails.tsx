@@ -19,129 +19,8 @@ import Breadcrumb from "../../../components/breeadcrumbs/Breadcrumb";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { format } from "date-fns";
-import TaskComponent from "../../../components/buttons/TaskComponent";
-
-const tasksWithDetails = [
-  {
-    status: "completed",
-    deadline: new Date("2024-06-10").toLocaleDateString("en-US"),
-    wordCount: 3000,
-    topic: "Introduction to Quantum Computing",
-    textType: "textbook",
-    googleLink: "https://docs.google.com/document/d/1",
-    worker: {
-      texter: "John Doe",
-      lector: "Jane Smith",
-      SEO: "Alice Johnson",
-      metalector: "Bob Brown",
-    },
-  },
-  {
-    status: "completed",
-    deadline: new Date("2024-06-15").toLocaleDateString("en-US"),
-    wordCount: 3200,
-    topic: "Artificial Intelligence Applications",
-    textType: "research paper",
-    googleLink: "https://docs.google.com/document/d/2",
-    worker: {
-      texter: "John Doe",
-      lector: "Jane Smith",
-      SEO: "Alice Johnson",
-      metalector: "Bob Brown",
-    },
-  },
-  {
-    status: "completed",
-    deadline: new Date("2024-06-20").toLocaleDateString("en-US"),
-    wordCount: 3400,
-    topic: "Deep Learning Models",
-    textType: "manual",
-    googleLink: "https://docs.google.com/document/d/3",
-    worker: {
-      texter: "John Doe",
-      lector: "Jane Smith",
-      SEO: "Alice Johnson",
-      metalector: "Bob Brown",
-    },
-  },
-  {
-    status: "completed",
-    deadline: new Date("2024-06-25").toLocaleDateString("en-US"),
-    wordCount: 3600,
-    topic: "Future of Data Analytics",
-    textType: "eBook",
-    googleLink: "https://docs.google.com/document/d/4",
-    worker: {
-      texter: "John Doe",
-      lector: "Jane Smith",
-      SEO: "Alice Johnson",
-      metalector: "Bob Brown",
-    },
-  },
-];
-
-const freelancerDummy = [
-  {
-    id: 1,
-    name: "Alice John",
-  },
-  {
-    id: 2,
-    name: "Bob Smith",
-  },
-  {
-    id: 3,
-    name: "Charlie Brown",
-  },
-  {
-    id: 4,
-    name: "Diana Prince",
-  },
-  {
-    id: 5,
-    name: "Eve Adams",
-  },
-  {
-    id: 6,
-    name: "Frank Clark",
-  },
-  {
-    id: 7,
-    name: "Grace Lee",
-  },
-  {
-    id: 8,
-    name: "Henry Miller",
-  },
-  {
-    id: 9,
-    name: "Ivy Wilson",
-  },
-  {
-    id: 10,
-    name: "Jack Taylor",
-  },
-  {
-    id: 11,
-    name: "Kara Johnson",
-  },
-  {
-    id: 12,
-    name: "Liam Davis",
-  },
-  {
-    id: 13,
-    name: "Mia Walker",
-  },
-  {
-    id: 14,
-    name: "Nate Harris",
-  },
-  {
-    id: 15,
-    name: "Olivia Young",
-  },
-];
+import TaskComponent from "../../../components/TaskComponent";
+import DeleteModel from "../../../components/DeleteModel";
 
 const ProjectsDetails: React.FC = () => {
   const location = useLocation();
@@ -180,10 +59,7 @@ const ProjectsDetails: React.FC = () => {
     // "https://driptext-api.vercel.app/api/projects/detail";
 
     axios
-      .post(
-        `${import.meta.env.VITE_DB_URL}/admin/getProjectDetail`,
-        payload
-      )
+      .post(`${import.meta.env.VITE_DB_URL}/admin/getProjectDetail`, payload)
       .then((response) => {
         const projectDataArray = response.data.project;
         const allProjects = projectDataArray;
@@ -343,7 +219,7 @@ const ProjectsDetails: React.FC = () => {
             <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
               {getInitials(name)}
             </p>
-            <p className="px-2.5 text-black dark:text-white">{"name"}</p>
+            <p className="px-2.5 text-black dark:text-white">{name}</p>
           </div>
           <div className="flex justify-start items-center">
             <svg
@@ -931,26 +807,7 @@ const ProjectsDetails: React.FC = () => {
                   </svg>
                 </button>
                 {deleteModel && (
-                  <div className="fixed inset-0 flex items-center justify-center z-9999 bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
-                    <div className="bg-white dark:bg-black p-6 rounded shadow-lg">
-                      <h2 className="text-xl font-bold mb-4 dark:text-white">
-                        Archived Project
-                      </h2>
-                      <p>Are you sure you want to archive this project?</p>
-                      <button
-                        className=" mr-4 mt-4 bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-                        onClick={handleDeleteApi}
-                      >
-                        Confirm
-                      </button>
-                      <button
-                        className="mt-4 bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-                        onClick={handleCloseDelete}
-                      >
-                        Close
-                      </button>
-                    </div>
-                  </div>
+                  <DeleteModel handleDelete={handleDeleteApi} handleClose={handleCloseDelete}/>
                 )}
               </div>
             </div>
