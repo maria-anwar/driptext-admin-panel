@@ -124,7 +124,7 @@ const Projects: React.FC = () => {
               {showSearch && (
                 <input
                   type="text"
-                  placeholder="Searching..."
+                  placeholder="Search by domain"
                   value={searchQuery}
                   onChange={handleSearchChange}
                   className="rounded ring-1 outline-none py-1 px-4 ring-slate-200 bg-slate-0 dark:bg-transparent w-60 lg:w-60 xl:w-80"

@@ -21,6 +21,7 @@ import { useSelector } from "react-redux";
 import { format } from "date-fns";
 import TaskComponent from "../../../components/TaskComponent";
 import DeleteModel from "../../../components/DeleteModel";
+import Loading from "../../../components/Helpers/Loading";
 
 const ProjectsDetails: React.FC = () => {
   const location = useLocation();
@@ -68,9 +69,11 @@ const ProjectsDetails: React.FC = () => {
         setUserData(allProjects.user);
         setOnBoardingData(allProjects.boardingInfo);
         setProjectTasks(allProjects.projectTasks);
+        setLoading(false);
       })
       .catch((err) => {
         console.error("Error fetching project details:", err);
+        setLoading(false);
       });
   }, [projectId, userId]);
 
@@ -271,46 +274,518 @@ const ProjectsDetails: React.FC = () => {
 
   return (
     <>
-      <div className="mx-auto">
-        <Breadcrumb pageName={"Project Details"} />
-        <div className="grid grid-cols-5 gap-8">
-          <div className="col-span-5 xl:col-span-3">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="py-6 px-7 dark:border-strokedark">
-                <p className="text-xl font-semibold text-black dark:text-white pb-2">
-                  {projectDetails.projectId}
-                </p>
-                <div className="py-2">
+    {loading ? (<Loading/>):(
+      <div>
+        <div className="mx-auto">
+          <Breadcrumb pageName={"Project Details"} />
+          <div className="grid grid-cols-5 gap-8">
+            <div className="col-span-5 xl:col-span-3">
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="py-6 px-7 dark:border-strokedark">
+                  <p className="text-xl font-semibold text-black dark:text-white pb-2">
+                    {projectDetails.projectId}
+                  </p>
+                  <div className="py-2">
+                    <h3 className="font-medium text-black dark:text-white">
+                      Customer
+                    </h3>
+                    <p className="text-sm text-black dark:text-white">
+                      {userData.firstName} {userData.lastName} {"("}
+                      {userData.email}
+                      {")"}
+                    </p>
+                  </div>
+
+                  <AccordionData
+                    content={onBoardingData}
+                    speech={projectDetails.speech}
+                    projectName={projectDetails.projectName}
+                    prespective={projectDetails.prespective}
+                  />
+
+                  <div className="pt-1 pb-3">
+                    <h2>Folder</h2>
+                    <a
+                      href={"project.googleLink"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 underline-none flex justify-start items-center py-1"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-5.5 h-5.5"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          <path
+                            d="M20 4L12 12M20 4V8.5M20 4H15.5M19 12.5V16.8C19 17.9201 19 18.4802 18.782 18.908C18.5903 19.2843 18.2843 19.5903 17.908 19.782C17.4802 20 16.9201 20 15.8 20H7.2C6.0799 20 5.51984 20 5.09202 19.782C4.71569 19.5903 4.40973 19.2843 4.21799 18.908C4 18.4802 4 17.9201 4 16.8V8.2C4 7.0799 4 6.51984 4.21799 6.09202C4.40973 5.71569 4.71569 5.40973 5.09202 5.21799C5.51984 5 6.07989 5 7.2 5H11.5"
+                            stroke="#3b82f6"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>
+                        </g>
+                      </svg>
+
+                      <span className="px-1">{projectDetails.projectId}</span>
+                    </a>
+                  </div>
+                  <progress
+                    className="custom-progress"
+                    value={projectDetails.finalTasks}
+                    max={plan.totalTexts}
+                  ></progress>
+                  <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-x-4 py-2">
+                    <TaskComponent
+                      label="Status"
+                      name={projectDetails.projectStatus}
+                    />
+                    <TaskComponent
+                      label="Tasks"
+                      name={`${plan.textsCount}/${plan.totalTexts}`}
+                    />
+                    <TaskComponent label="Max Tasks" name={plan.totalTexts} />
+                    <TaskComponent label="Duration" name={plan.duration} />
+                    <TaskComponent
+                      label="Task per month"
+                      name={plan.tasksPerMonth}
+                    />
+                    <div>
+                      <p className="text-xs text-slate-700 dark:text-slate-300">
+                        Performance Period
+                      </p>
+                      <p className="text-black dark:text-white">
+                        {typeof plan.endDate === "string"
+                          ? formatDateString(plan.endDate)
+                          : null}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-span-5 xl:col-span-2">
+              <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="pt-8 pb-4 px-7 dark:border-strokedark flex justify-between items-center">
                   <h3 className="font-medium text-black dark:text-white">
-                    Customer
+                    Project members
                   </h3>
-                  <p className="text-sm text-black dark:text-white">
-                    {userData.firstName} {userData.lastName} {"("}
-                    {userData.email}
-                    {")"}
+                  <p
+                    className="w-5 h-5 bg-blue-500 text-white flex items-center justify-center cursor-pointer"
+                    onClick={handleMembers}
+                  >
+                    <FontAwesomeIcon icon={faPlus} className="text-sm" />
                   </p>
                 </div>
-
-                <AccordionData
-                  content={onBoardingData}
-                  speech={projectDetails.speech}
-                  projectName={projectDetails.projectName}
-                  prespective={projectDetails.prespective}
-                />
-
-                <div className="pt-1 pb-3">
-                  <h2>Folder</h2>
-                  <a
-                    href={"project.googleLink"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 underline-none flex justify-start items-center py-1"
+                <div className="px-7">
+                  <div className="py-2">
+                    <p className="text-sm">Project Manager</p>
+                    <div className="flex justify-start items-center py-2">
+                      <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
+                        {getInitials("Danile John")}
+                      </p>
+                      <p className="px-2.5 text-black dark:text-white">
+                        Danile John
+                      </p>
+                    </div>
+                  </div>
+                  <TaskMembers
+                    label={"Texter"}
+                    name={projectDetails.texter ?? ""}
+                  />
+                  <TaskMembers
+                    label={"Lector"}
+                    name={projectDetails.lector ?? ""}
+                  />
+                  <TaskMembers label={"SEO"} name={projectDetails.seo ?? ""} />
+                  <TaskMembers
+                    label={"Meta-lector"}
+                    name={projectDetails.metaLector ?? ""}
+                  />
+                </div>
+                <div className="px-7 py-6">
+                  <button
+                    onClick={handleAdd}
+                    className="w-full h-10 text-center bg-blue-500 text-white rounded-none my-2 flex justify-center items-center border-none"
                   >
+                    Add Text
+                    <FontAwesomeIcon icon={faPlus} className="text-sm px-2" />
+                  </button>
+                  {addModel && (
+                    <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
+                      <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
+                        <div className="flex justify-between items-center mb-5">
+                          <h2 className="text-xl font-bold dark:text-white pr-12">
+                            Add Task
+                          </h2>
+                          <FontAwesomeIcon
+                            className="cursor-pointer text-lg text-red-500 pl-12"
+                            onClick={handleCloseAdd}
+                            icon={faTimes}
+                          />
+                        </div>
+                        <div>
+                          <div className="w-full py-2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="dueUntil"
+                            >
+                              Due until
+                            </label>
+                            <DatePicker
+                              className="w-full rounded border border-transparent bg-gray-100 py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              minDate={new Date()}
+                              selected={"2025-01-01"}
+                              onChange={(date: Date | null) =>
+                                setDate("2025-04-05")
+                              }
+                              dateFormat="yyyy-MM-dd"
+                              placeholderText="Select a date"
+                            />
+                          </div>
+
+                          <div className="w-full py-2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="topic"
+                            >
+                              Topic
+                            </label>
+                            <input
+                              className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="text"
+                              name="topic"
+                              id="topic"
+                              placeholder="topic"
+                              defaultValue={""}
+                            />
+                          </div>
+                          <div className="w-full py-2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="Keywords"
+                            >
+                              Keyword
+                            </label>
+                            <input
+                              className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="text"
+                              name="Keyword"
+                              id="Keywords"
+                              placeholder="Keywords"
+                              defaultValue={""}
+                            />
+                          </div>
+                          <div className="w-full py-2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="dropdown"
+                            >
+                              Text type
+                            </label>
+                            <div className="relative">
+                              {" "}
+                              <select
+                                id="dropdown"
+                                className="w-full appearance-none rounded border border-transparent bg-gray py-2.5 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              >
+                                <option>Guide</option>
+                                <option>Shop (Category)</option>
+                                <option>Shop (Product)</option>
+                                <option>Definition/Wiki</option>
+                                <option>Shop (Home page)</option>
+                                <option>CMS page</option>
+                              </select>
+                              <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                {/* Custom arrow icon */}
+                                <svg
+                                  className="w-4 h-4"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M19 9l-7 7-7-7"
+                                  ></path>
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="w-full py-2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="wordExpected"
+                            >
+                              Word Count Expected
+                            </label>
+                            <input
+                              className="w-full  rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="number"
+                              name="wordExpected"
+                              id="wordExpected"
+                              placeholder="1500"
+                              min={0}
+                            />
+                          </div>
+                          <div className="w-full py-2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white "
+                              htmlFor="comment"
+                            >
+                              Comment
+                            </label>
+                            <textarea
+                              id="comment"
+                              rows={3}
+                              className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                            ></textarea>
+                          </div>
+                          <button
+                            className="w-full my-3 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
+                            type="submit"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <button
+                    onClick={handleEdit}
+                    className="w-full h-10 text-center bg-slate-300 text-blue-500 rounded-none my-2 flex justify-center items-center border-none"
+                  >
+                    Edit
+                    <FontAwesomeIcon icon={faEdit} className="text-sm px-2" />
+                  </button>
+                  {editModel && (
+                    <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
+                      <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
+                        <div className="flex justify-between items-center mb-5">
+                          <h2 className="text-xl font-bold dark:text-white pr-12">
+                            Edit Task
+                          </h2>
+                          <FontAwesomeIcon
+                            className="cursor-pointer text-lg text-red-500 pl-12"
+                            onClick={handleCloseEdit}
+                            icon={faTimes}
+                          />
+                        </div>
+                        <div>
+                          <div className="w-full py-2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="dueUntil"
+                            >
+                              Due until
+                            </label>
+                            <DatePicker
+                              className="w-full rounded border border-transparent bg-gray-100 py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              minDate={new Date()}
+                              selected={"2024-04-06"}
+                              onChange={(date: Date | null) =>
+                                setDate("2024-04-06")
+                              }
+                              dateFormat="yyyy-MM-dd"
+                              placeholderText="Select a date"
+                            />
+                          </div>
+
+                          <div className="w-full py-2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="topic"
+                            >
+                              Topic
+                            </label>
+                            <input
+                              className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="text"
+                              name="topic"
+                              id="topic"
+                              placeholder="topic"
+                              defaultValue={""}
+                            />
+                          </div>
+                          <div className="w-full py-2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="Keywords"
+                            >
+                              Keyword
+                            </label>
+                            <input
+                              className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="text"
+                              name="Keyword"
+                              id="Keywords"
+                              placeholder="Keywords"
+                              defaultValue={""}
+                            />
+                          </div>
+                          <div className="w-full py-2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="dropdown"
+                            >
+                              Text type
+                            </label>
+                            <div className="relative">
+                              {" "}
+                              <select
+                                id="dropdown"
+                                className="w-full appearance-none rounded border border-transparent bg-gray py-2.5 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              >
+                                <option>Guide</option>
+                                <option>Shop (Category)</option>
+                                <option>Shop (Product)</option>
+                                <option>Definition/Wiki</option>
+                                <option>Shop (Home page)</option>
+                                <option>CMS page</option>
+                              </select>
+                              <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                {/* Custom arrow icon */}
+                                <svg
+                                  className="w-4 h-4"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M19 9l-7 7-7-7"
+                                  ></path>
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="w-full py-2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white"
+                              htmlFor="wordExpected"
+                            >
+                              Word Count Expected
+                            </label>
+                            <input
+                              className="w-full  rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                              type="number"
+                              name="wordExpected"
+                              id="wordExpected"
+                              placeholder="1500"
+                              min={0}
+                            />
+                          </div>
+                          <div className="w-full py-2">
+                            <label
+                              className="mb-3 block text-sm font-medium text-black dark:text-white "
+                              htmlFor="comment"
+                            >
+                              Comment
+                            </label>
+                            <textarea
+                              id="comment"
+                              rows={3}
+                              className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                            ></textarea>
+                          </div>
+                          <button
+                            className="w-full my-3 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
+                            type="submit"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <div className="w-full flex justify-between items-center my-1">
+                    <button
+                      onClick={handleImport}
+                      className="w-1/2 h-10 text-center bg-slate-300 text-blue-500 rounded-none mr-1.5 flex justify-center items-center border-none"
+                    >
+                      Import
+                      <FontAwesomeIcon
+                        icon={faDownload}
+                        className="text-sm px-2"
+                      />
+                    </button>
+                    {importModel && (
+                      <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
+                        <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-3/12 xl:w-3/12 2xl:w-4/12 3xl:w-3/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
+                          <div className="flex justify-between items-center mb-5">
+                            <h2 className="text-xl font-bold dark:text-white pr-12">
+                              Import
+                            </h2>
+                            <FontAwesomeIcon
+                              className="cursor-pointer text-lg text-red-500 pl-12"
+                              onClick={handleCloseImport}
+                              icon={faTimes}
+                            />
+                          </div>
+                          <div className="relative w-full h-40 cursor-pointer border border-black dark:border-white border-dotted ">
+                            {/* Hidden file input */}
+                            <input
+                              type="file"
+                              className="absolute top-0 left-0 opacity-0 w-full h-30 cursor-pointer"
+                              onClick={(e) => {
+                                handleFileChange(e);
+                              }}
+                              accept=".xlsx, .xls"
+                            />
+                            <div className="flex justify-start items-center py-15">
+                              <FontAwesomeIcon
+                                icon={faCloudUploadAlt}
+                                className="text-gray-600 w-12 h-12 px-4"
+                              />
+                              <p className="mt-2 text-gray-700 ">{fileName}</p>
+                            </div>
+                          </div>
+                          <button
+                            className="w-full mt-4 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
+                            type="submit"
+                            onClick={handleImportData}
+                          >
+                            Import
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                    <button
+                      onClick={() => {
+                        alert("download");
+                      }}
+                      className="w-1/2 h-10 text-center bg-slate-300 text-blue-500 rounded-none ml-1.5 flex justify-center items-center border-none"
+                    >
+                      Export
+                      <FontAwesomeIcon
+                        icon={faUpload}
+                        className="text-sm px-2"
+                      />
+                    </button>
+                  </div>
+                  <button
+                    onClick={handleDelete}
+                    className="w-full h-10 text-center bg-slate-300 text-slate-600 rounded-none my-2 flex justify-center items-center border-none"
+                  >
+                    <p className="px-2">Archive Project</p>
                     <svg
                       viewBox="0 0 24 24"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
-                      className="w-5.5 h-5.5"
+                      className="w-4 h-5"
                     >
                       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                       <g
@@ -320,564 +795,102 @@ const ProjectsDetails: React.FC = () => {
                       ></g>
                       <g id="SVGRepo_iconCarrier">
                         <path
-                          d="M20 4L12 12M20 4V8.5M20 4H15.5M19 12.5V16.8C19 17.9201 19 18.4802 18.782 18.908C18.5903 19.2843 18.2843 19.5903 17.908 19.782C17.4802 20 16.9201 20 15.8 20H7.2C6.0799 20 5.51984 20 5.09202 19.782C4.71569 19.5903 4.40973 19.2843 4.21799 18.908C4 18.4802 4 17.9201 4 16.8V8.2C4 7.0799 4 6.51984 4.21799 6.09202C4.40973 5.71569 4.71569 5.40973 5.09202 5.21799C5.51984 5 6.07989 5 7.2 5H11.5"
-                          stroke="#3b82f6"
-                          stroke-width="1.5"
+                          d="M9 12C9 11.5341 9 11.3011 9.07612 11.1173C9.17761 10.8723 9.37229 10.6776 9.61732 10.5761C9.80109 10.5 10.0341 10.5 10.5 10.5H13.5C13.9659 10.5 14.1989 10.5 14.3827 10.5761C14.6277 10.6776 14.8224 10.8723 14.9239 11.1173C15 11.3011 15 11.5341 15 12C15 12.4659 15 12.6989 14.9239 12.8827C14.8224 13.1277 14.6277 13.3224 14.3827 13.4239C14.1989 13.5 13.9659 13.5 13.5 13.5H10.5C10.0341 13.5 9.80109 13.5 9.61732 13.4239C9.37229 13.3224 9.17761 13.1277 9.07612 12.8827C9 12.6989 9 12.4659 9 12Z"
+                          stroke="#000000"
+                          stroke-width="1"
+                        ></path>
+                        <path
+                          opacity="0.5"
+                          d="M20.5 7V13C20.5 16.7712 20.5 18.6569 19.3284 19.8284C18.1569 21 16.2712 21 12.5 21H11.5C7.72876 21 5.84315 21 4.67157 19.8284C3.5 18.6569 3.5 16.7712 3.5 13V7"
+                          stroke="#000000"
+                          stroke-width="1"
                           stroke-linecap="round"
-                          stroke-linejoin="round"
+                        ></path>
+                        <path
+                          d="M2 5C2 4.05719 2 3.58579 2.29289 3.29289C2.58579 3 3.05719 3 4 3H20C20.9428 3 21.4142 3 21.7071 3.29289C22 3.58579 22 4.05719 22 5C22 5.94281 22 6.41421 21.7071 6.70711C21.4142 7 20.9428 7 20 7H4C3.05719 7 2.58579 7 2.29289 6.70711C2 6.41421 2 5.94281 2 5Z"
+                          stroke="#000000"
+                          stroke-width="1"
                         ></path>
                       </g>
                     </svg>
-
-                    <span className="px-1">{projectDetails.projectId}</span>
-                  </a>
-                </div>
-                <progress
-                  className="custom-progress"
-                  value={projectDetails.finalTasks}
-                  max={plan.totalTexts}
-                ></progress>
-                <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-x-4 py-2">
-                  <TaskComponent
-                    label="Status"
-                    name={projectDetails.projectStatus}
-                  />
-                  <TaskComponent
-                    label="Tasks"
-                    name={`${plan.textsCount}/${plan.totalTexts}`}
-                  />
-                  <TaskComponent label="Max Tasks" name={plan.totalTexts} />
-                  <TaskComponent label="Duration" name={plan.duration} />
-                  <TaskComponent
-                    label="Task per month"
-                    name={plan.tasksPerMonth}
-                  />
-                  <div>
-                    <p className="text-xs text-slate-700 dark:text-slate-300">
-                      Performance Period
-                    </p>
-                    <p className="text-black dark:text-white">
-                      {typeof plan.endDate === "string"
-                        ? formatDateString(plan.endDate)
-                        : null}
-                    </p>
-                  </div>
+                  </button>
+                  {deleteModel && (
+                    <DeleteModel
+                      handleDelete={handleDeleteApi}
+                      handleClose={handleCloseDelete}
+                    />
+                  )}
                 </div>
               </div>
             </div>
           </div>
-          <div className="col-span-5 xl:col-span-2">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="pt-8 pb-4 px-7 dark:border-strokedark flex justify-between items-center">
-                <h3 className="font-medium text-black dark:text-white">
-                  Project members
-                </h3>
-                <p
-                  className="w-5 h-5 bg-blue-500 text-white flex items-center justify-center cursor-pointer"
-                  onClick={handleMembers}
-                >
-                  <FontAwesomeIcon icon={faPlus} className="text-sm" />
-                </p>
+          <ProjectTaskTable tasks={projectTasks} />
+        </div>
+        {memberModel && (
+          <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
+            <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 min-h-[50vh] max-h-[90vh] overflow-y-auto scrollbar-hide">
+              <div className="flex justify-between items-center mb-5">
+                <h2 className="text-xl font-bold dark:text-white pr-12">
+                  Add members
+                </h2>
+                <FontAwesomeIcon
+                  className="cursor-pointer text-lg text-red-500 pl-12"
+                  onClick={handleCloseMemberModel}
+                  icon={faTimes}
+                />
               </div>
-              <div className="px-7">
-                <div className="py-2">
-                  <p className="text-sm">Project Manager</p>
-                  <div className="flex justify-start items-center py-2">
+              {freelancer.map((member) => (
+                <div
+                  key={member._id}
+                  className="flex justify-between items-center py-3"
+                >
+                  <div className="flex justify-start items-center">
                     <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
-                      {getInitials("Danile John")}
+                      {getInitials(member.firstName)}
+                      {getInitials(member.lastName)}
                     </p>
                     <p className="px-2.5 text-black dark:text-white">
-                      Danile John
+                      {member.firstName} {member.lastName}
                     </p>
                   </div>
-                </div>
-                <TaskMembers
-                  label={"Texter"}
-                  name={projectDetails.texter ?? ""}
-                />
-                <TaskMembers
-                  label={"Lector"}
-                  name={projectDetails.lector ?? ""}
-                />
-                <TaskMembers label={"SEO"} name={projectDetails.seo ?? ""} />
-                <TaskMembers
-                  label={"Meta-lector"}
-                  name={projectDetails.metaLector ?? ""}
-                />
-              </div>
-              <div className="px-7 py-6">
-                <button
-                  onClick={handleAdd}
-                  className="w-full h-10 text-center bg-blue-500 text-white rounded-none my-2 flex justify-center items-center border-none"
-                >
-                  Add Text
-                  <FontAwesomeIcon icon={faPlus} className="text-sm px-2" />
-                </button>
-                {addModel && (
-                  <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
-                    <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
-                      <div className="flex justify-between items-center mb-5">
-                        <h2 className="text-xl font-bold dark:text-white pr-12">
-                          Add Task
-                        </h2>
-                        <FontAwesomeIcon
-                          className="cursor-pointer text-lg text-red-500 pl-12"
-                          onClick={handleCloseAdd}
-                          icon={faTimes}
-                        />
-                      </div>
-                      <div>
-                        <div className="w-full py-2">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="dueUntil"
-                          >
-                            Due until
-                          </label>
-                          <DatePicker
-                            className="w-full rounded border border-transparent bg-gray-100 py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            minDate={new Date()}
-                            selected={"2025-01-01"}
-                            onChange={(date: Date | null) =>
-                              setDate("2025-04-05")
-                            }
-                            dateFormat="yyyy-MM-dd"
-                            placeholderText="Select a date"
-                          />
-                        </div>
-
-                        <div className="w-full py-2">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="topic"
-                          >
-                            Topic
-                          </label>
-                          <input
-                            className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
-                            name="topic"
-                            id="topic"
-                            placeholder="topic"
-                            defaultValue={""}
-                          />
-                        </div>
-                        <div className="w-full py-2">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="Keywords"
-                          >
-                            Keyword
-                          </label>
-                          <input
-                            className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
-                            name="Keyword"
-                            id="Keywords"
-                            placeholder="Keywords"
-                            defaultValue={""}
-                          />
-                        </div>
-                        <div className="w-full py-2">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="dropdown"
-                          >
-                            Text type
-                          </label>
-                          <div className="relative">
-                            {" "}
-                            <select
-                              id="dropdown"
-                              className="w-full appearance-none rounded border border-transparent bg-gray py-2.5 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                  <div className="relative">
+                    <p
+                      className="w-5 h-5 bg-slate-200 text-white flex items-center justify-center cursor-pointer"
+                      onClick={() => toggleDropdown(member._id)}
+                    >
+                      <FontAwesomeIcon
+                        icon={faPlus}
+                        className="text-sm text-blue-500"
+                      />
+                    </p>
+                    {dropdownVisible === member._id && (
+                      <div className="absolute right-0 mt-2 z-99999 bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-lg">
+                        <ul>
+                          {getAvailableRoles(member._id).map((role) => (
+                            <li
+                              key={role}
+                              className="px-4 w-30 py-2 cursor-pointer bg-slate-100 dark:bg-dark-gray dark:rounded-none dark:text-white rounded-md hover:bg-slate-200 dark:hover:bg-slate-600"
+                              onClick={() => handleRoleSelect(role, member._id)}
                             >
-                              <option>Guide</option>
-                              <option>Shop (Category)</option>
-                              <option>Shop (Product)</option>
-                              <option>Definition/Wiki</option>
-                              <option>Shop (Home page)</option>
-                              <option>CMS page</option>
-                            </select>
-                            <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                              {/* Custom arrow icon */}
-                              <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="2"
-                                  d="M19 9l-7 7-7-7"
-                                ></path>
-                              </svg>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="w-full py-2">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="wordExpected"
-                          >
-                            Word Count Expected
-                          </label>
-                          <input
-                            className="w-full  rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="number"
-                            name="wordExpected"
-                            id="wordExpected"
-                            placeholder="1500"
-                            min={0}
-                          />
-                        </div>
-                        <div className="w-full py-2">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white "
-                            htmlFor="comment"
-                          >
-                            Comment
-                          </label>
-                          <textarea
-                            id="comment"
-                            rows={3}
-                            className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          ></textarea>
-                        </div>
-                        <button
-                          className="w-full my-3 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
-                          type="submit"
-                        >
-                          Save
-                        </button>
+                              {role}
+                            </li>
+                          ))}
+                          {getAvailableRoles(member._id).length === 0 && (
+                            <li className="px-4 py-2 text-gray-500">
+                              No roles available
+                            </li>
+                          )}
+                        </ul>
                       </div>
-                    </div>
+                    )}
                   </div>
-                )}
-                <button
-                  onClick={handleEdit}
-                  className="w-full h-10 text-center bg-slate-300 text-blue-500 rounded-none my-2 flex justify-center items-center border-none"
-                >
-                  Edit
-                  <FontAwesomeIcon icon={faEdit} className="text-sm px-2" />
-                </button>
-                {editModel && (
-                  <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
-                    <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
-                      <div className="flex justify-between items-center mb-5">
-                        <h2 className="text-xl font-bold dark:text-white pr-12">
-                          Edit Task
-                        </h2>
-                        <FontAwesomeIcon
-                          className="cursor-pointer text-lg text-red-500 pl-12"
-                          onClick={handleCloseEdit}
-                          icon={faTimes}
-                        />
-                      </div>
-                      <div>
-                        <div className="w-full py-2">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="dueUntil"
-                          >
-                            Due until
-                          </label>
-                          <DatePicker
-                            className="w-full rounded border border-transparent bg-gray-100 py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            minDate={new Date()}
-                            selected={"2024-04-06"}
-                            onChange={(date: Date | null) =>
-                              setDate("2024-04-06")
-                            }
-                            dateFormat="yyyy-MM-dd"
-                            placeholderText="Select a date"
-                          />
-                        </div>
-
-                        <div className="w-full py-2">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="topic"
-                          >
-                            Topic
-                          </label>
-                          <input
-                            className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
-                            name="topic"
-                            id="topic"
-                            placeholder="topic"
-                            defaultValue={""}
-                          />
-                        </div>
-                        <div className="w-full py-2">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="Keywords"
-                          >
-                            Keyword
-                          </label>
-                          <input
-                            className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="text"
-                            name="Keyword"
-                            id="Keywords"
-                            placeholder="Keywords"
-                            defaultValue={""}
-                          />
-                        </div>
-                        <div className="w-full py-2">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="dropdown"
-                          >
-                            Text type
-                          </label>
-                          <div className="relative">
-                            {" "}
-                            <select
-                              id="dropdown"
-                              className="w-full appearance-none rounded border border-transparent bg-gray py-2.5 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            >
-                              <option>Guide</option>
-                              <option>Shop (Category)</option>
-                              <option>Shop (Product)</option>
-                              <option>Definition/Wiki</option>
-                              <option>Shop (Home page)</option>
-                              <option>CMS page</option>
-                            </select>
-                            <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                              {/* Custom arrow icon */}
-                              <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="2"
-                                  d="M19 9l-7 7-7-7"
-                                ></path>
-                              </svg>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="w-full py-2">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white"
-                            htmlFor="wordExpected"
-                          >
-                            Word Count Expected
-                          </label>
-                          <input
-                            className="w-full  rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                            type="number"
-                            name="wordExpected"
-                            id="wordExpected"
-                            placeholder="1500"
-                            min={0}
-                          />
-                        </div>
-                        <div className="w-full py-2">
-                          <label
-                            className="mb-3 block text-sm font-medium text-black dark:text-white "
-                            htmlFor="comment"
-                          >
-                            Comment
-                          </label>
-                          <textarea
-                            id="comment"
-                            rows={3}
-                            className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          ></textarea>
-                        </div>
-                        <button
-                          className="w-full my-3 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
-                          type="submit"
-                        >
-                          Save
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                <div className="w-full flex justify-between items-center my-1">
-                  <button
-                    onClick={handleImport}
-                    className="w-1/2 h-10 text-center bg-slate-300 text-blue-500 rounded-none mr-1.5 flex justify-center items-center border-none"
-                  >
-                    Import
-                    <FontAwesomeIcon
-                      icon={faDownload}
-                      className="text-sm px-2"
-                    />
-                  </button>
-                  {importModel && (
-                    <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
-                      <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-3/12 xl:w-3/12 2xl:w-4/12 3xl:w-3/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
-                        <div className="flex justify-between items-center mb-5">
-                          <h2 className="text-xl font-bold dark:text-white pr-12">
-                            Import
-                          </h2>
-                          <FontAwesomeIcon
-                            className="cursor-pointer text-lg text-red-500 pl-12"
-                            onClick={handleCloseImport}
-                            icon={faTimes}
-                          />
-                        </div>
-                        <div className="relative w-full h-40 cursor-pointer border border-black dark:border-white border-dotted ">
-                          {/* Hidden file input */}
-                          <input
-                            type="file"
-                            className="absolute top-0 left-0 opacity-0 w-full h-30 cursor-pointer"
-                            onClick={(e) => {
-                              handleFileChange(e);
-                            }}
-                            accept=".xlsx, .xls"
-                          />
-                          <div className="flex justify-start items-center py-15">
-                            <FontAwesomeIcon
-                              icon={faCloudUploadAlt}
-                              className="text-gray-600 w-12 h-12 px-4"
-                            />
-                            <p className="mt-2 text-gray-700 ">{fileName}</p>
-                          </div>
-                        </div>
-                        <button
-                          className="w-full mt-4 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
-                          type="submit"
-                          onClick={handleImportData}
-                        >
-                          Import
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                  <button
-                    onClick={() => {
-                      alert("download");
-                    }}
-                    className="w-1/2 h-10 text-center bg-slate-300 text-blue-500 rounded-none ml-1.5 flex justify-center items-center border-none"
-                  >
-                    Export
-                    <FontAwesomeIcon icon={faUpload} className="text-sm px-2" />
-                  </button>
                 </div>
-                <button
-                  onClick={handleDelete}
-                  className="w-full h-10 text-center bg-slate-300 text-slate-600 rounded-none my-2 flex justify-center items-center border-none"
-                >
-                  <p className="px-2">Archive Project</p>
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-4 h-5"
-                  >
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g
-                      id="SVGRepo_tracerCarrier"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></g>
-                    <g id="SVGRepo_iconCarrier">
-                      <path
-                        d="M9 12C9 11.5341 9 11.3011 9.07612 11.1173C9.17761 10.8723 9.37229 10.6776 9.61732 10.5761C9.80109 10.5 10.0341 10.5 10.5 10.5H13.5C13.9659 10.5 14.1989 10.5 14.3827 10.5761C14.6277 10.6776 14.8224 10.8723 14.9239 11.1173C15 11.3011 15 11.5341 15 12C15 12.4659 15 12.6989 14.9239 12.8827C14.8224 13.1277 14.6277 13.3224 14.3827 13.4239C14.1989 13.5 13.9659 13.5 13.5 13.5H10.5C10.0341 13.5 9.80109 13.5 9.61732 13.4239C9.37229 13.3224 9.17761 13.1277 9.07612 12.8827C9 12.6989 9 12.4659 9 12Z"
-                        stroke="#000000"
-                        stroke-width="1"
-                      ></path>
-                      <path
-                        opacity="0.5"
-                        d="M20.5 7V13C20.5 16.7712 20.5 18.6569 19.3284 19.8284C18.1569 21 16.2712 21 12.5 21H11.5C7.72876 21 5.84315 21 4.67157 19.8284C3.5 18.6569 3.5 16.7712 3.5 13V7"
-                        stroke="#000000"
-                        stroke-width="1"
-                        stroke-linecap="round"
-                      ></path>
-                      <path
-                        d="M2 5C2 4.05719 2 3.58579 2.29289 3.29289C2.58579 3 3.05719 3 4 3H20C20.9428 3 21.4142 3 21.7071 3.29289C22 3.58579 22 4.05719 22 5C22 5.94281 22 6.41421 21.7071 6.70711C21.4142 7 20.9428 7 20 7H4C3.05719 7 2.58579 7 2.29289 6.70711C2 6.41421 2 5.94281 2 5Z"
-                        stroke="#000000"
-                        stroke-width="1"
-                      ></path>
-                    </g>
-                  </svg>
-                </button>
-                {deleteModel && (
-                  <DeleteModel handleDelete={handleDeleteApi} handleClose={handleCloseDelete}/>
-                )}
-              </div>
+              ))}
             </div>
           </div>
-        </div>
-        <ProjectTaskTable tasks={projectTasks} />
+        )}
       </div>
-      {memberModel && (
-        <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
-          <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 min-h-[50vh] max-h-[90vh] overflow-y-auto scrollbar-hide">
-            <div className="flex justify-between items-center mb-5">
-              <h2 className="text-xl font-bold dark:text-white pr-12">
-                Add members
-              </h2>
-              <FontAwesomeIcon
-                className="cursor-pointer text-lg text-red-500 pl-12"
-                onClick={handleCloseMemberModel}
-                icon={faTimes}
-              />
-            </div>
-            {freelancer.map((member) => (
-              <div
-                key={member._id}
-                className="flex justify-between items-center py-3"
-              >
-                <div className="flex justify-start items-center">
-                  <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
-                    {getInitials(member.firstName)}
-                    {getInitials(member.lastName)}
-                  </p>
-                  <p className="px-2.5 text-black dark:text-white">
-                    {member.firstName} {member.lastName}
-                  </p>
-                </div>
-                <div className="relative">
-                  <p
-                    className="w-5 h-5 bg-slate-200 text-white flex items-center justify-center cursor-pointer"
-                    onClick={() => toggleDropdown(member._id)}
-                  >
-                    <FontAwesomeIcon
-                      icon={faPlus}
-                      className="text-sm text-blue-500"
-                    />
-                  </p>
-                  {dropdownVisible === member._id && (
-                    <div className="absolute right-0 mt-2 z-99999 bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-lg">
-                      <ul>
-                        {getAvailableRoles(member._id).map((role) => (
-                          <li
-                            key={role}
-                            className="px-4 w-30 py-2 cursor-pointer bg-slate-100 dark:bg-dark-gray dark:rounded-none dark:text-white rounded-md hover:bg-slate-200 dark:hover:bg-slate-600"
-                            onClick={() => handleRoleSelect(role, member._id)}
-                          >
-                            {role}
-                          </li>
-                        ))}
-                        {getAvailableRoles(member._id).length === 0 && (
-                          <li className="px-4 py-2 text-gray-500">
-                            No roles available
-                          </li>
-                        )}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+    )}
     </>
   );
 };

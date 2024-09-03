@@ -150,7 +150,7 @@ const Users: React.FC = () => {
                     type="text"
                     value={search}
                     onChange={handleSearchFilter}
-                    placeholder="Searching..."
+                    placeholder="Search by name"
                     className="rounded ring-1 outline-none py-1 px-4 ring-slate-200 bg-slate-0 dark:bg-transparent w-60 lg:w-80 xl:w-80"
                   />
                 )}
