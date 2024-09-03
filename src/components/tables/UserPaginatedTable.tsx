@@ -107,7 +107,8 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users }) => {
                     </p>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark   ">
-                    <div className="flex">
+                    <div className="flex justify-start items-center px-4">
+                    {user.isActive === "Y" ? (
                       <div
                         className={`ring-1 w-6 h-6 flex justify-center items-center rounded cursor-pointer 
                         ring-red-500
@@ -121,10 +122,10 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users }) => {
                           icon={faTrashCan}
                         />
                       </div>
-                      {user.isActive === "N" && (
+                    ):(
                         <div
                           className={`ring-1 w-6 h-6 flex justify-center items-center rounded cursor-pointer 
-                        ring-green-500 ml-2 bg-green-500 
+                        ring-green-500  bg-green-500 
                       `}
                           onClick={() => handleActivite(user._id)}
                         >
@@ -133,7 +134,7 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users }) => {
                             icon={faPlay}
                           />
                         </div>
-                      )}
+                    )}
                     </div>
                   </td>
                 </tr>
