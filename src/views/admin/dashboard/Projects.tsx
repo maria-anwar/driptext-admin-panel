@@ -37,7 +37,7 @@ const Projects: React.FC = () => {
     // "https://driptext-api.vercel.app/api/projects/detail";
 
     axios
-      .get(`https://driptext-api.vercel.app/api/admin/getProjects`)
+      .get(`${import.meta.env.VITE_DB_URL}/admin/getProjects`)
       .then((response) => {
         const projectDataArray = response.data.projects;
         const allProjects = projectDataArray;

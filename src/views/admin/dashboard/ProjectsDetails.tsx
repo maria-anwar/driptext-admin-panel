@@ -181,7 +181,7 @@ const ProjectsDetails: React.FC = () => {
 
     axios
       .post(
-        `https://driptext-api.vercel.app/api/admin/getProjectDetail`,
+        `${import.meta.env.VITE_DB_URL}/admin/getProjectDetail`,
         payload
       )
       .then((response) => {

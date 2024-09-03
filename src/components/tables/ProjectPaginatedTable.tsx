@@ -134,6 +134,9 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
                 </th>
 
                 <th className="min-w-[120px] py-4 px-4 font-semibold text-black dark:text-white">
+                  Domain
+                </th>
+                <th className="min-w-[120px] py-4 px-4 font-semibold text-black dark:text-white">
                   Performance Period
                 </th>
                 <th className="min-w-[230px] py-4 px-4 font-semibold text-black dark:text-white">
@@ -194,6 +197,11 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
 
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black  dark:text-white text-sm">
+                      {project.projectName}
+                    </p>
+                  </td>
+                  <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p className="text-black  dark:text-white text-sm">
                       {project.plan.endDate === null ? "No Subscription" :   `${formatDate(project.plan.endDate)}`}
                     </p>
                   </td>
@@ -214,12 +222,12 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
                     </div>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
-                    {!project.texter?.trim() &&
+                    {/* {!project.texter?.trim() &&
                     !project.lector?.trim() &&
                     !project.seo?.trim() &&
                     !project.metaLector?.trim() ? (
                       <p>Not assigned</p>
-                    ) : (
+                    ) : ( */}
                       <div className="flex justify-between items-center">
                         <WorkerComponent
                           label="T"
@@ -235,7 +243,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
                           name={project.metaLector ?? ""}
                         />
                       </div>
-                    )}
+                   
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black  dark:text-white flex justify-center items-center">
