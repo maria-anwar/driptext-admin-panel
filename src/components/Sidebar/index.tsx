@@ -63,6 +63,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   const handleLogout = () => {
     localStorage.removeItem("auth");
+    localStorage.removeItem('projectID')
     dispatch(clearPersistedState())
   };
 

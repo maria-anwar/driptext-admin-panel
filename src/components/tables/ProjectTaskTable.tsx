@@ -97,7 +97,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks }) => {
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
                   Google-Link
                 </th>
-                <th className="min-w-[100px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[120px] py-4 px-4 font-semibold text-black dark:text-white">
                   Deadline
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
@@ -198,7 +198,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks }) => {
                           ></path>{" "}
                         </g>
                       </svg>
-                      <span className="px-1">{task.dueDate ?? ""}</span>
+                      <span className="px-1">{task.dueDate ?? "not set"}</span>
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
