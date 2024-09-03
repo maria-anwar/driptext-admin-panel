@@ -17,7 +17,7 @@ const users = [
     name: "John Doe",
     email: "john@example.com",
     status: "Active",
-    permission: "Administrator",
+    permission: "leads",
   },
   {
     id: 2,
@@ -59,7 +59,7 @@ const users = [
     name: "Edward Foster",
     email: "edward@example.com",
     status: "Active",
-    permission: "Administrator",
+    permission: "leads",
   },
   {
     id: 8,
@@ -80,7 +80,7 @@ const users = [
     name: "Hannah Ives",
     email: "hannah@example.com",
     status: "Inactive",
-    permission: "Administrator",
+    permission: "leads",
   },
   {
     id: 11,
@@ -108,7 +108,7 @@ const users = [
     name: "Laura Miller",
     email: "laura@example.com",
     status: "Inactive",
-    permission: "Administrator",
+    permission: "leads",
   },
   {
     id: 15,
@@ -129,7 +129,7 @@ const users = [
     name: "Oscar Peterson",
     email: "oscar@example.com",
     status: "Active",
-    permission: "Administrator",
+    permission: "leads",
   },
   {
     id: 18,
@@ -150,7 +150,7 @@ const users = [
     name: "Rachel Scott",
     email: "rachel@example.com",
     status: "Inactive",
-    permission: "Administrator",
+    permission: "leads",
   },
   {
     id: 21,
@@ -171,7 +171,7 @@ const users = [
     name: "Ulysses Vaughn",
     email: "ulysses@example.com",
     status: "Active",
-    permission: "Administrator",
+    permission: "leads",
   },
   {
     id: 24,
@@ -192,7 +192,7 @@ const users = [
     name: "Xena Young",
     email: "xena@example.com",
     status: "Inactive",
-    permission: "Administrator",
+    permission: "leads",
   },
   {
     id: 27,
@@ -213,7 +213,7 @@ const users = [
     name: "Alice Bennett",
     email: "aliceb@example.com",
     status: "Active",
-    permission: "Administrator",
+    permission: "leads",
   },
   {
     id: 30,
@@ -234,7 +234,7 @@ const users = [
     name: "Daniel Evans",
     email: "daniel@example.com",
     status: "Inactive",
-    permission: "Administrator",
+    permission: "leads",
   },
   {
     id: 33,
@@ -255,7 +255,7 @@ const users = [
     name: "Grace Hall",
     email: "grace@example.com",
     status: "Active",
-    permission: "Administrator",
+    permission: "leads",
   },
   {
     id: 36,
@@ -276,7 +276,7 @@ const users = [
     name: "James Kelly",
     email: "james@example.com",
     status: "Inactive",
-    permission: "Administrator",
+    permission: "leads",
   },
   {
     id: 39,
@@ -295,12 +295,13 @@ const users = [
 ];
 
 const Users: React.FC = () => {
-  const [showSearch, setShowSearch] = useState(false);
-  const [showInactive, setShowInactive] = useState(false);
+  const [showSearch, setShowSearch] = useState<boolean>(false);
+  const [showInactive, setShowInactive] = useState<boolean>(false);
   const [data, setData] = useState(users);
-  const [search, setSearch] = useState("");
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [toggleValue, setToggleValue] = useState(false);
+  const [search, setSearch] = useState<string>("");
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const [toggleLeads, setToggleLeads] = useState<boolean>(false);
+  const [toggleClient, setToggleClient] = useState<boolean>(false);
 
   const handleSearch = () => {
     setShowSearch(!showSearch);
@@ -338,18 +339,28 @@ const Users: React.FC = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
-  const handleToggleChange = () => {
+  const handleToggleLeads = () => {
     let filteredData = users;
-    if(!toggleValue){
-
-      filteredData = users.filter((user) => user.permission === "Client");
+    if(!toggleLeads){
+      filteredData = users.filter((user) => user.permission.toLowerCase() === "leads");
       setData(filteredData);
     }
-    else{
-      setData(filteredData);
-    }
-    setToggleValue(!toggleValue);
+    setData(filteredData);
+    setToggleLeads(!toggleLeads);
+    setToggleClient(false);
   };
+
+  const handleToggleClient = () => {
+    let filteredData = users;
+    if(!toggleClient){
+      filteredData = users.filter((user) => user.permission.toLowerCase() === "client");
+      setData(filteredData);
+    }
+    setData(filteredData);
+    setToggleClient(!toggleClient);
+    setToggleLeads(false);
+  };
+
 
   return (
     <>
@@ -420,11 +431,19 @@ const Users: React.FC = () => {
                   {/* Toggle Button */}
                   <div className="flex items-center text-left">
                     <ToggleSwitch
-                      icon={toggleValue ? faCheck : faTimes}
-                      isOn={toggleValue}
-                      onToggle={handleToggleChange}
+                      icon={toggleLeads ? faCheck : faTimes}
+                      isOn={toggleLeads}
+                      onToggle={handleToggleLeads}
                     />
                     <span className="pl-2">Show leads</span>
+                  </div>
+                  <div className="flex items-center text-left">
+                    <ToggleSwitch
+                      icon={toggleClient ? faCheck : faTimes}
+                      isOn={toggleClient}
+                      onToggle={handleToggleClient}
+                    />
+                    <span className="pl-2">Show Client</span>
                   </div>
                 </div>
               </div>
