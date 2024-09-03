@@ -13,18 +13,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useLocation } from "react-router-dom";
 import ProjectTaskTable from "../../../components/tables/ProjectTaskTable";
-import {
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-} from "@chakra-ui/accordion";
-import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import AccordionData from "../../../components/buttons/Accordion";
 import * as XLSX from "xlsx";
 import Breadcrumb from "../../../components/breeadcrumbs/Breadcrumb";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { format } from "date-fns";
+import TaskComponent from "../../../components/buttons/TaskComponent";
 
 const tasksWithDetails = [
   {
@@ -85,7 +80,7 @@ const tasksWithDetails = [
   },
 ];
 
-const freelancer = [
+const freelancerDummy = [
   {
     id: 1,
     name: "Alice John",
@@ -152,12 +147,21 @@ const ProjectsDetails: React.FC = () => {
   const location = useLocation();
   const user = useSelector<any>((state) => state.user);
   const projectId = localStorage.getItem("projectID");
+  const [loading, setLoading] = useState(true);
   const [memberModel, setMemberModel] = useState(false);
   const [deleteModel, setDeleteModel] = useState(false);
   const [importModel, setImportModel] = useState(false);
   const [addModel, setAddModel] = useState(false);
   const [editModel, setEditModel] = useState(false);
   const [date, setDate] = useState("");
+  const [projectDetails, setProjectDetails] = useState([]);
+  const [projectTasks, setProjectTasks] = useState([]);
+  const [freelancer, setFreelancer] = useState([]);
+  const [plan, setPlan] = useState({});
+  const [userData, setUserData] = useState({});
+  const [onBoardingData, setOnBoardingData] = useState({});
+  const [userId, setUserID] = useState(user.user.data.user._id);
+  const [userToken, setUserToken] = useState(user.user.token);
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [selectedRoles, setSelectedRoles] = useState<{ [key: number]: string }>(
     {}
@@ -166,12 +170,6 @@ const ProjectsDetails: React.FC = () => {
   const [fileName, setFileName] = useState(
     "Drag files here or click to select files"
   );
-
-  const [projectDetails, setProjectDetails] = useState([]);
-  const [plan, setPlan] = useState({});
-  const [userData, setUserData] = useState({});
-  const [userId, setUserID] = useState(user.user.data.user._id);
-  const [userToken, setUserToken] = useState(user.user.token);
 
   useEffect(() => {
     let token = userToken;
@@ -189,16 +187,32 @@ const ProjectsDetails: React.FC = () => {
       .then((response) => {
         const projectDataArray = response.data.project;
         const allProjects = projectDataArray;
-
         setProjectDetails(allProjects);
         setPlan(allProjects.plan);
         setUserData(allProjects.user);
-        console.log(userData);
+        setOnBoardingData(allProjects.boardingInfo);
+        setProjectTasks(allProjects.projectTasks);
       })
       .catch((err) => {
         console.error("Error fetching project details:", err);
       });
   }, [projectId, userId]);
+
+  useEffect(() => {
+    let token = userToken;
+    axios.defaults.headers.common["access-token"] = token;
+
+    axios
+      .get(`https://driptext-api.vercel.app/api/admin/getFreelancers`)
+      .then((response) => {
+        const projectDataArray = response.data.freelancers;
+        const allProjects = projectDataArray;
+        setFreelancer(allProjects);
+      })
+      .catch((err) => {
+        console.error("Error fetching project details:", err);
+      });
+  }, []);
 
   const allRoles = ["Texter", "Lector", "SEO", "Meta-lector"];
 
@@ -302,7 +316,7 @@ const ProjectsDetails: React.FC = () => {
       ...prevRoles,
       [memberId]: role,
     }));
-    setDropdownVisible(null); // Hide dropdown after
+    setDropdownVisible(null);
     alert(`Added member ${memberId} as ${role}`);
   };
 
@@ -327,7 +341,7 @@ const ProjectsDetails: React.FC = () => {
         <div className="flex justify-between items-center py-1.5">
           <div className="flex justify-start items-center">
             <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
-              {getInitials("name")}
+              {getInitials(name)}
             </p>
             <p className="px-2.5 text-black dark:text-white">{"name"}</p>
           </div>
@@ -363,17 +377,21 @@ const ProjectsDetails: React.FC = () => {
     );
   };
 
-  const TaskComponent: React.FC<{ label: string; name: string | number }> = ({
-    label,
-    name,
-  }) => {
-    return (
-      <div>
-        <p className="text-xs text-slate-700 dark:text-slate-300">{label}</p>
-        <p className="text-black dark:text-white">{name}</p>
-      </div>
-    );
-  };
+  function formatDateString(dateString: string): string | null {
+    const date = new Date(dateString);
+
+    if (isNaN(date.getTime())) {
+      return null;
+    }
+
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
+
+    return date.toLocaleDateString("en-US", options);
+  }
 
   return (
     <>
@@ -396,108 +414,13 @@ const ProjectsDetails: React.FC = () => {
                     {")"}
                   </p>
                 </div>
-                <Accordion
-                  allowToggle
-                  className="appearance-none border-none py-4 -ml-4"
-                >
-                  <AccordionItem className="border-none">
-                    {({ isExpanded }) => (
-                      <>
-                        <h2>
-                          <AccordionButton className="flex justify-between items-center ">
-                            <p className=" text-black dark:text-white">
-                              Description
-                            </p>
-                            {isExpanded ? (
-                              <MinusIcon fontSize="12px" />
-                            ) : (
-                              <AddIcon fontSize="12px" />
-                            )}
-                          </AccordionButton>
-                        </h2>
-                        <AccordionPanel pb={4}>
-                          <div className="bg-slate-100 dark:bg-boxdark rounded py-2 px-4">
-                            <p className="dark:text-white font-semibold text-lg">
-                              Project
-                            </p>
-                            <p className="dark:text-white pt-2">
-                              1. General information:
-                            </p>
-                            <div className="px-2">
-                              <p className="dark:text-white">
-                                Address of Speech
-                              </p>
-                              <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                                various
-                              </p>
-                              <p className="dark:text-white">Perspective</p>
-                              <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                                me
-                              </p>
-                              <p className="dark:text-white">Website</p>
-                              <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                                various
-                              </p>
-                            </div>
-                            <p className="dark:text-white pt-2">
-                              2. Information about the Company:
-                            </p>
-                            <div className="px-2">
-                              <p className="dark:text-white">
-                                Company Background
-                              </p>
-                              <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                                various
-                              </p>
-                              <p className="dark:text-white">
-                                Company Attributes
-                              </p>
-                              <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                                me
-                              </p>
-                              <p className="dark:text-white">
-                                Company Services
-                              </p>
-                              <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                                various
-                              </p>
-                            </div>
-                            <p className="dark:text-white pt-2">
-                              3. Information about the target customers:
-                            </p>
-                            <div className="px-2">
-                              <p className="dark:text-white">Target Audience</p>
-                              <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                                various
-                              </p>
-                              <p className="dark:text-white">
-                                Customer Interests
-                              </p>
-                              <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                                me
-                              </p>
-                            </div>
-                            <p className="dark:text-white pt-2">
-                              4. Aim of content:
-                            </p>
-                            <div className="px-2">
-                              <p className="dark:text-white">Content Goal</p>
-                              <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                                various
-                              </p>
-                              <p className="dark:text-white">
-                                Brand Content Information
-                              </p>
-                              <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                                me
-                              </p>
-                            </div>
-                          </div>
-                        </AccordionPanel>
-                      </>
-                    )}
-                  </AccordionItem>
-                </Accordion>
+
+                <AccordionData
+                  content={onBoardingData}
+                  speech={projectDetails.speech}
+                  projectName={projectDetails.projectName}
+                  prespective={projectDetails.prespective}
+                />
 
                 <div className="pt-1 pb-3">
                   <h2>Folder</h2>
@@ -553,10 +476,16 @@ const ProjectsDetails: React.FC = () => {
                     label="Task per month"
                     name={plan.tasksPerMonth}
                   />
-                  <TaskComponent
-                    label="Performance Period"
-                    name={plan.endDate}
-                  />
+                  <div>
+                    <p className="text-xs text-slate-700 dark:text-slate-300">
+                      Performance Period
+                    </p>
+                    <p className="text-black dark:text-white">
+                      {typeof plan.endDate === "string"
+                        ? formatDateString(plan.endDate)
+                        : null}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -586,12 +515,18 @@ const ProjectsDetails: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                <TaskMembers label={"Texter"} name={"project.worker.texter"} />
-                <TaskMembers label={"Lector"} name={"project.worker.lector"} />
-                <TaskMembers label={"SEO"} name={"project.worker.SEO"} />
+                <TaskMembers
+                  label={"Texter"}
+                  name={projectDetails.texter ?? ""}
+                />
+                <TaskMembers
+                  label={"Lector"}
+                  name={projectDetails.lector ?? ""}
+                />
+                <TaskMembers label={"SEO"} name={projectDetails.seo ?? ""} />
                 <TaskMembers
                   label={"Meta-lector"}
-                  name={"project.worker.metalector"}
+                  name={projectDetails.metaLector ?? ""}
                 />
               </div>
               <div className="px-7 py-6">
@@ -1021,8 +956,7 @@ const ProjectsDetails: React.FC = () => {
             </div>
           </div>
         </div>
-        {/* Assuming ProjectTaskTable is defined elsewhere */}
-        {/* <ProjectTaskTable tasks={tasksWithDetails} project={project} /> */}
+        <ProjectTaskTable tasks={projectTasks} />
       </div>
       {memberModel && (
         <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
@@ -1039,40 +973,41 @@ const ProjectsDetails: React.FC = () => {
             </div>
             {freelancer.map((member) => (
               <div
-                key={member.id}
+                key={member._id}
                 className="flex justify-between items-center py-3"
               >
                 <div className="flex justify-start items-center">
                   <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
-                    {getInitials(member.name)}
+                    {getInitials(member.firstName)}
+                    {getInitials(member.lastName)}
                   </p>
                   <p className="px-2.5 text-black dark:text-white">
-                    {member.name}
+                    {member.firstName} {member.lastName}
                   </p>
                 </div>
                 <div className="relative">
                   <p
                     className="w-5 h-5 bg-slate-200 text-white flex items-center justify-center cursor-pointer"
-                    onClick={() => toggleDropdown(member.id)}
+                    onClick={() => toggleDropdown(member._id)}
                   >
                     <FontAwesomeIcon
                       icon={faPlus}
                       className="text-sm text-blue-500"
                     />
                   </p>
-                  {dropdownVisible === member.id && (
-                    <div className="absolute right-0 mt-2 z-9999 bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-lg">
+                  {dropdownVisible === member._id && (
+                    <div className="absolute right-0 mt-2 z-99999 bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-lg">
                       <ul>
-                        {getAvailableRoles(member.id).map((role) => (
+                        {getAvailableRoles(member._id).map((role) => (
                           <li
                             key={role}
                             className="px-4 w-30 py-2 cursor-pointer bg-slate-100 dark:bg-dark-gray dark:rounded-none dark:text-white rounded-md hover:bg-slate-200 dark:hover:bg-slate-600"
-                            onClick={() => handleRoleSelect(role, member.id)}
+                            onClick={() => handleRoleSelect(role, member._id)}
                           >
                             {role}
                           </li>
                         ))}
-                        {getAvailableRoles(member.id).length === 0 && (
+                        {getAvailableRoles(member._id).length === 0 && (
                           <li className="px-4 py-2 text-gray-500">
                             No roles available
                           </li>

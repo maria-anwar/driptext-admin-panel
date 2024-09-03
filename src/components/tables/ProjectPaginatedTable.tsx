@@ -71,12 +71,11 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const navigate = useNavigate();
-
-
+  
   const handlePageChange = (page: number) => {
     setPage(page);
   };
-  const formatDate = (dateString: Date | string) => 
+  const formatDate = (dateString: Date | string) => {
     const date = new Date(dateString);
     return format(date, "MMM dd, yyyy"); // "August 2025"
   };
@@ -195,7 +194,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
 
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black  dark:text-white text-sm">
-                      {formatDate(project.plan.endDate)}
+                      {project.plan.endDate === null ? "No Subscription" :   `${formatDate(project.plan.endDate)}`}
                     </p>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">

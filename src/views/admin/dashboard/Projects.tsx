@@ -14,10 +14,12 @@ import { allProjects } from "../../../components/Helpers/AllProjects";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import Loading from "../../../components/Helpers/Loading";
 
 const Projects: React.FC = () => {
   const user = useSelector<any>((state) => state.user);
   const [data, setData] = useState(allProjects);
+  const [loading, setLoading] = useState(true);
   const [showCard, setShowCard] = useState(false); // Default to false to show table initially
   const [showDraft, setShowDraft] = useState(false);
   const [showArchived, setShowArchived] = useState(false);
@@ -25,7 +27,6 @@ const Projects: React.FC = () => {
   const [projectData, setProjectData] = useState([]);
   const [userId, setUserID] = useState(user.user.data.user._id);
   const [userToken, setUserToken] = useState(user.user.token);
-
 
   useEffect(() => {
     let token = userToken;
@@ -41,6 +42,7 @@ const Projects: React.FC = () => {
         const projectDataArray = response.data.projects;
         const allProjects = projectDataArray;
         setProjectData(allProjects);
+        setLoading(false);
       })
       .catch((err) => {
         console.error("Error fetching project details:", err);
@@ -127,10 +129,16 @@ const Projects: React.FC = () => {
                 <ProjectCard projects={projectData} />
               </div>
             ) : (
-              <ProjectPaginatedTable projects={projectData} />
+              <>
+                {loading ? (
+                  <Loading />
+                ) : (
+                  <ProjectPaginatedTable projects={projectData} />
+                )}
+              </>
             ))}
-          {showDraft && <ProjectPaginatedTable projects={data} />}
-          {showArchived && <ProjectPaginatedTable projects={data} />}
+          {showDraft && <ProjectPaginatedTable projects={projectData}  />}
+          {showArchived && <ProjectPaginatedTable projects={projectData} />}
         </div>
       </div>
     </>

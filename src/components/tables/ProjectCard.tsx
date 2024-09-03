@@ -81,7 +81,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
   };
 
   const handleProject = (project: Project) => {
-    navigate("project-details", { state: { project: project } });
+    localStorage.setItem('projectID',project._id);
+    navigate("project-details");
   };
 
   const formatDate = (dateString: Date | string) => {
@@ -103,28 +104,19 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
             <h4 className="text-title-md font-bold text-black dark:text-white my-3">
               {project.projectName}
             </h4>
-            {!project.texter?.trim() &&
-                    !project.lector?.trim() &&
-                    !project.seo?.trim() &&
-                    !project.metaLector?.trim() ? (
-                      <p>Not assigned</p>
-                    ) : (
-                      <div className="flex justify-between items-center">
-                        <WorkerComponent
-                          label="T"
-                          name={project.texter ?? ""}
-                        />
-                        <WorkerComponent
-                          label="L"
-                          name={project.lector ?? ""}
-                        />
-                        <WorkerComponent label="S" name={project.seo ?? ""} />
-                        <WorkerComponent
-                          label="M"
-                          name={project.metaLector ?? ""}
-                        />
-                      </div>
-                    )}
+            {/* {!project.texter?.trim() &&
+            !project.lector?.trim() &&
+            !project.seo?.trim() &&
+            !project.metaLector?.trim() ? (
+              <p>Not assigned</p>
+            ) : ( */}
+              <div className="flex justify-between items-center">
+                <WorkerComponent label="T" name={project.texter ?? ""} />
+                <WorkerComponent label="L" name={project.lector ?? ""} />
+                <WorkerComponent label="S" name={project.seo ?? ""} />
+                <WorkerComponent label="M" name={project.metaLector ?? ""} />
+              </div>
+          
           </div>
 
           <div className="h-3 bg-gray-200 rounded py-6">
