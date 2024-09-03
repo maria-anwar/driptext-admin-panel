@@ -50,7 +50,7 @@ const Users: React.FC = () => {
       .then((response) => {
         const allUsers = response.data.users;
         setUserData(allUsers);
-        setFilteredUserData(allUsers); // Initialize filtered data
+        setFilteredUserData(allUsers); 
         setLoading(false);
       })
       .catch((err) => {

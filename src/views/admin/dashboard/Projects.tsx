@@ -6,6 +6,7 @@ import {
   faTrashAlt,
   faBatteryEmpty,
   faPlus,
+  faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import ProjectPaginatedTable from "../../../components/tables/ProjectPaginatedTable";
@@ -18,13 +19,14 @@ import Loading from "../../../components/Helpers/Loading";
 
 const Projects: React.FC = () => {
   const user = useSelector<any>((state) => state.user);
-  const [data, setData] = useState(allProjects);
   const [loading, setLoading] = useState(true);
   const [showCard, setShowCard] = useState(false); // Default to false to show table initially
   const [showDraft, setShowDraft] = useState(false);
   const [showArchived, setShowArchived] = useState(false);
-
+  const [showSearch, setShowSearch] = useState<boolean>(false);
   const [projectData, setProjectData] = useState([]);
+  const [filteredProjects, setFilteredProjects] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [userId, setUserID] = useState(user.user.data.user._id);
   const [userToken, setUserToken] = useState(user.user.token);
 
@@ -34,20 +36,26 @@ const Projects: React.FC = () => {
     let payload = {
       userId: userId,
     };
-    // "https://driptext-api.vercel.app/api/projects/detail";
 
     axios
       .get(`${import.meta.env.VITE_DB_URL}/admin/getProjects`)
       .then((response) => {
         const projectDataArray = response.data.projects;
-        const allProjects = projectDataArray;
-        setProjectData(allProjects);
+        setProjectData(projectDataArray);
+        setFilteredProjects(projectDataArray); // Set filteredProjects to initial data
         setLoading(false);
       })
       .catch((err) => {
         console.error("Error fetching project details:", err);
       });
   }, [user, userToken, userId]);
+
+  useEffect(() => {
+    const filtered = projectData.filter(project =>
+      project.projectName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredProjects(filtered);
+  }, [searchQuery, projectData]);
 
   const handleCard = (isOn: boolean) => {
     setShowCard(isOn);
@@ -72,6 +80,15 @@ const Projects: React.FC = () => {
       setShowDraft(false);
     }
   };
+
+  const handleSearch = () => {
+    setShowSearch(!showSearch);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
   return (
     <>
       <div className="mx-auto 3xl:px-4">
@@ -92,10 +109,29 @@ const Projects: React.FC = () => {
             onToggle={handleArchived}
           />
         </div>
-        <div className="flex justify-between items-center">
-          <h2 className="text-title-md2 font-semibold text-black dark:text-white">
-            Projects
-          </h2>
+        <div className="flex justify-between items-start flex-col xl:flex-row xl:items-center">
+          <div className="flex justify-start items-start flex-col pb-2 lg:pb-0 lg:flex-row xl:flex-row xl:items-center">
+            <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
+              Projects
+            </h2>
+            <div className="flex items-center mb-2 lg:mb-0 xl:mb-0 lg:pl-12 xl:pl-12">
+              <div
+                onClick={handleSearch}
+                className="h-8 w-8 ring-1 my-2 flex justify-center items-center cursor-pointer rounded mr-2 ring-slate-300 bg-slate-100 dark:bg-transparent"
+              >
+                <FontAwesomeIcon icon={faSearch} />
+              </div>
+              {showSearch && (
+                <input
+                  type="text"
+                  placeholder="Searching..."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  className="rounded ring-1 outline-none py-1 px-4 ring-slate-200 bg-slate-0 dark:bg-transparent w-60 lg:w-60 xl:w-80"
+                />
+              )}
+            </div>
+          </div>
           <Link
             to={""}
             className="inline-flex items-center justify-center gap-2.5 bg-boxdark py-3 text-sm xl:text-base  text-center font-medium hover:text-white text-white hover:bg-opacity-70 px-5 lg:px-8 5xl:px-10"
@@ -105,40 +141,24 @@ const Projects: React.FC = () => {
           </Link>
         </div>
 
-        {/* <div className="flex justify-between items-start  pb-3 flex-col lg:flex-row xl:flex-row md:flex-row gap-4 ">
-           <ol className="flex items-center gap-2">
-            <li>
-              <Link
-                className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
-                to="/dashboard"
-              >
-                Dashboard /
-              </Link>
-            </li>
-            <li className="font-medium text-primary">Projects</li>
-          </ol> 
-        </div>
-        <h2 className="text-title-md2 font-semibold text-black dark:text-white pt-4">
-          Projects
-        </h2>  */}
         <div>
           {!showDraft &&
             !showArchived &&
             (showCard ? (
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 2xl:grid-cols-3 5xl:grid-cols-4 4xl:px-14 pt-8">
-                <ProjectCard projects={projectData} />
+                <ProjectCard projects={filteredProjects} />
               </div>
             ) : (
               <>
                 {loading ? (
                   <Loading />
                 ) : (
-                  <ProjectPaginatedTable projects={projectData} />
+                  <ProjectPaginatedTable projects={filteredProjects} />
                 )}
               </>
             ))}
-          {showDraft && <ProjectPaginatedTable projects={projectData}  />}
-          {showArchived && <ProjectPaginatedTable projects={projectData} />}
+          {showDraft && <ProjectPaginatedTable projects={filteredProjects} />}
+          {showArchived && <ProjectPaginatedTable projects={filteredProjects} />}
         </div>
       </div>
     </>
