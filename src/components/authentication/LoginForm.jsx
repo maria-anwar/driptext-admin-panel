@@ -45,7 +45,7 @@ const LoginForm = () => {
         response.data.data.user.role.title.toLowerCase() === "projectmanger"
       ) {
         dispatch(setUser(response?.data));
-        const expirationTime = Date.now() +(6* 60 * 60 * 1000);
+        const expirationTime = Date.now() +(12* 60 * 60 * 1000);
         localStorage.setItem(
           "auth",
           JSON.stringify({

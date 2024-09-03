@@ -20,6 +20,7 @@ const DropdownUser = () => {
 
   const handleLogout= ()=>{
     localStorage.removeItem('auth')
+    localStorage.removeItem('projectID')
     dispatch(clearPersistedState())
   }
   return (
