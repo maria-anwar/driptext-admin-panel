@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import Breadcrumb from "../../../components/breeadcrumbs/Breadcrumb";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faCheck,
+  faTimes,
+  faChevronDown,
+} from "@fortawesome/free-solid-svg-icons";
 import UserPaginatedTable from "../../../components/tables/UserPaginatedTable";
 import { Link } from "react-router-dom";
+import ToggleSwitch from "../../../components/buttons/ToggleButton";
 
 const users = [
   {
@@ -293,6 +299,8 @@ const Users: React.FC = () => {
   const [showInactive, setShowInactive] = useState(false);
   const [data, setData] = useState(users);
   const [search, setSearch] = useState("");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [toggleValue, setToggleValue] = useState(false);
 
   const handleSearch = () => {
     setShowSearch(!showSearch);
@@ -324,6 +332,23 @@ const Users: React.FC = () => {
     }
 
     setData(filteredData);
+  };
+
+  const handleDropdownToggle = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const handleToggleChange = () => {
+    let filteredData = users;
+    if(!toggleValue){
+
+      filteredData = users.filter((user) => user.permission === "Client");
+      setData(filteredData);
+    }
+    else{
+      setData(filteredData);
+    }
+    setToggleValue(!toggleValue);
   };
 
   return (
@@ -362,14 +387,48 @@ const Users: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center text-left">
-            <input
-              type="checkbox"
-              className="h-5 w-5"
-              checked={showInactive}
-              onChange={handleStatusToggle}
-            />
-            <span className="pl-2">Show inactive users</span>
+          {/* Dropdown Trigger */}
+          <div className="relative">
+            <button
+              onClick={handleDropdownToggle}
+              className="flex items-center border-none rounded text-black bg-gray-200 dark:bg-gray-800 dark:text-white"
+            >
+              <span>Settings</span>
+              <FontAwesomeIcon
+                icon={faChevronDown}
+                className={`ml-2 transition-transform ${
+                  dropdownOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+
+            {/* Dropdown Content */}
+            {dropdownOpen && (
+              <div className="absolute top-full mt-2 w-60 lg:right-0 xl:right-0 bg-white dark:bg-boxdark border border-gray-300 dark:border-gray-700 rounded shadow-lg z-10">
+                <div className="p-4 space-y-4">
+                  {/* Checkbox */}
+                  <div className="flex items-center text-left">
+                    <input
+                      type="checkbox"
+                      className="h-5 w-5"
+                      checked={showInactive}
+                      onChange={handleStatusToggle}
+                    />
+                    <span className="pl-2">Show inactive users</span>
+                  </div>
+
+                  {/* Toggle Button */}
+                  <div className="flex items-center text-left">
+                    <ToggleSwitch
+                      icon={toggleValue ? faCheck : faTimes}
+                      isOn={toggleValue}
+                      onToggle={handleToggleChange}
+                    />
+                    <span className="pl-2">Show leads</span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

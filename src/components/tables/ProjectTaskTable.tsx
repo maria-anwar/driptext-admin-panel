@@ -10,87 +10,51 @@ import "antd/dist/reset.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ToggleSwitch from "../buttons/ToggleButton";
+import TaskDetailModel from "./TaskDetailModel";
 interface Task {
+  actualNumberOfWords: number | null;
+  comments: string | null;
+  createdAt: string; // ISO 8601 date string
+  desiredNumberOfWords: string; // or number, depending on how it is used
+  dueDate: string | null; // ISO 8601 date string or null
+  googleLink: string | null;
+  isActive: "Y" | "N"; // Assuming 'Y' and 'N' are the only possible values
+  keywords: string;
+  lector: string | null;
+  metaLector: string | null;
+  project: string; // or a more specific type if it's an ObjectId
+  published: boolean;
+  readyToWork: boolean;
+  seo: string | null;
   status: string;
-  deadline: string;
-  wordCount: number;
-  topic: string;
-  textType: string;
-  googleLink: string;
-  worker: Worker;
-}
-
-interface StripeLink {
-  domain: string;
-  subdomain: string;
-}
-
-interface Worker {
-  texter: string;
-  lector: string;
-  SEO: string;
-  metalector: string;
-}
-
-interface Customer {
-  name: string;
-  email: string;
-}
-
-interface Project {
-  projectName: string;
-  status: string;
-  googleLink: string;
-  stripeLink: StripeLink;
-  onboarding: string;
-  performancePeriod: string;
-  task: {
-    totalTasks: number;
-    usedTasks: number;
-    openTasks: number;
-    finalTasks: number;
-  };
-  worker: Worker;
-  created: string | Date;
-  customer: Customer;
+  taskId: number;
+  taskName: string;
+  texter: string | null;
+  topic: string | null;
+  type: string | null;
+  updatedAt: string; // ISO 8601 date string
+  __v: number;
+  _id: string; // or a more specific type if it's an ObjectId
 }
 
 interface ProjectProps {
   tasks: Task[];
-  project: Project;
 }
 
-const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
+const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks }) => {
   const [showDetailsDialog, setShowDetailsDialog] = useState<boolean>(false);
-  const [task, setTask] = useState<null>(null);
-  const [date, setDate] = useState<null>(null);
-  const [showCard, setShowCard] = useState(true);
+  const [task, setTask] = useState({});
 
-  useEffect(() => {
-    if (task) {
-      const deadlineDate = new Date(task.deadline);
-      setDate(deadlineDate);
-    }
-  }, [task]);
-
+  
   const getInitials = (name: string): string => {
+    if (name === "") return "";
     return name
       .split(" ")
       .map((word) => word[0].toUpperCase())
       .join("");
   };
 
-  const handleCancel = (e) => {
-    e.preventDefault();
-    alert("Cancel clicked");
-    setShowDetailsDialog(false);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert("Submit Clicked");
-    setShowDetailsDialog(false);
-  };
+ 
 
   const handleTasks = (task: any) => {
     setTask(task);
@@ -101,30 +65,8 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
     setShowDetailsDialog(false);
   };
 
-  const handlePublishedTask = () => {
-    alert("Published Task Clicked");
-    setShowCard(!showCard);
-  };
 
-  const TaskMember: React.FC<{ label: string; name: string }> = ({
-    label,
-    name,
-  }) => {
-    return (
-      <div className="flex justify-between items-center py-2">
-        <div className="flex justify-center items-center">
-          <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
-            {getInitials(name)}
-          </p>
-          <p className="pl-4">{name}</p>
-        </div>
-        <div className="flex justify-center items-center bg-green-600 rounded-full px-2 text-white">
-          <p className=" px-1">{label}</p>
-          <FontAwesomeIcon className=" px-1" icon={faCheck} />
-        </div>
-      </div>
-    );
-  };
+
 
   const WorkerComponent: React.FC<{ label: string; name: string }> = ({
     label,
@@ -180,14 +122,14 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
                 <tr className="text-left" key={index}>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex justify-start items-start flex-col">
-                      <p className="text-black dark:text-white">
-                        {task.status.toUpperCase()}
+                      <p className="text-black dark:text-white uppercase">
+                        {task.status}
                       </p>
                     </div>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <a
-                      href={task.googleLink}
+                      href={"task.taskId"}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-500 underline-none flex items-center justify-start"
@@ -214,7 +156,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
                           ></path>
                         </g>
                       </svg>
-                      <span className="px-1">{"MP-g649"}</span>
+                      <span className="px-1">{task.taskName}</span>
                     </a>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -256,33 +198,30 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
                           ></path>{" "}
                         </g>
                       </svg>
-                      <span className="px-1">{task.deadline}</span>
+                      <span className="px-1">{task.dueDate ?? ""}</span>
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white ">
-                      {task.wordCount}/1500
+                      {task.actualNumberOfWords}/{task.desiredNumberOfWords}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white text-sm">
-                      {task.topic}
+                      {task.keywords ?? ""}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
-                      {task.textType}
+                      {task.type ?? ""}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex justify-between items-center">
-                      <WorkerComponent label="T" name={task.worker.texter} />
-                      <WorkerComponent label="L" name={task.worker.lector} />
-                      <WorkerComponent label="S" name={task.worker.SEO} />
-                      <WorkerComponent
-                        label="M"
-                        name={task.worker.metalector}
-                      />
+                      <WorkerComponent label="T" name={task.texter ?? ""} />
+                      <WorkerComponent label="L" name={task.lector ?? ""} />
+                      <WorkerComponent label="S" name={task.seo ?? ""} />
+                      <WorkerComponent label="M" name={task.metaLector ?? ""} />
                     </div>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -303,223 +242,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks, project }) => {
         </div>
       </div>
       {showDetailsDialog && (
-        <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
-          <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-6/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
-            <div className="flex justify-between items-center mb-2">
-              <h2 className="text-xl font-bold dark:text-white">
-                Task Details
-              </h2>
-              <FontAwesomeIcon
-                className="cursor-pointer text-lg dark:text-white text-black"
-                onClick={hanldeCloseAllInfo}
-                icon={faTimes}
-              />
-            </div>
-            <div className="flex justify-end items-end flex-col py-2 ">
-              <label
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                htmlFor="wordReal"
-              >
-                Ready to Work
-              </label>
-              <ToggleSwitch
-                icon={showCard? faTimes:faCheck}
-                isOn={showCard}
-                onToggle={handlePublishedTask}
-              />
-            </div>
-
-            <div className="space-y-4 mt-4">
-              <div className="flex justify-between items-center w-full ">
-                <div className="w-1/2">
-                  <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Status
-                  </p>
-                  <p className="w-ful py-0  text-black dark:text-white">
-                    {task.status.toUpperCase()}
-                  </p>
-                </div>
-                <div className="w-1/2 flex justify-between items-center ">
-                  <div className="w-1/2 mr-1">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="wordReal"
-                    >
-                      Word Real
-                    </label>
-                    <p className="w-ful py-2  text-black dark:text-white">
-                      {task.wordCount}
-                    </p>
-                  </div>
-                  <div className="w-1/2 ml-1">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="wordExpected"
-                    >
-                      Word Expected
-                    </label>
-                    <input
-                      className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="number"
-                      name="wordExpected"
-                      id="wordExpected"
-                      placeholder="1500"
-                      min={0}
-                      value={1500}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-between items-center w-full ">
-                <div className="w-1/2 mr-1">
-                  <label
-                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="dueUntil"
-                  >
-                    Due until
-                  </label>
-                  <DatePicker
-                    className="w-full  rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                    selected={date}
-                    onChange={(date: Date | null) => setDate(date)}
-                    minDate={new Date()} // Prevents selecting past dates
-                    dateFormat="yyyy-MM-dd"
-                  />
-                </div>
-                <div className="w-1/2 ml-1">
-                  <label
-                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="fullName"
-                  >
-                    Document
-                  </label>
-                  <p className="w-ful py-0  text-black dark:text-white">
-                    <a
-                      href={task.googleLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500 underline-none"
-                    >
-                      <FontAwesomeIcon
-                        icon={faFolder}
-                        className="text-blue-500"
-                      />
-                      {""} {"MP-g649"}
-                    </a>
-                  </p>
-                </div>
-              </div>
-              <div className="w-full flex justify-between items-center">
-                <div className="w-1/2 mr-1">
-                  <label
-                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="Topic"
-                  >
-                    Topic
-                  </label>
-                  <input
-                    className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                    type="text"
-                    name="Topic"
-                    id="Topic"
-                    placeholder="Topic"
-                    value={task.textType}
-                  />
-                </div>
-                <div className="w-1/2 ml-1">
-                  <label
-                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="dropdown"
-                  >
-                    Text type
-                  </label>
-                  <div className="relative">
-                    {" "}
-                    <select
-                      id="dropdown"
-                      className="w-full appearance-none rounded border border-transparent bg-gray py-2.5 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                    >
-                      <option>Guide</option>
-                      <option>Shop (Category)</option>
-                      <option>Shop (Product)</option>
-                      <option>Definition/Wiki</option>
-                      <option>Shop (Home page)</option>
-                      <option>CMS page</option>
-                    </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                      {/* Custom arrow icon */}
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M19 9l-7 7-7-7"
-                        ></path>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="w-full">
-                <label
-                  className="mb-3 block text-sm font-medium text-black dark:text-white"
-                  htmlFor="Keywords"
-                >
-                  Keywords
-                </label>
-                <input
-                  className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                  type="text"
-                  name="Keywords"
-                  id="Keywords"
-                  placeholder="Keywords"
-                  defaultValue={""}
-                />
-              </div>
-              <div className="w-full">
-                <label
-                  className="mb-3 block text-sm font-medium text-black dark:text-white"
-                  htmlFor="comment"
-                >
-                  Comment
-                </label>
-                <textarea
-                  id="comment"
-                  className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                ></textarea>
-              </div>
-              <div className="w-full pt-6">
-                <h2>Members</h2>
-                <TaskMember name={task.worker.texter} label="Texter" />
-                <TaskMember name={task.worker.lector} label="Lector" />
-                <TaskMember name={task.worker.SEO} label="Seo" />
-                <TaskMember name={task.worker.metalector} label="Meta-Lector" />
-              </div>
-              <div className="flex justify-end items-center pt-6 pb-2 space-x-4">
-                <button
-                  className="flex justify-center bg-transparent rounded border border-stroke py-1.5 px-5 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                  type="submit"
-                  onClick={handleCancel}
-                >
-                  Cancel
-                </button>
-                <button
-                  className="flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
-                  type="submit"
-                  onClick={handleSubmit}
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+       <TaskDetailModel task={task} closeModel={hanldeCloseAllInfo}/>
       )}
     </div>
   );
