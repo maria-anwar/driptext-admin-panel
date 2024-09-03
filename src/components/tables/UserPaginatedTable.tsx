@@ -5,12 +5,19 @@ import { Pagination } from "antd";
 import "antd/dist/reset.css"; // Import Ant Design styles
 import "./custompagination.css";
 
+interface Role {
+  _id: string;
+  title: string;
+  isActive: "Y" | "N";
+}
+
 interface User {
-  id: number;
-  name: string;
+  _id: string;
   email: string;
-  status: "Active" | "Inactive";
-  permission: "Client" | "Worker" | "Administrator";
+  firstName: string;
+  lastName: string;
+  isActive: "Y" | "N";
+  role: Role;
 }
 
 interface PaginatedTableProps {
@@ -32,8 +39,12 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users }) => {
     setPage(1); // Reset to first page when rows per page changes
   };
 
-  const handleStatusToggle = (user: User) => {
-    alert(`Status toggled for ${user.name}`);
+  const handleActivite = (id: string) => {
+    alert(`Status Activete for ${id}`);
+  };
+
+  const handleDeactivite = (id: string) => {
+    alert(`Status Deactivete for ${id}`);
   };
 
   const offset = (page - 1) * rowsPerPage;
@@ -53,7 +64,7 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users }) => {
                   Email
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-medsemiboldium text-black dark:text-white">
-                  Permission
+                  Role
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-medsemiboldium text-black dark:text-white">
                   Status
@@ -65,27 +76,35 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users }) => {
             </thead>
             <tbody>
               {paginatedUsers.map((user) => (
-                <tr className="text-left hover:bg-slate-100 dark:hover:bg-boxdark-2" key={user.id}>
+                <tr
+                  className="text-left hover:bg-slate-100 dark:hover:bg-boxdark-2"
+                  key={user.id}
+                >
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex justify-start items-center">
-                    <p className="text-black dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
-                      {`${user.name.split(" ")[0][0]}${
-                        user.name.split(" ").slice(-1)[0][0]
-                      }`}
-                    </p>
-                    <p className="text-black pl-2 dark:text-white">{user.name}</p>
+                      <p className="text-black uppercase dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
+                        {user.firstName.charAt(0)}
+                        {user.lastName == "-" ? "" : user.lastName.charAt(0)}
+                      </p>
+                      <p className="text-black pl-2 dark:text-white capitalize">
+                        {user.firstName} {user.lastName}
+                      </p>
                     </div>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black  dark:text-white">{user.email}</p>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black  dark:text-white">
-                      {user.permission}
+                    <p className="text-black  dark:text-white capitalize">
+                      {user.role.title === "ProjectManger"
+                        ? "Project Manager"
+                        : user.role.title}
                     </p>
                   </td>
                   <td className="border-b  border-[#eee] py-5  px-4 dark:border-strokedark">
-                    <p className="text-black  dark:text-white">{user.status}</p>
+                    <p className="text-black  dark:text-white">
+                      {user.isActive === "Y" ? "Active" : "Inactive"}
+                    </p>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark   ">
                     <div className="flex">
@@ -93,7 +112,7 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users }) => {
                         className={`ring-1 w-6 h-6 flex justify-center items-center rounded cursor-pointer 
                         ring-red-500
                       `}
-                        onClick={() => handleStatusToggle(user)}
+                        onClick={() => handleDeactivite(user._id)}
                       >
                         <FontAwesomeIcon
                           className={`
@@ -102,12 +121,12 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users }) => {
                           icon={faTrashCan}
                         />
                       </div>
-                      {user.status === "Inactive" && (
+                      {user.isActive === "N" && (
                         <div
                           className={`ring-1 w-6 h-6 flex justify-center items-center rounded cursor-pointer 
                         ring-green-500 ml-2 bg-green-500 
                       `}
-                          onClick={() => alert("activate")}
+                          onClick={() => handleActivite(user._id)}
                         >
                           <FontAwesomeIcon
                             className="text-white"
