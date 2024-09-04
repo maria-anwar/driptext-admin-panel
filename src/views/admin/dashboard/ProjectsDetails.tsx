@@ -209,6 +209,66 @@ const ProjectsDetails: React.FC = () => {
     setDropdownVisible((prev) => (prev === memberId ? null : memberId));
   };
 
+  const handleExportData=(tasks)=>{
+      const ws = XLSX.utils.json_to_sheet(tasks, {
+        header: [
+          'actualNumberOfWords',
+          'comments',
+          'createdAt',
+          'desiredNumberOfWords',
+          'dueDate',
+          'googleLink',
+          'isActive',
+          'keywords',
+          'lector',
+          'metaLector',
+          'project',
+          'published',
+          'readyToWork',
+          'seo',
+          'status',
+          'taskId',
+          'taskName',
+          'texter',
+          'topic',
+          'type',
+          'updatedAt',
+          '__v',
+          '_id'
+        ]
+      });
+      ws['!cols'] = [
+        { wpx: 150 },
+        { wpx: 150 }, 
+        { wpx: 150 }, 
+        { wpx: 100 }, 
+        { wpx: 100 }, 
+        { wpx: 100 }, 
+        { wpx: 100 }, 
+        { wpx: 100 },
+        { wpx: 100 }, 
+        { wpx: 150 }, 
+        { wpx: 100 }, 
+        { wpx: 100 }, 
+        { wpx: 100 },
+        { wpx: 100 }, 
+        { wpx: 100 }, 
+        { wpx: 100 }, 
+        { wpx: 100 }, 
+        { wpx: 100 }, 
+        { wpx: 100 }, 
+        { wpx: 100 }, 
+        { wpx: 150 }, 
+        { wpx: 100 }, 
+        { wpx: 150 }, 
+        { wpx: 100 }  
+      ];
+  
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Tasks');
+      XLSX.writeFile(wb, 'tasks.xlsx');
+  }
+
   const TaskMembers: React.FC<{ label: string; name: string }> = ({
     label,
     name,
@@ -766,7 +826,7 @@ const ProjectsDetails: React.FC = () => {
                     )}
                     <button
                       onClick={() => {
-                        alert("download");
+                        handleExportData(projectTasks);
                       }}
                       className="w-1/2 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none ml-1.5 flex justify-center items-center border-none"
                     >

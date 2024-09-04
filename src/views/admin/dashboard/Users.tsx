@@ -50,7 +50,7 @@ const Users: React.FC = () => {
       .then((response) => {
         const allUsers = response.data.users;
         setUserData(allUsers);
-        setFilteredUserData(allUsers); 
+        setFilteredUserData(allUsers);
         setLoading(false);
       })
       .catch((err) => {
@@ -115,7 +115,7 @@ const Users: React.FC = () => {
 
   const handleToggleClient = () => {
     setToggleClient(!toggleClient);
-    if (toggleLeads) setToggleLeads(false); 
+    if (toggleLeads) setToggleLeads(false);
   };
 
   return (
@@ -123,21 +123,23 @@ const Users: React.FC = () => {
       {loading ? (
         <Loading />
       ) : (
-        <div className="mx-auto 3xl:px-6">
-          <div className="flex flex-col sm:flex-row items-start justify-between lg:items-center xl:items-center">
+        <div className="mx-auto 3xl:px-6 py-3">
+          <ol className="flex items-center gap-2 text-left">
+            <li>
+              <Link
+                className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
+                to="/dashboard"
+              >
+                Dashboard /
+              </Link>
+            </li>
+            <li className="font-medium text-primary">Users</li>
+          </ol>
+          <div className="flex flex-col sm:flex-row items-start justify-between lg:items-center xl:items-center pt-5 pb-3">
             <div className="flex flex-col sm:flex-row gap-2 lg:gap-30 xl:gap-30 items-start lg:items-center xl:items-center">
-              <ol className="flex items-center gap-2 text-left">
-                <li>
-                  <Link
-                    className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
-                    to="/dashboard"
-                  >
-                    Dashboard /
-                  </Link>
-                </li>
-                <li className="font-medium text-primary">Users</li>
-              </ol>
-
+              <h2 className="text-title-md2 font-semibold text-black dark:text-white py-1">
+                Users
+              </h2>
               <div className="flex items-center mb-2 lg:mb-0 xl:mb-0">
                 <div
                   onClick={handleSearch}
@@ -210,9 +212,6 @@ const Users: React.FC = () => {
             </div>
           </div>
 
-          <h2 className="text-title-md2 font-semibold text-black dark:text-white py-2">
-            Users
-          </h2>
           <UserPaginatedTable users={filteredUserData} />
         </div>
       )}
