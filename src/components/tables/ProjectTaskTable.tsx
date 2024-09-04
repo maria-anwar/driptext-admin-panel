@@ -11,6 +11,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ToggleSwitch from "../buttons/ToggleButton";
 import TaskDetailModel from "./TaskDetailModel";
+
 interface Task {
   actualNumberOfWords: number | null;
   comments: string | null;
