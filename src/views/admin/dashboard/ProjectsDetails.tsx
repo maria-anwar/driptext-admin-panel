@@ -13,19 +13,21 @@ import {
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useLocation } from "react-router-dom";
-import ProjectTaskTable from "../../../components/tables/ProjectTaskTable";
-import AccordionData from "../../../components/buttons/Accordion";
+import ProjectTaskTable from "../../../components/ProjectDetails/ProjectTaskTable";
+import AccordionData from "../../../components/ProjectDetails/Accordion";
 import * as XLSX from "xlsx";
 import Breadcrumb from "../../../components/breeadcrumbs/Breadcrumb";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { format } from "date-fns";
-import TaskComponent from "../../../components/TaskComponent";
-import DeleteModel from "../../../components/DeleteModel";
+import TaskComponent from "../../../components/ProjectDetails/TaskComponent";
+import DeleteModel from "../../../components/ProjectDetails/DeleteModel";
 import Loading from "../../../components/Helpers/Loading";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import MemberModal from "../../../components/MemberModel";
+import MemberModal from "../../../components/ProjectDetails/MemberModel";
+import AddModel from "../../../components/ProjectDetails/AddModel";
+import TaskMembers from "../../../components/ProjectDetails/TaskMembers";
 
 const ProjectsDetails: React.FC = () => {
   const location = useLocation();
@@ -303,53 +305,7 @@ const ProjectsDetails: React.FC = () => {
     XLSX.writeFile(wb, "tasks.xlsx");
   };
 
-  const TaskMembers: React.FC<{ label: string; name: string }> = ({
-    label,
-    name,
-  }) => {
-    return name === "" ? (
-      <></>
-    ) : (
-      <div>
-        <p className="text-sm">{label}</p>
-        <div className="flex justify-between items-center py-1.5">
-          <div className="flex justify-start items-center">
-            <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
-              {getInitials(name)}
-            </p>
-            <p className="px-2.5 text-black dark:text-white">{name}</p>
-          </div>
-          <div className="flex justify-start items-center">
-            <svg
-              fill="#3CB371"
-              version="1.1"
-              id="Layer_1"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 512 512"
-              className="w-3.5 h-3.5 text-blue-500  cursor-pointer mx-6"
-              onClick={() => alert(`Edit ${label}`)}
-            >
-              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-              <g
-                id="SVGRepo_tracerCarrier"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              ></g>
-              <g id="SVGRepo_iconCarrier">
-                <path d="M447.1,86.2C400.3,33.4,332.2,0,256,0C114.6,0,0,114.6,0,256h64c0-106.1,85.9-192,192-192c58.5,0,110.4,26.5,145.5,67.8L341.3,192H512V21.3L447.1,86.2z M256,448c-58.5,0-110.4-26.5-145.5-67.8l60.2-60.2H0v170.7l64.9-64.9c46.8,52.8,115,86.2,191.1,86.2c141.4,0,256-114.6,256-256h-64C448,362.1,362.1,448,256,448z M298.7,256c0-23.6-19.1-42.7-42.7-42.7s-42.7,19.1-42.7,42.7s19.1,42.7,42.7,42.7S298.7,279.6,298.7,256z"></path>
-              </g>
-            </svg>
 
-            <FontAwesomeIcon
-              icon={faTimes}
-              className="text-lg text-red-500 cursor-pointer"
-              onClick={() => alert(`Delete ${label}`)}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  };
 
   function formatDateString(dateString: string): string | null {
     const date = new Date(dateString);
@@ -521,147 +477,7 @@ const ProjectsDetails: React.FC = () => {
                       <FontAwesomeIcon icon={faPlus} className="text-sm px-2" />
                     </button>
                     {addModel && (
-                      <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
-                        <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
-                          <div className="flex justify-between items-center mb-5">
-                            <h2 className="text-xl font-bold dark:text-white pr-12">
-                              Add Task
-                            </h2>
-                            <FontAwesomeIcon
-                              className="cursor-pointer text-lg text-red-500 pl-12"
-                              onClick={handleCloseAdd}
-                              icon={faTimes}
-                            />
-                          </div>
-                          <div>
-                            <div className="w-full py-2">
-                              <label
-                                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                                htmlFor="dueUntil"
-                              >
-                                Due until
-                              </label>
-                              <DatePicker
-                                className="w-full rounded border border-transparent bg-gray-100 py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                minDate={new Date()}
-                                selected={"2025-01-01"}
-                                onChange={(date: Date | null) =>
-                                  setDate("2025-04-05")
-                                }
-                                dateFormat="yyyy-MM-dd"
-                                placeholderText="Select a date"
-                              />
-                            </div>
-
-                            <div className="w-full py-2">
-                              <label
-                                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                                htmlFor="topic"
-                              >
-                                Topic
-                              </label>
-                              <input
-                                className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                type="text"
-                                name="topic"
-                                id="topic"
-                                placeholder="topic"
-                                defaultValue={""}
-                              />
-                            </div>
-                            <div className="w-full py-2">
-                              <label
-                                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                                htmlFor="Keywords"
-                              >
-                                Keyword
-                              </label>
-                              <input
-                                className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                type="text"
-                                name="Keyword"
-                                id="Keywords"
-                                placeholder="Keywords"
-                                defaultValue={""}
-                              />
-                            </div>
-                            <div className="w-full py-2">
-                              <label
-                                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                                htmlFor="dropdown"
-                              >
-                                Text type
-                              </label>
-                              <div className="relative">
-                                {" "}
-                                <select
-                                  id="dropdown"
-                                  className="w-full appearance-none rounded border border-transparent bg-gray py-2.5 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                >
-                                  <option>Guide</option>
-                                  <option>Shop (Category)</option>
-                                  <option>Shop (Product)</option>
-                                  <option>Definition/Wiki</option>
-                                  <option>Shop (Home page)</option>
-                                  <option>CMS page</option>
-                                </select>
-                                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                  {/* Custom arrow icon */}
-                                  <svg
-                                    className="w-4 h-4"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth="2"
-                                      d="M19 9l-7 7-7-7"
-                                    ></path>
-                                  </svg>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="w-full py-2">
-                              <label
-                                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                                htmlFor="wordExpected"
-                              >
-                                Word Count Expected
-                              </label>
-                              <input
-                                className="w-full  rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                type="number"
-                                name="wordExpected"
-                                id="wordExpected"
-                                placeholder="1500"
-                                min={0}
-                              />
-                            </div>
-                            <div className="w-full py-2">
-                              <label
-                                className="mb-3 block text-sm font-medium text-black dark:text-white "
-                                htmlFor="comment"
-                              >
-                                Comment
-                              </label>
-                              <textarea
-                                id="comment"
-                                rows={3}
-                                className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                              ></textarea>
-                            </div>
-                            <button
-                              className="w-full my-3 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
-                              type="submit"
-                            >
-                              Save
-                            </button>
-                          </div>
-                        </div>
-                      </div>
+                      <AddModel handleCloseAdd={handleCloseAdd}/>
                     )}
                     <button
                       onClick={handleEdit}
@@ -867,7 +683,7 @@ const ProjectsDetails: React.FC = () => {
                           </div>
                         </div>
                       )}
-                      <button
+                    <button
                         onClick={() => {
                           handleExportData(projectTasks);
                         }}
@@ -878,7 +694,7 @@ const ProjectsDetails: React.FC = () => {
                           icon={faUpload}
                           className="text-sm px-2"
                         />
-                      </button>
+                    </button>
                     </div>
                     <button
                       onClick={handleDelete}
