@@ -153,7 +153,7 @@ const ProjectsDetails: React.FC = () => {
       if (isExcelFile) {
         setFile(selectedFile);
         setFileName(selectedFile.name);
-        e.target.value = ""; 
+        e.target.value = "";
       } else {
         setFileName("Please select a valid Excel file");
         setFile(null);
@@ -187,7 +187,7 @@ const ProjectsDetails: React.FC = () => {
       try {
         const data = await readFile(file);
         const workbook = XLSX.read(data, { type: "array" });
-        const sheetName = workbook.SheetNames[0]; 
+        const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet);
 

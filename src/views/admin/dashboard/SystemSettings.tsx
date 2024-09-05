@@ -16,14 +16,18 @@ const SystemSettings: React.FC = () => {
               >
                 Texter Price
               </label>
+              <div className="relative flex justify-start items-center">
+      
               <input
-                className="w-full rounded border border-transparent  bg-gray py-3 px-6 text-black focus:border-primary focus-visible:outline-none  dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                className="w-full rounded border border-transparent  bg-gray py-3 px-8 text-black focus:border-primary focus-visible:outline-none  dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                 type="number"
                 name="texterPrice"
                 id="texterPrice"
                 placeholder="0.0076"
                 defaultValue={"0.0076"}
               />
+              <span className="absolute dark:text-white text-base transform translate-y-0 left-5">€</span>
+              </div>
             </div>
             <div className="mb-7">
               <label
@@ -32,14 +36,17 @@ const SystemSettings: React.FC = () => {
               >
                 Lector Price
               </label>
-              <input
-                className="w-full rounded border border-transparent  bg-gray py-3 px-6 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                type="number"
-                name="lectorPrice"
-                id="lectorPrice"
-                placeholder="0.0024"
-                defaultValue={"0.057"}
-              />
+              <div className="relative flex justify-start items-center">
+                <input
+                  className="w-full rounded border border-transparent  bg-gray py-3 px-8 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                  type="number"
+                  name="lectorPrice"
+                  id="lectorPrice"
+                  placeholder="0.0024"
+                  defaultValue={"0.057"}
+                />
+               <span className="absolute dark:text-white text-base transform translate-y-0 left-5">€</span>
+              </div>
             </div>
             <div className="mb-7">
               <label
@@ -48,14 +55,17 @@ const SystemSettings: React.FC = () => {
               >
                 Seo Price
               </label>
+              <div className="relative flex justify-start items-center">
               <input
-                className="w-full rounded border border-transparent  bg-gray py-3 px-6 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                className="w-full rounded border border-transparent  bg-gray py-3 px-8 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                 type="number"
                 name="seoPrice"
                 id="seoPrice"
                 placeholder="0.0045"
                 defaultValue={"0.856"}
               />
+              <span className="absolute dark:text-white text-base transform translate-y-0 left-5">€</span>
+              </div>
             </div>
 
             <div className="mb-7">

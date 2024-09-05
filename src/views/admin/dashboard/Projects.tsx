@@ -92,7 +92,19 @@ const Projects: React.FC = () => {
   return (
     <>
       <div className="mx-auto 3xl:px-4">
-        <div className="flex items-center justify-end space-x-4 mb-4">
+        <div className="flex items-center justify-between space-x-4 mb-6 mt-2">
+        <ol className="flex items-center gap-2 text-left">
+            <li>
+              <Link
+                className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
+                to="/dashboard"
+              >
+                Dashboard /
+              </Link>
+            </li>
+            <li className="font-medium text-primary">Projects</li>
+          </ol>
+          <div>
           <ToggleSwitch
             icon={faThLarge}
             isOn={showCard}
@@ -108,6 +120,7 @@ const Projects: React.FC = () => {
             isOn={showArchived}
             onToggle={handleArchived}
           />
+          </div>
         </div>
         <div className="flex justify-between items-start flex-col xl:flex-row xl:items-center">
           <div className="flex justify-start items-start flex-col pb-2 lg:pb-0 lg:flex-row xl:flex-row xl:items-center">
