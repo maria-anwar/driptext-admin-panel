@@ -1,10 +1,16 @@
 import React, { ChangeEvent, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFolder, faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFolder,
+  faTimes,
+  faCheck,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import "antd/dist/reset.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ToggleSwitch from "../buttons/ToggleButton";
+import MemberModal from "../MemberModel";
 
 interface Task {
   actualNumberOfWords: number | null;
@@ -48,9 +54,18 @@ interface FormData {
 const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   task,
   closeModel,
+  freelancer
 }) => {
-  const [date, setDate] = useState<Date | null>(task.dueDate ? new Date(task.dueDate) : null);
+  const [date, setDate] = useState<Date | null>(
+    task.dueDate ? new Date(task.dueDate) : null
+  );
+  const allRoles = ["Texter", "Lector", "SEO", "Meta-lector"];
   const [showCard, setShowCard] = useState(task.readyToWork);
+  const [memberModel, setMemberModel] = useState(false);
+  const [selectedRoles, setSelectedRoles] = useState<{ [key: number]: string }>(
+    {}
+  );
+  const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [formData, setFormData] = useState<FormData>({
     desiredWords: task.desiredNumberOfWords,
     topic: task.topic,
@@ -58,11 +73,39 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     keywords: task.keywords,
     comments: task.comments,
   });
+  const handleCloseMemberModel = () => {
+    setMemberModel(false);
+  };
+  
 
-  const handleEditData = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const toggleDropdown = (memberId: number) => {
+    setDropdownVisible((prev) => (prev === memberId ? null : memberId));
+  };
+  const getAvailableRoles = (memberId: number) => {
+    const usedRoles = Object.values(selectedRoles);
+    return allRoles.filter((role) => !usedRoles.includes(role));
+  };
+  const handleRoleSelect = (role: string, memberId: number) => {
+    setSelectedRoles((prevRoles) => ({
+      ...prevRoles,
+      [memberId]: role,
+    }));
+    setDropdownVisible(null);
+    alert(`Added member ${memberId} as ${role}`);
+  };
+  const handleMembers = () => {
+    setMemberModel(true);
+    setDropdownVisible(null);
+  };
+
+
+
+  const handleEditData = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
 
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
@@ -71,7 +114,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
 
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
@@ -96,24 +139,53 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     if (!name) return "";
     return name
       .split(" ")
-      .map(word => word[0].toUpperCase())
+      .map((word) => word[0].toUpperCase())
       .join("");
   };
 
-  const TaskMember: React.FC<{ label: string; name: string }> = ({ label, name }) => {
+  const TaskMember: React.FC<{ label: string; name: string }> = ({
+    label,
+    name,
+  }) => {
     return (
       <div>
         {name ? (
-          <div className="flex justify-between items-center py-2">
-            <div className="flex justify-center items-center">
-              <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
-                {getInitials(name)}
-              </p>
-              <p className="pl-4">{name}</p>
-            </div>
-            <div className="flex justify-center items-center bg-green-600 rounded-full px-2 text-white">
-              <p className="px-1">{label}</p>
-              <FontAwesomeIcon className="px-1" icon={faCheck} />
+          <div>
+            <p className="text-sm">{label}</p>
+            <div className="flex justify-between items-center py-2">
+              <div className="flex justify-start items-center">
+                <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
+                  {getInitials(name)}
+                </p>
+                <p className="px-2.5 text-black dark:text-white">{name}</p>
+              </div>
+              <div className="flex justify-start items-center">
+                <svg
+                  fill="#3CB371"
+                  version="1.1"
+                  id="Layer_1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                  className="w-3.5 h-3.5 text-blue-500  cursor-pointer mx-6"
+                  onClick={() => alert(`Edit ${label}`)}
+                >
+                  <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path d="M447.1,86.2C400.3,33.4,332.2,0,256,0C114.6,0,0,114.6,0,256h64c0-106.1,85.9-192,192-192c58.5,0,110.4,26.5,145.5,67.8L341.3,192H512V21.3L447.1,86.2z M256,448c-58.5,0-110.4-26.5-145.5-67.8l60.2-60.2H0v170.7l64.9-64.9c46.8,52.8,115,86.2,191.1,86.2c141.4,0,256-114.6,256-256h-64C448,362.1,362.1,448,256,448z M298.7,256c0-23.6-19.1-42.7-42.7-42.7s-42.7,19.1-42.7,42.7s19.1,42.7,42.7,42.7S298.7,279.6,298.7,256z"></path>
+                  </g>
+                </svg>
+
+                <FontAwesomeIcon
+                  icon={faTimes}
+                  className="text-lg text-red-500 cursor-pointer"
+                  onClick={() => alert(`Delete ${label}`)}
+                />
+              </div>
             </div>
           </div>
         ) : (
@@ -167,7 +239,9 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                   Word Real
                 </label>
                 <p className="w-full py-2 text-black dark:text-white">
-                  {task.actualNumberOfWords !== null ? task.actualNumberOfWords : "N/A"}
+                  {task.actualNumberOfWords !== null
+                    ? task.actualNumberOfWords
+                    : "N/A"}
                 </p>
               </div>
               <div className="w-1/2 ml-1">
@@ -180,7 +254,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                 <input
                   className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                   type="number"
-                  name="desiredWords"dfgdfg
+                  name="desiredWords"
                   id="desiredWords"
                   placeholder="1500"
                   min={0}
@@ -240,7 +314,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                 name="topic"
                 id="topic"
                 placeholder="Topic"
-                value={formData.topic || ''}
+                value={formData.topic || ""}
                 onChange={handleEditData}
               />
             </div>
@@ -256,7 +330,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                   id="type"
                   name="type"
                   className="w-full appearance-none rounded border border-transparent bg-gray py-2.5 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                  value={formData.type || ''}
+                  value={formData.type || ""}
                   onChange={handleSelectChange}
                 >
                   <option value="">Select Type</option>
@@ -300,7 +374,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
               name="keywords"
               id="keywords"
               placeholder="Keywords"
-              value={formData.keywords || ''}
+              value={formData.keywords || ""}
               onChange={handleEditData}
             />
           </div>
@@ -314,17 +388,36 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
             <textarea
               id="comments"
               name="comments"
-              value={formData.comments || ''}
+              value={formData.comments || ""}
               onChange={handleEditData}
               className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
             ></textarea>
           </div>
           <div className="w-full pt-6">
-            <h2>Members</h2>
-            <TaskMember name={task.texter ?? ""} label="Texter" />
-            <TaskMember name={task.lector ?? ""} label="Lector" />
-            <TaskMember name={task.seo ?? ""} label="SEO" />
-            <TaskMember name={task.metaLector ?? ""} label="Meta-Lector" />
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="font-medium text-black dark:text-white">
+                Project members
+              </h3>
+              <p
+                className="w-5 h-5 bg-blue-500 text-white flex items-center justify-center cursor-pointer"
+                onClick={handleMembers}
+              >
+                <FontAwesomeIcon icon={faPlus} className="text-sm" />
+              </p>
+              {memberModel && <MemberModal isOpen={memberModel}
+            freelancer={freelancer}
+            handleCloseMemberModel={handleCloseMemberModel}
+            toggleDropdown={toggleDropdown}
+            dropdownVisible={dropdownVisible}
+            getInitials={getInitials}
+            getAvailableRoles={getAvailableRoles}
+            handleRoleSelect={handleRoleSelect}/>}
+            </div>
+
+            <TaskMember name={"task.texter" ?? ""} label="Texter" />
+            <TaskMember name={"task.lector" ?? ""} label="Lector" />
+            <TaskMember name={"task.seo" ?? ""} label="SEO" />
+            <TaskMember name={"task.metaLector" ?? ""} label="Meta-Lector" />
           </div>
           <div className="flex justify-end items-center pt-6 pb-2 space-x-4">
             <button
