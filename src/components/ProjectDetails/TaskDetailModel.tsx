@@ -12,6 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import ToggleSwitch from "../buttons/ToggleButton";
 import MemberModal from "../ProjectDetails/MemberModel";
 import TaskMember from "./TaskMembers";
+import AccordionData from "./Accordion";
 
 interface Task {
   actualNumberOfWords: number | null;
@@ -52,6 +53,23 @@ interface FormData {
   comments: string | null;
 }
 
+// data.js
+
+export const accordionData = {
+  content: {
+    companyBackgorund: "TechCorp is a leading company in AI research and development.",
+    companyAttributes: "Innovative, Customer-focused, Global Presence",
+    comapnyServices: "AI Solutions, Data Analytics, Machine Learning Consulting",
+    customerContent: "TechCorp serves a wide range of industries including finance, healthcare, and education.",
+    customerIntrest: "AI advancements, Data Security, Industry Trends",
+    contentPurpose: "To educate potential clients about the benefits of AI and our solutions.",
+    contentInfo: "Includes case studies, white papers, and client testimonials."
+  },
+  speech: "An innovative AI solution for modern businesses.",
+  projectName: "AI Revolution",
+  perspective: "Future-oriented and transformative"
+};
+
 const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   task,
   closeModel,
@@ -74,6 +92,8 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     keywords: task.keywords,
     comments: task.comments,
   });
+
+
   const handleCloseMemberModel = () => {
     setMemberModel(false);
   };
@@ -339,6 +359,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
               className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
             ></textarea>
           </div>
+          <AccordionData className={'bg-meta-4'} content={accordionData.content}speech={accordionData.speech} projectName={accordionData.projectName} prespective={accordionData.perspective}/>
           <div className="w-full pt-6">
             <div className="flex justify-between items-center mb-6">
               <h3 className="font-medium text-black dark:text-white">

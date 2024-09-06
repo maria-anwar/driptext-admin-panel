@@ -7,13 +7,13 @@ import {
   } from "@chakra-ui/accordion";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 
-const AccordionData = ({content,speech,projectName,prespective}) => {
+const AccordionData = ({className,content,speech,projectName,prespective}) => {
   return (
     <Accordion
     allowToggle
-    className="appearance-none border-none py-4 -ml-4"
+    className={`appearance-none border-none py-4 `}
   >
-    <AccordionItem className="border-none">
+    <AccordionItem className={`border-none ${className}`}>
       {({ isExpanded }) => (
         <>
           <h2>
