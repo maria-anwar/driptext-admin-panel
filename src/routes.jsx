@@ -10,6 +10,7 @@ import SystemSettings from "./views/admin/dashboard/SystemSettings";
 import Users from "./views/admin/dashboard/Users";
 import ProjectsDetails from "./views/admin/dashboard/ProjectsDetails";
 import ProtectedRoute from "./components/Helpers/ProtectedRoutes";
+import AddProject from "./views/admin/dashboard/AddProject";
 
 
 
@@ -32,6 +33,7 @@ const WebRoutes = () => {
           >
             <Route index element={<Projects />} />
             <Route path="project-details" element={<ProjectsDetails/>} />
+            <Route path="add-project" element={<AddProject/>} />
             <Route path="driptext-academy" element={<DriptextAcademy />} />
             <Route path="profile-settings" element={<ProfileSettings />} />
             <Route path="system-settings" element={<SystemSettings />} />

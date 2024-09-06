@@ -14,7 +14,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useLocation } from "react-router-dom";
 import ProjectTaskTable from "../../../components/ProjectDetails/ProjectTaskTable";
-import AccordionData from "../../../components/ProjectDetails/Accordion";
 import * as XLSX from "xlsx";
 import Breadcrumb from "../../../components/breeadcrumbs/Breadcrumb";
 import axios from "axios";
@@ -351,13 +350,6 @@ const ProjectsDetails: React.FC = () => {
                       </p>
                     </div>
 
-                    <AccordionData
-                      content={onBoardingData}
-                      speech={projectDetails.speech}
-                      projectName={projectDetails.projectName}
-                      prespective={projectDetails.prespective}
-                    />
-
                     <div className="pt-1 pb-3">
                       <h2>Folder</h2>
                       <a
@@ -477,7 +469,7 @@ const ProjectsDetails: React.FC = () => {
                       <FontAwesomeIcon icon={faPlus} className="text-sm px-2" />
                     </button>
                     {addModel && (
-                      <AddModel handleCloseAdd={handleCloseAdd}/>
+                      <AddModel projectName={projectDetails.projectName} projectId={projectDetails._id} userId={userData._id} handleCloseAdd={handleCloseAdd}/>
                     )}
                     <button
                       onClick={handleEdit}

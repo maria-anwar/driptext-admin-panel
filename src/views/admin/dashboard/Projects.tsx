@@ -146,7 +146,7 @@ const Projects: React.FC = () => {
             </div>
           </div>
           <Link
-            to={""}
+            to={"add-project"}
             className="inline-flex items-center justify-center gap-2.5 bg-boxdark py-3 text-sm xl:text-base  text-center font-medium hover:text-white text-white hover:bg-opacity-70 px-5 lg:px-8 5xl:px-10"
           >
             Create project
