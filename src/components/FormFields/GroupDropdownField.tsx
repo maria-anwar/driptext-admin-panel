@@ -6,7 +6,7 @@ interface GroupDropdownFieldProps{
   placeholder: string,
   name: string,
   id : string,
-  value: string,
+  value: string | null,
   onChange:React.ChangeEventHandler<HTMLSelectElement>,
   errors?:string |undefined,
   option1:string,

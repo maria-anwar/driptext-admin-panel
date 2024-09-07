@@ -7,7 +7,7 @@ import {
   } from "@chakra-ui/accordion";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 
-const AccordionData = ({className,content,speech,projectName,prespective}) => {
+const AccordionData = ({className,content,projectName}) => {
   return (
     <Accordion
     allowToggle
@@ -37,19 +37,10 @@ const AccordionData = ({className,content,speech,projectName,prespective}) => {
                 1. General information:
               </p>
               <div className="px-2">
-                <p className="dark:text-white">
-                  Address of Speech
-                </p>
-                <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                 {speech}
-                </p>
-                <p className="dark:text-white">Perspective</p>
-                <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                  {prespective}
-                </p>
+                
                 <p className="dark:text-white">Website</p>
                 <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                 {projectName}
+                 {"projectName"}
                 </p>
               </div>
               <p className="dark:text-white pt-2">
@@ -60,19 +51,19 @@ const AccordionData = ({className,content,speech,projectName,prespective}) => {
                   Company Background
                 </p>
                 <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                  {content.companyBackgorund}
+                  {"content.companyBackgorund"}
                 </p>
                 <p className="dark:text-white">
                   Company Attributes
                 </p>
                 <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                {content.companyAttributes}
+                {"content.companyAttributes"}
                 </p>
                 <p className="dark:text-white">
                   Company Services
                 </p>
                 <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                {content.comapnyServices}
+                {"content.comapnyServices"}
                 </p>
               </div>
               <p className="dark:text-white pt-2">
@@ -81,13 +72,13 @@ const AccordionData = ({className,content,speech,projectName,prespective}) => {
               <div className="px-2">
                 <p className="dark:text-white">Target Audience</p>
                 <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                  {content.customerContent}
+                  {"content.customerContent"}
                 </p>
                 <p className="dark:text-white">
                   Customer Interests
                 </p>
                 <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                {content.customerIntrest}
+                {"content.customerIntrest"}
                 </p>
               </div>
               <p className="dark:text-white pt-2">
@@ -96,13 +87,13 @@ const AccordionData = ({className,content,speech,projectName,prespective}) => {
               <div className="px-2">
                 <p className="dark:text-white">Content Goal</p>
                 <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                  {content.contentPurpose}
+                  {"content.contentPurpose"}
                 </p>
                 <p className="dark:text-white">
                   Brand Content Information
                 </p>
                 <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                 {content.contentInfo}
+                 {"content.contentInfo"}
                 </p>
               </div>
             </div>

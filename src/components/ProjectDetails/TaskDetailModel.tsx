@@ -1,5 +1,14 @@
 import React, { ChangeEvent, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import * as Yup from "yup";
+import { Formik, Form } from "formik";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+} from "@chakra-ui/accordion";
 import {
   faFolder,
   faTimes,
@@ -12,7 +21,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import ToggleSwitch from "../buttons/ToggleButton";
 import MemberModal from "../ProjectDetails/MemberModel";
 import TaskMember from "./TaskMembers";
-import AccordionData from "./Accordion";
+import GroupTextArea from "../FormFields/GroupTextArea";
+import { GroupDateField } from "../FormFields/GroupDateField";
+import { GroupField } from "../FormFields/GroupField";
+import GroupDropdownField from "../FormFields/GroupDropdownField";
 
 interface Task {
   actualNumberOfWords: number | null;
@@ -50,26 +62,21 @@ interface FormData {
   topic: string | null;
   type: string | null;
   keywords: string | null;
+  projectId: string | null;
+  projectName: string | null;
+  userId: string | null;
+  date: string | null; // Initialize as null for date
+  textType: string | null;
+  wordCount: 1500;
   comments: string | null;
+  companyInfo: string | null;
+  companyAttributes: string | null;
+  services: string | null;
+  content: string | null;
+  customers: string | null;
+  contentPurpose: string | null;
+  brand: string | null;
 }
-
-// data.js
-
-export const accordionData = {
-  content: {
-    companyBackgorund: "TechCorp is a leading company in AI research and development.",
-    companyAttributes: "Innovative, Customer-focused, Global Presence",
-    comapnyServices: "AI Solutions, Data Analytics, Machine Learning Consulting",
-    customerContent: "TechCorp serves a wide range of industries including finance, healthcare, and education.",
-    customerIntrest: "AI advancements, Data Security, Industry Trends",
-    contentPurpose: "To educate potential clients about the benefits of AI and our solutions.",
-    contentInfo: "Includes case studies, white papers, and client testimonials."
-  },
-  speech: "An innovative AI solution for modern businesses.",
-  projectName: "AI Revolution",
-  perspective: "Future-oriented and transformative"
-};
-
 const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   task,
   closeModel,
@@ -78,7 +85,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   const [date, setDate] = useState<Date | null>(
     task.dueDate ? new Date(task.dueDate) : null
   );
-  const allRoles = ["Texter", "Lector", "SEO", "Meta-lector"];
+  const allRoles = ["Texter", "Lector", "SEO", "Meta-Lector"];
   const [showCard, setShowCard] = useState(task.readyToWork);
   const [memberModel, setMemberModel] = useState(false);
   const [selectedRoles, setSelectedRoles] = useState<{ [key: number]: string }>(
@@ -91,8 +98,40 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     type: task.type,
     keywords: task.keywords,
     comments: task.comments,
+    projectId: "",
+    projectName: "",
+    userId: "",
+    date: null, // Initialize as null for date
+    textType: "",
+    wordCount: 1500,
+    companyInfo: "",
+    companyAttributes: "",
+    services: "",
+    content: "",
+    customers: "",
+    contentPurpose: "",
+    brand: "",
   });
 
+  const validationSchema = Yup.object().shape({
+    desiredWords: Yup.string().required("Please enter desired number of words"),
+    topic: Yup.string().required("Please select a topic"),
+    type: Yup.string().required("Please select type"),
+    keywords: Yup.string().required("Please select keywords"),
+    comments: Yup.string(), // Allow comments to be optional
+    date: Yup.date().nullable().required("Please select a date"), // Ensure date is required and nullable
+    textType: Yup.string().required("Please select text type"),
+    wordCount: Yup.number().required("Please enter word count"),
+    companyInfo: Yup.string().required("Please enter company information"),
+    companyAttributes: Yup.string().required(
+      "Please enter company's attributes"
+    ),
+    services: Yup.string().required("Please enter company's services"),
+    content: Yup.string().required("Above information is required"),
+    customers: Yup.string().required("Above information is required"),
+    contentPurpose: Yup.string().required("Above information is required"),
+    brand: Yup.string().required("Above information is required"),
+  });
 
   const handleCloseMemberModel = () => {
     setMemberModel(false);
@@ -101,18 +140,20 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   const toggleDropdown = (memberId: number) => {
     setDropdownVisible((prev) => (prev === memberId ? null : memberId));
   };
+
   const getAvailableRoles = (memberId: number) => {
     const usedRoles = Object.values(selectedRoles);
     return allRoles.filter((role) => !usedRoles.includes(role));
   };
+
   const handleRoleSelect = (role: string, memberId: number) => {
     setSelectedRoles((prevRoles) => ({
       ...prevRoles,
       [memberId]: role,
     }));
     setDropdownVisible(null);
-    alert(`Added member ${memberId} as ${role}`);
   };
+
   const handleMembers = () => {
     setMemberModel(true);
     setDropdownVisible(null);
@@ -122,7 +163,6 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -131,7 +171,6 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
 
   const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
-
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -140,12 +179,6 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
 
   const handleCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    closeModel();
-  };
-
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    alert(formData);
     closeModel();
   };
 
@@ -161,254 +194,394 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
       .join("");
   };
 
-  return (
-    <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
-      <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-6/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="text-xl font-bold dark:text-white">Task Details</h2>
-          <FontAwesomeIcon
-            className="cursor-pointer text-lg dark:text-white text-black"
-            onClick={closeModel}
-            icon={faTimes}
-          />
-        </div>
-        <div className="flex justify-end items-end flex-col py-2 ">
-          <label
-            className="mb-3 block text-sm font-medium text-black dark:text-white"
-            htmlFor="readyToWork"
-          >
-            Ready to Work
-          </label>
-          <ToggleSwitch
-            icon={showCard ? faTimes : faCheck}
-            isOn={showCard}
-            onToggle={handlePublishedTask}
-          />
-        </div>
+  const onSubmit = async (values) => {
+    // Combine form data and selected roles
+    const combinedData = {
+      ...values,
+      roles: selectedRoles, // Include the selected roles and their corresponding member IDs
+    };
+    console.log(JSON.stringify(combinedData)); // For debugging purposes
+    // alert(JSON.stringify(combinedData, null, 2)); // Display the combined data in a readable format
+    closeModel(); // Close the modal
+  };
 
-        <div className="space-y-4 mt-4">
-          <div className="flex justify-between items-center w-full ">
-            <div className="w-1/2">
-              <p className="mb-3 block text-sm font-medium text-black dark:text-white">
-                Status
-              </p>
-              <p className="w-full py-0 text-black dark:text-white uppercase">
-                {task.status}
-              </p>
-            </div>
-            <div className="w-1/2 flex justify-between items-center ">
-              <div className="w-1/2 mr-1">
-                <label
-                  className="mb-3 block text-sm font-medium text-black dark:text-white"
-                  htmlFor="wordReal"
-                >
-                  Word Real
-                </label>
-                <p className="w-full py-2 text-black dark:text-white">
-                  {task.actualNumberOfWords !== null
-                    ? task.actualNumberOfWords
-                    : "N/A"}
-                </p>
-              </div>
-              <div className="w-1/2 ml-1">
-                <label
-                  className="mb-3 block text-sm font-medium text-black dark:text-white"
-                  htmlFor="desiredWords"
-                >
-                  Word Expected
-                </label>
-                <input
-                  className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                  type="number"
-                  name="desiredWords"
-                  id="desiredWords"
-                  placeholder="1500"
-                  min={0}
-                  value={formData.desiredWords}
-                  onChange={handleEditData}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-between items-center w-full ">
-            <div className="w-1/2 mr-1">
-              <label
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                htmlFor="dueUntil"
-              >
-                Due Until
-              </label>
-              <DatePicker
-                className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                selected={date}
-                minDate={new Date()} // Prevents selecting past dates
-                dateFormat="yyyy-MM-dd"
-                onChange={(date: Date | null) => setDate(date)}
-              />
-            </div>
-            <div className="w-1/2 ml-1">
-              <label
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                htmlFor="document"
-              >
-                Document
-              </label>
-              <p className="w-full py-0 text-black dark:text-white">
-                <a
-                  href={task.googleLink || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 underline"
-                >
-                  <FontAwesomeIcon icon={faFolder} className="text-blue-500" />
-                  {""} {task.taskName ?? ""}
-                </a>
-              </p>
-            </div>
-          </div>
-          <div className="w-full flex justify-between items-center">
-            <div className="w-1/2 mr-1">
-              <label
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                htmlFor="topic"
-              >
-                Topic
-              </label>
-              <input
-                className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                type="text"
-                name="topic"
-                id="topic"
-                placeholder="Topic"
-                value={formData.topic || ""}
-                onChange={handleEditData}
-              />
-            </div>
-            <div className="w-1/2 ml-1">
-              <label
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                htmlFor="type"
-              >
-                Text Type
-              </label>
-              <div className="relative">
-                <select
-                  id="type"
-                  name="type"
-                  className="w-full appearance-none rounded border border-transparent bg-gray py-2.5 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                  value={formData.type || ""}
-                  onChange={handleSelectChange}
-                >
-                  <option value="">Select Type</option>
-                  <option value="Guide">Guide</option>
-                  <option value="Shop (Category)">Shop (Category)</option>
-                  <option value="Shop (Product)">Shop (Product)</option>
-                  <option value="Definition/Wiki">Definition/Wiki</option>
-                  <option value="Shop (Home page)">Shop (Home page)</option>
-                  <option value="CMS page">CMS page</option>
-                </select>
-                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                  {/* Custom arrow icon */}
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
+  return (
+    <>
+      <Formik
+        initialValues={formData}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+      >
+        {({ setFieldValue, values, errors, touched, handleChange }) => (
+          <Form>
+            <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
+              <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-6/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
+                <div className="flex justify-between items-center mb-2">
+                  <h2 className="text-xl font-bold dark:text-white">
+                    Task Details
+                  </h2>
+                  <FontAwesomeIcon
+                    className="cursor-pointer text-lg dark:text-white text-black"
+                    onClick={closeModel}
+                    icon={faTimes}
+                  />
+                </div>
+                <div className="flex justify-end items-end flex-col py-2 ">
+                  <label
+                    className="mb-3 block  text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold"
+                    htmlFor="readyToWork"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 9l-7 7-7-7"
-                    ></path>
-                  </svg>
+                    Ready to Work
+                  </label>
+                  <ToggleSwitch
+                    icon={showCard ? faTimes : faCheck}
+                    isOn={showCard}
+                    onToggle={handlePublishedTask}
+                  />
+                </div>
+
+                <div className="space-y-4 mt-4">
+                  <div className="flex justify-between items-center w-full ">
+                    <div className="w-1/2">
+                      <p className="mb-3 block text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold">
+                        Status
+                      </p>
+                      <p className="w-full py-0 text-black dark:text-white uppercase">
+                        {task.status}
+                      </p>
+                    </div>
+                    <div className="w-1/2 flex justify-between items-center ">
+                      <div className="w-1/2 mr-1">
+                      <label className="text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold pb-1"
+                          htmlFor="wordReal"
+                        >
+                          Word Real
+                        </label>
+                        <p className="w-full py-2 text-black dark:text-white">
+                          {task.actualNumberOfWords !== null
+                            ? task.actualNumberOfWords
+                            : "N/A"}
+                        </p>
+                      </div>
+                      <div className="w-1/2 ml-1">
+                        <GroupField
+                          label="Word Count Expected"
+                          type="number"
+                          placeholder="1500"
+                          name="wordCount"
+                          id="wordCount"
+                          value={values.wordCount}
+                          onChange={handleChange}
+                          errors={touched.wordCount ? errors.wordCount : ""}
+                          defaultValue={1500}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center w-full ">
+                    <div className="w-1/2 mr-1">
+                      <GroupDateField
+                        label="Due Date"
+                        name="date"
+                        id="date"
+                        value={values.date}
+                        onChange={(date) => setFieldValue("date", date)}
+                        errors={touched.date ? errors.date : ""}
+                        minDate={new Date()}
+                        dateFormat="yyyy-MM-dd"
+                        placeholderText="Choose a date"
+                      />
+                    </div>
+                    <div className="w-1/2 ml-1">
+                      <label
+                        className="mb-3  text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold"
+                        htmlFor="document"
+                      >
+                        Document
+                      </label>
+                      <p className="w-full py-0 text-black dark:text-white">
+                        <a
+                          href={task.googleLink || "#"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-500 underline"
+                        >
+                          <FontAwesomeIcon
+                            icon={faFolder}
+                            className="text-blue-500"
+                          />
+                          {""} {task.taskName ?? ""}
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                  <div className="w-full flex justify-between items-center">
+                    <div className="w-1/2 mr-1">
+                      <GroupField
+                        label="Topic"
+                        type="text"
+                        placeholder="topic"
+                        name="topic"
+                        id="topic"
+                        value={values.topic}
+                        onChange={handleChange}
+                        errors={touched.topic ? errors.topic : ""}
+                      />
+                    </div>
+                    <div className="w-1/2 mr-1">
+                      <GroupDropdownField
+                        label="Text type"
+                        type="text"
+                        id="textType"
+                        name="textType"
+                        placeholder=""
+                        option1="Guide"
+                        option2="Shop (Category)"
+                        option3="Shop (Product)"
+                        option4="Definition/Wiki"
+                        option5="Shop (Home page)"
+                        option6="CMS page"
+                        value={values.textType}
+                        errors={touched.textType ? errors.textType : ""}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+
+                  <GroupField
+                    label="Keyword"
+                    type="text"
+                    placeholder="keywords"
+                    name="keywords"
+                    id="keywords"
+                    value={values.keywords}
+                    onChange={handleChange}
+                    errors={touched.keywords ? errors.keywords : ""}
+                  />
+
+                  <Accordion
+                    allowToggle
+                    className={`appearance-none border-none py-4 `}
+                  >
+                    <AccordionItem className={`border-none bg-slate-100 dark:bg-meta-4`}>
+                      {({ isExpanded }) => (
+                        <>
+                          <h2>
+                            <AccordionButton className="flex justify-between items-center ">
+                              <p className=" text-black dark:text-white">
+                                OnBoarding
+                              </p>
+                              {isExpanded ? (
+                                <MinusIcon fontSize="12px" />
+                              ) : (
+                                <AddIcon fontSize="12px" />
+                              )}
+                            </AccordionButton>
+                          </h2>
+                          <AccordionPanel className="" pb={4}>
+                            <div className="bg-white dark:bg-boxdark rounded py-2 px-4">
+                              <p className="dark:text-white pt-2">
+                                1. General information:
+                              </p>
+                              <div className="px-2">
+                                <p className="dark:text-white">Website</p>
+                                <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
+                                  {"projectName"}
+                                </p>
+                              </div>
+
+                              <div className="flex flex-col gap-3">
+                                <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
+                                  2. Company Information
+                                </h2>
+                                <GroupTextArea
+                                  label="Background information about the company"
+                                  type="text"
+                                  placeholder="Please describe here, ideally in just one sentence, what you do as a company, what you offer and how it helps the customer."
+                                  id="companyInfo"
+                                  name="companyInfo"
+                                  value={values.companyInfo}
+                                  errors={
+                                    touched.companyInfo
+                                      ? errors.companyInfo
+                                      : ""
+                                  }
+                                  onChange={handleChange}
+                                />
+
+                                <GroupTextArea
+                                  label="Which attributes best describe you as a company/your products/your services?"
+                                  type="text"
+                                  placeholder="Please give us as many attributes as you would like readers to perceive about you and your company in bullet points."
+                                  id="companyAttributes"
+                                  name="companyAttributes"
+                                  value={values.companyAttributes}
+                                  errors={
+                                    touched.companyAttributes
+                                      ? errors.companyAttributes
+                                      : ""
+                                  }
+                                  onChange={handleChange}
+                                />
+                                <GroupTextArea
+                                  label="What are your services?"
+                                  type="text"
+                                  placeholder="Please list all services offered online here."
+                                  id="services"
+                                  name="services"
+                                  value={values.services}
+                                  errors={
+                                    touched.services ? errors.services : ""
+                                  }
+                                  onChange={handleChange}
+                                />
+                              </div>
+                              <div className="flex flex-col gap-3 py-3">
+                                <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3.5">
+                                  3. Information About the Target Customers
+                                </h2>
+                                <GroupTextArea
+                                  label="Who is the content written for?"
+                                  type="text"
+                                  placeholder="Please describe the target group as precisely as possible"
+                                  id="content"
+                                  name="content"
+                                  value={values.content}
+                                  errors={touched.content ? errors.content : ""}
+                                  onChange={handleChange}
+                                />
+
+                                <GroupTextArea
+                                  label="Customers we want to address have an interest in..."
+                                  type="text"
+                                  placeholder="Please list here in bullet points which problems you solve for customers."
+                                  id="customers"
+                                  name="customers"
+                                  value={values.customers}
+                                  errors={
+                                    touched.customers ? errors.customers : ""
+                                  }
+                                  onChange={handleChange}
+                                />
+                              </div>
+                              <div className="flex flex-col gap-3 py-3">
+                                <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3.5">
+                                  4. Aim of the Content
+                                </h2>
+                                <GroupTextArea
+                                  label="What is the purpose of the content?"
+                                  type="text"
+                                  placeholder="Please briefly describe here how organic customers/readers should ideally react when they land on your site."
+                                  id="contentPurpose"
+                                  name="contentPurpose"
+                                  value={values.contentPurpose}
+                                  errors={
+                                    touched.contentPurpose
+                                      ? errors.contentPurpose
+                                      : ""
+                                  }
+                                  onChange={handleChange}
+                                />
+
+                                <GroupTextArea
+                                  label="Information about your brand and your content"
+                                  type="text"
+                                  placeholder="Please give us bullet points on how potential readers should describe the content they consume"
+                                  id="brand"
+                                  name="brand"
+                                  value={values.brand}
+                                  errors={touched.brand ? errors.brand : ""}
+                                  onChange={handleChange}
+                                />
+                              </div>
+                            </div>
+                          </AccordionPanel>
+                        </>
+                      )}
+                    </AccordionItem>
+                  </Accordion>
+
+                  <GroupTextArea
+                    label="Comment"
+                    type="text"
+                    placeholder="Add any comments."
+                    id="comments"
+                    name="comments"
+                    value={values.comments}
+                    errors={touched.comments ? errors.comments : ""}
+                    onChange={handleChange}
+                  />
+
+                  <div className="w-full pt-6">
+                    <div className="flex justify-between items-center mb-6">
+                      <h3 className="font-medium text-black dark:text-white">
+                        Project members
+                      </h3>
+                      <p
+                        className="w-5 h-5 bg-blue-500 text-white flex items-center justify-center cursor-pointer"
+                        onClick={handleMembers}
+                      >
+                        <FontAwesomeIcon icon={faPlus} className="text-sm" />
+                      </p>
+                      {memberModel && (
+                        <MemberModal
+                          isOpen={memberModel}
+                          freelancer={freelancer}
+                          handleCloseMemberModel={handleCloseMemberModel}
+                          toggleDropdown={toggleDropdown}
+                          dropdownVisible={dropdownVisible}
+                          getInitials={getInitials}
+                          getAvailableRoles={getAvailableRoles}
+                          handleRoleSelect={handleRoleSelect}
+                        />
+                      )}
+                    </div>
+
+                    <TaskMember
+                      name={"task.texter" ?? ""}
+                      label="Texter"
+                      role={selectedRoles[task.texterId] || ""}
+                    />
+                    <TaskMember
+                      name={"task.lector" ?? ""}
+                      label="Lector"
+                      role={selectedRoles[task.lectorId] || ""}
+                    />
+                    <TaskMember
+                      name={"task.seo" ?? ""}
+                      label="SEO"
+                      role={selectedRoles[task.seoId] || ""}
+                    />
+                    <TaskMember
+                      name={"task.metaLector" ?? ""}
+                      label="Meta Lector"
+                      role={selectedRoles[task.metaLectorId] || ""}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex justify-end items-center mt-6 gap-3">
+                  <button
+                    type="button"
+                    onClick={handleCancel}
+                    className="px-4 py-2 bg-gray-500 bg-transparent border border-primary text-black dark:text-white rounded"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    onClick={onSubmit}
+                    className="px-4 py-2 bg-blue-500 text-white rounded"
+                  >
+                    Submit
+                  </button>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="w-full">
-            <label
-              className="mb-3 block text-sm font-medium text-black dark:text-white"
-              htmlFor="keywords"
-            >
-              Keywords
-            </label>
-            <input
-              className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-              type="text"
-              name="keywords"
-              id="keywords"
-              placeholder="Keywords"
-              value={formData.keywords || ""}
-              onChange={handleEditData}
-            />
-          </div>
-          <div className="w-full">
-            <label
-              className="mb-3 block text-sm font-medium text-black dark:text-white"
-              htmlFor="comments"
-            >
-              Comment
-            </label>
-            <textarea
-              id="comments"
-              name="comments"
-              value={formData.comments || ""}
-              onChange={handleEditData}
-              className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-            ></textarea>
-          </div>
-          <AccordionData className={'bg-meta-4'} content={accordionData.content}speech={accordionData.speech} projectName={accordionData.projectName} prespective={accordionData.perspective}/>
-          <div className="w-full pt-6">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="font-medium text-black dark:text-white">
-                Project members
-              </h3>
-              <p
-                className="w-5 h-5 bg-blue-500 text-white flex items-center justify-center cursor-pointer"
-                onClick={handleMembers}
-              >
-                <FontAwesomeIcon icon={faPlus} className="text-sm" />
-              </p>
-              {memberModel && (
-                <MemberModal
-                  isOpen={memberModel}
-                  freelancer={freelancer}
-                  handleCloseMemberModel={handleCloseMemberModel}
-                  toggleDropdown={toggleDropdown}
-                  dropdownVisible={dropdownVisible}
-                  getInitials={getInitials}
-                  getAvailableRoles={getAvailableRoles}
-                  handleRoleSelect={handleRoleSelect}
-                />
-              )}
-            </div>
-
-            <TaskMember name={"task.texter" ?? ""} label="Texter" />
-            <TaskMember name={"task.lector" ?? ""} label="Lector" />
-            <TaskMember name={"task.seo" ?? ""} label="SEO" />
-            <TaskMember name={"task.metaLector" ?? ""} label="Meta-Lector" />
-          </div>
-          <div className="flex justify-end items-center pt-6 pb-2 space-x-4">
-            <button
-              className="flex justify-center bg-transparent rounded border border-stroke py-1.5 px-5 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-              type="button"
-              onClick={handleCancel}
-            >
-              Cancel
-            </button>
-            <button
-              className="flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
-              type="button"
-              onClick={handleSubmit}
-            >
-              Save
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+          </Form>
+        )}
+      </Formik>
+    </>
   );
 };
 
