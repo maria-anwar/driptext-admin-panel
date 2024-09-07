@@ -7,7 +7,7 @@ interface GroupTextAreaProps {
   placeholder?: string;
   name: string;
   id: string;
-  value: string;
+  value: string | null;
   onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
   errors?: string; // Optional, as errors might not always be present
 }
@@ -36,7 +36,7 @@ const GroupTextArea: React.FC<GroupTextAreaProps> = ({
         )}
       </label>
       <textarea
-        className="w-full text-black dark:text-white border border-transparent text-sm h-24 px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary"
+        className="w-full bg-slate-100 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm h-24 px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary"
         type={type}
         placeholder={placeholder}
         name={name}
