@@ -26,9 +26,10 @@ interface User {
 
 interface PaginatedTableProps {
   users: User[];
+  refreshUser:()=>void;
 }
 
-const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users }) => {
+const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users ,refreshUser}) => {
   const user = useSelector<any>((state) => state.user);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -61,12 +62,13 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users }) => {
     axios
       .post(`${import.meta.env.VITE_DB_URL}/admin/updateUserStatus`, payload)
       .then((response) => {
-        // Update the localUsers state after successful API call
-        setLocalUsers(prevUsers =>
-          prevUsers.map(user =>
-            user._id === id ? { ...user, isActive: "Y" } : user
-          )
-        );
+        // // Update the localUsers state after successful API call
+        // setLocalUsers(prevUsers =>
+        //   prevUsers.map(user =>
+        //     user._id === id ? { ...user, isActive: "Y" } : user
+        //   )
+        // );
+        refreshUser()
         toast.success("User activated successfully.");
       })
       .catch((err) => {
@@ -87,12 +89,8 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users }) => {
       .post(`${import.meta.env.VITE_DB_URL}/admin/updateUserStatus`, payload)
       .then((response) => {
         // Update the localUsers state after successful API call
-        console.log(response)
-        setLocalUsers(prevUsers =>
-          prevUsers.map(user =>
-            user._id === id ? { ...user, isActive: "N" } : user
-          )
-        );
+        // 
+        refreshUser()
         toast.success("User deactivated successfully.");
       })
       .catch((err) => {

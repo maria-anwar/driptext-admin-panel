@@ -42,6 +42,10 @@ const Users: React.FC = () => {
   const [filteredUserData, setFilteredUserData] = useState<User[]>([]);
 
   useEffect(() => {
+    getUser();
+    }, [user.user.token]);
+
+  const getUser = ()=>{
     const token = user.user.token;
     axios.defaults.headers.common["access-token"] = token;
 
@@ -58,7 +62,7 @@ const Users: React.FC = () => {
         console.error("Error fetching user details:", err);
         setLoading(false);
       });
-  }, [user.user.token]);
+  }
 
   useEffect(() => {
     applyFilters();
@@ -220,7 +224,7 @@ const Users: React.FC = () => {
             </div>
           </div>
 
-          <UserPaginatedTable users={filteredUserData} />
+          <UserPaginatedTable users={filteredUserData} refreshUser= {getUser}/>
         </div>
       )}
     </>

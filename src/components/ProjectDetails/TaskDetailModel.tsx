@@ -89,7 +89,6 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   projectId,
   projectName,
 }) => {
-  console.log("projectName",projectName);
   const [date, setDate] = useState<Date | null>(
     task.dueDate ? new Date(task.dueDate) : null
   );
@@ -99,7 +98,6 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   const [selectedRoles, setSelectedRoles] = useState<{ [key: number]: string }>(
     {}
   );
-  console.log(task)
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [formData, setFormData] = useState<FormData>({
     desiredWords: task.desiredNumberOfWords,
@@ -230,7 +228,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                     Task Details
                   </h2>
                   <FontAwesomeIcon
-                    className="cursor-pointer text-lg dark:text-white text-black"
+                    className="cursor-pointer text-lg text-red-500"
                     onClick={closeModel}
                     icon={faTimes}
                   />

@@ -95,7 +95,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer,userId,pro
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4">
-                <th className="min-w-[80px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
                   Status
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
@@ -126,7 +126,18 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer,userId,pro
                 <tr className="text-left" key={index}>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex justify-start items-start flex-col">
-                      <p className="text-black dark:text-white uppercase">
+                      <p className={` uppercase text-center py-1 px-2 rounded-full
+                        ${
+                          task.status.toUpperCase() === "FINAL"
+                            ? "bg-success/20 text-success"
+                            : task.status.toUpperCase() === "FREE TRIAL"
+                            ? "bg-danger/20 text-danger"
+                            : task.status.toUpperCase() === "READY TO START"
+                            ? "bg-warning/20 text-warning"
+                            : task.status.toUpperCase() === "READY FOR PROFEADING"
+                            ? "bg-warning/20 text-warning"
+                            : "bg-violet-500/20 text-violet-500"
+                        }`}>
                         {task.status}
                       </p>
                     </div>

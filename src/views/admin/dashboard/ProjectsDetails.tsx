@@ -70,7 +70,6 @@ const ProjectsDetails: React.FC = () => {
         const projectDataArray = response.data.project;
         const allProjects = projectDataArray;
         setProjectDetails(allProjects);
-        console.log(allProjects);
         setPlan(allProjects.plan);
         setUserData(allProjects.user);
         setProjectTasks(allProjects.projectTasks);
@@ -92,7 +91,6 @@ const ProjectsDetails: React.FC = () => {
         const projectDataArray = response.data.freelancers;
         const allProjects = projectDataArray;
         setFreelancer(allProjects);
-        console.log(allProjects);
       })
       .catch((err) => {
         console.error("Error fetching project details:", err);
@@ -333,7 +331,7 @@ const ProjectsDetails: React.FC = () => {
                 <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                   <div className="py-6 px-7 dark:border-strokedark">
                     <p className="text-xl font-semibold text-black dark:text-white pb-2">
-                      {projectDetails.projectId}
+                    {projectDetails.projectName}{' | '}{projectDetails.projectId}
                     </p>
                     <div className="py-2">
                       <h3 className="font-medium text-black dark:text-white">

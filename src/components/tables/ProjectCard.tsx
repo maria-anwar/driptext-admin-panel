@@ -125,10 +125,20 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
               value={project.finalTasks}
               max={project.plan.totalTexts}
             ></progress>
-            <p className="py-2">
+            <p className="py-2 uppercase">
               STATUS:{" "}
-              <span className="text-blue-500">
-                {project.projectStatus.toUpperCase()}
+              <span className={`$${
+                            project.projectStatus.toUpperCase() === "FINAL"
+                              ? " text-success"
+                              : project.projectStatus.toUpperCase() === "FREE TRIAL"
+                              ? " text-danger"
+                              : project.projectStatus.toUpperCase() === "READY"
+                              ? " text-warning"
+                              : project.projectStatus.toUpperCase() === "READY FOR PROFEADING"
+                              ? " text-warning"
+                              : " text-violet-500"
+                          }`}>
+                {project.projectStatus}
               </span>
             </p>
           </div>
@@ -154,7 +164,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
             <div className="text-sm font-medium text-dark-gray">
               Performance Period{" "}
               <div className="text-meta-5 flex justify-end">
-                {formatDate(project.plan.endDate)}
+                {project.plan.endDate === null ? "No Subscription" :   `${formatDate(project.plan.endDate)}`}
               </div>
             </div>
           </div>
