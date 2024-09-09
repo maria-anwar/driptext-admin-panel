@@ -156,9 +156,19 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
             <tbody>
               {paginatedProjects.map((project) => (
                 <tr className="text-left" key={project._id}>
-                  <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-sm">
-                      {project.projectStatus.toUpperCase() || ""}
+                  <td className={`border-b  border-[#eee] py-5 px-4 dark:border-strokedark`}>
+                    <p className={`text-sm uppercase px-3 rounded-full py-1 ${
+                            project.projectStatus.toUpperCase() === "FINAL"
+                              ? "bg-success/20 text-success"
+                              : project.projectStatus.toUpperCase() === "FREE TRIAL"
+                              ? "bg-danger/20 text-danger"
+                              : project.projectStatus.toUpperCase() === "READY"
+                              ? "bg-warning/20 text-warning"
+                              : project.projectStatus.toUpperCase() === "READY FOR PROFEADING"
+                              ? "bg-warning/20 text-warning"
+                              : "bg-violet-500/20 text-violet-500"
+                          }`}>
+                      {project.projectStatus || ""}
                     </p>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
