@@ -44,7 +44,6 @@ const ProjectsDetails: React.FC = () => {
   const [freelancer, setFreelancer] = useState([]);
   const [plan, setPlan] = useState({});
   const [userData, setUserData] = useState({});
-  const [onBoardingData, setOnBoardingData] = useState({});
   const [userId, setUserID] = useState(user.user.data.user._id);
   const [userToken, setUserToken] = useState(user.user.token);
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
@@ -71,9 +70,9 @@ const ProjectsDetails: React.FC = () => {
         const projectDataArray = response.data.project;
         const allProjects = projectDataArray;
         setProjectDetails(allProjects);
+        console.log(allProjects);
         setPlan(allProjects.plan);
         setUserData(allProjects.user);
-        setOnBoardingData(allProjects.boardingInfo);
         setProjectTasks(allProjects.projectTasks);
         setLoading(false);
       })
@@ -93,6 +92,7 @@ const ProjectsDetails: React.FC = () => {
         const projectDataArray = response.data.freelancers;
         const allProjects = projectDataArray;
         setFreelancer(allProjects);
+        console.log(allProjects);
       })
       .catch((err) => {
         console.error("Error fetching project details:", err);
@@ -101,10 +101,6 @@ const ProjectsDetails: React.FC = () => {
 
   const allRoles = ["Texter", "Lector", "SEO", "Meta-lector"];
 
-  const formatDate = (dateString: Date | string) => {
-    const date = new Date(dateString);
-    return format(date, "MMM dd, yyyy"); // "August 2025"
-  };
 
   const handleDelete = () => {
     setDeleteModel(true);
@@ -705,7 +701,7 @@ const ProjectsDetails: React.FC = () => {
                 </div>
               </div>
             </div>
-            <ProjectTaskTable tasks={projectTasks} freelancer={freelancer} />
+            <ProjectTaskTable tasks={projectTasks} freelancer={freelancer} userId={userData._id} projectId={projectDetails._id} projectName={projectDetails.projectName}/>
           </div>
           {memberModel && (
             <MemberModal

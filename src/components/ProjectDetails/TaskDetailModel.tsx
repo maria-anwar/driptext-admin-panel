@@ -55,6 +55,10 @@ interface Task {
 interface TaskDetailModelProps {
   task: Task;
   closeModel: () => void;
+  freelancer: any;
+  userId: string;
+  projectId: string;
+  projectName: string;
 }
 
 interface FormData {
@@ -81,7 +85,11 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   task,
   closeModel,
   freelancer,
+  userId,
+  projectId,
+  projectName,
 }) => {
+  console.log("projectName",projectName);
   const [date, setDate] = useState<Date | null>(
     task.dueDate ? new Date(task.dueDate) : null
   );
@@ -91,6 +99,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   const [selectedRoles, setSelectedRoles] = useState<{ [key: number]: string }>(
     {}
   );
+  console.log(task)
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [formData, setFormData] = useState<FormData>({
     desiredWords: task.desiredNumberOfWords,
@@ -98,19 +107,19 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     type: task.type,
     keywords: task.keywords,
     comments: task.comments,
-    projectId: "",
+    projectId: projectId,
     projectName: "",
-    userId: "",
-    date: null, // Initialize as null for date
-    textType: "",
-    wordCount: 1500,
-    companyInfo: "",
-    companyAttributes: "",
-    services: "",
-    content: "",
-    customers: "",
-    contentPurpose: "",
-    brand: "",
+    userId: userId,
+    date: task?.dueDate, // Initialize as null for date
+    textType: '',
+    wordCount: task.desiredNumberOfWords,
+    companyInfo: task.onBoarding.companyBackgorund,
+    companyAttributes: task.onBoarding.companyAttributes,
+    services: task.onBoarding.comapnyServices,
+    content: task.onBoarding.customerContent,
+    customers: task.onBoarding.customerIntrest,
+    contentPurpose: task.onBoarding.contentPurpose,
+    brand:task.onBoarding.contentInfo,
   });
 
   const validationSchema = Yup.object().shape({
@@ -299,12 +308,12 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                       >
                         Document
                       </label>
-                      <p className="w-full py-0 text-black dark:text-white">
+                      <p className="w-full py-2 text-black dark:text-white">
                         <a
                           href={task.googleLink || "#"}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-blue-500 underline"
+                          className="text-blue-500 underline-none"
                         >
                           <FontAwesomeIcon
                             icon={faFolder}
@@ -363,7 +372,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                     allowToggle
                     className={`appearance-none border-none py-4 `}
                   >
-                    <AccordionItem className={`border-none bg-slate-100 dark:bg-meta-4`}>
+                    <AccordionItem className={`border-none bg-slate-100 dark:bg-meta-4 rounded`}>
                       {({ isExpanded }) => (
                         <>
                           <h2>
@@ -386,7 +395,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                               <div className="px-2">
                                 <p className="dark:text-white">Website</p>
                                 <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                                  {"projectName"}
+                                  {projectName}
                                 </p>
                               </div>
 
@@ -564,7 +573,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                   <button
                     type="button"
                     onClick={handleCancel}
-                    className="px-4 py-2 bg-gray-500 bg-transparent border border-primary text-black dark:text-white rounded"
+                    className="px-4 py-2 bg-gray-500 bg-transparent border border-neutral-200 text-black dark:text-white rounded"
                   >
                     Cancel
                   </button>

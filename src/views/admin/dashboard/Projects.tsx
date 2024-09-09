@@ -104,7 +104,7 @@ const Projects: React.FC = () => {
             </li>
             <li className="font-medium text-primary">Projects</li>
           </ol>
-          <div>
+          <div className="gap-4 flex items-center">
           <ToggleSwitch
             icon={faThLarge}
             isOn={showCard}
@@ -122,7 +122,6 @@ const Projects: React.FC = () => {
           />
           </div>
         </div>
-        <div className="flex justify-between items-start flex-col xl:flex-row xl:items-center">
           <div className="flex justify-start items-start flex-col pb-2 lg:pb-0 lg:flex-row xl:flex-row xl:items-center">
             <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
               Projects
@@ -145,14 +144,6 @@ const Projects: React.FC = () => {
               )}
             </div>
           </div>
-          <Link
-            to={"add-project"}
-            className="inline-flex items-center justify-center gap-2.5 bg-boxdark py-3 text-sm xl:text-base  text-center font-medium hover:text-white text-white hover:bg-opacity-70 px-5 lg:px-8 5xl:px-10"
-          >
-            Create project
-            <FontAwesomeIcon icon={faPlus} />
-          </Link>
-        </div>
 
         <div>
           {!showDraft &&

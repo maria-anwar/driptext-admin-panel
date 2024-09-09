@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { Pagination } from "antd";
@@ -33,7 +33,11 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users }) => {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [userToken, setUserToken] = useState(user.user.token);
-  const [localUsers, setLocalUsers] = useState(users); // Local state for users
+  const [localUsers, setLocalUsers] = useState([]); 
+
+  useEffect(() => {
+    setLocalUsers(users);
+  }, [users]);
 
   const handlePageChange = (page: number) => {
     setPage(page);
@@ -43,7 +47,7 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users }) => {
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(1); // Reset to first page when rows per page changes
+    setPage(1);
   };
 
   const handleActivite = (id: string) => {
@@ -83,6 +87,7 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users }) => {
       .post(`${import.meta.env.VITE_DB_URL}/admin/updateUserStatus`, payload)
       .then((response) => {
         // Update the localUsers state after successful API call
+        console.log(response)
         setLocalUsers(prevUsers =>
           prevUsers.map(user =>
             user._id === id ? { ...user, isActive: "N" } : user
