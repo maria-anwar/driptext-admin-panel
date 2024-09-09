@@ -50,6 +50,7 @@ const Users: React.FC = () => {
       .then((response) => {
         const allUsers = response.data.users;
         setUserData(allUsers);
+        console.log(allUsers)
         setFilteredUserData(allUsers);
         setLoading(false);
       })
@@ -58,6 +59,10 @@ const Users: React.FC = () => {
         setLoading(false);
       });
   }, [user.user.token]);
+
+  useEffect(() => {
+    applyFilters();
+  }, [search, showInactive, toggleLeads, toggleClient, userData]);
 
   const handleSearch = () => {
     setShowSearch(!showSearch);
@@ -72,26 +77,31 @@ const Users: React.FC = () => {
   };
 
   const applyFilters = () => {
-    let filteredData: User[] = userData;
-
-    if (showInactive === true) {
+    console.log("Applying filters...");
+    let filteredData = userData;
+  
+    if (showInactive) {
+    
       filteredData = filteredData.filter((user) => user.isActive === "N");
     }
-
+  
     if (search) {
+    
       filteredData = filteredData.filter((user) => {
         const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
         return fullName.includes(search.toLowerCase());
       });
     }
-
+  
     if (toggleLeads) {
+    
       filteredData = filteredData.filter(
         (user) => user.role.title.toLowerCase() === "leads"
       );
     }
-
+  
     if (toggleClient) {
+    
       filteredData = filteredData.filter(
         (user) => user.role.title.toLowerCase() === "client"
       );
@@ -99,10 +109,8 @@ const Users: React.FC = () => {
 
     setFilteredUserData(filteredData);
   };
+  
 
-  useEffect(() => {
-    applyFilters();
-  }, [search, showInactive, toggleLeads, toggleClient, userData]);
 
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);

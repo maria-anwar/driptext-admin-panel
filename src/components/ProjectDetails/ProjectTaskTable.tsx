@@ -40,9 +40,12 @@ interface Task {
 
 interface ProjectProps {
   tasks: Task[];
+  userId: string;
+  projectId: string;
+  projectName: string;
 }
 
-const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer}) => {
+const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer,userId,projectId,projectName}) => {
   const [showDetailsDialog, setShowDetailsDialog] = useState<boolean>(false);
   const [task, setTask] = useState({});
 
@@ -243,7 +246,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer}) => {
         </div>
       </div>
       {showDetailsDialog && (
-       <TaskDetailModel task={task} closeModel={hanldeCloseAllInfo} freelancer={freelancer}/>
+       <TaskDetailModel task={task} closeModel={hanldeCloseAllInfo} freelancer={freelancer} userId={userId} projectId={projectId} projectName={projectName}/>
       )}
     </div>
   );
