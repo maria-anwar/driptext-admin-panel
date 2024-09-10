@@ -26,8 +26,7 @@ import GroupDropdownField from "../FormFields/GroupDropdownField";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
-
+import "react-toastify/dist/ReactToastify.css";
 
 interface Task {
   actualNumberOfWords: number | null;
@@ -92,7 +91,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   userId,
   projectId,
   projectName,
-  handleRefreshData
+  handleRefreshData,
 }) => {
   const user = useSelector<any>((state) => state.user);
   const [userToken, setUserToken] = useState(user.user.token);
@@ -100,7 +99,6 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     task.dueDate ? new Date(task.dueDate) : null
   );
 
-  
   const allRoles = ["texter", "lector", "seo-optimizer"];
   const [showCard, setShowCard] = useState(task.readyToWork);
   const [memberModel, setMemberModel] = useState(false);
@@ -118,7 +116,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     projectName: "",
     userId: userId,
     date: task?.dueDate, // Initialize as null for date
-    textType: '',
+    textType: "",
     wordCount: task.desiredNumberOfWords,
     companyInfo: task.onBoarding.companyBackgorund,
     companyAttributes: task.onBoarding.companyAttributes,
@@ -126,7 +124,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     content: task.onBoarding.customerContent,
     customers: task.onBoarding.customerIntrest,
     contentPurpose: task.onBoarding.contentPurpose,
-    brand:task.onBoarding.contentInfo,
+    brand: task.onBoarding.contentInfo,
   });
 
   const validationSchema = Yup.object().shape({
@@ -162,27 +160,33 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   };
 
   const handleRoleSelect = (role: string, memberId: number) => {
-    const token = userToken; 
+    const token = userToken;
     axios.defaults.headers.common["access-token"] = token;
-    
+
     const payload = {
       taskId: task._id,
       freelancerId: memberId?.toString(),
       role: role.toString(),
     };
     console.log(payload); // Log payload to verify
-    
-    axios.post(`${import.meta.env.VITE_DB_URL}/admin/assignFreelancersByTask`, payload)
+
+    axios
+      .post(
+        `${import.meta.env.VITE_DB_URL}/admin/assignFreelancersByTask`,
+        payload
+      )
       .then((response) => {
         const projectDataArray = response;
         console.log(payload); // Log payload to verify
         console.log(projectDataArray); // Log payload to verify
         setDropdownVisible(null);
         handleRefreshData();
-        
       })
       .catch((err) => {
-        console.error("Error fetching project details:", err.response || err.message || err);
+        console.error(
+          "Error fetching project details:",
+          err.response || err.message || err
+        );
         setDropdownVisible(null);
       });
   };
@@ -219,7 +223,6 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     setShowCard(!showCard);
   };
 
-
   const showAssignedRoles = (memberId: number) => {
     const foundFreelancer = freelancer.find((f) => f._id === memberId);
     if (foundFreelancer) {
@@ -233,7 +236,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   const onSubmit = async (values) => {
     // Combine form data and selected roles
     const combinedData = {
-      ...values
+      ...values,
     };
     // console.log(JSON.stringify(combinedData)); // For debugging purposes
     // alert(JSON.stringify(combinedData, null, 2)); // Display the combined data in a readable format
@@ -251,55 +254,73 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
           <Form>
             <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
               <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-6/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
-                <div className="flex justify-between items-center mb-2">
+                <div className="space-y-1 mt-4">
+                <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-bold dark:text-white">
                     Task Details
                   </h2>
                   <FontAwesomeIcon
-                    className="cursor-pointer text-lg text-red-500"
+                    className="cursor-pointer text-lg text-red-500 "
                     onClick={closeModel}
                     icon={faTimes}
                   />
-                  
                 </div>
-                <div className="flex justify-end items-end flex-col py-2 ">
-                  <label
-                    className="mb-3 block  text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold"
-                    htmlFor="readyToWork"
-                  >
-                    Ready to Work
-                  </label>
-                  <ToggleSwitch
-                    icon={showCard ? faTimes : faCheck}
-                    isOn={showCard}
-                    onToggle={handlePublishedTask}
-                  />
+                <div className="w-full flex justify-between items-center gap-2 ">
+                  <div className="w-1/2">
+                    <p className="mb-3 block text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold">
+                      Status
+                    </p>
+                    <p className={`w-full py-0 text-sm uppercase ${
+                  task.status.toUpperCase() === "FINAL"
+                    ? " text-success"
+                    : task.status.toUpperCase() === "FREE TRIAL"
+                    ? " text-warning"
+                    : task.status.toUpperCase() === "READY TO START"
+                    ? " text-warning"
+                    : task.status.toUpperCase() ===
+                      "READY FOR PROFEADING"
+                    ? " text-warning"
+                    : " text-violet-500"
+                }`}>
+                      {task.status}
+                    </p>
+                  </div>
+                  <div className="w-1/2">
+                    <label
+                      className="text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold pb-1"
+                      htmlFor="wordReal"
+                    >
+                      Word Real
+                    </label>
+                    <p className="w-full py-2 text-black dark:text-white">
+                      {task.actualNumberOfWords !== null
+                        ? task.actualNumberOfWords
+                        : "N/A"}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="space-y-4 mt-4">
-                  <div className="flex justify-between items-center w-full ">
-                    <div className="w-1/2">
-                      <p className="mb-3 block text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold">
-                        Status
-                      </p>
-                      <p className="w-full py-0 text-black dark:text-white uppercase">
-                        {task.status}
-                      </p>
-                    </div>
-                    <div className="w-1/2 flex justify-between items-center ">
-                      <div className="w-1/2 mr-1">
-                      <label className="text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold pb-1"
-                          htmlFor="wordReal"
-                        >
-                          Word Real
-                        </label>
-                        <p className="w-full py-2 text-black dark:text-white">
-                          {task.actualNumberOfWords !== null
-                            ? task.actualNumberOfWords
-                            : "N/A"}
-                        </p>
+              
+
+                
+                
+                    <div className="w-full flex justify-between items-center   gap-2">
+                      <div className="w-1/2">
+                        
+                          <label
+                            className="mb-3 block  text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold"
+                            htmlFor="readyToWork"
+                          >
+                            Ready to Work
+                          </label>
+                          <ToggleSwitch
+                            icon={showCard ? faTimes : faCheck}
+                            isOn={showCard}
+                            onToggle={handlePublishedTask}
+                          />
+                        
                       </div>
-                      <div className="w-1/2 ml-1">
+                      <div className="w-1/2 ">
                         <GroupField
                           label="Word Count Expected"
                           type="number"
@@ -313,8 +334,8 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                         />
                       </div>
                     </div>
-                  </div>
-                  <div className="flex justify-between items-center w-full ">
+                  
+                  <div className="flex justify-between items-center w-full gap-2 ">
                     <div className="w-1/2 mr-1">
                       <GroupDateField
                         label="Due Date"
@@ -351,7 +372,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                       </p>
                     </div>
                   </div>
-                  <div className="w-full flex justify-between items-center">
+                  <div className="w-full flex justify-between items-center ">
                     <div className="w-full mr-1">
                       <GroupField
                         label="Topic"
@@ -399,7 +420,9 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                     allowToggle
                     className={`appearance-none border-none py-4 `}
                   >
-                    <AccordionItem className={`border-none bg-slate-100 dark:bg-meta-4 rounded`}>
+                    <AccordionItem
+                      className={`border-none bg-slate-100 dark:bg-meta-4 rounded`}
+                    >
                       {({ isExpanded }) => (
                         <>
                           <h2>
@@ -576,19 +599,16 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                       name={showAssignedRoles(task.texter) ?? ""}
                       label="Texter"
                       handleMembers={handleMembers}
-                     
                     />
                     <TaskMember
                       name={showAssignedRoles(task.lector) ?? ""}
                       label="Lector"
                       handleMembers={handleMembers}
-                 
                     />
                     <TaskMember
                       name={showAssignedRoles(task.seo) ?? ""}
                       label="SEO"
                       handleMembers={handleMembers}
-                   
                     />
                     <TaskMember
                       name={showAssignedRoles(task.metaLector) ?? ""}
