@@ -27,6 +27,7 @@ import { GroupField } from "../FormFields/GroupField";
 import GroupDropdownField from "../FormFields/GroupDropdownField";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import getInitials from "../Helpers/UpperCaseName";
 
 interface Task {
   actualNumberOfWords: number | null;
@@ -96,7 +97,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   const [date, setDate] = useState<Date | null>(
     task.dueDate ? new Date(task.dueDate) : null
   );
-  console.log("Task", task);
+
   
   const allRoles = ["texter", "lector", "seo-optimizer"];
   const [showCard, setShowCard] = useState(task.readyToWork);
@@ -215,19 +216,21 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     setShowCard(!showCard);
   };
 
-  const getInitials = (name: string): string => {
-    if (!name) return "";
-    return name
-      .split(" ")
-      .map((word) => word[0].toUpperCase())
-      .join("");
+
+  const showAssignedRoles = (memberId: number) => {
+    const foundFreelancer = freelancer.find((f) => f._id === memberId);
+    if (foundFreelancer) {
+      const fullName = `${foundFreelancer.firstName} ${foundFreelancer.lastName}`;
+      return fullName;
+    } else {
+      return "";
+    }
   };
 
   const onSubmit = async (values) => {
     // Combine form data and selected roles
     const combinedData = {
-      ...values,
-      roles: selectedRoles, // Include the selected roles and their corresponding member IDs
+      ...values
     };
     // console.log(JSON.stringify(combinedData)); // For debugging purposes
     // alert(JSON.stringify(combinedData, null, 2)); // Display the combined data in a readable format
@@ -559,7 +562,6 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                           handleCloseMemberModel={handleCloseMemberModel}
                           toggleDropdown={toggleDropdown}
                           dropdownVisible={dropdownVisible}
-                          getInitials={getInitials}
                           getAvailableRoles={getAvailableRoles}
                           handleRoleSelect={handleRoleSelect}
                         />
@@ -567,24 +569,27 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                     </div>
 
                     <TaskMember
-                      name={task.texter ?? ""}
+                      name={showAssignedRoles(task.texter) ?? ""}
                       label="Texter"
+                      handleMembers={handleMembers}
                      
                     />
                     <TaskMember
-                      name={task.lector ?? ""}
+                      name={showAssignedRoles(task.lector) ?? ""}
                       label="Lector"
+                      handleMembers={handleMembers}
                  
                     />
                     <TaskMember
-                      name={task.seo ?? ""}
+                      name={showAssignedRoles(task.seo) ?? ""}
                       label="SEO"
+                      handleMembers={handleMembers}
                    
                     />
                     <TaskMember
-                      name={task.metaLector ?? ""}
+                      name={showAssignedRoles(task.metaLector) ?? ""}
                       label="Meta Lector"
-                      
+                      handleMembers={handleMembers}
                     />
                   </div>
                 </div>

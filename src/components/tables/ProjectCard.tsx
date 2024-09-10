@@ -54,13 +54,25 @@ interface ProjectCardProps {
   projects: Project[];
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ projects ,freelancer}) => {
   const navigate = useNavigate();
+
+  const showAssignedRoles = (memberId: number) => {
+    const foundFreelancer = freelancer.find((f) => f._id === memberId);
+    if (foundFreelancer) {
+      const fullName = `${foundFreelancer.firstName} ${foundFreelancer.lastName}`;
+      return fullName;
+    } else {
+      return "";
+    }
+  };
+
   const getInitials = (name: string): string => {
     if (!name) return "";
-    return name
-      .split(" ")
-      .map((word: string) => word[0].toUpperCase())
+    const words = name.split(" ");
+    const firstTwoWords = words.slice(0, 2);
+    return firstTwoWords
+      .map(word => word[0].toUpperCase())
       .join("");
   };
 
@@ -111,10 +123,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
               <p>Not assigned</p>
             ) : ( */}
             <div className="flex justify-between items-center">
-              <WorkerComponent label="T" name={project.texter ?? ""} />
-              <WorkerComponent label="L" name={project.lector ?? ""} />
-              <WorkerComponent label="S" name={project.seo ?? ""} />
-              <WorkerComponent label="M" name={project.metaLector ?? ""} />
+              <WorkerComponent label="T" name={showAssignedRoles(project.texter) ?? ""} />
+              <WorkerComponent label="L" name={showAssignedRoles(project.lector) ?? ""} />
+              <WorkerComponent label="S" name={showAssignedRoles(project.seo) ?? ""} />
+              <WorkerComponent label="M" name={showAssignedRoles(project.metaLector) ?? ""} />
             </div>
           </div>
 

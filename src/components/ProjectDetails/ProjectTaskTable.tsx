@@ -6,6 +6,7 @@ import {
 import "antd/dist/reset.css";
 import TaskDetailModel from "./TaskDetailModel";
 import { format } from 'date-fns';
+import getInitials from "../Helpers/UpperCaseName";
 
 interface Task {
   actualNumberOfWords: number | null;
@@ -45,15 +46,15 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer,userId,pro
   const [task, setTask] = useState({});
 
 
-  const getInitials = (name: string): string => {
-    if (name === "") return "";
-    return name
-      .split(" ")
-      .map((word) => word[0].toUpperCase())
-      .join("");
+  const showAssignedRoles = (memberId: number) => {
+    const foundFreelancer = freelancer.find((f) => f._id === memberId);
+    if (foundFreelancer) {
+      const fullName = `${foundFreelancer.firstName} ${foundFreelancer.lastName}`;
+      return fullName;
+    } else {
+      return "";
+    }
   };
-
- 
 
   const handleTasks = (task: any) => {
     setTask(task);
@@ -231,10 +232,10 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer,userId,pro
                   </td> */}
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex justify-between items-center">
-                      <WorkerComponent label="T" name={task.texter ?? ""} />
-                      <WorkerComponent label="L" name={task.lector ?? ""} />
-                      <WorkerComponent label="S" name={task.seo ?? ""} />
-                      <WorkerComponent label="M" name={task.metaLector ?? ""} />
+                      <WorkerComponent label="T" name={showAssignedRoles(task.texter) ?? ""} />
+                      <WorkerComponent label="L" name={showAssignedRoles(task.lector) ?? ""} />
+                      <WorkerComponent label="S" name={showAssignedRoles(task.seo) ?? ""} />
+                      <WorkerComponent label="M" name={showAssignedRoles(task.metaLector) ?? ""} />
                     </div>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

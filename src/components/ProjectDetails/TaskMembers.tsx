@@ -1,17 +1,15 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import getInitials from "../Helpers/UpperCaseName";
 
-const TaskMembers: React.FC<{ label: string; name: string }> = ({
+const TaskMembers: React.FC<{ label: string; name: string,removeDelete?:boolean,handleMembers:()=>void }> = ({
   label,
   name,
+  removeDelete,
+  handleMembers
 }) => {
-  const getInitials = (name: string): string => {
-    return name
-      .split(" ")
-      .map((word) => word[0].toUpperCase())
-      .join("");
-  };
+
   return name === "" ? (
     <></>
   ) : (
@@ -19,7 +17,7 @@ const TaskMembers: React.FC<{ label: string; name: string }> = ({
       <p className="text-sm">{label}</p>
       <div className="flex justify-between items-center py-1.5">
         <div className="flex justify-start items-center">
-          <p className="text-black  dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
+          <p className="text-black h-6 w-6  dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
             {getInitials(name)}
           </p>
           <p className="px-2.5 text-black dark:text-white">{name}</p>
@@ -32,7 +30,7 @@ const TaskMembers: React.FC<{ label: string; name: string }> = ({
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 512 512"
             className="w-3.5 h-3.5 text-blue-500  cursor-pointer mx-6"
-            onClick={() => alert(`Edit ${label}`)}
+            onClick={() => handleMembers()}
           >
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g
@@ -45,11 +43,12 @@ const TaskMembers: React.FC<{ label: string; name: string }> = ({
             </g>
           </svg>
 
+          {!removeDelete && (
           <FontAwesomeIcon
             icon={faTimes}
             className="text-lg text-red-500 cursor-pointer"
             onClick={() => alert(`Delete ${label}`)}
-          />
+          />)}
         </div>
       </div>
     </div>
