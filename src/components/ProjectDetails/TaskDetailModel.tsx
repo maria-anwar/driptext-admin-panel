@@ -25,6 +25,8 @@ import GroupTextArea from "../FormFields/GroupTextArea";
 import { GroupDateField } from "../FormFields/GroupDateField";
 import { GroupField } from "../FormFields/GroupField";
 import GroupDropdownField from "../FormFields/GroupDropdownField";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 interface Task {
   actualNumberOfWords: number | null;
@@ -89,10 +91,14 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   projectId,
   projectName,
 }) => {
+  const user = useSelector<any>((state) => state.user);
+  const [userToken, setUserToken] = useState(user.user.token);
   const [date, setDate] = useState<Date | null>(
     task.dueDate ? new Date(task.dueDate) : null
   );
-  const allRoles = ["Texter", "Lector", "SEO", "Meta-Lector"];
+  console.log("Task", task);
+  
+  const allRoles = ["texter", "lector", "seo-optimizer"];
   const [showCard, setShowCard] = useState(task.readyToWork);
   const [memberModel, setMemberModel] = useState(false);
   const [selectedRoles, setSelectedRoles] = useState<{ [key: number]: string }>(
@@ -154,11 +160,27 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   };
 
   const handleRoleSelect = (role: string, memberId: number) => {
-    setSelectedRoles((prevRoles) => ({
-      ...prevRoles,
-      [memberId]: role,
-    }));
-    setDropdownVisible(null);
+    const token = userToken; 
+    axios.defaults.headers.common["access-token"] = token;
+    
+    const payload = {
+      taskId: task._id,
+      freelancerId: memberId.toString(),
+      role: role.toString(),
+    };
+    
+  
+    axios.post(`${import.meta.env.VITE_DB_URL}/admin/assignFreelancersByTask`, payload)
+      .then((response) => {
+        const projectDataArray = response;
+        console.log(payload); // Log payload to verify
+        console.log(projectDataArray); // Log payload to verify
+        setDropdownVisible(null);
+      })
+      .catch((err) => {
+        console.error("Error fetching project details:", err.response || err.message || err);
+        setDropdownVisible(null);
+      });
   };
 
   const handleMembers = () => {
@@ -207,7 +229,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
       ...values,
       roles: selectedRoles, // Include the selected roles and their corresponding member IDs
     };
-    console.log(JSON.stringify(combinedData)); // For debugging purposes
+    // console.log(JSON.stringify(combinedData)); // For debugging purposes
     // alert(JSON.stringify(combinedData, null, 2)); // Display the combined data in a readable format
     closeModel(); // Close the modal
   };
@@ -323,7 +345,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                     </div>
                   </div>
                   <div className="w-full flex justify-between items-center">
-                    <div className="w-1/2 mr-1">
+                    <div className="w-full mr-1">
                       <GroupField
                         label="Topic"
                         type="text"
@@ -335,7 +357,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                         errors={touched.topic ? errors.topic : ""}
                       />
                     </div>
-                    <div className="w-1/2 mr-1">
+                    {/* <div className="w-1/2 mr-1">
                       <GroupDropdownField
                         label="Text type"
                         type="text"
@@ -352,7 +374,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                         errors={touched.textType ? errors.textType : ""}
                         onChange={handleChange}
                       />
-                    </div>
+                    </div> */}
                   </div>
 
                   <GroupField

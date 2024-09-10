@@ -1,16 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faFolder,
   faEye,
-  faTimes,
-  faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import "antd/dist/reset.css";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import ToggleSwitch from "../buttons/ToggleButton";
 import TaskDetailModel from "./TaskDetailModel";
+import { format } from 'date-fns';
 
 interface Task {
   actualNumberOfWords: number | null;
@@ -49,7 +44,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer,userId,pro
   const [showDetailsDialog, setShowDetailsDialog] = useState<boolean>(false);
   const [task, setTask] = useState({});
 
-  
+
   const getInitials = (name: string): string => {
     if (name === "") return "";
     return name
@@ -69,8 +64,11 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer,userId,pro
     setShowDetailsDialog(false);
   };
 
-
-
+  const formatDate = (dateString: Date | string) => {
+    if (!dateString) return "Not set";
+    const date = new Date(dateString);
+    return format(date, "MMM dd, yyyy"); // "August 2025"
+  };
 
   const WorkerComponent: React.FC<{ label: string; name: string }> = ({
     label,
@@ -95,13 +93,13 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer,userId,pro
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4">
-                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
                   Status
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
                   Google-Link
                 </th>
-                <th className="min-w-[120px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
                   Deadline
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
@@ -110,9 +108,9 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer,userId,pro
                 <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
                   Keywords
                 </th>
-                <th className="min-w-[120px] py-4 px-4 font-semibold text-black dark:text-white">
+                {/* <th className="min-w-[120px] py-4 px-4 font-semibold text-black dark:text-white">
                   Text type
-                </th>
+                </th> */}
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
                   Employess
                 </th>
@@ -126,7 +124,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer,userId,pro
                 <tr className="text-left" key={index}>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex justify-start items-start flex-col">
-                      <p className={` uppercase text-center py-1 px-2 rounded-full
+                      <p className={`text-xs uppercase text-center py-1.5 px-3 rounded-full
                         ${
                           task.status.toUpperCase() === "FINAL"
                             ? "bg-success/20 text-success"
@@ -175,7 +173,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer,userId,pro
                     </a>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-white bg-red-500 px-1 rounded-full text-center flex justify-center items-center">
+                    <p className="text-sm text-white bg-red-500/85 px-1 py-1 rounded-full text-center flex justify-center items-center">
                       <svg
                         viewBox="0 0 24 24"
                         fill="none"
@@ -213,7 +211,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer,userId,pro
                           ></path>{" "}
                         </g>
                       </svg>
-                      <span className="px-1">{task.dueDate ?? "not set"}</span>
+                      <span className="px-1">{formatDate(task.dueDate)}</span>
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -226,11 +224,11 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer,userId,pro
                       {task.keywords ?? ""}
                     </p>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  {/* <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
                       {task.type ?? ""}
                     </p>
-                  </td>
+                  </td> */}
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex justify-between items-center">
                       <WorkerComponent label="T" name={task.texter ?? ""} />

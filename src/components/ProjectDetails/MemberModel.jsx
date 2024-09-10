@@ -55,9 +55,7 @@ const MemberModal = ({
                         {role}
                       </li>
                     ))}
-                    {getAvailableRoles(member._id).length === 0 && (
-                      <li className="px-4 py-2 text-gray-500">No roles available</li>
-                    )}
+                    
                   </ul>
                 </div>
               )}
