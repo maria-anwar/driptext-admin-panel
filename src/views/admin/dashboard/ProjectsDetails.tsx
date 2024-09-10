@@ -124,6 +124,7 @@ const ProjectsDetails: React.FC = () => {
   };
 
   const showAssignedRoles = (memberId: number) => {
+    if(!freelancer) return "";
     const foundFreelancer = freelancer.find((f) => f._id === memberId);
     if (foundFreelancer) {
       const fullName = `${foundFreelancer.firstName} ${foundFreelancer.lastName}`;
@@ -662,15 +663,51 @@ const ProjectsDetails: React.FC = () => {
                       label={"Meta-lector"}
                       removeDelete={true}
                       handleMembers={handleMembers}
-                      name={showAssignedRoles(projectDetails.metaLector) ?? ""}
+                      name={projectDetails.metaLector ?? ""}
                     />
                   </div>
-                  <div className="px-7 py-6">
-                    <div className="w-full flex justify-between items-center my-1"></div>
-                  </div>
+                  <div className="px-7 py-3"></div>
                 </div>
               </div>
             </div>
+            {/* <div className="rounded-sm border border-stroke bg-white my-6 pt-6 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+              <div className="flex justify-between items-center px-4 pb-3">
+                <p>Project Members</p>
+                <p className="bg-blue-500 h-6 w-6 text-center text-white">+</p>
+              </div>
+              <div className="max-w-full overflow-x-auto px-4 py-2">
+                <table className="w-full table-auto">
+                  <thead>
+                    <tr className="bg-gray-3 h-12 text-left dark:bg-meta-4">
+                      <th className="px-4 py-2">Manager</th>
+                      <th className="px-4 py-2">Texter</th>
+                      <th className="px-4 py-2">Lector</th>
+                      <th className="px-4 py-2">Seo</th>
+                      <th className="px-4 py-2">MetaLector</th>
+                      <th className="px-4 py-2">Update</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="px-4 py-2">Danile John</td>
+                      <td className="px-4 py-2">
+                        {showAssignedRoles(projectDetails.texter) ?? ""}
+                      </td>
+                      <td className="px-4 py-2">
+                        {showAssignedRoles(projectDetails.lector) ?? ""}
+                      </td>
+                      <td className="px-4 py-2">
+                        {showAssignedRoles(projectDetails.seo) ?? ""}
+                      </td>
+                      <td className="px-4 py-2">
+                        {showAssignedRoles(projectDetails.metaLector) ?? ""}
+                      </td>
+                      <td className="px-4 py-2">update icon</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div> */}
             <div className="pt-14">
               <div className="flex justify-end items-end">
                 <button
