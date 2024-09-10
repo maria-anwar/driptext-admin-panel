@@ -8,12 +8,16 @@ import GroupDropdownField from "../FormFields/GroupDropdownField";
 import GroupTextArea from "../FormFields/GroupTextArea";
 import { GroupField } from "../FormFields/GroupField";
 import { GroupDateField } from "../FormFields/GroupDateField";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { set } from "react-datepicker/dist/date_utils";
 
 interface AddModelProps {
   projectName: string;
   projectId: string;
   userId: string;
   handleCloseAdd: () => void;
+  getTaskData: () => void;
 }
 
 const AddModel: React.FC<AddModelProps> = ({
@@ -21,10 +25,13 @@ const AddModel: React.FC<AddModelProps> = ({
   projectId,
   userId,
   handleCloseAdd,
+  getTaskData,
 }) => {
+  const user = useSelector<any>((state) => state.user);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [userToken, setUserToken] = useState(user.user.token);
 
   const initialValues = {
     projectId: projectId,
@@ -52,7 +59,9 @@ const AddModel: React.FC<AddModelProps> = ({
     textType: Yup.string().required("Please select text type"),
     wordCount: Yup.number().required("Please enter word count"),
     companyInfo: Yup.string().required("Please enter company information"),
-    companyAttributes: Yup.string().required("Please enter company's attributes"),
+    companyAttributes: Yup.string().required(
+      "Please enter company's attributes"
+    ),
     services: Yup.string().required("Please enter company's services"),
     content: Yup.string().required("Above information is required"),
     customers: Yup.string().required("Above information is required"),
@@ -61,10 +70,39 @@ const AddModel: React.FC<AddModelProps> = ({
   });
 
   const onSubmit = (values: typeof initialValues) => {
-    console.log("Form Data:", values);
-    console.log("User ID:", userId);
-    console.log("Project ID:", projectId);
-    handleCloseAdd();
+    setLoading(true);
+    let token = userToken;
+    axios.defaults.headers.common["access-token"] = token;
+    let payload = {
+      dueDate: values.date, // Initialize as null for date
+      topic: values.topic,
+      keyword: values.keywords,
+      keywordType: values.textType,
+      comment: values.comment,
+      projectName: values.projectName,
+      projectId: values.projectId,
+      userId: values.userId,
+      companyBackgorund: values.companyInfo,
+      companyAttributes: values.companyAttributes,
+      comapnyServices: values.services,
+      customerContent: values.content,
+      customerIntrest: values.customers,
+      contentPurpose: values.contentPurpose,
+      contentInfo: values.brand,
+    };
+    console.log("Payload:", payload);
+
+    axios
+      .post(`${import.meta.env.VITE_DB_URL}/admin/addTask`, payload)
+      .then((response) => {
+        const projectDataArray = response.data;
+        getTaskData();
+        setLoading(false);
+        handleCloseAdd();
+      })
+      .catch((err) => {
+        console.error("Error fetching project details:", err);
+      });
   };
 
   return (
@@ -78,7 +116,9 @@ const AddModel: React.FC<AddModelProps> = ({
           <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
             <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
               <div className="flex justify-between items-center mb-5">
-                <h2 className="text-xl font-bold dark:text-white pr-12">Add Task</h2>
+                <h2 className="text-xl font-bold dark:text-white pr-12">
+                  Add Task
+                </h2>
                 <FontAwesomeIcon
                   className="cursor-pointer text-lg text-red-500 pl-12"
                   onClick={handleCloseAdd}
@@ -108,7 +148,6 @@ const AddModel: React.FC<AddModelProps> = ({
                   id="projectName"
                   value={values.projectName}
                   onChange={handleChange}
-                  
                   errors={touched.projectName ? errors.projectName : ""}
                   disabled={true}
                 />
@@ -120,7 +159,6 @@ const AddModel: React.FC<AddModelProps> = ({
                   id="topic"
                   value={values.topic}
                   onChange={handleChange}
-                  
                   errors={touched.topic ? errors.topic : ""}
                 />
 
@@ -132,7 +170,6 @@ const AddModel: React.FC<AddModelProps> = ({
                   id="keywords"
                   value={values.keywords}
                   onChange={handleChange}
-                  
                   errors={touched.keywords ? errors.keywords : ""}
                 />
 
@@ -151,7 +188,6 @@ const AddModel: React.FC<AddModelProps> = ({
                   value={values.textType}
                   errors={touched.textType ? errors.textType : ""}
                   onChange={handleChange}
-                  
                 />
                 <GroupField
                   label="Word Count Expected"
@@ -161,9 +197,9 @@ const AddModel: React.FC<AddModelProps> = ({
                   id="wordCount"
                   value={values.wordCount}
                   onChange={handleChange}
-                  
                   errors={touched.wordCount ? errors.wordCount : ""}
                   defaultValue={1500}
+                  disabled={true}
                 />
 
                 <div className="flex flex-col gap-3">
@@ -179,7 +215,6 @@ const AddModel: React.FC<AddModelProps> = ({
                     value={values.companyInfo}
                     errors={touched.companyInfo ? errors.companyInfo : ""}
                     onChange={handleChange}
-                    
                   />
 
                   <GroupTextArea
@@ -189,9 +224,10 @@ const AddModel: React.FC<AddModelProps> = ({
                     id="companyAttributes"
                     name="companyAttributes"
                     value={values.companyAttributes}
-                    errors={touched.companyAttributes ? errors.companyAttributes : ""}
+                    errors={
+                      touched.companyAttributes ? errors.companyAttributes : ""
+                    }
                     onChange={handleChange}
-                    
                   />
                   <GroupTextArea
                     label="What are your services?"
@@ -202,7 +238,6 @@ const AddModel: React.FC<AddModelProps> = ({
                     value={values.services}
                     errors={touched.services ? errors.services : ""}
                     onChange={handleChange}
-                    
                   />
                 </div>
                 <div className="flex flex-col gap-3 py-3">
@@ -218,7 +253,6 @@ const AddModel: React.FC<AddModelProps> = ({
                     value={values.content}
                     errors={touched.content ? errors.content : ""}
                     onChange={handleChange}
-                    
                   />
 
                   <GroupTextArea
@@ -230,7 +264,6 @@ const AddModel: React.FC<AddModelProps> = ({
                     value={values.customers}
                     errors={touched.customers ? errors.customers : ""}
                     onChange={handleChange}
-                    
                   />
                 </div>
                 <div className="flex flex-col gap-3 py-3">
@@ -246,7 +279,6 @@ const AddModel: React.FC<AddModelProps> = ({
                     value={values.contentPurpose}
                     errors={touched.contentPurpose ? errors.contentPurpose : ""}
                     onChange={handleChange}
-                    
                   />
 
                   <GroupTextArea
@@ -258,7 +290,6 @@ const AddModel: React.FC<AddModelProps> = ({
                     value={values.brand}
                     errors={touched.brand ? errors.brand : ""}
                     onChange={handleChange}
-                    
                   />
                 </div>
                 <GroupTextArea
@@ -270,11 +301,12 @@ const AddModel: React.FC<AddModelProps> = ({
                   value={values.comment}
                   errors={touched.comment ? errors.comment : ""}
                   onChange={handleChange}
-                  
                 />
                 <div className="flex justify-end items-center gap-3 pt-4">
                   <button
-                    className="my-3 text-black dark:text-white flex justify-center rounded bg-transparent border border-primary py-1.5 px-6 font-medium "
+                    className={`my-3 text-black dark:text-white flex justify-center rounded bg-transparent border border-primary py-1.5 px-6 font-medium ${
+                      loading ? "cursor-not-allowed" : "cursor-pointer"
+                    }`}
                     type="button"
                     onClick={handleCloseAdd}
                     disabled={loading}
@@ -282,11 +314,13 @@ const AddModel: React.FC<AddModelProps> = ({
                     Cancel
                   </button>
                   <button
-                    className="my-3 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
+                    className={`my-3 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90 ${
+                      loading ? "cursor-not-allowed" : "cursor-pointer"
+                    }`}
                     type="submit"
                     disabled={loading}
                   >
-                    {loading ? "Saving" : "Save"}
+                    {loading ? "Saving..." : "Save"}
                   </button>
                 </div>
                 {error && (

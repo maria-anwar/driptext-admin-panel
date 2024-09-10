@@ -57,13 +57,16 @@ const ProjectsDetails: React.FC = () => {
   const [file, setFile] = useState(null);
 
   useEffect(() => {
+    getTaskData();
+    getFreelancerData();
+  }, [projectId, userId]);
+
+  const getTaskData = () => {
     let token = userToken;
     axios.defaults.headers.common["access-token"] = token;
     let payload = {
       projectId: projectId,
     };
-    // "https://driptext-api.vercel.app/api/projects/detail";
-
     axios
       .post(`${import.meta.env.VITE_DB_URL}/admin/getProjectDetail`, payload)
       .then((response) => {
@@ -79,14 +82,14 @@ const ProjectsDetails: React.FC = () => {
         console.error("Error fetching project details:", err);
         setLoading(false);
       });
-  }, [projectId, userId]);
+  };
 
-  useEffect(() => {
+  const getFreelancerData = () => {
     let token = userToken;
     axios.defaults.headers.common["access-token"] = token;
 
     axios
-      .get(`https://driptext-api.vercel.app/api/admin/getFreelancers`)
+      .get(`${import.meta.env.VITE_DB_URL}/admin/getFreelancers`)
       .then((response) => {
         const projectDataArray = response.data.freelancers;
         const allProjects = projectDataArray;
@@ -95,10 +98,35 @@ const ProjectsDetails: React.FC = () => {
       .catch((err) => {
         console.error("Error fetching project details:", err);
       });
-  }, []);
+  };
+  const handleRoleSelect = (role: string, memberId: number) => {
+    const token = userToken; 
+    axios.defaults.headers.common["access-token"] = token;
+    
+    const payload = {
+      projectId: projectId,
+      freelancerId: memberId.toString(),
+      role: role.toString(),
+    };
+    
+  
+    axios.post(`${import.meta.env.VITE_DB_URL}/admin/assignFreelancersByProject`, payload)
+      .then((response) => {
+        const projectDataArray = response;
+        console.log(payload); // Log payload to verify
+        console.log(projectDataArray); // Log payload to verify
+        getTaskData(); // Call getTaskData() after the response is received
+        setDropdownVisible(null);
+      })
+      .catch((err) => {
+        console.error("Error fetching project details:", err.response || err.message || err);
+        setDropdownVisible(null);
+      });
+  };
+  
 
-  const allRoles = ["Texter", "Lector", "SEO", "Meta-lector"];
 
+  const allRoles = ["texter", "lector", "seo-optimizer"];
 
   const handleDelete = () => {
     setDeleteModel(true);
@@ -220,18 +248,9 @@ const ProjectsDetails: React.FC = () => {
       .join("");
   };
 
-  const handleRoleSelect = (role: string, memberId: number) => {
-    setSelectedRoles((prevRoles) => ({
-      ...prevRoles,
-      [memberId]: role,
-    }));
-    setDropdownVisible(null);
-    alert(`Added member ${memberId} as ${role}`);
-  };
 
-  const getAvailableRoles = (memberId: number) => {
-    const usedRoles = Object.values(selectedRoles);
-    return allRoles.filter((role) => !usedRoles.includes(role));
+  const getAvailableRoles = () => {
+    return allRoles;
   };
 
   const toggleDropdown = (memberId: number) => {
@@ -298,8 +317,6 @@ const ProjectsDetails: React.FC = () => {
     XLSX.writeFile(wb, "tasks.xlsx");
   };
 
-
-
   function formatDateString(dateString: string): string | null {
     const date = new Date(dateString);
 
@@ -331,7 +348,9 @@ const ProjectsDetails: React.FC = () => {
                 <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                   <div className="py-6 px-7 dark:border-strokedark">
                     <p className="text-xl font-semibold text-black dark:text-white pb-2">
-                    {projectDetails.projectName}{' | '}{projectDetails.projectId}
+                      {projectDetails.projectName}
+                      {" | "}
+                      {projectDetails.projectId}
                     </p>
                     <div className="py-2">
                       <h3 className="font-medium text-black dark:text-white">
@@ -463,7 +482,13 @@ const ProjectsDetails: React.FC = () => {
                       <FontAwesomeIcon icon={faPlus} className="text-sm px-2" />
                     </button>
                     {addModel && (
-                      <AddModel projectName={projectDetails.projectName} projectId={projectDetails._id} userId={userData._id} handleCloseAdd={handleCloseAdd}/>
+                      <AddModel
+                        projectName={projectDetails.projectName}
+                        projectId={projectDetails._id}
+                        userId={userData._id}
+                        handleCloseAdd={handleCloseAdd}
+                        getTaskData={getTaskData}
+                      />
                     )}
                     <button
                       onClick={handleEdit}
@@ -669,7 +694,7 @@ const ProjectsDetails: React.FC = () => {
                           </div>
                         </div>
                       )}
-                    <button
+                      <button
                         onClick={() => {
                           handleExportData(projectTasks);
                         }}
@@ -680,7 +705,7 @@ const ProjectsDetails: React.FC = () => {
                           icon={faUpload}
                           className="text-sm px-2"
                         />
-                    </button>
+                      </button>
                     </div>
                     <button
                       onClick={handleDelete}
@@ -699,7 +724,13 @@ const ProjectsDetails: React.FC = () => {
                 </div>
               </div>
             </div>
-            <ProjectTaskTable tasks={projectTasks} freelancer={freelancer} userId={userData._id} projectId={projectDetails._id} projectName={projectDetails.projectName}/>
+            <ProjectTaskTable
+              tasks={projectTasks}
+              freelancer={freelancer}
+              userId={userData._id}
+              projectId={projectDetails._id}
+              projectName={projectDetails.projectName}
+            />
           </div>
           {memberModel && (
             <MemberModal

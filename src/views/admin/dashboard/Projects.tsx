@@ -42,6 +42,7 @@ const Projects: React.FC = () => {
       .then((response) => {
         const projectDataArray = response.data.projects;
         setProjectData(projectDataArray);
+        console.log("Project data fetched:", projectDataArray);
         setFilteredProjects(projectDataArray); // Set filteredProjects to initial data
         setLoading(false);
       })
