@@ -27,7 +27,7 @@ const GroupTextArea: React.FC<GroupTextAreaProps> = ({
     <div className="w-full flex flex-col gap-2.5">
       <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
         {label}
-        {name === "comment" ? (
+        {name === "comment" || "comments" ? (
           ""
         ) : (
           <span className="text-red-600 text:lg 2xl:text-[17px] mt-6 pl-1">

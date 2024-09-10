@@ -139,7 +139,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects ,freelancer}) => {
             <p className="py-2 uppercase">
               STATUS:{" "}
               <span
-                className={`$${
+                className={`${
                   project.projectStatus.toUpperCase() === "FINAL"
                     ? " text-success"
                     : project.projectStatus.toUpperCase() === "FREE TRIAL"
