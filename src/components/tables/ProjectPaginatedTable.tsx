@@ -67,10 +67,20 @@ interface PaginatedTableProps {
   projects: Project[];
 }
 
-const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
+const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects,freelancer }) => {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const navigate = useNavigate();
+  
+  const showAssignedRoles = (memberId: number) => {
+    const foundFreelancer = freelancer.find((f) => f._id === memberId);
+    if (foundFreelancer) {
+      const fullName = `${foundFreelancer.firstName} ${foundFreelancer.lastName}`;
+      return fullName;
+    } else {
+      return "";
+    }
+  };
   
   const handlePageChange = (page: number) => {
     setPage(page);
@@ -94,11 +104,13 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
 
   const getInitials = (name: string): string => {
     if (!name) return "";
-    return name
-      .split(" ")
-      .map((word: string) => word[0].toUpperCase())
+    const words = name.split(" ");
+    const firstTwoWords = words.slice(0, 2);
+    return firstTwoWords
+      .map(word => word[0].toUpperCase())
       .join("");
   };
+  
 
   const WorkerComponent: React.FC<{ label: string; name: string }> = ({
     label,
@@ -109,7 +121,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
         <p className="dark:text-white text-black text-xs text-center py-1">
           {label}
         </p>
-        <p className="text-black w-6 h-6  dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
+        <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
           {getInitials(name)}
         </p>
       </div>
@@ -241,13 +253,13 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects }) => {
                       <div className="flex justify-between items-center">
                         <WorkerComponent
                           label="T"
-                          name={project.texter ?? ""}
+                          name={showAssignedRoles(project.texter) ?? ""}
                         />
                         <WorkerComponent
                           label="L"
-                          name={project.lector ?? ""}
+                          name={showAssignedRoles(project.lector) ?? ""}
                         />
-                        <WorkerComponent label="S" name={project.seo ?? ""} />
+                        <WorkerComponent label="S" name={showAssignedRoles(project.seo) ?? ""} />
                         <WorkerComponent
                           label="M"
                           name={project.metaLector ?? ""}

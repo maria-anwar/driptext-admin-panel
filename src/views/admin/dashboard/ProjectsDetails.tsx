@@ -27,6 +27,7 @@ import "react-toastify/dist/ReactToastify.css";
 import MemberModal from "../../../components/ProjectDetails/MemberModel";
 import AddModel from "../../../components/ProjectDetails/AddModel";
 import TaskMembers from "../../../components/ProjectDetails/TaskMembers";
+import getInitials from "../../../components/Helpers/UpperCaseName";
 
 const ProjectsDetails: React.FC = () => {
   const location = useLocation();
@@ -253,13 +254,6 @@ const ProjectsDetails: React.FC = () => {
     setImportModel(false);
   };
 
-  const getInitials = (name: string): string => {
-    return name
-      .split(" ")
-      .map((word) => word[0].toUpperCase())
-      .join("");
-  };
-
   const getAvailableRoles = () => {
     return allRoles;
   };
@@ -469,18 +463,26 @@ const ProjectsDetails: React.FC = () => {
                     </div>
                     <TaskMembers
                       label={"Texter"}
+                      removeDelete={true}
+                      handleMembers={handleMembers}
                       name={showAssignedRoles(projectDetails.texter) ?? ""}
                     />
                     <TaskMembers
                       label={"Lector"}
+                      removeDelete={true}
+                      handleMembers={handleMembers}
                       name={showAssignedRoles(projectDetails.lector) ?? ""}
                     />
                     <TaskMembers
                       label={"SEO"}
+                      removeDelete={true}
+                      handleMembers={handleMembers}
                       name={showAssignedRoles(projectDetails.seo) ?? ""}
                     />
                     <TaskMembers
                       label={"Meta-lector"}
+                      removeDelete={true}
+                      handleMembers={handleMembers}
                       name={showAssignedRoles(projectDetails.metaLector) ?? ""}
                     />
                   </div>
@@ -750,7 +752,6 @@ const ProjectsDetails: React.FC = () => {
               handleCloseMemberModel={handleCloseMemberModel}
               toggleDropdown={toggleDropdown}
               dropdownVisible={dropdownVisible}
-              getInitials={getInitials}
               getAvailableRoles={getAvailableRoles}
               handleRoleSelect={handleRoleSelect}
             />

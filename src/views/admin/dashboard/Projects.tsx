@@ -29,14 +29,19 @@ const Projects: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [userId, setUserID] = useState(user.user.data.user._id);
   const [userToken, setUserToken] = useState(user.user.token);
+  const [freelancer, setFreelancer] = useState([]);
 
   useEffect(() => {
+    getFreelancerData();
+    getProjects();
+  }, [user, userToken, userId]);
+
+  const getProjects = () => {
     let token = userToken;
     axios.defaults.headers.common["access-token"] = token;
     let payload = {
       userId: userId,
     };
-
     axios
       .get(`${import.meta.env.VITE_DB_URL}/admin/getProjects`)
       .then((response) => {
@@ -49,7 +54,7 @@ const Projects: React.FC = () => {
       .catch((err) => {
         console.error("Error fetching project details:", err);
       });
-  }, [user, userToken, userId]);
+  }
 
   useEffect(() => {
     const filtered = projectData.filter(project =>
@@ -57,6 +62,22 @@ const Projects: React.FC = () => {
     );
     setFilteredProjects(filtered);
   }, [searchQuery, projectData]);
+
+  const getFreelancerData = () => {
+    let token = userToken;
+    axios.defaults.headers.common["access-token"] = token;
+
+    axios
+      .get(`${import.meta.env.VITE_DB_URL}/admin/getFreelancers`)
+      .then((response) => {
+        const projectDataArray = response.data.freelancers;
+        const allProjects = projectDataArray;
+        setFreelancer(allProjects);
+      })
+      .catch((err) => {
+        console.error("Error fetching project details:", err);
+      });
+  };
 
   const handleCard = (isOn: boolean) => {
     setShowCard(isOn);
@@ -151,19 +172,19 @@ const Projects: React.FC = () => {
             !showArchived &&
             (showCard ? (
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 2xl:grid-cols-3 5xl:grid-cols-4 4xl:px-14 pt-8">
-                <ProjectCard projects={filteredProjects} />
+                <ProjectCard projects={filteredProjects} freelancer={freelancer} />
               </div>
             ) : (
               <>
                 {loading ? (
                   <Loading />
                 ) : (
-                  <ProjectPaginatedTable projects={filteredProjects} />
+                  <ProjectPaginatedTable projects={filteredProjects} freelancer={freelancer} />
                 )}
               </>
             ))}
-          {showDraft && <ProjectPaginatedTable projects={filteredProjects} />}
-          {showArchived && <ProjectPaginatedTable projects={filteredProjects} />}
+          {showDraft && <ProjectPaginatedTable projects={filteredProjects} freelancer={freelancer}/>}
+          {showArchived && <ProjectPaginatedTable projects={filteredProjects} freelancer={freelancer} />}
         </div>
       </div>
     </>
