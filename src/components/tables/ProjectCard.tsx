@@ -99,7 +99,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects ,freelancer}) => {
 
   const formatDate = (dateString: Date | string) => {
     const date = new Date(dateString);
-    return format(date, "MMM dd, yyyy"); // "August 2025"
+    return format(date, "MMM, yyyy"); // "August 2025"
   };
 
   return (

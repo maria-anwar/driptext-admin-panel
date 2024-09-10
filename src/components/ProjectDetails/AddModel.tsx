@@ -91,8 +91,6 @@ const AddModel: React.FC<AddModelProps> = ({
       contentPurpose: values.contentPurpose,
       contentInfo: values.brand,
     };
-    console.log("Payload:", payload);
-
     axios
       .post(`${import.meta.env.VITE_DB_URL}/admin/addTask`, payload)
       .then((response) => {

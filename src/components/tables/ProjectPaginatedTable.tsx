@@ -87,7 +87,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects,freelan
   };
   const formatDate = (dateString: Date | string) => {
     const date = new Date(dateString);
-    return format(date, "MMM dd, yyyy"); // "August 2025"
+    return format(date, "MMM, yyyy"); // "August 2025"
   };
 
   const handleRowsPerPageChange = (
@@ -155,7 +155,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects,freelan
                   Tasks
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Worker
+                  Team
                 </th>
                 <th className="min-w-[100px] py-4 px-4 font-medsemiboldium text-black dark:text-white">
                   Onboarded
