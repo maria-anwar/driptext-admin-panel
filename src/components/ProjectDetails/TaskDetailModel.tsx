@@ -165,11 +165,11 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     
     const payload = {
       taskId: task._id,
-      freelancerId: memberId.toString(),
+      freelancerId: memberId?.toString(),
       role: role.toString(),
     };
+    console.log(payload); // Log payload to verify
     
-  
     axios.post(`${import.meta.env.VITE_DB_URL}/admin/assignFreelancersByTask`, payload)
       .then((response) => {
         const projectDataArray = response;

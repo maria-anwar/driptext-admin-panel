@@ -101,28 +101,42 @@ const ProjectsDetails: React.FC = () => {
       });
   };
   const handleRoleSelect = (role: string, memberId: number) => {
-    const token = userToken; 
+    const token = userToken;
     axios.defaults.headers.common["access-token"] = token;
-    
+
     const payload = {
       projectId: projectId,
       freelancerId: memberId.toString(),
       role: role.toString(),
     };
-    
-  
-    axios.post(`${import.meta.env.VITE_DB_URL}/admin/assignFreelancersByProject`, payload)
+
+    axios
+      .post(
+        `${import.meta.env.VITE_DB_URL}/admin/assignFreelancersByProject`,
+        payload
+      )
       .then((response) => {
-        getTaskData(); 
+        getTaskData();
         setDropdownVisible(null);
       })
       .catch((err) => {
-        console.error("Error fetching project details:", err.response || err.message || err);
+        console.error(
+          "Error fetching project details:",
+          err.response || err.message || err
+        );
         setDropdownVisible(null);
       });
   };
-  
 
+  const showAssignedRoles = (memberId: number) => {
+    const foundFreelancer = freelancer.find((f) => f._id === memberId);
+    if (foundFreelancer) {
+      const fullName = `${foundFreelancer.firstName} ${foundFreelancer.lastName}`;
+      return fullName;
+    } else {
+      return "";
+    }
+  };
 
   const allRoles = ["texter", "lector", "seo-optimizer"];
 
@@ -245,7 +259,6 @@ const ProjectsDetails: React.FC = () => {
       .map((word) => word[0].toUpperCase())
       .join("");
   };
-
 
   const getAvailableRoles = () => {
     return allRoles;
@@ -456,19 +469,19 @@ const ProjectsDetails: React.FC = () => {
                     </div>
                     <TaskMembers
                       label={"Texter"}
-                      name={projectDetails.texter ?? ""}
+                      name={showAssignedRoles(projectDetails.texter) ?? ""}
                     />
                     <TaskMembers
                       label={"Lector"}
-                      name={projectDetails.lector ?? ""}
+                      name={showAssignedRoles(projectDetails.lector) ?? ""}
                     />
                     <TaskMembers
                       label={"SEO"}
-                      name={projectDetails.seo ?? ""}
+                      name={showAssignedRoles(projectDetails.seo) ?? ""}
                     />
                     <TaskMembers
                       label={"Meta-lector"}
-                      name={projectDetails.metaLector ?? ""}
+                      name={showAssignedRoles(projectDetails.metaLector) ?? ""}
                     />
                   </div>
                   <div className="px-7 py-6">

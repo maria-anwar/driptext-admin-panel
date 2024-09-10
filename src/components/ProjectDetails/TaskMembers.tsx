@@ -19,7 +19,7 @@ const TaskMembers: React.FC<{ label: string; name: string }> = ({
       <p className="text-sm">{label}</p>
       <div className="flex justify-between items-center py-1.5">
         <div className="flex justify-start items-center">
-          <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
+          <p className="text-black  dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
             {getInitials(name)}
           </p>
           <p className="px-2.5 text-black dark:text-white">{name}</p>
