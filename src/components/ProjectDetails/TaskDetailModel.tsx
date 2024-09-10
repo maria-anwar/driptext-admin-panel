@@ -16,8 +16,6 @@ import {
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import "antd/dist/reset.css";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import ToggleSwitch from "../buttons/ToggleButton";
 import MemberModal from "../ProjectDetails/MemberModel";
 import TaskMember from "./TaskMembers";
@@ -27,7 +25,9 @@ import { GroupField } from "../FormFields/GroupField";
 import GroupDropdownField from "../FormFields/GroupDropdownField";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import getInitials from "../Helpers/UpperCaseName";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 interface Task {
   actualNumberOfWords: number | null;
@@ -62,6 +62,7 @@ interface TaskDetailModelProps {
   userId: string;
   projectId: string;
   projectName: string;
+  handleRefreshData: () => void;
 }
 
 interface FormData {
@@ -91,6 +92,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   userId,
   projectId,
   projectName,
+  handleRefreshData
 }) => {
   const user = useSelector<any>((state) => state.user);
   const [userToken, setUserToken] = useState(user.user.token);
@@ -156,8 +158,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   };
 
   const getAvailableRoles = (memberId: number) => {
-    const usedRoles = Object.values(selectedRoles);
-    return allRoles.filter((role) => !usedRoles.includes(role));
+    return allRoles;
   };
 
   const handleRoleSelect = (role: string, memberId: number) => {
@@ -177,6 +178,8 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
         console.log(payload); // Log payload to verify
         console.log(projectDataArray); // Log payload to verify
         setDropdownVisible(null);
+        handleRefreshData();
+        
       })
       .catch((err) => {
         console.error("Error fetching project details:", err.response || err.message || err);
@@ -257,6 +260,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                     onClick={closeModel}
                     icon={faTimes}
                   />
+                  
                 </div>
                 <div className="flex justify-end items-end flex-col py-2 ">
                   <label

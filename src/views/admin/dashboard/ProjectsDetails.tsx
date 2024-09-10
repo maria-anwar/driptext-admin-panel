@@ -12,7 +12,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useLocation } from "react-router-dom";
 import ProjectTaskTable from "../../../components/ProjectDetails/ProjectTaskTable";
 import * as XLSX from "xlsx";
 import Breadcrumb from "../../../components/breeadcrumbs/Breadcrumb";
@@ -30,7 +29,6 @@ import TaskMembers from "../../../components/ProjectDetails/TaskMembers";
 import getInitials from "../../../components/Helpers/UpperCaseName";
 
 const ProjectsDetails: React.FC = () => {
-  const location = useLocation();
   const user = useSelector<any>((state) => state.user);
   const projectId = localStorage.getItem("projectID");
   const [loading, setLoading] = useState(true);
@@ -48,9 +46,6 @@ const ProjectsDetails: React.FC = () => {
   const [userId, setUserID] = useState(user.user.data.user._id);
   const [userToken, setUserToken] = useState(user.user.token);
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
-  const [selectedRoles, setSelectedRoles] = useState<{ [key: number]: string }>(
-    {}
-  );
   const [fileData, setFileData] = useState(null);
   const [fileName, setFileName] = useState(
     "Drag files here or click to select files"
@@ -74,7 +69,6 @@ const ProjectsDetails: React.FC = () => {
         const projectDataArray = response.data.project;
         const allProjects = projectDataArray;
         setProjectDetails(allProjects);
-        console.log("Project data fetched:", allProjects);
         setPlan(allProjects.plan);
         setUserData(allProjects.user);
         setProjectTasks(allProjects.projectTasks);
@@ -332,7 +326,6 @@ const ProjectsDetails: React.FC = () => {
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
       month: "short",
-      day: "numeric",
     };
 
     return date.toLocaleDateString("en-US", options);
@@ -743,6 +736,7 @@ const ProjectsDetails: React.FC = () => {
               userId={userData._id}
               projectId={projectDetails._id}
               projectName={projectDetails.projectName}
+              handleRefreshData={getTaskData}
             />
           </div>
           {memberModel && (

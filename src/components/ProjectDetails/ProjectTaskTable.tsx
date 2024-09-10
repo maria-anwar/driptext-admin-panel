@@ -39,9 +39,10 @@ interface ProjectProps {
   userId: string;
   projectId: string;
   projectName: string;
+  handleRefreshData: () => void;
 }
 
-const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer,userId,projectId,projectName}) => {
+const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer,userId,projectId,projectName,handleRefreshData}) => {
   const [showDetailsDialog, setShowDetailsDialog] = useState<boolean>(false);
   const [task, setTask] = useState({});
 
@@ -68,7 +69,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer,userId,pro
   const formatDate = (dateString: Date | string) => {
     if (!dateString) return "Not set";
     const date = new Date(dateString);
-    return format(date, "MMM dd, yyyy"); // "August 2025"
+    return format(date, "MMM, yyyy"); // "August 2025"
   };
 
   const WorkerComponent: React.FC<{ label: string; name: string }> = ({
@@ -113,7 +114,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer,userId,pro
                   Text type
                 </th> */}
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Employess
+                  Team
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
                   View
@@ -256,7 +257,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer,userId,pro
         </div>
       </div>
       {showDetailsDialog && (
-       <TaskDetailModel task={task} closeModel={hanldeCloseAllInfo} freelancer={freelancer} userId={userId} projectId={projectId} projectName={projectName}/>
+       <TaskDetailModel task={task} closeModel={hanldeCloseAllInfo} freelancer={freelancer} userId={userId} projectId={projectId} projectName={projectName} handleRefreshData={handleRefreshData}/>
       )}
     </div>
   );
