@@ -73,6 +73,7 @@ const ProjectsDetails: React.FC = () => {
         const projectDataArray = response.data.project;
         const allProjects = projectDataArray;
         setProjectDetails(allProjects);
+        console.log("Project data fetched:", allProjects);
         setPlan(allProjects.plan);
         setUserData(allProjects.user);
         setProjectTasks(allProjects.projectTasks);
@@ -112,10 +113,7 @@ const ProjectsDetails: React.FC = () => {
   
     axios.post(`${import.meta.env.VITE_DB_URL}/admin/assignFreelancersByProject`, payload)
       .then((response) => {
-        const projectDataArray = response;
-        console.log(payload); // Log payload to verify
-        console.log(projectDataArray); // Log payload to verify
-        getTaskData(); // Call getTaskData() after the response is received
+        getTaskData(); 
         setDropdownVisible(null);
       })
       .catch((err) => {
