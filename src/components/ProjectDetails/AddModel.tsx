@@ -12,6 +12,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { set } from "react-datepicker/dist/date_utils";
 
+
 interface AddModelProps {
   projectName: string;
   projectId: string;
@@ -99,9 +100,13 @@ const AddModel: React.FC<AddModelProps> = ({
         getTaskData();
         setLoading(false);
         handleCloseAdd();
+        setError(false);
+
       })
       .catch((err) => {
-        console.error("Error fetching project details:", err);
+        setErrorMessage(err.response.data.message|| 'Error in adding task');
+        setError(true);
+        setLoading(false);
       });
   };
 

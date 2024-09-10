@@ -173,7 +173,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({ tasks ,freelancer,userId,pro
                     </a>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-sm text-white bg-red-500/85 px-1 py-1 rounded-full text-center flex justify-center items-center">
+                    <p className="text-sm text-white bg-red-500/85 px-1 py-1 rounded-full text-center flex justify-center items-center ">
                       <svg
                         viewBox="0 0 24 24"
                         fill="none"

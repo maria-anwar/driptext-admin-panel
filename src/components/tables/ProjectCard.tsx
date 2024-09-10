@@ -81,7 +81,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
   };
 
   const handleProject = (project: Project) => {
-    localStorage.setItem('projectID',project._id);
+    localStorage.setItem("projectID", project._id);
     navigate("project-details");
   };
 
@@ -110,13 +110,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
             !project.metaLector?.trim() ? (
               <p>Not assigned</p>
             ) : ( */}
-              <div className="flex justify-between items-center">
-                <WorkerComponent label="T" name={project.texter ?? ""} />
-                <WorkerComponent label="L" name={project.lector ?? ""} />
-                <WorkerComponent label="S" name={project.seo ?? ""} />
-                <WorkerComponent label="M" name={project.metaLector ?? ""} />
-              </div>
-          
+            <div className="flex justify-between items-center">
+              <WorkerComponent label="T" name={project.texter ?? ""} />
+              <WorkerComponent label="L" name={project.lector ?? ""} />
+              <WorkerComponent label="S" name={project.seo ?? ""} />
+              <WorkerComponent label="M" name={project.metaLector ?? ""} />
+            </div>
           </div>
 
           <div className="h-3 bg-gray-200 rounded py-6">
@@ -127,18 +126,23 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
             ></progress>
             <p className="py-2 uppercase">
               STATUS:{" "}
-              <span className={`$${
-                            project.projectStatus.toUpperCase() === "FINAL"
-                              ? " text-success"
-                              : project.projectStatus.toUpperCase() === "FREE TRIAL"
-                              ? " text-danger"
-                              : project.projectStatus.toUpperCase() === "READY"
-                              ? " text-warning"
-                              : project.projectStatus.toUpperCase() === "READY FOR PROFEADING"
-                              ? " text-warning"
-                              : " text-violet-500"
-                          }`}>
-                {project.projectStatus}
+              <span
+                className={`$${
+                  project.projectStatus.toUpperCase() === "FINAL"
+                    ? " text-success"
+                    : project.projectStatus.toUpperCase() === "FREE TRIAL"
+                    ? " text-warning"
+                    : project.projectStatus.toUpperCase() === "READY"
+                    ? " text-warning"
+                    : project.projectStatus.toUpperCase() ===
+                      "READY FOR PROFEADING"
+                    ? " text-warning"
+                    : " text-violet-500"
+                }`}
+              >
+                {project.projectStatus.toUpperCase() === "FREE TRIAL"
+                  ? "Ready"
+                  : project.projectStatus}
               </span>
             </p>
           </div>
@@ -164,7 +168,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects }) => {
             <div className="text-sm font-medium text-dark-gray">
               Performance Period{" "}
               <div className="text-meta-5 flex justify-end">
-                {project.plan.endDate === null ? "No Subscription" :   `${formatDate(project.plan.endDate)}`}
+                {project.plan.endDate === null
+                  ? "No Subscription"
+                  : `${formatDate(project.plan.endDate)}`}
               </div>
             </div>
           </div>

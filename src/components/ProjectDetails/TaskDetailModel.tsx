@@ -567,24 +567,24 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                     </div>
 
                     <TaskMember
-                      name={"task.texter" ?? ""}
+                      name={task.texter ?? ""}
                       label="Texter"
-                      role={selectedRoles[task.texterId] || ""}
+                     
                     />
                     <TaskMember
-                      name={"task.lector" ?? ""}
+                      name={task.lector ?? ""}
                       label="Lector"
-                      role={selectedRoles[task.lectorId] || ""}
+                 
                     />
                     <TaskMember
-                      name={"task.seo" ?? ""}
+                      name={task.seo ?? ""}
                       label="SEO"
-                      role={selectedRoles[task.seoId] || ""}
+                   
                     />
                     <TaskMember
-                      name={"task.metaLector" ?? ""}
+                      name={task.metaLector ?? ""}
                       label="Meta Lector"
-                      role={selectedRoles[task.metaLectorId] || ""}
+                      
                     />
                   </div>
                 </div>
