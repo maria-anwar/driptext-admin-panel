@@ -147,31 +147,32 @@ const Users: React.FC = () => {
             </li>
             <li className="font-medium text-primary">Users</li>
           </ol>
-          <div className="flex flex-col sm:flex-row items-start justify-between lg:items-center xl:items-center pt-5 pb-3">
-            <div className="flex flex-col sm:flex-row gap-2 lg:gap-30 xl:gap-30 items-start lg:items-center xl:items-center">
-              <h2 className="text-title-md2 font-semibold text-black dark:text-white py-1">
+          <div className="flex justify-between items-center sm:flex-row gap-3 pt-3">
+              <h2 className="text-title-md2 font-semibold text-black dark:text-white">
                 Users
               </h2>
-              <div className="flex items-center mb-2 lg:mb-0 xl:mb-0">
-                <div
-                  onClick={handleSearch}
-                  className="h-8 w-8 ring-1 my-2 flex justify-center items-center cursor-pointer rounded mr-2 ring-slate-300 bg-slate-100 dark:bg-transparent"
-                >
-                  <FontAwesomeIcon icon={faSearch} />
-                </div>
+              <div className="flex  items-center gap-2">
+                
                 {showSearch && (
                   <input
                     type="text"
                     value={search}
                     onChange={handleSearchFilter}
                     placeholder="Search by name"
-                    className="rounded ring-1 outline-none py-1 px-4 ring-slate-200 bg-slate-0 dark:bg-transparent w-60 lg:w-80 xl:w-80"
+                    className="rounded ring-1 outline-none py-1 px-4 ring-slate-200 bg-slate-0 dark:bg-transparent w-45 lg:w-80 xl:w-80"
                   />
                 )}
+                <div
+                  onClick={handleSearch}
+                  className="h-8 w-8 ring-1 my-2 flex justify-center items-center cursor-pointer rounded mr-2 ring-slate-300 bg-slate-100 dark:bg-transparent"
+                >
+                  <FontAwesomeIcon icon={faSearch} />
+                </div>
               </div>
             </div>
+          <div className="flex justify-end items-end pt-3 pb-3 pr-2">
+            
 
-            {/* Dropdown Trigger */}
             <div className="relative">
               <button
                 onClick={handleDropdownToggle}

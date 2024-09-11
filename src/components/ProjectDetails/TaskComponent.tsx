@@ -7,7 +7,7 @@ const TaskComponent: React.FC<{ label: string; name: string | number }> = ({
 
 
   return (
-    <div>
+    <div >
       <p className="text-xs text-slate-700 dark:text-slate-300">{label}</p>
       <p className="text-black dark:text-white">{name}</p>
     </div>
