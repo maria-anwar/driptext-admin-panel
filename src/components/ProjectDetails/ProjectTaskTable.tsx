@@ -92,7 +92,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
   const formatDate = (dateString: Date | string) => {
     if (!dateString) return "Not set";
     const date = new Date(dateString);
-    return format(date, "MMM, yyyy"); // "August 2025"
+    return format(date, "MMMM yyyy"); // "August 2025"
   };
   const handleImport = () => {
     setImportModel(true);
@@ -247,7 +247,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
   return (
     <div className="mt-3">
       <div className="rounded-sm border border-stroke bg-white pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-        <div className="flex justify-end items-end pb-2 pr-4">
+        {/* <div className="flex justify-end items-end pb-2 pr-4">
           <button
             onClick={handleImport}
             className="w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none mr-1.5 flex justify-center items-center border-none"
@@ -268,7 +268,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                   />
                 </div>
                 <div className="relative w-full h-40 cursor-pointer border border-black dark:border-white border-dotted ">
-                  {/* Hidden file input */}
+           
                   <input
                     type="file"
                     className="absolute top-0 left-0 opacity-0 w-full h-30 cursor-pointer"
@@ -303,7 +303,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
           >
             <FontAwesomeIcon icon={faUpload} className="text-sm px-2" />
           </button>
-        </div>
+        </div> */}
         <div className="max-w-full overflow-x-auto px-4 py-2">
           <table className="w-full table-auto">
             <thead>

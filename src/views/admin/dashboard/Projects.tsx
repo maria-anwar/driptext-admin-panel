@@ -144,7 +144,7 @@ const Projects: React.FC = () => {
           />
           </div>
         </div>
-          <div className="flex justify-between items-center flex-col pb-2 lg:pb-0 lg:flex-row xl:flex-row xl:items-center">
+          <div className="flex justify-between items-center  pb-2 lg:pb-0  xl:items-center">
             <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
               Projects
             </h2>
@@ -156,7 +156,7 @@ const Projects: React.FC = () => {
                   placeholder="Search by domain"
                   value={searchQuery}
                   onChange={handleSearchChange}
-                  className="rounded ring-1 outline-none py-1 px-4 ring-slate-200 bg-slate-0 dark:bg-transparent w-60 lg:w-60 xl:w-80"
+                  className="rounded ring-1 outline-none py-1 px-4 ring-slate-200 bg-slate-0 dark:bg-transparent w-45 lg:w-60 xl:w-80"
                 />
               )}
                <div

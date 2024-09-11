@@ -87,7 +87,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects,freelan
   };
   const formatDate = (dateString: Date | string) => {
     const date = new Date(dateString);
-    return format(date, "MMM, yyyy"); // "August 2025"
+    return format(date, "MMMM yyyy"); // "August 2025"
   };
 
   const handleRowsPerPageChange = (
