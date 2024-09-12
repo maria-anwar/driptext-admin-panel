@@ -733,20 +733,18 @@ const ProjectsDetails: React.FC = () => {
               </button>
             </div>
 
-          {loading ? (
-          
+            {loading ? (
               <div className="mt-4 rounded-sm border border-stroke  pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1   w-full bg-slate-200 h-[350px] animate-pulse"></div>
-          
-          ) : (
-            <ProjectTaskTable
-              tasks={projectTasks}
-              freelancer={freelancer}
-              userId={userData._id}
-              projectId={projectDetails._id}
-              projectName={projectDetails.projectName}
-              handleRefreshData={getTaskData}
-            />
-          )}
+            ) : (
+              <ProjectTaskTable
+                tasks={projectTasks}
+                freelancer={freelancer}
+                userId={userData._id}
+                projectId={projectDetails._id}
+                projectName={projectDetails.projectName}
+                handleRefreshData={getTaskData}
+              />
+            )}
           </div>
         </div>
         {memberModel && (
