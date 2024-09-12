@@ -124,7 +124,7 @@ const ProjectsDetails: React.FC = () => {
   };
 
   const showAssignedRoles = (memberId: number) => {
-    if(!freelancer) return "";
+    if (!freelancer) return "";
     const foundFreelancer = freelancer.find((f) => f._id === memberId);
     if (foundFreelancer) {
       const fullName = `${foundFreelancer.firstName} ${foundFreelancer.lastName}`;
@@ -334,14 +334,17 @@ const ProjectsDetails: React.FC = () => {
 
   return (
     <>
-      {loading ? (
-        <Loading />
-      ) : (
-        <div>
-          <div className="mx-auto">
-            <Breadcrumb pageName={"Project Details"} />
-            <ToastContainer />
+      <div>
+        <div className="mx-auto">
+          <Breadcrumb pageName={"Project Details"} />
+          <ToastContainer />
 
+          {loading ? (
+            <div className="grid grid-cols-5 gap-8">
+              <div className="col-span-5 xl:col-span-3 rounded-sm border border-stroke  pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1   w-full bg-slate-200 h-[350px] animate-pulse"></div>
+              <div className=" col-span-5 xl:col-span-2 rounded-sm border border-stroke  pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1   w-full bg-slate-200 h-[350px] animate-pulse"></div>
+            </div>
+          ) : (
             <div className="grid grid-cols-5 gap-8">
               <div className="col-span-5 xl:col-span-3">
                 <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -587,7 +590,7 @@ const ProjectsDetails: React.FC = () => {
                       value={projectDetails.finalTasks}
                       max={plan.totalTexts}
                     ></progress>
-                    <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-5 py-2">
+                    <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-5 py-2">
                       <TaskComponent
                         label="Status"
                         name={projectDetails.projectStatus}
@@ -630,7 +633,7 @@ const ProjectsDetails: React.FC = () => {
                     </p>
                   </div>
                   <div className="px-7">
-                    <div >
+                    <div>
                       <p className="text-sm">Project Manager</p>
                       <div className="flex justify-start items-center py-2">
                         <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
@@ -670,87 +673,94 @@ const ProjectsDetails: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className="pt-14">
-              <div className="flex justify-end items-end">
-                <button
-                  onClick={handleImport}
-                  className="w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none mr-1.5 flex justify-center items-center border-none"
-                >
-                  <FontAwesomeIcon icon={faDownload} className="text-sm px-2" />
-                </button>
-                {importModel && (
-                  <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
-                    <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-3/12 xl:w-3/12 2xl:w-4/12 3xl:w-3/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
-                      <div className="flex justify-between items-center mb-5">
-                        <h2 className="text-xl font-bold dark:text-white pr-12">
-                          Import
-                        </h2>
-                        <FontAwesomeIcon
-                          className="cursor-pointer text-lg text-red-500 pl-12"
-                          onClick={handleCloseImport}
-                          icon={faTimes}
-                        />
-                      </div>
-                      <div className="relative w-full h-40 cursor-pointer border border-black dark:border-white border-dotted ">
-                        {/* Hidden file input */}
-                        <input
-                          type="file"
-                          className="absolute top-0 left-0 opacity-0 w-full h-30 cursor-pointer"
-                          onClick={(e) => {
-                            handleFileChange(e);
-                          }}
-                          accept=".xlsx, .xls"
-                        />
-                        <div className="flex justify-start items-center py-15">
-                          <FontAwesomeIcon
-                            icon={faCloudUploadAlt}
-                            className="text-gray-600 w-12 h-12 px-4"
-                          />
-                          <p className="mt-2 text-gray-700 ">{fileName}</p>
-                        </div>
-                      </div>
-                      <button
-                        className="w-full mt-4 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
-                        type="submit"
-                        onClick={handleImportData}
-                      >
+          )}
+          <div className="pt-14">
+            <div className="flex justify-end items-end">
+              <button
+                onClick={handleImport}
+                className="w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none mr-1.5 flex justify-center items-center border-none"
+              >
+                <FontAwesomeIcon icon={faDownload} className="text-sm px-2" />
+              </button>
+              {importModel && (
+                <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
+                  <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-3/12 xl:w-3/12 2xl:w-4/12 3xl:w-3/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
+                    <div className="flex justify-between items-center mb-5">
+                      <h2 className="text-xl font-bold dark:text-white pr-12">
                         Import
-                      </button>
+                      </h2>
+                      <FontAwesomeIcon
+                        className="cursor-pointer text-lg text-red-500 pl-12"
+                        onClick={handleCloseImport}
+                        icon={faTimes}
+                      />
                     </div>
+                    <div className="relative w-full h-40 cursor-pointer border border-black dark:border-white border-dotted ">
+                      {/* Hidden file input */}
+                      <input
+                        type="file"
+                        className="absolute top-0 left-0 opacity-0 w-full h-30 cursor-pointer"
+                        onClick={(e) => {
+                          handleFileChange(e);
+                        }}
+                        accept=".xlsx, .xls"
+                      />
+                      <div className="flex justify-start items-center py-15">
+                        <FontAwesomeIcon
+                          icon={faCloudUploadAlt}
+                          className="text-gray-600 w-12 h-12 px-4"
+                        />
+                        <p className="mt-2 text-gray-700 ">{fileName}</p>
+                      </div>
+                    </div>
+                    <button
+                      className="w-full mt-4 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
+                      type="submit"
+                      onClick={handleImportData}
+                    >
+                      Import
+                    </button>
                   </div>
-                )}
-                <button
-                  onClick={() => {
-                    handleExportData(projectTasks);
-                  }}
-                  className="w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none ml-1.5 flex justify-center items-center border-none"
-                >
-                  <FontAwesomeIcon icon={faUpload} className="text-sm px-2" />
-                </button>
-              </div>
-              <ProjectTaskTable
-                tasks={projectTasks}
-                freelancer={freelancer}
-                userId={userData._id}
-                projectId={projectDetails._id}
-                projectName={projectDetails.projectName}
-                handleRefreshData={getTaskData}
-              />
+                </div>
+              )}
+              <button
+                onClick={() => {
+                  handleExportData(projectTasks);
+                }}
+                className="w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none ml-1.5 flex justify-center items-center border-none"
+              >
+                <FontAwesomeIcon icon={faUpload} className="text-sm px-2" />
+              </button>
             </div>
-          </div>
-          {memberModel && (
-            <MemberModal
-              isOpen={memberModel}
+
+          {loading ? (
+          
+              <div className="mt-4 rounded-sm border border-stroke  pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1   w-full bg-slate-200 h-[350px] animate-pulse"></div>
+          
+          ) : (
+            <ProjectTaskTable
+              tasks={projectTasks}
               freelancer={freelancer}
-              handleCloseMemberModel={handleCloseMemberModel}
-              toggleDropdown={toggleDropdown}
-              dropdownVisible={dropdownVisible}
-              getAvailableRoles={getAvailableRoles}
-              handleRoleSelect={handleRoleSelect}
+              userId={userData._id}
+              projectId={projectDetails._id}
+              projectName={projectDetails.projectName}
+              handleRefreshData={getTaskData}
             />
           )}
+          </div>
         </div>
-      )}
+        {memberModel && (
+          <MemberModal
+            isOpen={memberModel}
+            freelancer={freelancer}
+            handleCloseMemberModel={handleCloseMemberModel}
+            toggleDropdown={toggleDropdown}
+            dropdownVisible={dropdownVisible}
+            getAvailableRoles={getAvailableRoles}
+            handleRoleSelect={handleRoleSelect}
+          />
+        )}
+      </div>
     </>
   );
 };
