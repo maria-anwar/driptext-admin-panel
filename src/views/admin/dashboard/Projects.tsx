@@ -54,10 +54,10 @@ const Projects: React.FC = () => {
       .catch((err) => {
         console.error("Error fetching project details:", err);
       });
-  }
+  };
 
   useEffect(() => {
-    const filtered = projectData.filter(project =>
+    const filtered = projectData.filter((project) =>
       project.projectName.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredProjects(filtered);
@@ -115,7 +115,7 @@ const Projects: React.FC = () => {
     <>
       <div className="mx-auto 3xl:px-4">
         <div className="flex items-center justify-between space-x-4 mb-6 mt-2">
-        <ol className="flex items-center gap-2 text-left">
+          <ol className="flex items-center gap-2 text-left">
             <li>
               <Link
                 className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
@@ -127,65 +127,80 @@ const Projects: React.FC = () => {
             <li className="font-medium text-primary">Projects</li>
           </ol>
           <div className="gap-4 flex items-center">
-          <ToggleSwitch
-            icon={faThLarge}
-            isOn={showCard}
-            onToggle={handleCard}
-          />
-          <ToggleSwitch
-            icon={faBatteryEmpty}
-            isOn={showDraft}
-            onToggle={handleDraft}
-          />
-          <ToggleSwitch
-            icon={faTrashAlt}
-            isOn={showArchived}
-            onToggle={handleArchived}
-          />
+            <ToggleSwitch
+              icon={faThLarge}
+              isOn={showCard}
+              onToggle={handleCard}
+            />
+            <ToggleSwitch
+              icon={faBatteryEmpty}
+              isOn={showDraft}
+              onToggle={handleDraft}
+            />
+            <ToggleSwitch
+              icon={faTrashAlt}
+              isOn={showArchived}
+              onToggle={handleArchived}
+            />
           </div>
         </div>
-          <div className="flex justify-between items-center  pb-2 lg:pb-0  xl:items-center">
-            <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
-              Projects
-            </h2>
-            <div className="flex items-center mb-2 lg:mb-0 xl:mb-0 lg:pl-12 xl:pl-12">
-             
-              {showSearch && (
-                <input
-                  type="text"
-                  placeholder="Search by domain"
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  className="rounded ring-1 outline-none py-1 px-4 ring-slate-200 bg-slate-0 dark:bg-transparent w-45 lg:w-60 xl:w-80"
-                />
-              )}
-               <div
-                onClick={handleSearch}
-                className="h-8 w-8 ring-1 my-2 flex justify-center items-center cursor-pointer rounded ml-2 ring-slate-300 bg-slate-100 dark:bg-transparent"
-              >
-                <FontAwesomeIcon icon={faSearch} />
-              </div>
+        <div className="flex justify-between items-center  pb-2 lg:pb-0  xl:items-center">
+          <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
+            Projects
+          </h2>
+          <div className="flex items-center mb-2 lg:mb-0 xl:mb-0 lg:pl-12 xl:pl-12">
+            {showSearch && (
+              <input
+                type="text"
+                placeholder="Search by domain"
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="rounded ring-1 outline-none py-1 px-4 ring-slate-200 bg-slate-0 dark:bg-transparent w-45 lg:w-60 xl:w-80"
+              />
+            )}
+            <div
+              onClick={handleSearch}
+              className="h-8 w-8 ring-1 my-2 flex justify-center items-center cursor-pointer rounded ml-2 ring-slate-300 bg-slate-100 dark:bg-transparent"
+            >
+              <FontAwesomeIcon icon={faSearch} />
             </div>
           </div>
+        </div>
 
         <div>
           {!showDraft &&
             !showArchived &&
             (showCard ? (
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 2xl:grid-cols-3 5xl:grid-cols-4 4xl:px-14 pt-8">
-                <ProjectCard projects={filteredProjects} freelancer={freelancer} />
+                <ProjectCard
+                  projects={filteredProjects}
+                  freelancer={freelancer}
+                />
               </div>
             ) : (
               <>
                 {loading ? (
-                  <Loading />
+                  <div className="rounded-sm border border-stroke  pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1  mt-10 w-full bg-slate-200 h-[300px] animate-pulse"></div>
                 ) : (
-                  <ProjectPaginatedTable projects={filteredProjects} freelancer={freelancer} />
+                  <ProjectPaginatedTable
+                    projects={filteredProjects}
+                    freelancer={freelancer}
+                  />
                 )}
               </>
             ))}
-          {showDraft && <ProjectPaginatedTable projects={filteredProjects} freelancer={freelancer}/>}
-          {showArchived && <ProjectPaginatedTable projects={filteredProjects} freelancer={freelancer} />}
+          {showDraft && (
+            <ProjectPaginatedTable
+              projects={filteredProjects}
+              freelancer={freelancer}
+            />
+          )}
+          {showArchived && (
+            <ProjectPaginatedTable
+              projects={filteredProjects}
+              freelancer={freelancer}
+            />
+          )}
         </div>
       </div>
     </>
