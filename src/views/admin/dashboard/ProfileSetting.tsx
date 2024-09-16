@@ -2,19 +2,67 @@ import React, { useState } from "react";
 import Breadcrumb from "../../../components/breeadcrumbs/Breadcrumb";
 import { Link } from "react-router-dom";
 import SidebarIcons from "../../../components/icons/SidebarIcons";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserFields,updateRoleTitle } from "../../../redux/userSlice";
+import axios from "axios";
 
 const ProfileSettings: React.FC = () => {
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [lastName, setLastName] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [email, setEmail] = useState("");
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [email, setEmail] = useState(user.user.data.user.email || "");
+  const [firstName, setFirstName] = useState(
+    user.user.data.user.firstName || ""
+  );
+  const [lastName, setLastName] = useState(user.user.data.user.lastName || "");
 
   const handleUpdate = async (e) => {
+    setLoading(true);
     e.preventDefault();
+    let token = user.user.token;
+    axios.defaults.headers.common["access-token"] = token;
+
+    let payload = {
+      id:user.user.data.user._id,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+    };
+     console.log(payload);
+     console.log(user.user.data.user._id);
+     console.log(token);
+
+    await axios
+      .post(`${import.meta.env.VITE_DB_URL}/admin/updateAdminProfile`, payload)
+      .then((response) => {
+        dispatch(
+          updateUserFields({ path: "data.user.firstName", value: firstName })
+        );
+        dispatch(
+          updateUserFields({ path: "data.user.lastName", value: lastName })
+        );
+        dispatch(
+          updateUserFields({ path: "data.user.email", value: email })
+        );
+        setError(false);
+      })
+      .catch((err) => {
+        setError(true);
+        setErrorMessage(err.response.data.message);
+        console.error("Error fetching project details:", err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleCancel = (e) => {
     e.preventDefault();
+    setLastName(user.user.data.user.lastName);
+    setEmail(user.user.data.user.email);
+    setFirstName(user.user.data.user.firstName);
   };
   return (
     <>
@@ -71,7 +119,8 @@ const ProfileSettings: React.FC = () => {
                       name="fullName"
                       id="fullName"
                       placeholder="firstname"
-                      defaultValue={""}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      defaultValue={firstName}
                     />
                   </div>
                 </div>
@@ -114,8 +163,8 @@ const ProfileSettings: React.FC = () => {
                       type="text"
                       name="lastName"
                       id="lastName"
-                      placeholder="lastname"
-                      defaultValue={""}
+                      onChange={(e) => setLastName(e.target.value)}
+                      value={lastName}
                     />
                   </div>
                 </div>
@@ -160,8 +209,8 @@ const ProfileSettings: React.FC = () => {
                     name="emailAddress"
                     id="emailAddress"
                     placeholder="xyz@gmail.com"
-                    defaultValue={""}
-                    disabled={true}
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
                   />
                 </div>
               </div>
@@ -174,7 +223,7 @@ const ProfileSettings: React.FC = () => {
                   Phone
                 </label>
                 <input
-                  className="w-full rounded border border-stroke bg-gray py-3 px-6 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                  className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                   type="number"
                   name="Phone"
                   id="Phone"
@@ -256,164 +305,25 @@ const ProfileSettings: React.FC = () => {
                   defaultValue=""
                 />
               </div>
-
-              <h3 className="font-medium text-black dark:text-white pb-4 pt-4">
-                2. Billing Information
-              </h3>
-
-              <div className="mb-5.5">
-                <label
-                  className="mb-3 block text-sm font-medium text-black dark:text-white"
-                  htmlFor="accountholder"
-                >
-                  Account holder
-                </label>
-                <input
-                  className="w-full rounded border border-stroke bg-gray py-3 px-6 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                  type="text"
-                  name="accountholder"
-                  id="accountholder"
-                  placeholder="Account holder"
-                  defaultValue=""
-                />
-              </div>
-              <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                <div className="w-full sm:w-1/2">
-                  <label
-                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="iban"
-                  >
-                    IBAN
-                  </label>
-                  <div className="relative">
-                    <input
-                      className="w-full rounded border border-stroke bg-gray py-3 pl-6 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name="iban"
-                      id="iban"
-                      placeholder="IBAN"
-                      defaultValue={""}
-                    />
-                  </div>
-                </div>
-                <div className="w-full sm:w-1/2">
-                  <label
-                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="bic"
-                  >
-                    BIC
-                  </label>
-                  <div className="relative">
-                    <input
-                      className="w-full rounded border border-stroke bg-gray py-3 pl-6 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name="bic"
-                      id="bic"
-                      placeholder="BIC"
-                      defaultValue={""}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <h3 className="font-medium text-black dark:text-white pb-4 pt-4">
-                3. Company details
-              </h3>
-              <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                <div className="w-full sm:w-1/2">
-                  <label
-                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="companyname"
-                  >
-                    Company name
-                  </label>
-                  <div className="relative">
-                    <input
-                      className="w-full rounded border border-stroke bg-gray py-3 pl-6 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name="companyname"
-                      id="companyname"
-                      placeholder="companyname"
-                      defaultValue={""}
-                    />
-                  </div>
-                </div>
-
-                <div className="w-full sm:w-1/2">
-                  <label
-                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="vatId"
-                  >
-                    VAT ID No
-                  </label>
-                  <div className="relative">
-                    <input
-                      className="w-full rounded border border-stroke bg-gray py-3 pl-6 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name="vatId"
-                      id="vatId"
-                      placeholder="vatId"
-                      defaultValue={""}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="mb-5.5">
-                <label
-                  className="mb-3 block text-sm font-medium text-black dark:text-white"
-                  htmlFor="options"
-                >
-                  VAT regulation
-                </label>
-                <div className="relative">
-                  <select
-                    name="options"
-                    className="w-full rounded border border-stroke bg-gray py-3 pl-6 pr-4.5  text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 appearance-none  dark:text-white dark:focus:border-primary "
-                  >
-                    <option value={"CY Company (19%)"}>CY Company (19%)</option>
-                    <option value={"EU Reverse-Charge (0%)"}>
-                      EU Reverse-Charge (0%)
-                    </option>
-                    <option value={"Kleinunternehmer / No VAT-Number (0%)"}>
-                      Kleinunternehmer / No VAT-Number (0%)
-                    </option>
-                    <option value={"Non-EU Company (0%)"}>
-                      Non-EU Company (0%)
-                    </option>
-                  </select>
-                  <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                    {/* Custom arrow icon */}
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M19 9l-7 7-7-7"
-                      ></path>
-                    </svg>
-                  </div>
-                </div>
-              </div>
+            
               <div className="flex justify-end gap-4.5">
                 <button
                   className="flex justify-center bg-transparent rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                   type="submit"
+                  onClick={handleCancel}
                 >
                   Cancel
                 </button>
                 <button
                   className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                   type="submit"
+                  disabled={loading}
+                  onClick={handleUpdate}
                 >
-                  Save
+                  {loading? 'Updating...' : 'Update'}
                 </button>
               </div>
+              {error && <p className="text-red-500 text-right pt-4">{errorMessage}</p>}
             </form>
           </div>
         </div>
