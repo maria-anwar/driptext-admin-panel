@@ -34,6 +34,7 @@ interface Task {
   createdAt: string; // ISO 8601 date string
   desiredNumberOfWords: string; // or number, depending on how it is used
   dueDate: string | null; // ISO 8601 date string or null
+  fileLink: string;
   googleLink: string | null;
   isActive: "Y" | "N"; // Assuming 'Y' and 'N' are the only possible values
   keywords: string;
@@ -118,13 +119,13 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     date: task?.dueDate, // Initialize as null for date
     textType: "",
     wordCount: task.desiredNumberOfWords,
-    companyInfo: task.onBoarding.companyBackgorund,
-    companyAttributes: task.onBoarding.companyAttributes,
-    services: task.onBoarding.comapnyServices,
-    content: task.onBoarding.customerContent,
-    customers: task.onBoarding.customerIntrest,
-    contentPurpose: task.onBoarding.contentPurpose,
-    brand: task.onBoarding.contentInfo,
+    companyInfo: task?.onBoarding?.companyBackgorund,
+    companyAttributes: task?.onBoarding?.companyAttributes,
+    services: task?.onBoarding?.comapnyServices,
+    content: task?.onBoarding?.customerContent,
+    customers: task?.onBoarding?.customerIntrest,
+    contentPurpose: task?.onBoarding?.contentPurpose,
+    brand: task?.onBoarding?.contentInfo,
   });
 
   const validationSchema = Yup.object().shape({
@@ -358,7 +359,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                       </label>
                       <p className="w-full py-2 text-black dark:text-white">
                         <a
-                          href={task.googleLink || "#"}
+                          href={task?.fileLink}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-500 underline-none"

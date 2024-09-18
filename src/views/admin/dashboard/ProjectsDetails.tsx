@@ -554,7 +554,7 @@ const ProjectsDetails: React.FC = () => {
                     <div className="pt-1 pb-3">
                       <h2>Folder</h2>
                       <a
-                        href={"project.googleLink"}
+                        href={projectDetails?.folderLink}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-500 underline-none flex justify-start items-center py-1"

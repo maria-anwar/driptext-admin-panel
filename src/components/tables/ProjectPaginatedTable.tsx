@@ -42,6 +42,8 @@ interface Project {
   projectId: string;
   onBoarding: boolean;
   projectName: string;
+  folderLink: string;
+  folderId: string;
   tasks: number;
   speech: string;
   keywords: string | null;
@@ -185,7 +187,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects,freelan
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <a
-                      href={"#"}
+                      href={project?.folderLink}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-500 underline-none flex justify-start items-center"
