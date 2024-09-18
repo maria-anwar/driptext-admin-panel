@@ -26,6 +26,8 @@ interface Task {
   desiredNumberOfWords: string; // or number, depending on how it is used
   dueDate: string | null; // ISO 8601 date string or null
   googleLink: string | null;
+  fileLink: string ;
+  fileId: string | null;
   isActive: "Y" | "N"; // Assuming 'Y' and 'N' are the only possible values
   keywords: string;
   lector: string | null;
@@ -69,7 +71,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
     "Drag files here or click to select files"
   );
   const [file, setFile] = useState(null);
-
+  console.log(tasks)
   const showAssignedRoles = (memberId: number) => {
     const foundFreelancer = freelancer.find((f) => f._id === memberId);
     if (foundFreelancer) {
@@ -360,7 +362,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <a
-                      href={"task.taskId"}
+                      href={task?.fileLink}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-500 underline-none flex items-center justify-start"
