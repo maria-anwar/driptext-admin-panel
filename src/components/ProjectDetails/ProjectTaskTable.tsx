@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import "antd/dist/reset.css";
 import TaskDetailModel from "./TaskDetailModel";
 import { format } from "date-fns";
@@ -26,7 +26,7 @@ interface Task {
   desiredNumberOfWords: string; // or number, depending on how it is used
   dueDate: string | null; // ISO 8601 date string or null
   googleLink: string | null;
-  fileLink: string ;
+  fileLink: string;
   fileId: string | null;
   isActive: "Y" | "N"; // Assuming 'Y' and 'N' are the only possible values
   keywords: string;
@@ -71,7 +71,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
     "Drag files here or click to select files"
   );
   const [file, setFile] = useState(null);
-  console.log(tasks)
+  console.log(tasks);
   const showAssignedRoles = (memberId: number) => {
     const foundFreelancer = freelancer.find((f) => f._id === memberId);
     if (foundFreelancer) {
@@ -246,6 +246,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
     XLSX.utils.book_append_sheet(wb, ws, "Tasks");
     XLSX.writeFile(wb, "tasks.xlsx");
   };
+  const handleGuiColor = () => {};
   return (
     <div className="mt-3">
       <div className="rounded-sm border border-stroke bg-white pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -332,7 +333,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                   Team
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
-                  View
+                  Action
                 </th>
               </tr>
             </thead>
@@ -471,10 +472,30 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
-                      className={`bg-blue-500 w-24 h-9 flex justify-center items-center rounded cursor-pointer`}
+                      className={`${
+                        task?.dueDate &&
+                        task?.keywords &&
+                        task.lector &&
+                        task.seo &&
+                        task.texter
+                          ? "bg-blue-500"
+                          : "bg-warning/90"
+                      } w-24 h-9 flex justify-center items-center rounded cursor-pointer`}
                       onClick={() => handleTasks(task)}
                     >
-                      <FontAwesomeIcon className="text-white" icon={faEye} />
+                      {task?.dueDate &&
+                      task?.keywords &&
+                      task.lector &&
+                      task.seo &&
+                      task.texter ? (
+                        <FontAwesomeIcon className="text-white" icon={faEye} />
+                      ) : (
+                        <FontAwesomeIcon
+                          className="text-white"
+                          icon={faEyeSlash}
+                        />
+                      )}
+
                       <p className="text-white text-base font-medium text-center py-1 px-2">
                         View
                       </p>

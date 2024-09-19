@@ -286,15 +286,25 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects,freelan
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
-                      className={` bg-blue-500 w-24 h-9 flex justify-center items-center rounded cursor-pointer`}
+                      className={` ${
+                        project.lector &&
+                        project.seo &&
+                        project.texter
+                          ? "bg-blue-500"
+                          : "bg-warning/90"
+                      } w-24 h-9 flex justify-center items-center rounded cursor-pointer`}
                       onClick={() => handleProject(project._id)}
                     >
-                      <FontAwesomeIcon
-                        className={`
-                         text-white
-                        `}
-                        icon={faEye}
-                      />
+                      {project.lector &&
+                      project.seo &&
+                      project.texter ? (
+                        <FontAwesomeIcon className="text-white" icon={faEye} />
+                      ) : (
+                        <FontAwesomeIcon
+                          className="text-white"
+                          icon={faEyeSlash}
+                        />
+                      )}
                       <p className="text-white text-base font-medium text-center py-1 px-2">
                         View
                       </p>

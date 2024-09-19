@@ -69,16 +69,14 @@ const ProfileSettings: React.FC = () => {
       <div className="mx-auto max-w-270 3xl:px-6">
         <Breadcrumb pageName="Profile Settings" />
         <div className="rounded-sm border border-stroke bg-white pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-4 xl:pb-1">
-          <div className=" max-w-full border-b border-stroke py-6 px-6 dark:border-strokedark lg:px-15 xl:px-15">
+          <div className=" max-w-full border-b border-stroke pb-4 pt-2 px-6 dark:border-strokedark lg:px-10 xl:px-10">
             <h3 className="font-medium text-black dark:text-white">
-              User Information
+            Personal Informationn
             </h3>
           </div>
           <div className="px-10 py-7">
             <form action="#">
-              <h3 className="font-medium text-black dark:text-white pb-6">
-                1. Personal Information
-              </h3>
+            
               <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                 <div className="w-full sm:w-1/2">
                   <label
