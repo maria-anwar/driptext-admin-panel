@@ -258,64 +258,97 @@ const ProjectsDetails: React.FC = () => {
     setDropdownVisible((prev) => (prev === memberId ? null : memberId));
   };
 
-  const handleExportData = (tasks) => {
-    const ws = XLSX.utils.json_to_sheet(tasks, {
-      header: [
-        "actualNumberOfWords",
-        "comments",
-        "createdAt",
-        "desiredNumberOfWords",
-        "dueDate",
-        "googleLink",
-        "isActive",
-        "keywords",
-        "lector",
-        "metaLector",
-        "project",
-        "published",
-        "readyToWork",
-        "seo",
-        "status",
-        "taskId",
-        "taskName",
-        "texter",
-        "topic",
-        "type",
-        "updatedAt",
-        "__v",
-        "_id",
-      ],
-    });
-    ws["!cols"] = [
-      { wpx: 150 },
-      { wpx: 150 },
-      { wpx: 150 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 150 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 150 },
-      { wpx: 100 },
-      { wpx: 150 },
-      { wpx: 100 },
-    ];
+  const handleExportData = async (tasks) => {
+    for (const task of tasks) {
+      const { dueDate, fileId, fileLink, taskName, taskId } = task;
+  
+      const formData = {
+        Duedate: dueDate,
+        FileId: fileId,
+        FileLink: fileLink,
+        TaskName: taskName,
+        TaskId: taskId,
+      };
+  
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbyhXXyOjXbFOmVWDBtLqxn7x6j1K0cl3NR0NSHIxLrbwyYhlBz34dUt3KzZyOkjc9I8Kw/exec', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded', // Use this for form data
+          },
+          body: new URLSearchParams(formData), // Convert to form data
+        });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+  
+        const data = await response.text(); // Adjust to receive text for confirmation
+        console.log("Response from Google Script for task:", taskName, "Response:", data);
+      } catch (error) {
+        console.error("Error exporting task:", taskName, "Error:", error);
+      }
+    }
+  
+  
+  
+    // const ws = XLSX.utils.json_to_sheet(tasks, {
+    //   header: [
+    //     "actualNumberOfWords",
+    //     "comments",
+    //     "createdAt",
+    //     "desiredNumberOfWords",
+    //     "dueDate",
+    //     "googleLink",
+    //     "isActive",
+    //     "keywords",
+    //     "lector",
+    //     "metaLector",
+    //     "project",
+    //     "published",
+    //     "readyToWork",
+    //     "seo",
+    //     "status",
+    //     "taskId",
+    //     "taskName",
+    //     "texter",
+    //     "topic",
+    //     "type",
+    //     "updatedAt",
+    //     "__v",
+    //     "_id",
+    //   ],
+    // });
+    // ws["!cols"] = [
+    //   { wpx: 150 },
+    //   { wpx: 150 },
+    //   { wpx: 150 },
+    //   { wpx: 100 },
+    //   { wpx: 100 },
+    //   { wpx: 100 },
+    //   { wpx: 100 },
+    //   { wpx: 100 },
+    //   { wpx: 100 },
+    //   { wpx: 150 },
+    //   { wpx: 100 },
+    //   { wpx: 100 },
+    //   { wpx: 100 },
+    //   { wpx: 100 },
+    //   { wpx: 100 },
+    //   { wpx: 100 },
+    //   { wpx: 100 },
+    //   { wpx: 100 },
+    //   { wpx: 100 },
+    //   { wpx: 100 },
+    //   { wpx: 150 },
+    //   { wpx: 100 },
+    //   { wpx: 150 },
+    //   { wpx: 100 },
+    // ];
 
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Tasks");
-    XLSX.writeFile(wb, "tasks.xlsx");
+    // const wb = XLSX.utils.book_new();
+    // XLSX.utils.book_append_sheet(wb, ws, "Tasks");
+    // XLSX.writeFile(wb, "tasks.xlsx");
   };
 
   function formatDateString(dateString: string): string | null {
