@@ -252,6 +252,7 @@ const ProjectsDetails: React.FC = () => {
     axios
       .post(`${import.meta.env.VITE_DB_URL}/admin/exportTasks`, payload)
       .then((response) => {
+        console.log("Export URL:", response);
         const exportUrl = response.data.exportUrl;
         window.open(exportUrl, "_blank");
         const link = document.createElement("a");

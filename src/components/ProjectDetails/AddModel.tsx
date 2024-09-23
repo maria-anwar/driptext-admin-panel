@@ -95,10 +95,11 @@ const AddModel: React.FC<AddModelProps> = ({
       .post(`${import.meta.env.VITE_DB_URL}/admin/addTask`, payload)
       .then((response) => {
         const projectDataArray = response.data;
-        getTaskData();
+
         setLoading(false);
         handleCloseAdd();
         setError(false);
+        getTaskData();
 
       })
       .catch((err) => {
