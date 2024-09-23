@@ -27,22 +27,22 @@ const useWordCount = (fileId) => {
             scope: SCOPES,
           })
           .then(() => {
-            // Get the auth instance
-            const authInstance = gapi.auth2.getAuthInstance();
+            // // Get the auth instance
+            // const authInstance = gapi.auth2.getAuthInstance();
 
-            // If user is not signed in, sign in automatically using the fixed values (OAuth credentials)
-            if (!authInstance.isSignedIn.get()) {
-              authInstance.signIn().then(() => {
-                if (fileId) {
-                  fetchGoogleDocData(fileId); // After sign-in, fetch the document data
-                }
-              });
-            } else {
-              // If already signed in, directly fetch document data
-              if (fileId) {
-                fetchGoogleDocData(fileId);
-              }
-            }
+            // // If user is not signed in, sign in automatically using the fixed values (OAuth credentials)
+            // if (!authInstance.isSignedIn.get()) {
+            //   authInstance.signIn().then(() => {
+            //     if (fileId) {
+            //       fetchGoogleDocData(fileId); // After sign-in, fetch the document data
+            //     }
+            //   });
+            // } else {
+            //   // If already signed in, directly fetch document data
+            //   if (fileId) {
+            //     fetchGoogleDocData(fileId);
+            //   }
+            // }
           })
           .catch((error) => {
             console.error("Error initializing Google API client:", error);

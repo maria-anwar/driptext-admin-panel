@@ -291,7 +291,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects,freelan
                         project.seo &&
                         project.texter
                           ? "bg-blue-500"
-                          : "bg-warning/90"
+                          : "bg-yellow-400/80"
                       } w-24 h-9 flex justify-center items-center rounded cursor-pointer`}
                       onClick={() => handleProject(project._id)}
                     >
@@ -300,10 +300,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects,freelan
                       project.texter ? (
                         <FontAwesomeIcon className="text-white" icon={faEye} />
                       ) : (
-                        <FontAwesomeIcon
-                          className="text-white"
-                          icon={faEyeSlash}
-                        />
+                        <img width={18} height={6} src={'/eye_exclamation.svg'} alt={"Eye"} />
                       )}
                       <p className="text-white text-base font-medium text-center py-1 px-2">
                         View

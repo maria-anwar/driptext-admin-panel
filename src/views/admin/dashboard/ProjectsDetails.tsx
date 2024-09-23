@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {google} from "googleapis";
+import { google } from "googleapis";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
@@ -29,6 +29,7 @@ import AddModel from "../../../components/ProjectDetails/AddModel";
 import TaskMembers from "../../../components/ProjectDetails/TaskMembers";
 import getInitials from "../../../components/Helpers/UpperCaseName";
 
+
 const ProjectsDetails: React.FC = () => {
   const user = useSelector<any>((state) => state.user);
   const projectId = localStorage.getItem("projectID");
@@ -48,6 +49,8 @@ const ProjectsDetails: React.FC = () => {
   const [userToken, setUserToken] = useState(user.user.token);
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [fileData, setFileData] = useState(null);
+  const [modalKey, setModalKey] = useState(0);
+
   const [fileName, setFileName] = useState(
     "Drag files here or click to select files"
   );
@@ -178,68 +181,47 @@ const ProjectsDetails: React.FC = () => {
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
-      const isExcelFile =
-        selectedFile.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-        selectedFile.type === "application/vnd.ms-excel";
-
-      if (isExcelFile) {
-        setFile(selectedFile);
-        setFileName(selectedFile.name);
-        e.target.value = "";
-      } else {
-        setFileName("Please select a valid Excel file");
-        setFile(null);
-      }
-    } else {
-      setFileName("No file chosen");
-      setFile(null);
+      setFile((prv) => selectedFile);
+      setFileName(selectedFile.name);
+      setModalKey((prevKey) => prevKey + 1); // Change key to force re-render
     }
   };
 
-  const readFile = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
+  const handleImportData = async (e, id) => {
+    e.preventDefault();
 
-      reader.onload = (e) => {
-        try {
-          const data = new Uint8Array(e.target.result);
-          resolve(data);
-        } catch (error) {
-          reject(error);
-        }
-      };
+    if (!file) {
+      toast.error("Please select a file.");
+      return;
+    }
 
-      reader.onerror = (error) => reject(error);
-      reader.readAsArrayBuffer(file);
-    });
-  };
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("projectId", id);
 
-  const handleImportData = async () => {
-    if (file) {
-      try {
-        const data = await readFile(file);
-        const workbook = XLSX.read(data, { type: "array" });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+    try {
+      console.log("File Data:", file);
+      console.log("File Name:", id);
+      console.log("Form Data:", formData);
+      // const response = await axios.post("/importTasks", formData, {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      // });
 
-        setFileData(jsonData);
-        console.log("Parsed Data:", jsonData);
-        toast.success("File imported successfully");
-        setFile(null);
-        setFileName("Drag files here or click to select files");
-        setFileData(null);
-        setImportModel(false);
-      } catch (error) {
-        toast.success("File imported successfully");
-        setFileName("Error processing file");
-        setImportModel(false);
-        setFile(null);
-        setFileData(null);
-      }
-    } else {
-      setFileName("No file selected.");
+      setImportModel(false);
+      toast.success("Tasks imported successfully");
+
+      // Reset file and file name after successful import
+      setFile(null);
+      setFileName("Drag files here or click to select files");
+    } catch (error) {
+      console.error("Error importing tasks:", error);
+      toast.error("Failed to import tasks.");
+
+      setImportModel(false);
+      setFile(null);
+      setFileName("Drag files here or click to select files");
     }
   };
 
@@ -258,97 +240,34 @@ const ProjectsDetails: React.FC = () => {
     setDropdownVisible((prev) => (prev === memberId ? null : memberId));
   };
 
-  const handleExportData = async (tasks) => {
-    for (const task of tasks) {
-      const { dueDate, fileId, fileLink, taskName, taskId } = task;
-  
-      const formData = {
-        Duedate: dueDate,
-        FileId: fileId,
-        FileLink: fileLink,
-        TaskName: taskName,
-        TaskId: taskId,
-      };
-  
-      try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbyhXXyOjXbFOmVWDBtLqxn7x6j1K0cl3NR0NSHIxLrbwyYhlBz34dUt3KzZyOkjc9I8Kw/exec', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded', // Use this for form data
-          },
-          body: new URLSearchParams(formData), // Convert to form data
-        });
-  
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-  
-        const data = await response.text(); // Adjust to receive text for confirmation
-        console.log("Response from Google Script for task:", taskName, "Response:", data);
-      } catch (error) {
-        console.error("Error exporting task:", taskName, "Error:", error);
-      }
-    }
-  
-  
-  
-    // const ws = XLSX.utils.json_to_sheet(tasks, {
-    //   header: [
-    //     "actualNumberOfWords",
-    //     "comments",
-    //     "createdAt",
-    //     "desiredNumberOfWords",
-    //     "dueDate",
-    //     "googleLink",
-    //     "isActive",
-    //     "keywords",
-    //     "lector",
-    //     "metaLector",
-    //     "project",
-    //     "published",
-    //     "readyToWork",
-    //     "seo",
-    //     "status",
-    //     "taskId",
-    //     "taskName",
-    //     "texter",
-    //     "topic",
-    //     "type",
-    //     "updatedAt",
-    //     "__v",
-    //     "_id",
-    //   ],
-    // });
-    // ws["!cols"] = [
-    //   { wpx: 150 },
-    //   { wpx: 150 },
-    //   { wpx: 150 },
-    //   { wpx: 100 },
-    //   { wpx: 100 },
-    //   { wpx: 100 },
-    //   { wpx: 100 },
-    //   { wpx: 100 },
-    //   { wpx: 100 },
-    //   { wpx: 150 },
-    //   { wpx: 100 },
-    //   { wpx: 100 },
-    //   { wpx: 100 },
-    //   { wpx: 100 },
-    //   { wpx: 100 },
-    //   { wpx: 100 },
-    //   { wpx: 100 },
-    //   { wpx: 100 },
-    //   { wpx: 100 },
-    //   { wpx: 100 },
-    //   { wpx: 150 },
-    //   { wpx: 100 },
-    //   { wpx: 150 },
-    //   { wpx: 100 },
-    // ];
+  const handleExportData = (id) => {
+    const token = userToken;
+    axios.defaults.headers.common["access-token"] = token;
 
-    // const wb = XLSX.utils.book_new();
-    // XLSX.utils.book_append_sheet(wb, ws, "Tasks");
-    // XLSX.writeFile(wb, "tasks.xlsx");
+    const payload = {
+      projectId: id,
+    };
+
+    console.log("Payload:", payload);
+    axios
+      .post(`${import.meta.env.VITE_DB_URL}/admin/exportTasks`, payload)
+      .then((response) => {
+        const exportUrl = response.data.exportUrl;
+        window.open(exportUrl, "_blank");
+        const link = document.createElement("a");
+        link.href = exportUrl;
+        link.setAttribute("download", "");
+        link.download = exportUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .catch((err) => {
+        console.error(
+          "Error fetching project details:",
+          err.response || err.message || err
+        );
+      });
   };
 
   function formatDateString(dateString: string): string | null {
@@ -737,7 +656,7 @@ const ProjectsDetails: React.FC = () => {
                         onClick={(e) => {
                           handleFileChange(e);
                         }}
-                        accept=".xlsx, .xls"
+                        accept=".csv"
                       />
                       <div className="flex justify-start items-center py-15">
                         <FontAwesomeIcon
@@ -750,7 +669,7 @@ const ProjectsDetails: React.FC = () => {
                     <button
                       className="w-full mt-4 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
                       type="submit"
-                      onClick={handleImportData}
+                      onClick={(e) => handleImportData(e, projectDetails._id)}
                     >
                       Import
                     </button>
@@ -759,7 +678,7 @@ const ProjectsDetails: React.FC = () => {
               )}
               <button
                 onClick={() => {
-                  handleExportData(projectTasks);
+                  handleExportData(projectDetails._id);
                 }}
                 className="w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none ml-1.5 flex justify-center items-center border-none"
               >
