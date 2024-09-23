@@ -428,7 +428,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                         <>
                           <h2>
                             <AccordionButton className="flex justify-between items-center ">
-                              <p className=" text-black dark:text-white">
+                              <p className="font-semibold text-black dark:text-white">
                                 OnBoarding
                               </p>
                               {isExpanded ? (
