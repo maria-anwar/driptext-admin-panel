@@ -91,7 +91,6 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
     return format(date, "MMMM yyyy"); // "August 2025"
   };
 
-
   const WorkerComponent: React.FC<{ label: string; name: string }> = ({
     label,
     name,
@@ -107,8 +106,6 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
       </div>
     );
   };
-
- 
 
   const handleGuiColor = () => {};
   return (
@@ -297,7 +294,12 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                       task.texter ? (
                         <FontAwesomeIcon className="text-white" icon={faEye} />
                       ) : (
-                        <img width={18} height={6} src={'/eye_exclamation.svg'} alt={"Eye"} />
+                        <img
+                          width={18}
+                          height={6}
+                          src={"/eye_exclamation.svg"}
+                          alt={"Eye"}
+                        />
                       )}
 
                       <p className="text-white text-base font-medium text-center py-1 px-2">

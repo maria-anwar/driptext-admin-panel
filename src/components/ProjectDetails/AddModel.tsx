@@ -12,7 +12,6 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { set } from "react-datepicker/dist/date_utils";
 
-
 interface AddModelProps {
   projectName: string;
   projectId: string;
@@ -100,10 +99,9 @@ const AddModel: React.FC<AddModelProps> = ({
         handleCloseAdd();
         setError(false);
         getTaskData();
-
       })
       .catch((err) => {
-        setErrorMessage(err.response.data.message|| 'Error in adding task');
+        setErrorMessage(err.response.data.message || "Error in adding task");
         setError(true);
         setLoading(false);
       });
@@ -130,7 +128,7 @@ const AddModel: React.FC<AddModelProps> = ({
                 />
               </div>
               <div>
-                <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3.5">
+                <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
                   1. General Information
                 </h2>
                 <GroupDateField
@@ -308,7 +306,7 @@ const AddModel: React.FC<AddModelProps> = ({
                 />
                 <div className="flex justify-end items-center gap-3 pt-4">
                   <button
-                    className={`my-3 text-black dark:text-white flex justify-center rounded bg-transparent border border-primary py-1.5 px-6 font-medium ${
+                    className={`my-3 text-black dark:text-white flex justify-center rounded bg-transparent border border-slate-200 py-1.5 px-6 font-medium ${
                       loading ? "cursor-not-allowed" : "cursor-pointer"
                     }`}
                     type="button"

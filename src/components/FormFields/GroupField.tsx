@@ -31,7 +31,7 @@ export const GroupField:React.FC<GroupFieldProps> = ({
           <span className="text-red-600 text:lg 2xl:text-[17px] mt-6 pl-1">*</span>
         </label>
         <input
-          className={`${disabled ? ' text-black bg-slate-100':''} placeholder:text-black/60 dark:placeholder:text-white/50 bg-slate-100 w-full text-black dark:text-white text-xs xs:text-sm px-2 xs:px-3.5 font-normal py-3 focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary rounded`}
+          className={`${disabled ? ' text-black bg-slate-200':''} placeholder:text-black/60 dark:placeholder:text-white/50 bg-slate-200 w-full text-black dark:text-white text-xs xs:text-sm px-2 xs:px-3.5 font-normal py-3 focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary rounded`}
           type={type}
           placeholder={placeholder}
           name={name}

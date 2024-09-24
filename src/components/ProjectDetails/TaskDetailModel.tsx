@@ -383,26 +383,25 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                         errors={touched.topic ? errors.topic : ""}
                       />
                     </div>
-                   
                   </div>
                   <div className="w-full mr-1">
-                      <GroupDropdownField
-                        label="Keywords type"
-                        type="text"
-                        id="textType"
-                        name="textType"
-                        placeholder=""
-                        option1="Guide"
-                        option2="Shop (Category)"
-                        option3="Shop (Product)"
-                        option4="Definition/Wiki"
-                        option5="Shop (Home page)"
-                        option6="CMS page"
-                        value={values.textType}
-                        errors={touched.textType ? errors.textType : ""}
-                        onChange={handleChange}
-                      />
-                    </div>
+                    <GroupDropdownField
+                      label="Keywords type"
+                      type="text"
+                      id="textType"
+                      name="textType"
+                      placeholder=""
+                      option1="Guide"
+                      option2="Shop (Category)"
+                      option3="Shop (Product)"
+                      option4="Definition/Wiki"
+                      option5="Shop (Home page)"
+                      option6="CMS page"
+                      value={values.textType}
+                      errors={touched.textType ? errors.textType : ""}
+                      onChange={handleChange}
+                    />
+                  </div>
 
                   <GroupField
                     label="Keyword"
@@ -425,8 +424,8 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                       {({ isExpanded }) => (
                         <>
                           <h2>
-                            <AccordionButton className="flex justify-between items-center ">
-                              <p className="font-semibold text-black dark:text-white">
+                            <AccordionButton className="flex justify-between items-center bg-slate-200 ">
+                              <p className="font-semibold text-black dark:text-white ">
                                 OnBoarding
                               </p>
                               {isExpanded ? (
@@ -438,12 +437,12 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                           </h2>
                           <AccordionPanel className="" pb={4}>
                             <div className="bg-white dark:bg-boxdark rounded py-2 px-4">
-                              <p className="dark:text-white pt-2">
+                              <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3 pb-3">
                                 1. General information:
-                              </p>
+                              </h2>
                               <div className="px-2">
                                 <p className="dark:text-white">Website</p>
-                                <p className="dark:text-white bg-white dark:bg-meta-4 py-2 px-4 mb-2 rounded">
+                                <p className="dark:text-white bg-slate-200 dark:bg-meta-4 py-2 px-4 mb-2 rounded">
                                   {projectName}
                                 </p>
                               </div>
