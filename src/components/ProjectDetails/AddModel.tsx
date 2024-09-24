@@ -178,7 +178,7 @@ const AddModel: React.FC<AddModelProps> = ({
                 />
 
                 <GroupDropdownField
-                  label="Text type"
+                  label="Keyword type"
                   type="text"
                   id="textType"
                   name="textType"

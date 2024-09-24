@@ -50,6 +50,9 @@ const ProjectsDetails: React.FC = () => {
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [fileData, setFileData] = useState(null);
   const [modalKey, setModalKey] = useState(0);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [importLoader, setImportLoader] = useState(false);
 
   const [fileName, setFileName] = useState(
     "Drag files here or click to select files"
@@ -190,6 +193,7 @@ const ProjectsDetails: React.FC = () => {
 
   const handleImportData = async (e, id) => {
     e.preventDefault();
+    setImportLoader(true);
 
     if (!file) {
       toast.error("Please select a file.");
@@ -201,28 +205,32 @@ const ProjectsDetails: React.FC = () => {
     formData.append("projectId", id);
 
     try {
-      console.log("File Data:", file);
-      console.log("File Name:", id);
-      console.log("Form Data:", formData);
-      // const response = await axios.post("/importTasks", formData, {
-      //   headers: {
-      //     "Content-Type": "multipart/form-data",
-      //   },
-      // });
+      const response = await axios.post(
+        `https://driptext-api.malhoc.com/api/admin/importTasks`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
+      console.log("Response:", response);
       setImportModel(false);
       toast.success("Tasks imported successfully");
-
-      // Reset file and file name after successful import
       setFile(null);
       setFileName("Drag files here or click to select files");
+      setError(false);
+      setImportLoader(false);
     } catch (error) {
       console.error("Error importing tasks:", error);
-      toast.error("Failed to import tasks.");
-
-      setImportModel(false);
-      setFile(null);
-      setFileName("Drag files here or click to select files");
+      const err =
+        error.response.data.message ||
+        error.message ||
+        "Failed to import tasks.";
+      setError(true);
+      setErrorMessage(err);
+      setImportLoader(false);
     }
   };
 
@@ -231,6 +239,8 @@ const ProjectsDetails: React.FC = () => {
     setFileName("No file chosen");
     setFileData(null);
     setImportModel(false);
+    setError(false);
+    setErrorMessage("");
   };
 
   const getAvailableRoles = () => {
@@ -537,9 +547,13 @@ const ProjectsDetails: React.FC = () => {
                       className="w-full mt-4 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
                       type="submit"
                       onClick={(e) => handleImportData(e, projectDetails._id)}
+                      disabled={importLoader}
                     >
-                      Import
+                      {importLoader ? 'Importing...' : 'Import'}
                     </button>
+                    {error && (
+                      <p className="pt-6 text-red-500">{errorMessage}</p>
+                    )}
                   </div>
                 </div>
               )}
