@@ -383,9 +383,11 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                         errors={touched.topic ? errors.topic : ""}
                       />
                     </div>
-                    {/* <div className="w-1/2 mr-1">
+                   
+                  </div>
+                  <div className="w-full mr-1">
                       <GroupDropdownField
-                        label="Text type"
+                        label="Keywords type"
                         type="text"
                         id="textType"
                         name="textType"
@@ -400,8 +402,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                         errors={touched.textType ? errors.textType : ""}
                         onChange={handleChange}
                       />
-                    </div> */}
-                  </div>
+                    </div>
 
                   <GroupField
                     label="Keyword"
