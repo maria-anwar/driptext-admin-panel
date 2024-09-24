@@ -99,13 +99,9 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   const [date, setDate] = useState<Date | null>(
     task.dueDate ? new Date(task.dueDate) : null
   );
-
   const allRoles = ["texter", "lector", "seo-optimizer"];
   const [showCard, setShowCard] = useState(task.readyToWork);
   const [memberModel, setMemberModel] = useState(false);
-  const [selectedRoles, setSelectedRoles] = useState<{ [key: number]: string }>(
-    {}
-  );
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [formData, setFormData] = useState<FormData>({
     desiredWords: task.desiredNumberOfWords,
@@ -147,19 +143,6 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     contentPurpose: Yup.string().required("Above information is required"),
     brand: Yup.string().required("Above information is required"),
   });
-
-  const handleCloseMemberModel = () => {
-    setMemberModel(false);
-  };
-
-  const toggleDropdown = (memberId: number) => {
-    setDropdownVisible((prev) => (prev === memberId ? null : memberId));
-  };
-
-  const getAvailableRoles = (memberId: number) => {
-    return allRoles;
-  };
-
   const handleRoleSelect = (role: string, memberId: number) => {
     const token = userToken;
     axios.defaults.headers.common["access-token"] = token;
@@ -192,28 +175,40 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
       });
   };
 
+  const handleCloseMemberModel = () => {
+    setMemberModel(false);
+  };
+
+  const toggleDropdown = (memberId: number) => {
+    setDropdownVisible((prev) => (prev === memberId ? null : memberId));
+  };
+
+  const getAvailableRoles = (memberId: number) => {
+    return allRoles;
+  };
+
   const handleMembers = () => {
     setMemberModel(true);
     setDropdownVisible(null);
   };
 
-  const handleEditData = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+  // const handleEditData = (
+  //   e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  // ) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     [name]: value,
+  //   }));
+  // };
 
-  const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+  // const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     [name]: value,
+  //   }));
+  // };
 
   const handleCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -221,7 +216,15 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   };
 
   const handlePublishedTask = () => {
-    setShowCard(!showCard);
+    if (
+      task?.dueDate &&
+      task?.keywords &&
+      task?.lector &&
+      task?.seo &&
+      task?.texter
+    ) {
+      setShowCard(!showCard);
+    }
   };
 
   const showAssignedRoles = (memberId: number) => {
@@ -235,13 +238,11 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   };
 
   const onSubmit = async (values) => {
-    // Combine form data and selected roles
     const combinedData = {
       ...values,
     };
-    // console.log(JSON.stringify(combinedData)); // For debugging purposes
-    // alert(JSON.stringify(combinedData, null, 2)); // Display the combined data in a readable format
-    closeModel(); // Close the modal
+
+    closeModel();
   };
 
   return (
@@ -256,86 +257,82 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
             <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
               <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-6/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
                 <div className="space-y-1 mt-4">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-bold dark:text-white">
-                    Task Details
-                  </h2>
-                  <FontAwesomeIcon
-                    className="cursor-pointer text-lg text-red-500 "
-                    onClick={closeModel}
-                    icon={faTimes}
-                  />
-                </div>
-                <div className="w-full flex justify-between items-center gap-2 ">
-                  <div className="w-1/2">
-                    <p className="mb-3 block text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold">
-                      Status
-                    </p>
-                    <p className={`w-full py-0 text-sm uppercase ${
-                  task.status.toUpperCase() === "FINAL"
-                    ? " text-success"
-                    : task.status.toUpperCase() === "FREE TRIAL"
-                    ? " text-warning"
-                    : task.status.toUpperCase() === "READY TO START"
-                    ? " text-warning"
-                    : task.status.toUpperCase() ===
-                      "READY FOR PROFEADING"
-                    ? " text-warning"
-                    : " text-violet-500"
-                }`}>
-                      {task.status}
-                    </p>
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-bold dark:text-white">
+                      Task Details
+                    </h2>
+                    <FontAwesomeIcon
+                      className="cursor-pointer text-lg text-red-500 "
+                      onClick={closeModel}
+                      icon={faTimes}
+                    />
                   </div>
-                  <div className="w-1/2">
-                    <label
-                      className="text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold pb-1"
-                      htmlFor="wordReal"
-                    >
-                      Word Real
-                    </label>
-                    <p className="w-full py-2 text-black dark:text-white">
-                      {task.actualNumberOfWords !== null
-                        ? task.actualNumberOfWords
-                        : "N/A"}
-                    </p>
-                  </div>
-                </div>
-
-              
-
-                
-                
-                    <div className="w-full flex justify-between items-center   gap-2">
-                      <div className="w-1/2">
-                        
-                          <label
-                            className="mb-3 block  text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold"
-                            htmlFor="readyToWork"
-                          >
-                            Ready to Work
-                          </label>
-                          <ToggleSwitch
-                            icon={showCard ? faTimes : faCheck}
-                            isOn={showCard}
-                            onToggle={handlePublishedTask}
-                          />
-                        
-                      </div>
-                      <div className="w-1/2 ">
-                        <GroupField
-                          label="Word Count Expected"
-                          type="number"
-                          placeholder="1500"
-                          name="wordCount"
-                          id="wordCount"
-                          value={values.wordCount}
-                          onChange={handleChange}
-                          errors={touched.wordCount ? errors.wordCount : ""}
-                          defaultValue={1500}
-                        />
-                      </div>
+                  <div className="w-full flex justify-between items-center gap-2 ">
+                    <div className="w-1/2">
+                      <p className="mb-3 block text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold">
+                        Status
+                      </p>
+                      <p
+                        className={`w-full py-0 text-sm uppercase ${
+                          task.status.toUpperCase() === "FINAL"
+                            ? " text-success"
+                            : task.status.toUpperCase() === "FREE TRIAL"
+                            ? " text-warning"
+                            : task.status.toUpperCase() === "READY TO START"
+                            ? " text-warning"
+                            : task.status.toUpperCase() ===
+                              "READY FOR PROFEADING"
+                            ? " text-warning"
+                            : " text-violet-500"
+                        }`}
+                      >
+                        {task.status}
+                      </p>
                     </div>
-                  
+                    <div className="w-1/2">
+                      <label
+                        className="text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold pb-1"
+                        htmlFor="wordReal"
+                      >
+                        Word Real
+                      </label>
+                      <p className="w-full py-2 text-black dark:text-white">
+                        {task.actualNumberOfWords !== null
+                          ? task.actualNumberOfWords
+                          : "N/A"}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="w-full flex justify-between items-center   gap-2">
+                    <div className="w-1/2">
+                      <label
+                        className="mb-3 block  text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold"
+                        htmlFor="readyToWork"
+                      >
+                        Ready to Work
+                      </label>
+                      <ToggleSwitch
+                        icon={showCard ? faTimes : faCheck}
+                        isOn={showCard}
+                        onToggle={handlePublishedTask}
+                      />
+                    </div>
+                    <div className="w-1/2 ">
+                      <GroupField
+                        label="Word Count Expected"
+                        type="number"
+                        placeholder="1500"
+                        name="wordCount"
+                        id="wordCount"
+                        value={values.wordCount}
+                        onChange={handleChange}
+                        errors={touched.wordCount ? errors.wordCount : ""}
+                        defaultValue={1500}
+                      />
+                    </div>
+                  </div>
+
                   <div className="flex justify-between items-center w-full gap-2 ">
                     <div className="w-1/2 mr-1">
                       <GroupDateField
