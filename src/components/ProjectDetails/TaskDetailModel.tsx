@@ -441,7 +441,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                                 1. General information:
                               </h2>
                               <div className="px-2">
-                                <p className="dark:text-white">Website</p>
+                                <p className="dark:text-white font-semibold pb-2">Website</p>
                                 <p className="dark:text-white bg-slate-200 dark:bg-meta-4 py-2 px-4 mb-2 rounded">
                                   {projectName}
                                 </p>
