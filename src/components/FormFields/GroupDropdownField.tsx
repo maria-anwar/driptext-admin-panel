@@ -45,7 +45,7 @@ const GroupDropdownField:React.FC<GroupDropdownFieldProps> = ({
         </label>
         <div className="relative">
           <select
-           className="w-full appearance-none rounded border border-transparent bg-gray py-2.5 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+           className="w-full appearance-none rounded border border-transparent bg-slate-200 py-2.5 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
             type={type}
             placeholder={placeholder}
             name={name}
