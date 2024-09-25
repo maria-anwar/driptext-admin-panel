@@ -68,7 +68,7 @@ const SystemSettings: React.FC = () => {
               </div>
             </div>
 
-            <div className="mb-7">
+            {/* <div className="mb-7">
               <label
                 className="mb-3 block text-sm font-semibold text-black dark:text-white"
                 htmlFor="rootDirectory"
@@ -181,7 +181,7 @@ const SystemSettings: React.FC = () => {
                 placeholder="backoffice@driptext.de"
                 defaultValue={"backoffice@driptext.de"}
               />
-            </div>
+            </div> */}
 
             <div className="flex justify-end gap-4.5 pt-5 pb-6">
               <button

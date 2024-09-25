@@ -1,42 +1,76 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useRef } from "react";
+import axios from "axios";
+import React, { useRef, useState } from "react";
+import { useSelector } from "react-redux";
 
 interface EditProjectProps {
   handleCloseEdit: () => void;
+  handleRefreshData: () => void;
+  projectId: string;
   domain: string;
   speech: string;
   perspective: string;
 }
 
 const EditProject: React.FC<EditProjectProps> = ({
+  projectId,
   domain,
   speech,
   perspective,
   handleCloseEdit,
+  handleRefreshData,
 }) => {
+  const user = useSelector<any>((state) => state.user);
+  const [userToken, setUserToken] = useState(user.user.token);
+  const [loading, setLoading] = useState(false);
   const domainRef = useRef<HTMLInputElement>(null);
   const speechRef = useRef<HTMLSelectElement>(null);
   const perspectiveRef = useRef<HTMLSelectElement>(null);
 
-  const handleEdit = () => {
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // State for error message
+
+  const handleEdit = (e) => {
+    e.preventDefault();
+    setLoading(true);
     const editedDomain = domainRef.current?.value;
     const editedSpeech = speechRef.current?.value;
     const editedPerspective = perspectiveRef.current?.value;
 
-    alert(
-      `Project edited successfully: \nDomain: ${editedDomain}\nSpeech: ${editedSpeech}\nPerspective: ${editedPerspective}`
-    );
-    handleCloseEdit();
+      let token = userToken;
+      axios.defaults.headers.common["access-token"] = token;
+
+      let payload = {
+        projectId: projectId,
+        domain: editedDomain,
+        speech: editedSpeech,
+        prespective: editedPerspective,
+      };
+      console.log(payload);
+
+      axios
+        .post(`${import.meta.env.VITE_DB_URL}/admin/editProject`, payload)
+        .then((response) => {
+          const projectDataArray = response.data;
+          console.log(projectDataArray);
+
+          // Call refresh and close edit modal after success
+          handleRefreshData();
+          handleCloseEdit();
+          setLoading(false);
+        })
+        .catch((err) => {
+          const error = err?.response?.data?.message || "Error editing project details:";
+          setErrorMessage(error);
+          setLoading(false);
+        });
   };
 
   return (
     <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
       <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
         <div className="flex justify-between items-center mb-5">
-          <h2 className="text-xl font-bold dark:text-white pr-12">
-            Edit Project
-          </h2>
+          <h2 className="text-xl font-bold dark:text-white pr-12">Edit Project</h2>
           <FontAwesomeIcon
             className="cursor-pointer text-lg text-red-500 pl-12"
             onClick={handleCloseEdit}
@@ -143,11 +177,18 @@ const EditProject: React.FC<EditProjectProps> = ({
 
           <button
             className="w-full my-3 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
-            type="button"
+            type="submit"
             onClick={handleEdit}
+            disabled={loading}
           >
-            Save
+           {loading? "Saving...": "Save"}
           </button>
+
+          {errorMessage && ( // Conditionally render the error message if it exists
+            <div className="text-red-500 mt-3 text-center">
+              {errorMessage}
+            </div>
+          )}
         </div>
       </div>
     </div>
