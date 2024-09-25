@@ -37,7 +37,7 @@ interface Task {
   fileLink: string;
   googleLink: string | null;
   isActive: "Y" | "N"; // Assuming 'Y' and 'N' are the only possible values
-  keywords: string;
+  keywords: string | null;
   lector: string | null;
   metaLector: string | null;
   project: string; // or a more specific type if it's an ObjectId
@@ -68,7 +68,6 @@ interface TaskDetailModelProps {
 interface FormData {
   desiredWords: string;
   topic: string | null;
-  type: string | null;
   keywords: string | null;
   projectId: string | null;
   projectName: string | null;
@@ -95,10 +94,11 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   handleRefreshData,
 }) => {
   const user = useSelector<any>((state) => state.user);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [loading, setLoading] = useState(false);
   const [userToken, setUserToken] = useState(user.user.token);
-  const [date, setDate] = useState<Date | null>(
-    task.dueDate ? new Date(task.dueDate) : null
-  );
   const allRoles = ["texter", "lector", "seo-optimizer"];
   const [showCard, setShowCard] = useState(task.readyToWork);
   const [memberModel, setMemberModel] = useState(false);
@@ -106,14 +106,13 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   const [formData, setFormData] = useState<FormData>({
     desiredWords: task.desiredNumberOfWords,
     topic: task.topic,
-    type: task.type,
+    textType: task.type,
     keywords: task.keywords,
     comments: task.comments,
     projectId: projectId,
     projectName: "",
     userId: userId,
     date: task?.dueDate, // Initialize as null for date
-    textType: "",
     wordCount: task.desiredNumberOfWords,
     companyInfo: task?.onBoarding?.companyBackgorund,
     companyAttributes: task?.onBoarding?.companyAttributes,
@@ -125,14 +124,10 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   });
 
   const validationSchema = Yup.object().shape({
-    desiredWords: Yup.string().required("Please enter desired number of words"),
     topic: Yup.string().required("Please select a topic"),
-    type: Yup.string().required("Please select type"),
+    textType: Yup.string().required("Please select type"),
     keywords: Yup.string().required("Please select keywords"),
-    comments: Yup.string(), // Allow comments to be optional
     date: Yup.date().nullable().required("Please select a date"), // Ensure date is required and nullable
-    textType: Yup.string().required("Please select text type"),
-    wordCount: Yup.number().required("Please enter word count"),
     companyInfo: Yup.string().required("Please enter company information"),
     companyAttributes: Yup.string().required(
       "Please enter company's attributes"
@@ -183,7 +178,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     setDropdownVisible((prev) => (prev === memberId ? null : memberId));
   };
 
-  const getAvailableRoles = (memberId: number) => {
+  const getAvailableRoles = () => {
     return allRoles;
   };
 
@@ -192,23 +187,6 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     setDropdownVisible(null);
   };
 
-  // const handleEditData = (
-  //   e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  // ) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prevData) => ({
-  //     ...prevData,
-  //     [name]: value,
-  //   }));
-  // };
-
-  // const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prevData) => ({
-  //     ...prevData,
-  //     [name]: value,
-  //   }));
-  // };
 
   const handleCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -221,7 +199,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
       task?.keywords &&
       task?.lector &&
       task?.seo &&
-      task?.texter
+      task?.texter && task?.topic
     ) {
       setShowCard(!showCard);
     }
@@ -238,12 +216,38 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   };
 
   const onSubmit = async (values) => {
-    const combinedData = {
-      ...values,
+    setLoading(true); // Set loading to true on submission
+    const payLoad = {
+      taskId: task._id,
+      readyToWork: showCard,
+      dueDate: values.date,
+      topic: values.topic,
+      keywordType: values.textType,
+      keyword: values.keywords,
+      comment: values.comments,
+      companyBackgorund: values.companyInfo,
+      companyAttributes: values.companyAttributes,
+      comapnyServices: values.services,
+      customerContent: values.content,
+      customerIntrest: values.customers,
+      contentPurpose: values.contentPurpose,
+      contentInfo: values.brand,
     };
 
-    closeModel();
+    try {
+      const response =await axios.post(`${import.meta.env.VITE_DB_URL}/admin/editTask`, payLoad);
+      if(response.status === 200){
+        handleRefreshData();
+        closeModel();
+      }    
+    } catch (error) {
+      const err= error.response.data.message || "Failed to update task";
+      setError(true);
+      setErrorMessage(err);
+      setLoading(false); 
+    } 
   };
+  
 
   return (
     <>
@@ -328,7 +332,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                         value={values.wordCount}
                         onChange={handleChange}
                         errors={touched.wordCount ? errors.wordCount : ""}
-                        defaultValue={1500}
+                        disabled={true}
                       />
                     </div>
                   </div>
@@ -424,7 +428,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                       {({ isExpanded }) => (
                         <>
                           <h2>
-                            <AccordionButton className="flex justify-between items-center bg-slate-200 ">
+                            <AccordionButton className="flex justify-between items-center bg-slate-200 dark:bg-meta-4 ">
                               <p className="font-semibold text-black dark:text-white ">
                                 OnBoarding
                               </p>
@@ -441,7 +445,9 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                                 1. General information:
                               </h2>
                               <div className="px-2">
-                                <p className="dark:text-white font-semibold pb-2">Website</p>
+                                <p className="dark:text-white font-semibold pb-2">
+                                  Website
+                                </p>
                                 <p className="dark:text-white bg-slate-200 dark:bg-meta-4 py-2 px-4 mb-2 rounded">
                                   {projectName}
                                 </p>
@@ -618,20 +624,22 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
 
                 <div className="flex justify-end items-center mt-6 gap-3">
                   <button
-                    type="button"
+                    type="reset"
                     onClick={handleCancel}
                     className="px-4 py-2 bg-gray-500 bg-transparent border border-neutral-200 text-black dark:text-white rounded"
                   >
                     Cancel
                   </button>
                   <button
-                    type="submit"
-                    onClick={onSubmit}
+                    type="submit" disabled={loading}
                     className="px-4 py-2 bg-blue-500 text-white rounded"
                   >
-                    Submit
+                    {loading ? "Submitting..." : "Submit"}
                   </button>
                 </div>
+                {error && (
+                    <p className="text-red-500 text-sm mt-4" >{errorMessage}</p>
+                )}
               </div>
             </div>
           </Form>
