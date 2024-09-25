@@ -29,8 +29,10 @@ import AddModel from "../../../components/ProjectDetails/AddModel";
 import TaskMembers from "../../../components/ProjectDetails/TaskMembers";
 import getInitials from "../../../components/Helpers/UpperCaseName";
 import EditProject from "../../../components/ProjectDetails/EditProject";
+import { useNavigate } from "react-router-dom";
 
 const ProjectsDetails: React.FC = () => {
+  const navigate = useNavigate();
   const user = useSelector<any>((state) => state.user);
   const projectId = localStorage.getItem("projectID");
   const [loading, setLoading] = useState(true);
@@ -169,8 +171,26 @@ const ProjectsDetails: React.FC = () => {
   };
 
   const handleDeleteApi = () => {
-    alert("Project archived");
-    setDeleteModel(false);
+    let token = userToken;
+    axios.defaults.headers.common["access-token"] = token;
+    let payload = {
+      projectId: projectId,
+      isArchived: true,
+    };
+  
+    axios
+      .post(`${import.meta.env.VITE_DB_URL}/admin/archiveProject`, payload)
+      .then((response) => {
+        if(response.status === 200){
+          console.log("Project archived successfully:", response);
+          setDeleteModel(false);
+           navigate('/dashboard', { replace: true });
+        }
+      })
+      .catch((err) => {
+        console.error("Error archiving the project:", err);
+        setLoading(false);
+      });
   };
 
   const handleMembers = () => {
@@ -350,10 +370,12 @@ const ProjectsDetails: React.FC = () => {
                         </button>
                         {editModel && (
                           <EditProject
+                            projectId={projectDetails._id}
                             domain={projectDetails?.projectName}
                             speech={projectDetails?.speech}
                             perspective={projectDetails?.prespective}
                             handleCloseEdit={handleCloseEdit}
+                            handleRefreshData={getTaskData}
                           />
                         )}
                         <button
