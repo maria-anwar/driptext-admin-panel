@@ -171,7 +171,7 @@ const Users: React.FC = () => {
             </div>
             <div
               onClick={handleAddManager}
-              className=" px-6 py-2.5   my-2 flex justify-center items-center cursor-pointer rounded mr-2 bg-meta-4"
+              className="inline-flex items-center justify-center gap-2.5 bg-black py-3 text-sm xl:text-base  text-center font-medium text-white hover:bg-opacity-90 px-5"
             >
               <h2>Add Manager</h2>
             </div>
@@ -179,6 +179,7 @@ const Users: React.FC = () => {
           {showAddManager && <AddManager handleClose={handleCloseManager}/>}
         </div>
         <div className="flex justify-end items-end pt-3 pb-3 pr-2">
+          
           <div className="relative">
             <button
               onClick={handleDropdownToggle}
