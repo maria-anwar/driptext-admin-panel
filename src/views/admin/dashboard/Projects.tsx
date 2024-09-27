@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Breadcrumb from "../../../components/breeadcrumbs/Breadcrumb";
+import Breadcrumb from "../../../components/breadcrumbs/Breadcrumb";
 import ToggleSwitch from "../../../components/buttons/ToggleButton";
 import {
   faThLarge,
@@ -20,7 +20,7 @@ import Loading from "../../../components/Helpers/Loading";
 const Projects: React.FC = () => {
   const user = useSelector<any>((state) => state.user);
   const [loading, setLoading] = useState(true);
-  const [showCard, setShowCard] = useState(false); // Default to false to show table initially
+  const [showCard, setShowCard] = useState(false);
   const [showDraft, setShowDraft] = useState(false);
   const [showArchived, setShowArchived] = useState(false);
   const [showSearch, setShowSearch] = useState<boolean>(false);
@@ -47,8 +47,8 @@ const Projects: React.FC = () => {
       .then((response) => {
         const projectDataArray = response.data.projects;
         setProjectData(projectDataArray);
-        console.log("Project data fetched:", projectDataArray);
-        setFilteredProjects(projectDataArray); // Set filteredProjects to initial data
+        console.log(projectDataArray);
+        setFilteredProjects(projectDataArray);
         setLoading(false);
       })
       .catch((err) => {
@@ -75,7 +75,7 @@ const Projects: React.FC = () => {
         setFreelancer(allProjects);
       })
       .catch((err) => {
-        console.error("Error fetching project details:", err);
+        console.error("Error fetching freelancer details:", err);
       });
   };
 
@@ -87,13 +87,13 @@ const Projects: React.FC = () => {
     }
   };
 
-  const handleDraft = (isOn: boolean) => {
-    setShowDraft(isOn);
-    if (isOn) {
-      setShowCard(false);
-      setShowArchived(false);
-    }
-  };
+  // const handleDraft = (isOn: boolean) => {
+  //   setShowDraft(isOn);
+  //   if (isOn) {
+  //     setShowCard(false);
+  //     setShowArchived(false);
+  //   }
+  // };
 
   const handleArchived = (isOn: boolean) => {
     setShowArchived(isOn);
@@ -132,11 +132,11 @@ const Projects: React.FC = () => {
               isOn={showCard}
               onToggle={handleCard}
             />
-            <ToggleSwitch
+            {/* <ToggleSwitch
               icon={faBatteryEmpty}
               isOn={showDraft}
               onToggle={handleDraft}
-            />
+            /> */}
             <ToggleSwitch
               icon={faTrashAlt}
               isOn={showArchived}
@@ -144,7 +144,7 @@ const Projects: React.FC = () => {
             />
           </div>
         </div>
-        <div className="flex justify-between items-center  pb-2 lg:pb-0  xl:items-center">
+        <div className="flex justify-between items-center pb-2 lg:pb-0 xl:items-center">
           <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
             Projects
           </h2>
@@ -168,36 +168,47 @@ const Projects: React.FC = () => {
         </div>
 
         <div>
-          {!showDraft &&
+          {
+            /* {!showDraft && */
             !showArchived &&
-            (showCard ? (
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 2xl:grid-cols-3 5xl:grid-cols-4 4xl:px-14 pt-8">
-                <ProjectCard
-                  projects={filteredProjects}
-                  freelancer={freelancer}
-                />
-              </div>
-            ) : (
-              <>
-                {loading ? (
-                  <div className="rounded-sm border border-stroke  pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1  mt-10 w-full bg-slate-200 h-[300px] animate-pulse"></div>
-                ) : (
-                  <ProjectPaginatedTable
-                    projects={filteredProjects}
+              (showCard ? (
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 2xl:grid-cols-3 5xl:grid-cols-4 4xl:px-14 pt-8">
+                  {/* Filter out archived projects before passing to ProjectCard */}
+                  <ProjectCard
+                    projects={filteredProjects.filter(
+                      (project) => project?.isActive !== "N"
+                    )}
                     freelancer={freelancer}
                   />
-                )}
-              </>
-            ))}
-          {showDraft && (
+                </div>
+              ) : (
+                <>
+                  {loading ? (
+                    <div className="rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 mt-10 w-full bg-slate-200 h-[300px] animate-pulse"></div>
+                  ) : (
+                    <ProjectPaginatedTable
+                      projects={filteredProjects.filter(
+                        (project) => project?.isActive !== "N"
+                      )}
+                      freelancer={freelancer}
+                    />
+                  )}
+                </>
+              ))
+          }
+
+          {/* {showDraft && (
             <ProjectPaginatedTable
               projects={filteredProjects}
               freelancer={freelancer}
             />
-          )}
+          )} */}
           {showArchived && (
             <ProjectPaginatedTable
-              projects={filteredProjects}
+              handleRefreshData={getProjects}
+              projects={filteredProjects.filter(
+                (project) => project?.isActive !== "Y"
+              )}
               freelancer={freelancer}
             />
           )}

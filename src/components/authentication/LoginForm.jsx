@@ -102,7 +102,7 @@ const LoginForm = () => {
                   setError(false);
                   setErrorMesssage("");
                 }}
-                className="outline-none border border-blue-gray-200 focus:border-gray-900 focus:ring-2 ring-1 ring-black p-2.5 rounded-lg bg-transparent text-black"
+                className="outline-none border border-blue-gray-200 focus:border-gray-900 focus:ring-2 ring-1 ring-black px-3 py-1.5 rounded-lg bg-transparent text-black"
               />
               {props.errors.email && (
                 <div id="email" className="-mt-4 text-sm text-red-500">
@@ -127,7 +127,7 @@ const LoginForm = () => {
                     setErrorMesssage("");
                   }}
                   placeholder="********"
-                  className="w-full outline-none border border-blue-gray-200 focus:border-gray-900 focus:ring-2 ring-1 ring-black p-2.5 rounded-lg bg-transparent text-black"
+                  className="w-full outline-none border border-blue-gray-200 focus:border-gray-900 focus:ring-2 ring-1 ring-black px-3 py-1.5 rounded-lg bg-transparent text-black"
                 />
                 <FontAwesomeIcon
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
@@ -164,7 +164,7 @@ const LoginForm = () => {
               </Link>
             </div>
             <button
-              className={`mt-6 w-full font-semibold h-11 bg-black text-white text-sm p-2.5 rounded-lg ${
+              className={`mt-6 w-full font-semibold h-9 bg-black text-white text-sm px-3 py-1.5 rounded-lg ${
                 loading ? "cursor-not-allowed" : "cursor-pointer"
               }`}
               type="submit"

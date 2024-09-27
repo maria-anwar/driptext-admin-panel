@@ -13,6 +13,8 @@ import "./custompagination.css";
 import { format } from "date-fns";
 
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 interface Plan {
   _id: string;
@@ -67,13 +69,21 @@ interface Project {
 
 interface PaginatedTableProps {
   projects: Project[];
+  handleRefreshData?: () => void;
 }
 
-const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects,freelancer }) => {
+const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
+  projects,
+  freelancer,
+  handleRefreshData,
+}) => {
+  const user = useSelector<any>((state) => state.user);
+  const [userId, setUserID] = useState(user.user.data.user._id);
+  const [userToken, setUserToken] = useState(user.user.token);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const navigate = useNavigate();
-  
+
   const showAssignedRoles = (memberId: number) => {
     const foundFreelancer = freelancer.find((f) => f._id === memberId);
     if (foundFreelancer) {
@@ -83,7 +93,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects,freelan
       return "";
     }
   };
-  
+
   const handlePageChange = (page: number) => {
     setPage(page);
   };
@@ -108,11 +118,8 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects,freelan
     if (!name) return "";
     const words = name.split(" ");
     const firstTwoWords = words.slice(0, 2);
-    return firstTwoWords
-      .map(word => word[0].toUpperCase())
-      .join("");
+    return firstTwoWords.map((word) => word[0].toUpperCase()).join("");
   };
-  
 
   const WorkerComponent: React.FC<{ label: string; name: string }> = ({
     label,
@@ -132,6 +139,27 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects,freelan
 
   const offset = (page - 1) * rowsPerPage;
   const paginatedProjects = projects.slice(offset, offset + rowsPerPage);
+
+  const handleRevert = (projectId: string) => {
+    let token = userToken;
+    axios.defaults.headers.common["access-token"] = token;
+    let payload = {
+      projectId: projectId,
+      isArchived: false,
+    };
+
+    axios
+      .post(`${import.meta.env.VITE_DB_URL}/admin/archiveProject`, payload)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("Project archived successfully:", response);
+          handleRefreshData();
+        }
+      })
+      .catch((err) => {
+        console.error("Error archiving the project:", err);
+      });
+  };
 
   return (
     <div className="mt-6">
@@ -170,19 +198,26 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects,freelan
             <tbody>
               {paginatedProjects.map((project) => (
                 <tr className="text-left" key={project._id}>
-                  <td className={`border-b  border-[#eee] py-5 px-4 dark:border-strokedark`}>
-                    <p className={`text-sm uppercase text-center px-3 rounded-full py-1 ${
-                            project.projectStatus.toUpperCase() === "FINAL"
-                              ? "bg-success/20 text-success"
-                              : project.projectStatus.toUpperCase() === "FREE TRIAL"
-                              ? "bg-warning/20 text-warning"
-                              : project.projectStatus.toUpperCase() === "READY"
-                              ? "bg-warning/20 text-warning"
-                              : project.projectStatus.toUpperCase() === "READY FOR PROFEADING"
-                              ? "bg-warning/20 text-warning"
-                              : "bg-violet-500/20 text-violet-500"
-                          }`}>
-                      {project.projectStatus.toUpperCase()==='FREE TRIAL' ? 'Ready' : project.projectStatus}
+                  <td
+                    className={`border-b  border-[#eee] py-5 px-4 dark:border-strokedark`}
+                  >
+                    <p
+                      className={`text-sm uppercase text-center px-3 rounded-full py-1 ${
+                        project.projectStatus.toUpperCase() === "FINAL"
+                          ? "bg-success/20 text-success"
+                          : project.projectStatus.toUpperCase() === "FREE TRIAL"
+                          ? "bg-warning/20 text-warning"
+                          : project.projectStatus.toUpperCase() === "READY"
+                          ? "bg-warning/20 text-warning"
+                          : project.projectStatus.toUpperCase() ===
+                            "READY FOR PROFEADING"
+                          ? "bg-warning/20 text-warning"
+                          : "bg-violet-500/20 text-violet-500"
+                      }`}
+                    >
+                      {project.projectStatus.toUpperCase() === "FREE TRIAL"
+                        ? "Ready"
+                        : project.projectStatus}
                     </p>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -226,7 +261,9 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects,freelan
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black  dark:text-white text-sm">
-                      {project.plan.endDate === null ? "No Subscription" :   `${formatDate(project.plan.endDate)}`}
+                      {project.plan.endDate === null
+                        ? "No Subscription"
+                        : `${formatDate(project.plan.endDate)}`}
                     </p>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -252,22 +289,24 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects,freelan
                     !project.metaLector?.trim() ? (
                       <p>Not assigned</p>
                     ) : ( */}
-                      <div className="flex justify-between items-center">
-                        <WorkerComponent
-                          label="T"
-                          name={showAssignedRoles(project.texter) ?? ""}
-                        />
-                        <WorkerComponent
-                          label="L"
-                          name={showAssignedRoles(project.lector) ?? ""}
-                        />
-                        <WorkerComponent label="S" name={showAssignedRoles(project.seo) ?? ""} />
-                        <WorkerComponent
-                          label="M"
-                          name={project.metaLector ?? ""}
-                        />
-                      </div>
-                   
+                    <div className="flex justify-between items-center">
+                      <WorkerComponent
+                        label="T"
+                        name={showAssignedRoles(project.texter) ?? ""}
+                      />
+                      <WorkerComponent
+                        label="L"
+                        name={showAssignedRoles(project.lector) ?? ""}
+                      />
+                      <WorkerComponent
+                        label="S"
+                        name={showAssignedRoles(project.seo) ?? ""}
+                      />
+                      <WorkerComponent
+                        label="M"
+                        name={project.metaLector ?? ""}
+                      />
+                    </div>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black  dark:text-white flex justify-center items-center">
@@ -285,30 +324,77 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({ projects,freelan
                     </p>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <div
-                      className={` ${
-                        project.lector &&
-                        project.seo &&
-                        project.texter
-                          ? "bg-blue-500"
-                          : "bg-warning/90"
-                      } w-24 h-9 flex justify-center items-center rounded cursor-pointer`}
-                      onClick={() => handleProject(project._id)}
-                    >
-                      {project.lector &&
-                      project.seo &&
-                      project.texter ? (
-                        <FontAwesomeIcon className="text-white" icon={faEye} />
-                      ) : (
-                        <FontAwesomeIcon
-                          className="text-white"
-                          icon={faEyeSlash}
-                        />
-                      )}
-                      <p className="text-white text-base font-medium text-center py-1 px-2">
-                        View
-                      </p>
-                    </div>
+                    {project?.isActive === "Y" ? (
+                      <div
+                        className={` ${
+                          project.lector && project.seo && project.texter
+                            ? "bg-blue-500"
+                            : "bg-yellow-400/80"
+                        } w-24 h-9 flex justify-center items-center rounded cursor-pointer`}
+                        onClick={() => handleProject(project._id)}
+                      >
+                        {project.lector && project.seo && project.texter ? (
+                          <FontAwesomeIcon
+                            className="text-white"
+                            icon={faEye}
+                          />
+                        ) : (
+                          <img
+                            width={18}
+                            height={6}
+                            src={"/eye_exclamation.svg"}
+                            alt={"Eye"}
+                          />
+                        )}
+                        <p className="text-white text-base font-medium text-center py-1 px-2">
+                          View
+                        </p>
+                      </div>
+                    ) : (
+                      <div
+                        className={` ${
+                          project.lector && project.seo && project.texter
+                            ? "bg-blue-500"
+                            : "bg-yellow-400/80"
+                        } w-24 h-9 flex justify-center items-center rounded cursor-pointer`}
+                        onClick={() => handleRevert(project._id)}
+                      >
+                        <svg
+                          viewBox="0 0 21 21"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="#FFFFFF"
+                          width="20"
+                          height="20"
+                        >
+                          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                          <g
+                            id="SVGRepo_tracerCarrier"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></g>
+                          <g id="SVGRepo_iconCarrier">
+                            <g
+                              fill="none"
+                              fill-rule="evenodd"
+                              stroke="#FFFFFF"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              transform="matrix(0 1 1 0 2.5 2.5)"
+                            >
+                              <path d="m3.98652376 1.07807068c-2.38377179 1.38514556-3.98652376 3.96636605-3.98652376 6.92192932 0 4.418278 3.581722 8 8 8s8-3.581722 8-8-3.581722-8-8-8"></path>
+                              <path
+                                d="m4 1v4h-4"
+                                transform="matrix(1 0 0 -1 0 6)"
+                              ></path>
+                            </g>
+                          </g>
+                        </svg>
+
+                        <p className="text-white text-base font-medium text-center py-1 px-2">
+                          Revert
+                        </p>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}

@@ -30,9 +30,6 @@ const ProfileSettings: React.FC = () => {
       lastName: lastName,
       email: email,
     };
-     console.log(payload);
-     console.log(user.user.data.user._id);
-     console.log(token);
 
     await axios
       .post(`${import.meta.env.VITE_DB_URL}/admin/updateAdminProfile`, payload)
@@ -213,7 +210,7 @@ const ProfileSettings: React.FC = () => {
                 </div>
               </div>
 
-              <div className="mb-5.5">
+              {/* <div className="mb-5.5">
                 <label
                   className="mb-3 block text-sm font-medium text-black dark:text-white"
                   htmlFor="Phone"
@@ -302,7 +299,7 @@ const ProfileSettings: React.FC = () => {
                   placeholder="Germany"
                   defaultValue=""
                 />
-              </div>
+              </div> */}
             
               <div className="flex justify-end gap-4.5">
                 <button

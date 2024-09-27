@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {google} from "googleapis";
+import { google } from "googleapis";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
@@ -28,8 +28,11 @@ import MemberModal from "../../../components/ProjectDetails/MemberModel";
 import AddModel from "../../../components/ProjectDetails/AddModel";
 import TaskMembers from "../../../components/ProjectDetails/TaskMembers";
 import getInitials from "../../../components/Helpers/UpperCaseName";
+import EditProject from "../../../components/ProjectDetails/EditProject";
+import { useNavigate } from "react-router-dom";
 
 const ProjectsDetails: React.FC = () => {
+  const navigate = useNavigate();
   const user = useSelector<any>((state) => state.user);
   const projectId = localStorage.getItem("projectID");
   const [loading, setLoading] = useState(true);
@@ -48,6 +51,11 @@ const ProjectsDetails: React.FC = () => {
   const [userToken, setUserToken] = useState(user.user.token);
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [fileData, setFileData] = useState(null);
+  const [modalKey, setModalKey] = useState(0);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [importLoader, setImportLoader] = useState(false);
+
   const [fileName, setFileName] = useState(
     "Drag files here or click to select files"
   );
@@ -70,6 +78,7 @@ const ProjectsDetails: React.FC = () => {
         const projectDataArray = response.data.project;
         const allProjects = projectDataArray;
         setProjectDetails(allProjects);
+        console.log("Project Details:", allProjects);
         setPlan(allProjects.plan);
         setUserData(allProjects.user);
         setProjectTasks(allProjects.projectTasks);
@@ -162,8 +171,26 @@ const ProjectsDetails: React.FC = () => {
   };
 
   const handleDeleteApi = () => {
-    alert("Project archived");
-    setDeleteModel(false);
+    let token = userToken;
+    axios.defaults.headers.common["access-token"] = token;
+    let payload = {
+      projectId: projectId,
+      isArchived: true,
+    };
+  
+    axios
+      .post(`${import.meta.env.VITE_DB_URL}/admin/archiveProject`, payload)
+      .then((response) => {
+        if(response.status === 200){
+          console.log("Project archived successfully:", response);
+          setDeleteModel(false);
+           navigate('/dashboard', { replace: true });
+        }
+      })
+      .catch((err) => {
+        console.error("Error archiving the project:", err);
+        setLoading(false);
+      });
   };
 
   const handleMembers = () => {
@@ -178,68 +205,52 @@ const ProjectsDetails: React.FC = () => {
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
-      const isExcelFile =
-        selectedFile.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-        selectedFile.type === "application/vnd.ms-excel";
-
-      if (isExcelFile) {
-        setFile(selectedFile);
-        setFileName(selectedFile.name);
-        e.target.value = "";
-      } else {
-        setFileName("Please select a valid Excel file");
-        setFile(null);
-      }
-    } else {
-      setFileName("No file chosen");
-      setFile(null);
+      setFile((prv) => selectedFile);
+      setFileName(selectedFile.name);
+      setModalKey((prevKey) => prevKey + 1); // Change key to force re-render
     }
   };
 
-  const readFile = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
+  const handleImportData = async (e, id) => {
+    e.preventDefault();
+    setImportLoader(true);
 
-      reader.onload = (e) => {
-        try {
-          const data = new Uint8Array(e.target.result);
-          resolve(data);
-        } catch (error) {
-          reject(error);
+    if (!file) {
+      toast.error("Please select a file.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("projectId", id);
+
+    try {
+      const response = await axios.post(
+        `https://driptext-api.malhoc.com/api/admin/importTasks`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
-      };
+      );
 
-      reader.onerror = (error) => reject(error);
-      reader.readAsArrayBuffer(file);
-    });
-  };
-
-  const handleImportData = async () => {
-    if (file) {
-      try {
-        const data = await readFile(file);
-        const workbook = XLSX.read(data, { type: "array" });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet);
-
-        setFileData(jsonData);
-        console.log("Parsed Data:", jsonData);
-        toast.success("File imported successfully");
-        setFile(null);
-        setFileName("Drag files here or click to select files");
-        setFileData(null);
-        setImportModel(false);
-      } catch (error) {
-        toast.success("File imported successfully");
-        setFileName("Error processing file");
-        setImportModel(false);
-        setFile(null);
-        setFileData(null);
-      }
-    } else {
-      setFileName("No file selected.");
+      console.log("Response:", response);
+      setImportModel(false);
+      toast.success("Tasks imported successfully");
+      setFile(null);
+      setFileName("Drag files here or click to select files");
+      setError(false);
+      setImportLoader(false);
+    } catch (error) {
+      console.error("Error importing tasks:", error);
+      const err =
+        error.response.data.message ||
+        error.message ||
+        "Failed to import tasks.";
+      setError(true);
+      setErrorMessage(err);
+      setImportLoader(false);
     }
   };
 
@@ -248,6 +259,8 @@ const ProjectsDetails: React.FC = () => {
     setFileName("No file chosen");
     setFileData(null);
     setImportModel(false);
+    setError(false);
+    setErrorMessage("");
   };
 
   const getAvailableRoles = () => {
@@ -258,64 +271,35 @@ const ProjectsDetails: React.FC = () => {
     setDropdownVisible((prev) => (prev === memberId ? null : memberId));
   };
 
-  const handleExportData = (tasks) => {
-    const ws = XLSX.utils.json_to_sheet(tasks, {
-      header: [
-        "actualNumberOfWords",
-        "comments",
-        "createdAt",
-        "desiredNumberOfWords",
-        "dueDate",
-        "googleLink",
-        "isActive",
-        "keywords",
-        "lector",
-        "metaLector",
-        "project",
-        "published",
-        "readyToWork",
-        "seo",
-        "status",
-        "taskId",
-        "taskName",
-        "texter",
-        "topic",
-        "type",
-        "updatedAt",
-        "__v",
-        "_id",
-      ],
-    });
-    ws["!cols"] = [
-      { wpx: 150 },
-      { wpx: 150 },
-      { wpx: 150 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 150 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 100 },
-      { wpx: 150 },
-      { wpx: 100 },
-      { wpx: 150 },
-      { wpx: 100 },
-    ];
+  const handleExportData = (id) => {
+    const token = userToken;
+    axios.defaults.headers.common["access-token"] = token;
 
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Tasks");
-    XLSX.writeFile(wb, "tasks.xlsx");
+    const payload = {
+      projectId: id,
+    };
+
+    console.log("Payload:", payload);
+    axios
+      .post(`${import.meta.env.VITE_DB_URL}/admin/exportTasks`, payload)
+      .then((response) => {
+        console.log("Export URL:", response);
+        const exportUrl = response.data.exportUrl;
+        window.open(exportUrl, "_blank");
+        const link = document.createElement("a");
+        link.href = exportUrl;
+        link.setAttribute("download", "");
+        link.download = exportUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .catch((err) => {
+        console.error(
+          "Error fetching project details:",
+          err.response || err.message || err
+        );
+      });
   };
 
   function formatDateString(dateString: string): string | null {
@@ -385,147 +369,14 @@ const ProjectsDetails: React.FC = () => {
                           />
                         </button>
                         {editModel && (
-                          <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
-                            <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
-                              <div className="flex justify-between items-center mb-5">
-                                <h2 className="text-xl font-bold dark:text-white pr-12">
-                                  Edit Task
-                                </h2>
-                                <FontAwesomeIcon
-                                  className="cursor-pointer text-lg text-red-500 pl-12"
-                                  onClick={handleCloseEdit}
-                                  icon={faTimes}
-                                />
-                              </div>
-                              <div>
-                                <div className="w-full py-2">
-                                  <label
-                                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                                    htmlFor="dueUntil"
-                                  >
-                                    Due until
-                                  </label>
-                                  <DatePicker
-                                    className="w-full rounded border border-transparent bg-gray-100 py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                    minDate={new Date()}
-                                    selected={"2024-04-06"}
-                                    onChange={(date: Date | null) =>
-                                      setDate("2024-04-06")
-                                    }
-                                    dateFormat="yyyy-MM-dd"
-                                    placeholderText="Select a date"
-                                  />
-                                </div>
-
-                                <div className="w-full py-2">
-                                  <label
-                                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                                    htmlFor="topic"
-                                  >
-                                    Topic
-                                  </label>
-                                  <input
-                                    className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                    type="text"
-                                    name="topic"
-                                    id="topic"
-                                    placeholder="topic"
-                                    defaultValue={""}
-                                  />
-                                </div>
-                                <div className="w-full py-2">
-                                  <label
-                                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                                    htmlFor="Keywords"
-                                  >
-                                    Keyword
-                                  </label>
-                                  <input
-                                    className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                    type="text"
-                                    name="Keyword"
-                                    id="Keywords"
-                                    placeholder="Keywords"
-                                    defaultValue={""}
-                                  />
-                                </div>
-                                <div className="w-full py-2">
-                                  <label
-                                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                                    htmlFor="dropdown"
-                                  >
-                                    Text type
-                                  </label>
-                                  <div className="relative">
-                                    {" "}
-                                    <select
-                                      id="dropdown"
-                                      className="w-full appearance-none rounded border border-transparent bg-gray py-2.5 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                    >
-                                      <option>Guide</option>
-                                      <option>Shop (Category)</option>
-                                      <option>Shop (Product)</option>
-                                      <option>Definition/Wiki</option>
-                                      <option>Shop (Home page)</option>
-                                      <option>CMS page</option>
-                                    </select>
-                                    <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                      {/* Custom arrow icon */}
-                                      <svg
-                                        className="w-4 h-4"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth="2"
-                                          d="M19 9l-7 7-7-7"
-                                        ></path>
-                                      </svg>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="w-full py-2">
-                                  <label
-                                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                                    htmlFor="wordExpected"
-                                  >
-                                    Word Count Expected
-                                  </label>
-                                  <input
-                                    className="w-full  rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                    type="number"
-                                    name="wordExpected"
-                                    id="wordExpected"
-                                    placeholder="1500"
-                                    min={0}
-                                  />
-                                </div>
-                                <div className="w-full py-2">
-                                  <label
-                                    className="mb-3 block text-sm font-medium text-black dark:text-white "
-                                    htmlFor="comment"
-                                  >
-                                    Comment
-                                  </label>
-                                  <textarea
-                                    id="comment"
-                                    rows={3}
-                                    className="w-full rounded border border-transparent bg-gray py-2 px-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                  ></textarea>
-                                </div>
-                                <button
-                                  className="w-full my-3 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
-                                  type="submit"
-                                >
-                                  Save
-                                </button>
-                              </div>
-                            </div>
-                          </div>
+                          <EditProject
+                            projectId={projectDetails._id}
+                            domain={projectDetails?.projectName}
+                            speech={projectDetails?.speech}
+                            perspective={projectDetails?.prespective}
+                            handleCloseEdit={handleCloseEdit}
+                            handleRefreshData={getTaskData}
+                          />
                         )}
                         <button
                           onClick={handleDelete}
@@ -704,7 +555,7 @@ const ProjectsDetails: React.FC = () => {
                         onClick={(e) => {
                           handleFileChange(e);
                         }}
-                        accept=".xlsx, .xls"
+                        accept=".csv"
                       />
                       <div className="flex justify-start items-center py-15">
                         <FontAwesomeIcon
@@ -717,16 +568,20 @@ const ProjectsDetails: React.FC = () => {
                     <button
                       className="w-full mt-4 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
                       type="submit"
-                      onClick={handleImportData}
+                      onClick={(e) => handleImportData(e, projectDetails._id)}
+                      disabled={importLoader}
                     >
-                      Import
+                      {importLoader ? 'Importing...' : 'Import'}
                     </button>
+                    {error && (
+                      <p className="pt-6 text-red-500">{errorMessage}</p>
+                    )}
                   </div>
                 </div>
               )}
               <button
                 onClick={() => {
-                  handleExportData(projectTasks);
+                  handleExportData(projectDetails._id);
                 }}
                 className="w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none ml-1.5 flex justify-center items-center border-none"
               >

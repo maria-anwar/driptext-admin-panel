@@ -13,6 +13,7 @@ import ToggleSwitch from "../../../components/buttons/ToggleButton";
 import axios from "axios";
 import Loading from "../../../components/Helpers/Loading";
 import { useSelector } from "react-redux";
+import AddManager from "../../../components/FormFields/AddManager";
 
 interface Role {
   _id: string;
@@ -40,6 +41,7 @@ const Users: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [userData, setUserData] = useState<User[]>([]);
   const [filteredUserData, setFilteredUserData] = useState<User[]>([]);
+  const [showAddManager, setShowAddManager] = useState<boolean>(false);
 
   useEffect(() => {
     getUser();
@@ -123,6 +125,12 @@ const Users: React.FC = () => {
     setToggleClient(!toggleClient);
     if (toggleLeads) setToggleLeads(false);
   };
+  const handleAddManager = () => {
+    setShowAddManager(true)
+  };
+  const handleCloseManager = () => {
+    setShowAddManager(false)
+  };
 
   return (
     <>
@@ -138,6 +146,9 @@ const Users: React.FC = () => {
           </li>
           <li className="font-medium text-primary">Users</li>
         </ol>
+        <div className="flex justify-between items-center sm:flex-row gap-3 pt-3">
+
+        </div>
         <div className="flex justify-between items-center sm:flex-row gap-3 pt-3">
           <h2 className="text-title-md2 font-semibold text-black dark:text-white">
             Users
@@ -158,9 +169,17 @@ const Users: React.FC = () => {
             >
               <FontAwesomeIcon icon={faSearch} />
             </div>
+            <div
+              onClick={handleAddManager}
+              className="inline-flex items-center justify-center gap-2.5 bg-black py-3 text-sm xl:text-base  text-center font-medium text-white hover:bg-opacity-90 px-5"
+            >
+              <h2>Add Manager</h2>
+            </div>
           </div>
+          {showAddManager && <AddManager handleClose={handleCloseManager}/>}
         </div>
         <div className="flex justify-end items-end pt-3 pb-3 pr-2">
+          
           <div className="relative">
             <button
               onClick={handleDropdownToggle}
