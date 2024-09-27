@@ -317,7 +317,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                         Ready to Work
                       </label>
                       <ToggleSwitch
-                        icon={showCard ? faTimes : faCheck}
+                        icon={showCard ?faCheck  : faTimes}
                         isOn={showCard}
                         onToggle={handlePublishedTask}
                       />
