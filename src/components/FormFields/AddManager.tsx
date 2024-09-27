@@ -7,20 +7,28 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { GroupField } from "./GroupField";
 
-interface AddManagerProps {
-  handleClose: () => void;
+interface User {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password?: string;
 }
 
-const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
-  const user = useSelector<any>((state) => state.user);
+interface AddManagerProps {
+  handleClose: () => void;
+  editUser?: User;
+}
+
+const AddManager: React.FC<AddManagerProps> = ({ handleClose, editUser }) => {
+  const user = useSelector((state: any) => state.user);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const initialValues = {
-    firstName: "",
-    lastName: "",
-    email: "",
+    firstName: editUser?.firstName || "",
+    lastName: editUser?.lastName || "",
+    email: editUser?.email || "",
     password: "",
   };
 
@@ -32,25 +40,22 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
   });
 
   const onSubmit = async (values: typeof initialValues) => {
-    // setLoading(true);
-    // setError(false);
-    // setErrorMessage("");
+    setLoading(true);
+    setError(false);
+    setErrorMessage("");
 
-    // try {
-    //   const token = user.user.token;
-    //   axios.defaults.headers.common["access-token"] = token;
+    try {
+      const token = user.token;
+      axios.defaults.headers.common["access-token"] = token;
 
-    //   await axios.post(`${import.meta.env.VITE_DB_URL}/admin/addManager`, values);
-    //   refreshData(); // Refresh data after adding the manager
-    //   handleClose(); // Close the modal
-    // } catch (err) {
-    //   setErrorMessage(err.response.data.message || "Error in adding manager");
-    //   setError(true);
-    // } finally {
-    //   setLoading(false);
-    // }
-    alert(`Add manager with details: ${JSON.stringify(values)}`);
-    handleClose();
+      await axios.post(`${import.meta.env.VITE_DB_URL}/admin/addManager`, values);
+      handleClose(); // Close the modal after success
+    } catch (err) {
+      setErrorMessage(err.response?.data?.message || "Error adding manager");
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -58,8 +63,9 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
+      enableReinitialize={true}  // Ensure reinitialization is enabled
     >
-      {({ handleChange, errors, touched }) => (
+      {({ handleChange, errors, touched, values }) => (
         <Form>
           <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
             <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
@@ -78,9 +84,9 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
                   type="text"
                   placeholder="Enter first name"
                   name="firstName"
-                  id="firstName"
+                  value={values.firstName} // Ensure value is set
                   onChange={handleChange}
-                  errors={touched.firstName ? errors.firstName : ""}
+                  error={touched.firstName && errors.firstName}
                 />
 
                 <GroupField
@@ -88,9 +94,9 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
                   type="text"
                   placeholder="Enter last name"
                   name="lastName"
-                  id="lastName"
+                  value={values.lastName} // Ensure value is set
                   onChange={handleChange}
-                  errors={touched.lastName ? errors.lastName : ""}
+                  error={touched.lastName && errors.lastName}
                 />
 
                 <GroupField
@@ -98,9 +104,9 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
                   type="email"
                   placeholder="Enter email"
                   name="email"
-                  id="email"
+                  value={values.email} // Ensure value is set
                   onChange={handleChange}
-                  errors={touched.email ? errors.email : ""}
+                  error={touched.email && errors.email}
                 />
 
                 <GroupField
@@ -108,9 +114,8 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
                   type="password"
                   placeholder="Enter password"
                   name="password"
-                  id="password"
                   onChange={handleChange}
-                  errors={touched.password ? errors.password : ""}
+                  error={touched.password && errors.password}
                 />
 
                 <div className="flex justify-end items-center gap-3 pt-4">
@@ -122,9 +127,7 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
                     Cancel
                   </button>
                   <button
-                    className={`my-3 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90 ${
-                      loading ? "cursor-not-allowed" : "cursor-pointer"
-                    }`}
+                    className={`my-3 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90 ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
                     type="submit"
                     disabled={loading}
                   >

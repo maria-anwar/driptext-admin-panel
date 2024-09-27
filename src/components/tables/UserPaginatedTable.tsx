@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashCan, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan, faPlay,faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Pagination } from "antd";
 import "antd/dist/reset.css"; // Import Ant Design styles
 import "./custompagination.css";
@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import react-toastify styles
+import AddManager from "../FormFields/AddManager";
 
 interface Role {
   _id: string;
@@ -35,6 +36,7 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users ,refreshUser}
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [userToken, setUserToken] = useState(user.user.token);
   const [localUsers, setLocalUsers] = useState([]); 
+  const [editModel,setEditModel] = useState(false)
 
   useEffect(() => {
     setLocalUsers(users);
@@ -160,7 +162,7 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users ,refreshUser}
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex justify-start items-center px-4">
-                      {user.isActive === "Y" ? (
+                      <>                      {user.isActive === "Y" ? (
                         <div
                           className="ring-1 w-6 h-6 flex justify-center items-center rounded cursor-pointer ring-red-500"
                           onClick={() => handleDeactivite(user._id)}
@@ -181,7 +183,21 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users ,refreshUser}
                           />
                         </div>
                       )}
+                      </>
+                      {user?.role?.title === "ProjectManger" ? (
+                      <div
+                          className="ring-1 w-6 h-6 flex justify-center items-center rounded cursor-pointer ring-green-500 bg-green-500 mx-3"
+                          onClick={() => setEditModel(true)}
+                        >
+                          <FontAwesomeIcon
+                            className="text-white"
+                            icon={faEdit}
+                          />
+                        </div>
+                        
+                      ):(<p></p>)}
                     </div>
+                    {editModel && <AddManager editUser={user} handleClose={()=>setEditModel(false)}/>}
                   </td>
                 </tr>
               ))}
