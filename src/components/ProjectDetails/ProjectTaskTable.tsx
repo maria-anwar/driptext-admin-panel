@@ -153,7 +153,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                             ? "bg-success/20 text-success"
                             : task.status.toUpperCase() === "FREE TRIAL"
                             ? "bg-danger/20 text-danger"
-                            : task.status.toUpperCase() === "READY TO START"
+                            : task.status.toUpperCase() === "READY TO WORK"
                             ? "bg-warning/20 text-warning"
                             : task.status.toUpperCase() ===
                               "READY FOR PROFEADING"

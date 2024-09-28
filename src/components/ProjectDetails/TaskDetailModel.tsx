@@ -282,7 +282,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                             ? " text-success"
                             : task.status.toUpperCase() === "FREE TRIAL"
                             ? " text-warning"
-                            : task.status.toUpperCase() === "READY TO START"
+                            : task.status.toUpperCase() === "READY TO WORK"
                             ? " text-warning"
                             : task.status.toUpperCase() ===
                               "READY FOR PROFEADING"

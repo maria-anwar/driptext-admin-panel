@@ -30,6 +30,14 @@ import TaskMembers from "../../../components/ProjectDetails/TaskMembers";
 import getInitials from "../../../components/Helpers/UpperCaseName";
 import EditProject from "../../../components/ProjectDetails/EditProject";
 import { useNavigate } from "react-router-dom";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+} from "@chakra-ui/accordion";
+import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import GroupTextArea from "../../../components/FormFields/GroupTextArea";
 
 const ProjectsDetails: React.FC = () => {
   const navigate = useNavigate();
@@ -44,6 +52,7 @@ const ProjectsDetails: React.FC = () => {
   const [date, setDate] = useState("");
   const [projectDetails, setProjectDetails] = useState([]);
   const [projectTasks, setProjectTasks] = useState([]);
+  const [onBoarding, setOnBoarding] = useState({});
   const [freelancer, setFreelancer] = useState([]);
   const [plan, setPlan] = useState({});
   const [userData, setUserData] = useState({});
@@ -82,6 +91,7 @@ const ProjectsDetails: React.FC = () => {
         setPlan(allProjects.plan);
         setUserData(allProjects.user);
         setProjectTasks(allProjects.projectTasks);
+        setOnBoarding(allProjects.onBoardingInfo);
         setLoading(false);
       })
       .catch((err) => {
@@ -177,14 +187,14 @@ const ProjectsDetails: React.FC = () => {
       projectId: projectId,
       isArchived: true,
     };
-  
+
     axios
       .post(`${import.meta.env.VITE_DB_URL}/admin/archiveProject`, payload)
       .then((response) => {
-        if(response.status === 200){
+        if (response.status === 200) {
           console.log("Project archived successfully:", response);
           setDeleteModel(false);
-           navigate('/dashboard', { replace: true });
+          navigate("/dashboard", { replace: true });
         }
       })
       .catch((err) => {
@@ -272,6 +282,10 @@ const ProjectsDetails: React.FC = () => {
   };
 
   const handleExportData = (id) => {
+    if (projectTasks.length ==0) {
+      toast.error("No tasks to export");
+      return;
+    }
     const token = userToken;
     axios.defaults.headers.common["access-token"] = token;
 
@@ -323,13 +337,16 @@ const ProjectsDetails: React.FC = () => {
         <div className="mx-auto">
           <Breadcrumb pageName={"Project Details"} />
           <ToastContainer />
-
+          
           {loading ? (
+            
             <div className="grid grid-cols-5 gap-8">
               <div className="col-span-5 xl:col-span-3 rounded-sm border border-stroke  pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1   w-full bg-slate-200 h-[350px] animate-pulse"></div>
               <div className=" col-span-5 xl:col-span-2 rounded-sm border border-stroke  pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1   w-full bg-slate-200 h-[350px] animate-pulse"></div>
             </div>
           ) : (
+            <>
+            {!projectDetails?.onBoarding ? <p className=" text-red-500 pb-6">Onboarding is not completed for this project, you can't add task</p>: <p></p>}
             <div className="grid grid-cols-5 gap-8">
               <div className="col-span-5 xl:col-span-3">
                 <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -340,9 +357,11 @@ const ProjectsDetails: React.FC = () => {
                         {" | "}
                         {projectDetails.projectId}
                       </p>
+                      
                       <div className="flex justify-center items-center gap-3">
                         <button
                           onClick={handleAdd}
+                          disabled={!projectDetails?.onBoarding}
                           className="w-10 h-10 text-center bg-blue-500 text-white rounded-none my-2 flex justify-center items-center border-none"
                         >
                           <FontAwesomeIcon
@@ -402,6 +421,134 @@ const ProjectsDetails: React.FC = () => {
                         {")"}
                       </p>
                     </div>
+                    <Accordion
+                      allowToggle
+                      className={`appearance-none border-none py-4 `}
+                    >
+                      <AccordionItem
+                        className={`border-none bg-slate-100 dark:bg-meta-4 rounded`}
+                      >
+                        {({ isExpanded }) => (
+                          <>
+                            <h2>
+                              <AccordionButton className="flex justify-between items-center bg-slate-200 dark:bg-meta-4 ">
+                                <p className="font-semibold text-black dark:text-white ">
+                                  OnBoarding
+                                </p>
+                                {isExpanded ? (
+                                  <MinusIcon fontSize="12px" />
+                                ) : (
+                                  <AddIcon fontSize="12px" />
+                                )}
+                              </AccordionButton>
+                            </h2>
+                            <AccordionPanel className="" pb={4}>
+                              <div className="bg-white dark:bg-boxdark rounded py-2 px-4">
+                                <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3 pb-3">
+                                  1. General information:
+                                </h2>
+                                <div className="px-2">
+                                  <p className="dark:text-white font-semibold pb-2">
+                                  Speech
+                                  </p>
+                                  <p className="dark:text-white bg-slate-200 dark:bg-meta-4 py-2 px-4 mb-2 rounded">
+                                    {projectDetails?.speech}
+                                  </p>
+                                </div>
+                                <div className="px-2">
+                                  <p className="dark:text-white font-semibold pb-2">
+                                  Perspective
+                                  </p>
+                                  <p className="dark:text-white bg-slate-200 dark:bg-meta-4 py-2 px-4 mb-2 rounded">
+                                    {projectDetails?.prespective}
+                                  </p>
+                                </div>
+                                <div className="px-2">
+                                  <p className="dark:text-white font-semibold pb-2">
+                                    Website
+                                  </p>
+                                  <p className="dark:text-white bg-slate-200 dark:bg-meta-4 py-2 px-4 mb-2 rounded">
+                                    {projectDetails?.projectName}
+                                  </p>
+                                </div>
+                                <div className="w-full flex flex-col gap-2.5">
+                                  <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
+                                    2. Company Information
+                                  </h2>
+                                  <div className="px-3">
+                                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                                      Background information about the company
+                                    </label>
+                                    <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
+                                      {onBoarding?.companyBackgorund}
+                                    </p>
+                                  </div>
+                                  <div className="px-3">
+                                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                                    Which attributes best describe you as a company/your products/your services?
+                                    </label>
+                                    <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
+                                      {onBoarding?.companyAttributes}
+                                    </p>
+                                  </div>
+                                  <div className="px-3">
+                                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                                    What are your services?
+                                    </label>
+                                    <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
+                                      {onBoarding?.comapnyServices}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="w-full flex flex-col gap-2.5">
+                                  <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
+                                  3. Information About the Target Customers
+                                  </h2>
+                                  <div className="px-3">
+                                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                                    Who is the content written for?
+                                    </label>
+                                    <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
+                                      {onBoarding?.customerContent}
+                                    </p>
+                                  </div>
+                                  <div className="px-3">
+                                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                                    Customers we want to address have an interest in...
+                                    </label>
+                                    <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
+                                      {onBoarding?.customerIntrest}
+                                    </p>
+                                  </div>
+                                  
+                                </div>
+                                <div className="w-full flex flex-col gap-2.5">
+                                  <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
+                                  4. Aim of the Content
+                                  </h2>
+                                  <div className="px-3">
+                                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                                    What is the purpose of the content?
+                                    </label>
+                                    <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
+                                      {onBoarding?.contentPurpose}
+                                    </p>
+                                  </div>
+                                  <div className="px-3">
+                                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                                    Information about your brand and your content
+                                    </label>
+                                    <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
+                                      {onBoarding?.contentInfo}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </AccordionPanel>
+                          </>
+                        )}
+                      </AccordionItem>
+                    </Accordion>
 
                     <div className="pt-1 pb-3">
                       <h2>Folder</h2>
@@ -525,6 +672,7 @@ const ProjectsDetails: React.FC = () => {
                 </div>
               </div>
             </div>
+            </>
           )}
           <div className="pt-14">
             <div className="flex justify-end items-end">
@@ -571,7 +719,7 @@ const ProjectsDetails: React.FC = () => {
                       onClick={(e) => handleImportData(e, projectDetails._id)}
                       disabled={importLoader}
                     >
-                      {importLoader ? 'Importing...' : 'Import'}
+                      {importLoader ? "Importing..." : "Import"}
                     </button>
                     {error && (
                       <p className="pt-6 text-red-500">{errorMessage}</p>

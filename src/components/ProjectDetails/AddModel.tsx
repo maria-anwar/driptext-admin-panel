@@ -43,13 +43,6 @@ const AddModel: React.FC<AddModelProps> = ({
     textType: "",
     wordCount: 1500,
     comment: "",
-    companyInfo: "",
-    companyAttributes: "",
-    services: "",
-    content: "",
-    customers: "",
-    contentPurpose: "",
-    brand: "",
   };
 
   const validationSchema = Yup.object().shape({
@@ -58,15 +51,6 @@ const AddModel: React.FC<AddModelProps> = ({
     keywords: Yup.string().required("Please select keywords"),
     textType: Yup.string().required("Please select text type"),
     wordCount: Yup.number().required("Please enter word count"),
-    companyInfo: Yup.string().required("Please enter company information"),
-    companyAttributes: Yup.string().required(
-      "Please enter company's attributes"
-    ),
-    services: Yup.string().required("Please enter company's services"),
-    content: Yup.string().required("Above information is required"),
-    customers: Yup.string().required("Above information is required"),
-    contentPurpose: Yup.string().required("Above information is required"),
-    brand: Yup.string().required("Above information is required"),
   });
 
   const onSubmit = (values: typeof initialValues) => {
@@ -82,13 +66,7 @@ const AddModel: React.FC<AddModelProps> = ({
       projectName: values.projectName,
       projectId: values.projectId,
       userId: values.userId,
-      companyBackgorund: values.companyInfo,
-      companyAttributes: values.companyAttributes,
-      comapnyServices: values.services,
-      customerContent: values.content,
-      customerIntrest: values.customers,
-      contentPurpose: values.contentPurpose,
-      contentInfo: values.brand,
+      wordCount: values.wordCount,
     };
     axios
       .post(`${import.meta.env.VITE_DB_URL}/admin/addTask`, payload)
@@ -201,99 +179,9 @@ const AddModel: React.FC<AddModelProps> = ({
                   onChange={handleChange}
                   errors={touched.wordCount ? errors.wordCount : ""}
                   defaultValue={1500}
-                  disabled={true}
+                  disabled={false}
                 />
 
-                <div className="flex flex-col gap-3">
-                  <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
-                    2. Company Information
-                  </h2>
-                  <GroupTextArea
-                    label="Background information about the company"
-                    type="text"
-                    placeholder="Please describe here, ideally in just one sentence, what you do as a company, what you offer and how it helps the customer."
-                    id="companyInfo"
-                    name="companyInfo"
-                    value={values.companyInfo}
-                    errors={touched.companyInfo ? errors.companyInfo : ""}
-                    onChange={handleChange}
-                  />
-
-                  <GroupTextArea
-                    label="Which attributes best describe you as a company/your products/your services?"
-                    type="text"
-                    placeholder="Please give us as many attributes as you would like readers to perceive about you and your company in bullet points."
-                    id="companyAttributes"
-                    name="companyAttributes"
-                    value={values.companyAttributes}
-                    errors={
-                      touched.companyAttributes ? errors.companyAttributes : ""
-                    }
-                    onChange={handleChange}
-                  />
-                  <GroupTextArea
-                    label="What are your services?"
-                    type="text"
-                    placeholder="Please list all services offered online here."
-                    id="services"
-                    name="services"
-                    value={values.services}
-                    errors={touched.services ? errors.services : ""}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="flex flex-col gap-3 py-3">
-                  <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3.5">
-                    3. Information About the Target Customers
-                  </h2>
-                  <GroupTextArea
-                    label="Who is the content written for?"
-                    type="text"
-                    placeholder="Please describe the target group as precisely as possible"
-                    id="content"
-                    name="content"
-                    value={values.content}
-                    errors={touched.content ? errors.content : ""}
-                    onChange={handleChange}
-                  />
-
-                  <GroupTextArea
-                    label="Customers we want to address have an interest in..."
-                    type="text"
-                    placeholder="Please list here in bullet points which problems you solve for customers."
-                    id="customers"
-                    name="customers"
-                    value={values.customers}
-                    errors={touched.customers ? errors.customers : ""}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="flex flex-col gap-3 py-3">
-                  <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3.5">
-                    4. Aim of the Content
-                  </h2>
-                  <GroupTextArea
-                    label="What is the purpose of the content?"
-                    type="text"
-                    placeholder="Please briefly describe here how organic customers/readers should ideally react when they land on your site."
-                    id="contentPurpose"
-                    name="contentPurpose"
-                    value={values.contentPurpose}
-                    errors={touched.contentPurpose ? errors.contentPurpose : ""}
-                    onChange={handleChange}
-                  />
-
-                  <GroupTextArea
-                    label="Information about your brand and your content"
-                    type="text"
-                    placeholder="Please give us bullet points on how potential readers should describe the content they consume"
-                    id="brand"
-                    name="brand"
-                    value={values.brand}
-                    errors={touched.brand ? errors.brand : ""}
-                    onChange={handleChange}
-                  />
-                </div>
                 <GroupTextArea
                   label="Comment"
                   type="text"
