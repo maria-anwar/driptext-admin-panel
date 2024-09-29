@@ -65,6 +65,7 @@ const ProjectsDetails: React.FC = () => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [importLoader, setImportLoader] = useState(false);
+  const [exportLoader, setExportLoader] = useState(false);
   const [editManager, setEditManager] = useState(false);
 
   const [fileName, setFileName] = useState(
@@ -79,24 +80,19 @@ const ProjectsDetails: React.FC = () => {
     axios.defaults.headers.common["access-token"] = token;
     let payload = {
       projectId: projectId,
-    }; 
+    };
     axios
       .post(`${import.meta.env.VITE_DB_URL}/admin/wordCountProject`, payload)
-      .then((response) => {
-       
-      })
+      .then((response) => {})
       .catch((err) => {
         console.error("Error updating word count of project:", err);
       });
     axios
       .post(`${import.meta.env.VITE_DB_URL}/admin/wordCountProject`, payload)
-      .then((response) => {
-       
-      })
+      .then((response) => {})
       .catch((err) => {
         console.error("Error updating word count of project:", err);
       });
-    
   }, [projectId, userId]);
 
   const getTaskData = () => {
@@ -306,6 +302,7 @@ const ProjectsDetails: React.FC = () => {
   };
 
   const handleExportData = (id) => {
+    setExportLoader(true);
     if (projectTasks.length == 0) {
       toast.error("No tasks to export");
       return;
@@ -331,12 +328,14 @@ const ProjectsDetails: React.FC = () => {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        setExportLoader(false);
       })
       .catch((err) => {
         console.error(
           "Error fetching project details:",
           err.response || err.message || err
         );
+        setExportLoader(false);
       });
   };
 
@@ -356,7 +355,7 @@ const ProjectsDetails: React.FC = () => {
   }
   const handleManager = () => {
     setEditManager(!editManager);
-  }
+  };
 
   return (
     <>
@@ -422,6 +421,7 @@ const ProjectsDetails: React.FC = () => {
                           </button>
                           {editModel && (
                             <EditProject
+                              onBoarding={onBoarding}
                               projectId={projectDetails._id}
                               domain={projectDetails?.projectName}
                               speech={projectDetails?.speech}
@@ -697,25 +697,21 @@ const ProjectsDetails: React.FC = () => {
                       </div> */}
                       <TaskMembers
                         label={"Texter"}
-                        removeDelete={true}
                         handleMembers={handleMembers}
                         name={showAssignedRoles(projectDetails.texter) ?? ""}
                       />
                       <TaskMembers
                         label={"Lector"}
-                        removeDelete={true}
                         handleMembers={handleMembers}
                         name={showAssignedRoles(projectDetails.lector) ?? ""}
                       />
                       <TaskMembers
                         label={"SEO"}
-                        removeDelete={true}
                         handleMembers={handleMembers}
                         name={showAssignedRoles(projectDetails.seo) ?? ""}
                       />
                       <TaskMembers
                         label={"Meta-lector"}
-                        removeDelete={true}
                         handleMembers={handleMembers}
                         name={"projectDetails.metaLector" ?? ""}
                       />
@@ -785,7 +781,13 @@ const ProjectsDetails: React.FC = () => {
                 }}
                 className="w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none ml-1.5 flex justify-center items-center border-none"
               >
-                <FontAwesomeIcon icon={faUpload} className="text-sm px-2" />
+                {exportLoader ? (
+                  <div className="flex items-center justify-center">
+                    <div className="w-6 h-6 border-4 border-blue-500 border-solid rounded-full border-t-transparent animate-spin" />
+                  </div>
+                ) : (
+                  <FontAwesomeIcon icon={faUpload} className="text-sm px-2" />
+                )}
               </button>
             </div>
 
