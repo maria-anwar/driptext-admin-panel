@@ -112,17 +112,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects ,freelancer}) => {
             "relative rounded-sm border border-stroke bg-white py-6 px-5 shadow-default dark:border-strokedark dark:bg-boxdark cursor-pointer"
           }
         >
-          <div className="flex justify-between items-center">
-            <h4 className="text-title-md font-bold text-black dark:text-white my-3">
+          <div className="flex justify-between items-center w-full">
+            <h4 className="text-title-md font-bold text-black dark:text-white my-3 w-1/2">
               {project.projectName}
             </h4>
-            {/* {!project.texter?.trim() &&
-            !project.lector?.trim() &&
-            !project.seo?.trim() &&
-            !project.metaLector?.trim() ? (
-              <p>Not assigned</p>
-            ) : ( */}
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center w-1/2">
               <WorkerComponent label="T" name={showAssignedRoles(project.texter) ?? ""} />
               <WorkerComponent label="L" name={showAssignedRoles(project.lector) ?? ""} />
               <WorkerComponent label="S" name={showAssignedRoles(project.seo) ?? ""} />

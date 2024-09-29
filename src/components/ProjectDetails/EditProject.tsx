@@ -162,7 +162,6 @@ const EditProject: React.FC<EditProjectProps> = ({
                       option3="you (lowercase)"
                       option4="you"
                       option5="no direct address"
-                      option6="CMS page"
                       value={values.speech}
                       errors={touched.speech ? errors.speech : ""}
                       onChange={handleChange}
