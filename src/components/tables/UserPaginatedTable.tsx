@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashCan, faPlay,faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan, faPlay, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Pagination } from "antd";
 import "antd/dist/reset.css"; // Import Ant Design styles
 import "./custompagination.css";
@@ -9,6 +9,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import react-toastify styles
 import AddManager from "../FormFields/AddManager";
+import EditManager from "../FormFields/EditManager";
 
 interface Role {
   _id: string;
@@ -27,16 +28,17 @@ interface User {
 
 interface PaginatedTableProps {
   users: User[];
-  refreshUser:()=>void;
+  refreshUser: () => void;
 }
 
-const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users ,refreshUser}) => {
+const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users, refreshUser }) => {
   const user = useSelector<any>((state) => state.user);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [userToken, setUserToken] = useState(user.user.token);
   const [localUsers, setLocalUsers] = useState([]); 
-  const [editModel,setEditModel] = useState(false)
+  const [editModel, setEditModel] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null); // State to hold selected user
 
   useEffect(() => {
     setLocalUsers(users);
@@ -58,19 +60,13 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users ,refreshUser}
     axios.defaults.headers.common["access-token"] = token;
     let payload = {
       userId: id,
-      isActive: true
+      isActive: true,
     };
 
     axios
       .post(`${import.meta.env.VITE_DB_URL}/admin/updateUserStatus`, payload)
       .then((response) => {
-        // // Update the localUsers state after successful API call
-        // setLocalUsers(prevUsers =>
-        //   prevUsers.map(user =>
-        //     user._id === id ? { ...user, isActive: "Y" } : user
-        //   )
-        // );
-        refreshUser()
+        refreshUser();
         toast.success("User activated successfully.");
       })
       .catch((err) => {
@@ -84,21 +80,24 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users ,refreshUser}
     axios.defaults.headers.common["access-token"] = token;
     let payload = {
       userId: id,
-      isActive: false
+      isActive: false,
     };
 
     axios
       .post(`${import.meta.env.VITE_DB_URL}/admin/updateUserStatus`, payload)
       .then((response) => {
-        // Update the localUsers state after successful API call
-        // 
-        refreshUser()
+        refreshUser();
         toast.success("User deactivated successfully.");
       })
       .catch((err) => {
         console.error("Error updating status:", err);
         toast.error("Error updating status, please try again.");
       });
+  };
+
+  const handleEdit = (user: User) => {
+    setSelectedUser(user); // Set the selected user in state
+    setEditModel(true); // Open the modal
   };
 
   const offset = (page - 1) * rowsPerPage;
@@ -129,40 +128,40 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users ,refreshUser}
               </tr>
             </thead>
             <tbody>
-              {paginatedUsers.map(user => (
+              {paginatedUsers.map((user) => (
                 <tr
                   className="text-left hover:bg-slate-100 dark:hover:bg-boxdark-2"
-                  key={user._id}
+                  key={user?._id}
                 >
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex justify-start items-center">
                       <p className="text-black uppercase dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
-                        {user.firstName.charAt(0)}
-                        {user.lastName === "-" ? "" : user.lastName.charAt(0)}
+                        {user?.firstName.charAt(0)}
+                        {user?.lastName === "-" ? "" : user?.lastName.charAt(0)}
                       </p>
                       <p className="text-black pl-2 dark:text-white capitalize">
-                        {user.firstName} {user.lastName}
+                        {user?.firstName} {user?.lastName}
                       </p>
                     </div>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">{user.email}</p>
+                    <p className="text-black dark:text-white">{user?.email}</p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white capitalize">
-                      {user.role.title === "ProjectManger"
+                      {user?.role?.title === "ProjectManger"
                         ? "Project Manager"
-                        : user.role.title}
+                        : user?.role?.title}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
-                      {user.isActive === "Y" ? "Active" : "Inactive"}
+                      {user?.isActive === "Y" ? "Active" : "Inactive"}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex justify-start items-center px-4">
-                      <>                      {user.isActive === "Y" ? (
+                      {user?.isActive === "Y" ? (
                         <div
                           className="ring-1 w-6 h-6 flex justify-center items-center rounded cursor-pointer ring-red-500"
                           onClick={() => handleDeactivite(user._id)}
@@ -183,21 +182,20 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users ,refreshUser}
                           />
                         </div>
                       )}
-                      </>
                       {user?.role?.title === "ProjectManger" ? (
-                      <div
+                        <div
                           className="ring-1 w-6 h-6 flex justify-center items-center rounded cursor-pointer ring-green-500 bg-green-500 mx-3"
-                          onClick={() => setEditModel(true)}
+                          onClick={() => handleEdit(user)} // Set the clicked user
                         >
                           <FontAwesomeIcon
                             className="text-white"
                             icon={faEdit}
                           />
                         </div>
-                        
-                      ):(<p></p>)}
+                      ) : (
+                        <p></p>
+                      )}
                     </div>
-                    {editModel && <AddManager editUser={user} handleClose={()=>setEditModel(false)}/>}
                   </td>
                 </tr>
               ))}
@@ -209,22 +207,34 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users ,refreshUser}
               value={rowsPerPage}
               onChange={handleRowsPerPageChange}
             >
-              <option className="dark:text-black" value={5}>5</option>
-              <option className="dark:text-black" value={10}>10</option>
-              <option className="dark:text-black" value={25}>25</option>
-              <option className="dark:text-black" value={50}>50</option>
+              <option className="dark:text-black" value={5}>
+                5
+              </option>
+              <option className="dark:text-black" value={10}>
+                10
+              </option>
+              <option className="dark:text-black" value={25}>
+                25
+              </option>
+              <option className="dark:text-black" value={50}>
+                50
+              </option>
             </select>
+
             <Pagination
               current={page}
-              pageSize={rowsPerPage}
               total={localUsers.length}
+              pageSize={rowsPerPage}
               onChange={handlePageChange}
-              className="ant-pagination"
             />
           </div>
         </div>
       </div>
+
       <ToastContainer />
+      {editModel && selectedUser && (
+          <EditManager editUser={selectedUser} handleClose={()=>{setEditModel(false);refreshUser();}}/>
+      )}
     </div>
   );
 };

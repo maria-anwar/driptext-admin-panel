@@ -130,6 +130,7 @@ const Users: React.FC = () => {
   };
   const handleCloseManager = () => {
     setShowAddManager(false)
+    getUser();
   };
 
   return (

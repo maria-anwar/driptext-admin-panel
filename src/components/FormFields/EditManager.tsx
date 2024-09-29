@@ -14,54 +14,60 @@ interface User {
   password?: string;
 }
 
-interface AddManagerProps {
+interface EditManagerProps {
   handleClose: () => void;
+  editUser: User;
 }
 
-const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
+const EditManager: React.FC<EditManagerProps> = ({ handleClose, editUser }) => {
   const user = useSelector((state: any) => state.user);
+  const userToken = user.user.token;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
+console.log(editUser)
   const initialValues = {
-    firstName:  "",
-    lastName: "",
-    email: "",
-    password: "",
+    _id: editUser?._id || "",
+    firstName: editUser?.firstName || "",
+    lastName: editUser?.lastName || "",
+    email: editUser?.email || "",
   };
 
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("First name is required"),
     lastName: Yup.string().required("Last name is required"),
-    email: Yup.string().email("Invalid email format").required("Email is required"),
-    password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+    email: Yup.string()
+      .email("Invalid email format")
+      .required("Email is required"),
   });
 
   const onSubmit = async (values: typeof initialValues) => {
     setLoading(true);
     setError(false);
     setErrorMessage("");
+    let token = userToken;
+    axios.defaults.headers.common["access-token"] = token;
     const payload = {
+      id: values._id,
       firstName: values.firstName,
       lastName: values.lastName,
       email: values.email,
-      password: values.password,
-    }
+    };
     console.log(payload);
-    try {
-      // const token = user.token;
-      // axios.defaults.headers.common["access-token"] = token;
-
-      await axios.post(`${import.meta.env.VITE_DB_URL}/admin/createProjectManager`, payload);
-      handleClose(); // Close the modal after success
-      console.log("Manager added successfully");
-    } catch (err) {
-      setErrorMessage(err.response?.data?.message || "Error adding manager");
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
+    console.log(token);
+    axios
+      .post(`${import.meta.env.VITE_DB_URL}/admin/editProjectManager`, payload)
+      .then((response) => {
+        handleClose(); // Close the modal after success
+        setLoading(false);
+      })
+      .catch((error) => {
+        setErrorMessage(
+          error.response?.data?.message || "Error adding manager"
+        );
+        setError(true);
+        setLoading(false);
+      });
   };
 
   return (
@@ -69,14 +75,16 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
-      enableReinitialize={true}  // Ensure reinitialization is enabled
+      enableReinitialize={true} // Ensure reinitialization is enabled
     >
       {({ handleChange, errors, touched, values }) => (
         <Form>
           <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
             <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
               <div className="flex justify-between items-center mb-5">
-                <h2 className="text-xl font-bold dark:text-white pr-12">Add Manager</h2>
+                <h2 className="text-xl font-bold dark:text-white pr-12">
+                  Edit Manager
+                </h2>
                 <FontAwesomeIcon
                   className="cursor-pointer text-lg text-red-500 pl-12"
                   onClick={handleClose}
@@ -115,15 +123,6 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
                   error={touched.email && errors.email}
                 />
 
-                <GroupField
-                  label="Password"
-                  type="password"
-                  placeholder="Enter password"
-                  name="password"
-                  onChange={handleChange}
-                  error={touched.password && errors.password}
-                />
-
                 <div className="flex justify-end items-center gap-3 pt-4">
                   <button
                     className="my-3 text-black dark:text-white flex justify-center rounded bg-transparent border border-slate-200 py-1.5 px-6 font-medium"
@@ -133,11 +132,13 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
                     Cancel
                   </button>
                   <button
-                    className={`my-3 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90 ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+                    className={`my-3 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90 ${
+                      loading ? "cursor-not-allowed" : "cursor-pointer"
+                    }`}
                     type="submit"
                     disabled={loading}
                   >
-                    {loading ? "Saving..." : "Save"}
+                    {loading ? "Updating..." : "Update"}
                   </button>
                 </div>
 
@@ -155,4 +156,4 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
   );
 };
 
-export default AddManager;
+export default EditManager;
