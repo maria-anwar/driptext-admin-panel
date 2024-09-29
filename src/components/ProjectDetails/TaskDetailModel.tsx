@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import * as Yup from "yup";
@@ -114,29 +114,45 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     userId: userId,
     date: task?.dueDate, // Initialize as null for date
     wordCount: task.desiredNumberOfWords,
-    companyInfo: task?.onBoarding?.companyBackgorund,
-    companyAttributes: task?.onBoarding?.companyAttributes,
-    services: task?.onBoarding?.comapnyServices,
-    content: task?.onBoarding?.customerContent,
-    customers: task?.onBoarding?.customerIntrest,
-    contentPurpose: task?.onBoarding?.contentPurpose,
-    brand: task?.onBoarding?.contentInfo,
+    // companyInfo: task?.onBoarding?.companyBackgorund,
+    // companyAttributes: task?.onBoarding?.companyAttributes,
+    // services: task?.onBoarding?.comapnyServices,
+    // content: task?.onBoarding?.customerContent,
+    // customers: task?.onBoarding?.customerIntrest,
+    // contentPurpose: task?.onBoarding?.contentPurpose,
+    // brand: task?.onBoarding?.contentInfo,
   });
+
+  useEffect(() => {
+    let token = userToken;
+    axios.defaults.headers.common["access-token"] = token;
+    let payload = {
+      taskId: task._id,
+    };
+    axios
+      .post(`${import.meta.env.VITE_DB_URL}/admin/wordCountTask`, payload)
+      .then((response) => {
+       
+      })
+      .catch((err) => {
+        console.error("Error updating word count of project:", err);
+      });
+  }, [task]);
 
   const validationSchema = Yup.object().shape({
     topic: Yup.string().required("Please select a topic"),
     textType: Yup.string().required("Please select type"),
     keywords: Yup.string().required("Please select keywords"),
     date: Yup.date().nullable().required("Please select a date"), // Ensure date is required and nullable
-    companyInfo: Yup.string().required("Please enter company information"),
-    companyAttributes: Yup.string().required(
-      "Please enter company's attributes"
-    ),
-    services: Yup.string().required("Please enter company's services"),
-    content: Yup.string().required("Above information is required"),
-    customers: Yup.string().required("Above information is required"),
-    contentPurpose: Yup.string().required("Above information is required"),
-    brand: Yup.string().required("Above information is required"),
+    // companyInfo: Yup.string().required("Please enter company information"),
+    // companyAttributes: Yup.string().required(
+    //   "Please enter company's attributes"
+    // ),
+    // services: Yup.string().required("Please enter company's services"),
+    // content: Yup.string().required("Above information is required"),
+    // customers: Yup.string().required("Above information is required"),
+    // contentPurpose: Yup.string().required("Above information is required"),
+    // brand: Yup.string().required("Above information is required"),
   });
   const handleRoleSelect = (role: string, memberId: number) => {
     const token = userToken;
@@ -216,22 +232,15 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   };
 
   const onSubmit = async (values) => {
-    setLoading(true); // Set loading to true on submission
+    setLoading(true); 
     const payLoad = {
       taskId: task._id,
-      readyToWork: showCard,
       dueDate: values.date,
       topic: values.topic,
       keywordType: values.textType,
       keyword: values.keywords,
       comment: values.comments,
-      companyBackgorund: values.companyInfo,
-      companyAttributes: values.companyAttributes,
-      comapnyServices: values.services,
-      customerContent: values.content,
-      customerIntrest: values.customers,
-      contentPurpose: values.contentPurpose,
-      contentInfo: values.brand,
+      wordCount: values.wordCount,
     };
 
     try {
@@ -309,49 +318,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                   </div>
 
                   <div className="w-full flex justify-between items-center   gap-2">
-                    <div className="w-1/2">
-                      <label
-                        className="mb-3 block  text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold"
-                        htmlFor="readyToWork"
-                      >
-                        Ready to Work
-                      </label>
-                      <ToggleSwitch
-                        icon={showCard ?faCheck  : faTimes}
-                        isOn={showCard}
-                        onToggle={handlePublishedTask}
-                      />
-                    </div>
-                    <div className="w-1/2 ">
-                      <GroupField
-                        label="Word Count Expected"
-                        type="number"
-                        placeholder="1500"
-                        name="wordCount"
-                        id="wordCount"
-                        value={values.wordCount}
-                        onChange={handleChange}
-                        errors={touched.wordCount ? errors.wordCount : ""}
-                        disabled={true}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex justify-between items-center w-full gap-2 ">
-                    <div className="w-1/2 mr-1">
-                      <GroupDateField
-                        label="Due Date"
-                        name="date"
-                        id="date"
-                        value={values.date}
-                        onChange={(date) => setFieldValue("date", date)}
-                        errors={touched.date ? errors.date : ""}
-                        minDate={new Date()}
-                        dateFormat="yyyy-MM-dd"
-                        placeholderText="Choose a date"
-                      />
-                    </div>
-                    <div className="w-1/2 ml-1">
+                  <div className="w-1/2 ml-1">
                       <label
                         className="mb-3  text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold"
                         htmlFor="document"
@@ -373,6 +340,36 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                         </a>
                       </p>
                     </div>
+                    <div className="w-1/2 ">
+                      <GroupField
+                        label="Word Count Expected"
+                        type="number"
+                        placeholder="1500"
+                        name="wordCount"
+                        id="wordCount"
+                        value={values.wordCount}
+                        onChange={handleChange}
+                        errors={touched.wordCount ? errors.wordCount : ""}
+                        disabled={true}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-center w-full gap-2 ">
+                    <div className="w-full">
+                      <GroupDateField
+                        label="Due Date"
+                        name="date"
+                        id="date"
+                        value={values.date}
+                        onChange={(date) => setFieldValue("date", date)}
+                        errors={touched.date ? errors.date : ""}
+                        minDate={new Date()}
+                        dateFormat="yyyy-MM-dd"
+                        placeholderText="Choose a date"
+                      />
+                    </div>
+                   
                   </div>
                   <div className="w-full flex justify-between items-center ">
                     <div className="w-full mr-1">
