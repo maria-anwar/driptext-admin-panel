@@ -418,7 +418,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                     errors={touched.keywords ? errors.keywords : ""}
                   />
 
-                  <Accordion
+                  {/* <Accordion
                     allowToggle
                     className={`appearance-none border-none py-4 `}
                   >
@@ -562,7 +562,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                         </>
                       )}
                     </AccordionItem>
-                  </Accordion>
+                  </Accordion> */}
 
                   <GroupTextArea
                     label="Comment"

@@ -395,6 +395,7 @@ const ProjectsDetails: React.FC = () => {
                             perspective={projectDetails?.prespective}
                             handleCloseEdit={handleCloseEdit}
                             handleRefreshData={getTaskData}
+                            onBoarding={onBoarding}
                           />
                         )}
                         <button
