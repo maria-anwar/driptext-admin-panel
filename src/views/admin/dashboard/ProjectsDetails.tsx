@@ -38,6 +38,7 @@ import {
 } from "@chakra-ui/accordion";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import GroupTextArea from "../../../components/FormFields/GroupTextArea";
+import EditManager from "../../../components/FormFields/EditManager";
 
 const ProjectsDetails: React.FC = () => {
   const navigate = useNavigate();
@@ -64,6 +65,7 @@ const ProjectsDetails: React.FC = () => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [importLoader, setImportLoader] = useState(false);
+  const [editManager, setEditManager] = useState(false);
 
   const [fileName, setFileName] = useState(
     "Drag files here or click to select files"
@@ -73,6 +75,28 @@ const ProjectsDetails: React.FC = () => {
   useEffect(() => {
     getTaskData();
     getFreelancerData();
+    let token = userToken;
+    axios.defaults.headers.common["access-token"] = token;
+    let payload = {
+      projectId: projectId,
+    }; 
+    axios
+      .post(`${import.meta.env.VITE_DB_URL}/admin/wordCountProject`, payload)
+      .then((response) => {
+       
+      })
+      .catch((err) => {
+        console.error("Error updating word count of project:", err);
+      });
+    axios
+      .post(`${import.meta.env.VITE_DB_URL}/admin/wordCountProject`, payload)
+      .then((response) => {
+       
+      })
+      .catch((err) => {
+        console.error("Error updating word count of project:", err);
+      });
+    
   }, [projectId, userId]);
 
   const getTaskData = () => {
@@ -282,7 +306,7 @@ const ProjectsDetails: React.FC = () => {
   };
 
   const handleExportData = (id) => {
-    if (projectTasks.length ==0) {
+    if (projectTasks.length == 0) {
       toast.error("No tasks to export");
       return;
     }
@@ -330,6 +354,9 @@ const ProjectsDetails: React.FC = () => {
 
     return date.toLocaleDateString("en-US", options);
   }
+  const handleManager = () => {
+    setEditManager(!editManager);
+  }
 
   return (
     <>
@@ -337,342 +364,366 @@ const ProjectsDetails: React.FC = () => {
         <div className="mx-auto">
           <Breadcrumb pageName={"Project Details"} />
           <ToastContainer />
-          
+
           {loading ? (
-            
             <div className="grid grid-cols-5 gap-8">
               <div className="col-span-5 xl:col-span-3 rounded-sm border border-stroke  pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1   w-full bg-slate-200 h-[350px] animate-pulse"></div>
               <div className=" col-span-5 xl:col-span-2 rounded-sm border border-stroke  pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1   w-full bg-slate-200 h-[350px] animate-pulse"></div>
             </div>
           ) : (
             <>
-            {!projectDetails?.onBoarding ? <p className=" text-red-500 pb-6">Onboarding is not completed for this project, you can't add task</p>: <p></p>}
-            <div className="grid grid-cols-5 gap-8">
-              <div className="col-span-5 xl:col-span-3">
-                <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                  <div className="py-6 px-7 dark:border-strokedark">
-                    <div className="flex justify-between items-center gap-3">
-                      <p className="text-xl font-semibold text-black dark:text-white pb-2">
-                        {projectDetails.projectName}
-                        {" | "}
-                        {projectDetails.projectId}
-                      </p>
-                      
-                      <div className="flex justify-center items-center gap-3">
-                        <button
-                          onClick={handleAdd}
-                          disabled={!projectDetails?.onBoarding}
-                          className="w-10 h-10 text-center bg-blue-500 text-white rounded-none my-2 flex justify-center items-center border-none"
-                        >
-                          <FontAwesomeIcon
-                            icon={faPlus}
-                            className="text-sm px-2"
-                          />
-                        </button>
-                        {addModel && (
-                          <AddModel
-                            projectName={projectDetails.projectName}
-                            projectId={projectDetails._id}
-                            userId={userData._id}
-                            handleCloseAdd={handleCloseAdd}
-                            getTaskData={getTaskData}
-                          />
-                        )}
-                        <button
-                          onClick={handleEdit}
-                          className="w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none my-2 flex justify-center items-center border-none"
-                        >
-                          <FontAwesomeIcon
-                            icon={faEdit}
-                            className="text-sm px-2"
-                          />
-                        </button>
-                        {editModel && (
-                          <EditProject
-                            projectId={projectDetails._id}
-                            domain={projectDetails?.projectName}
-                            speech={projectDetails?.speech}
-                            perspective={projectDetails?.prespective}
-                            handleCloseEdit={handleCloseEdit}
-                            handleRefreshData={getTaskData}
-                            onBoarding={onBoarding}
-                          />
-                        )}
-                        <button
-                          onClick={handleDelete}
-                          className="w-10 h-10 text-center bg-slate-100 text-slate-600 hover:bg-blue-500 hover:text-white rounded-none my-2 flex justify-center items-center border-none"
-                        >
-                          <FontAwesomeIcon icon={faTrashAlt} />
-                        </button>
-                        {deleteModel && (
-                          <DeleteModel
-                            handleDelete={handleDeleteApi}
-                            handleClose={handleCloseDelete}
-                          />
-                        )}
-                      </div>
-                    </div>
-                    <div className="py-2">
-                      <h3 className="font-medium text-black dark:text-white">
-                        Client
-                      </h3>
-                      <p className="text-sm text-black dark:text-white">
-                        {userData.firstName} {userData.lastName} {"("}
-                        {userData.email}
-                        {")"}
-                      </p>
-                    </div>
-                    <Accordion
-                      allowToggle
-                      className={`appearance-none border-none py-4 `}
-                    >
-                      <AccordionItem
-                        className={`border-none bg-slate-100 dark:bg-meta-4 rounded`}
-                      >
-                        {({ isExpanded }) => (
-                          <>
-                            <h2>
-                              <AccordionButton className="flex justify-between items-center bg-slate-200 dark:bg-meta-4 ">
-                                <p className="font-semibold text-black dark:text-white ">
-                                  OnBoarding
-                                </p>
-                                {isExpanded ? (
-                                  <MinusIcon fontSize="12px" />
-                                ) : (
-                                  <AddIcon fontSize="12px" />
-                                )}
-                              </AccordionButton>
-                            </h2>
-                            <AccordionPanel className="" pb={4}>
-                              <div className="bg-white dark:bg-boxdark rounded py-2 px-4">
-                                <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3 pb-3">
-                                  1. General information:
-                                </h2>
-                                <div className="px-2">
-                                  <p className="dark:text-white font-semibold pb-2">
-                                  Speech
-                                  </p>
-                                  <p className="dark:text-white bg-slate-200 dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                                    {projectDetails?.speech}
-                                  </p>
-                                </div>
-                                <div className="px-2">
-                                  <p className="dark:text-white font-semibold pb-2">
-                                  Perspective
-                                  </p>
-                                  <p className="dark:text-white bg-slate-200 dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                                    {projectDetails?.prespective}
-                                  </p>
-                                </div>
-                                <div className="px-2">
-                                  <p className="dark:text-white font-semibold pb-2">
-                                    Website
-                                  </p>
-                                  <p className="dark:text-white bg-slate-200 dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                                    {projectDetails?.projectName}
-                                  </p>
-                                </div>
-                                <div className="w-full flex flex-col gap-2.5">
-                                  <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
-                                    2. Company Information
-                                  </h2>
-                                  <div className="px-3">
-                                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
-                                      Background information about the company
-                                    </label>
-                                    <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
-                                      {onBoarding?.companyBackgorund}
-                                    </p>
-                                  </div>
-                                  <div className="px-3">
-                                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
-                                    Which attributes best describe you as a company/your products/your services?
-                                    </label>
-                                    <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
-                                      {onBoarding?.companyAttributes}
-                                    </p>
-                                  </div>
-                                  <div className="px-3">
-                                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
-                                    What are your services?
-                                    </label>
-                                    <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
-                                      {onBoarding?.comapnyServices}
-                                    </p>
-                                  </div>
-                                </div>
-                                <div className="w-full flex flex-col gap-2.5">
-                                  <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
-                                  3. Information About the Target Customers
-                                  </h2>
-                                  <div className="px-3">
-                                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
-                                    Who is the content written for?
-                                    </label>
-                                    <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
-                                      {onBoarding?.customerContent}
-                                    </p>
-                                  </div>
-                                  <div className="px-3">
-                                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
-                                    Customers we want to address have an interest in...
-                                    </label>
-                                    <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
-                                      {onBoarding?.customerIntrest}
-                                    </p>
-                                  </div>
-                                  
-                                </div>
-                                <div className="w-full flex flex-col gap-2.5">
-                                  <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
-                                  4. Aim of the Content
-                                  </h2>
-                                  <div className="px-3">
-                                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
-                                    What is the purpose of the content?
-                                    </label>
-                                    <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
-                                      {onBoarding?.contentPurpose}
-                                    </p>
-                                  </div>
-                                  <div className="px-3">
-                                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
-                                    Information about your brand and your content
-                                    </label>
-                                    <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
-                                      {onBoarding?.contentInfo}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            </AccordionPanel>
-                          </>
-                        )}
-                      </AccordionItem>
-                    </Accordion>
+              {!projectDetails?.onBoarding ? (
+                <p className=" text-red-500 pb-6">
+                  Onboarding is not completed for this project, you can't add
+                  task
+                </p>
+              ) : (
+                <p></p>
+              )}
+              <div className="grid grid-cols-5 gap-8">
+                <div className="col-span-5 xl:col-span-3">
+                  <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                    <div className="py-6 px-7 dark:border-strokedark">
+                      <div className="flex justify-between items-center gap-3">
+                        <p className="text-xl font-semibold text-black dark:text-white pb-2">
+                          {projectDetails.projectName}
+                          {" | "}
+                          {projectDetails.projectId}
+                        </p>
 
-                    <div className="pt-1 pb-3">
-                      <h2>Folder</h2>
-                      <a
-                        href={projectDetails?.folderLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-500 underline-none flex justify-start items-center py-1"
+                        <div className="flex justify-center items-center gap-3">
+                          <button
+                            onClick={handleAdd}
+                            disabled={!projectDetails?.onBoarding}
+                            className="w-10 h-10 text-center bg-blue-500 text-white rounded-none my-2 flex justify-center items-center border-none"
+                          >
+                            <FontAwesomeIcon
+                              icon={faPlus}
+                              className="text-sm px-2"
+                            />
+                          </button>
+                          {addModel && (
+                            <AddModel
+                              projectName={projectDetails.projectName}
+                              projectId={projectDetails._id}
+                              userId={userData._id}
+                              handleCloseAdd={handleCloseAdd}
+                              getTaskData={getTaskData}
+                            />
+                          )}
+                          <button
+                            onClick={handleEdit}
+                            className="w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none my-2 flex justify-center items-center border-none"
+                          >
+                            <FontAwesomeIcon
+                              icon={faEdit}
+                              className="text-sm px-2"
+                            />
+                          </button>
+                          {editModel && (
+                            <EditProject
+                              projectId={projectDetails._id}
+                              domain={projectDetails?.projectName}
+                              speech={projectDetails?.speech}
+                              perspective={projectDetails?.prespective}
+                              handleCloseEdit={handleCloseEdit}
+                              handleRefreshData={getTaskData}
+                            />
+                          )}
+                          <button
+                            onClick={handleDelete}
+                            className="w-10 h-10 text-center bg-slate-100 text-slate-600 hover:bg-blue-500 hover:text-white rounded-none my-2 flex justify-center items-center border-none"
+                          >
+                            <FontAwesomeIcon icon={faTrashAlt} />
+                          </button>
+                          {deleteModel && (
+                            <DeleteModel
+                              handleDelete={handleDeleteApi}
+                              handleClose={handleCloseDelete}
+                            />
+                          )}
+                        </div>
+                      </div>
+                      <div className="py-2">
+                        <h3 className="font-medium text-black dark:text-white">
+                          Client
+                        </h3>
+                        <p className="text-sm text-black dark:text-white">
+                          {userData.firstName} {userData.lastName} {"("}
+                          {userData.email}
+                          {")"}
+                        </p>
+                      </div>
+                      <Accordion
+                        allowToggle
+                        className={`appearance-none border-none py-4 `}
                       >
-                        <svg
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-5.5 h-5.5"
+                        <AccordionItem
+                          className={`border-none bg-slate-100 dark:bg-meta-4 rounded`}
                         >
-                          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                          <g
-                            id="SVGRepo_tracerCarrier"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          ></g>
-                          <g id="SVGRepo_iconCarrier">
-                            <path
-                              d="M20 4L12 12M20 4V8.5M20 4H15.5M19 12.5V16.8C19 17.9201 19 18.4802 18.782 18.908C18.5903 19.2843 18.2843 19.5903 17.908 19.782C17.4802 20 16.9201 20 15.8 20H7.2C6.0799 20 5.51984 20 5.09202 19.782C4.71569 19.5903 4.40973 19.2843 4.21799 18.908C4 18.4802 4 17.9201 4 16.8V8.2C4 7.0799 4 6.51984 4.21799 6.09202C4.40973 5.71569 4.71569 5.40973 5.09202 5.21799C5.51984 5 6.07989 5 7.2 5H11.5"
-                              stroke="#3b82f6"
-                              stroke-width="1.5"
+                          {({ isExpanded }) => (
+                            <>
+                              <h2>
+                                <AccordionButton className="flex justify-between items-center bg-slate-200 dark:bg-meta-4 ">
+                                  <p className="font-semibold text-black dark:text-white ">
+                                    OnBoarding
+                                  </p>
+                                  {isExpanded ? (
+                                    <MinusIcon fontSize="12px" />
+                                  ) : (
+                                    <AddIcon fontSize="12px" />
+                                  )}
+                                </AccordionButton>
+                              </h2>
+                              <AccordionPanel className="" pb={4}>
+                                <div className="bg-white dark:bg-boxdark rounded py-2 px-4">
+                                  <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3 pb-3">
+                                    1. General information:
+                                  </h2>
+                                  <div className="px-2">
+                                    <p className="dark:text-white font-semibold pb-2">
+                                      Speech
+                                    </p>
+                                    <p className="dark:text-white bg-slate-200 dark:bg-meta-4 py-2 px-4 mb-2 rounded">
+                                      {projectDetails?.speech}
+                                    </p>
+                                  </div>
+                                  <div className="px-2">
+                                    <p className="dark:text-white font-semibold pb-2">
+                                      Perspective
+                                    </p>
+                                    <p className="dark:text-white bg-slate-200 dark:bg-meta-4 py-2 px-4 mb-2 rounded">
+                                      {projectDetails?.prespective}
+                                    </p>
+                                  </div>
+                                  <div className="px-2">
+                                    <p className="dark:text-white font-semibold pb-2">
+                                      Website
+                                    </p>
+                                    <p className="dark:text-white bg-slate-200 dark:bg-meta-4 py-2 px-4 mb-2 rounded">
+                                      {projectDetails?.projectName}
+                                    </p>
+                                  </div>
+                                  <div className="w-full flex flex-col gap-2.5">
+                                    <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
+                                      2. Company Information
+                                    </h2>
+                                    <div className="px-3">
+                                      <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                                        Background information about the company
+                                      </label>
+                                      <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
+                                        {onBoarding?.companyBackgorund}
+                                      </p>
+                                    </div>
+                                    <div className="px-3">
+                                      <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                                        Which attributes best describe you as a
+                                        company/your products/your services?
+                                      </label>
+                                      <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
+                                        {onBoarding?.companyAttributes}
+                                      </p>
+                                    </div>
+                                    <div className="px-3">
+                                      <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                                        What are your services?
+                                      </label>
+                                      <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
+                                        {onBoarding?.comapnyServices}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="w-full flex flex-col gap-2.5">
+                                    <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
+                                      3. Information About the Target Customers
+                                    </h2>
+                                    <div className="px-3">
+                                      <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                                        Who is the content written for?
+                                      </label>
+                                      <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
+                                        {onBoarding?.customerContent}
+                                      </p>
+                                    </div>
+                                    <div className="px-3">
+                                      <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                                        Customers we want to address have an
+                                        interest in...
+                                      </label>
+                                      <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
+                                        {onBoarding?.customerIntrest}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="w-full flex flex-col gap-2.5">
+                                    <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
+                                      4. Aim of the Content
+                                    </h2>
+                                    <div className="px-3">
+                                      <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                                        What is the purpose of the content?
+                                      </label>
+                                      <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
+                                        {onBoarding?.contentPurpose}
+                                      </p>
+                                    </div>
+                                    <div className="px-3">
+                                      <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                                        Information about your brand and your
+                                        content
+                                      </label>
+                                      <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
+                                        {onBoarding?.contentInfo}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </AccordionPanel>
+                            </>
+                          )}
+                        </AccordionItem>
+                      </Accordion>
+
+                      <div className="pt-1 pb-3">
+                        <h2>Folder</h2>
+                        <a
+                          href={projectDetails?.folderLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-500 underline-none flex justify-start items-center py-1"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-5.5 h-5.5"
+                          >
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g
+                              id="SVGRepo_tracerCarrier"
                               stroke-linecap="round"
                               stroke-linejoin="round"
-                            ></path>
-                          </g>
-                        </svg>
+                            ></g>
+                            <g id="SVGRepo_iconCarrier">
+                              <path
+                                d="M20 4L12 12M20 4V8.5M20 4H15.5M19 12.5V16.8C19 17.9201 19 18.4802 18.782 18.908C18.5903 19.2843 18.2843 19.5903 17.908 19.782C17.4802 20 16.9201 20 15.8 20H7.2C6.0799 20 5.51984 20 5.09202 19.782C4.71569 19.5903 4.40973 19.2843 4.21799 18.908C4 18.4802 4 17.9201 4 16.8V8.2C4 7.0799 4 6.51984 4.21799 6.09202C4.40973 5.71569 4.71569 5.40973 5.09202 5.21799C5.51984 5 6.07989 5 7.2 5H11.5"
+                                stroke="#3b82f6"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              ></path>
+                            </g>
+                          </svg>
 
-                        <span className="px-1">{projectDetails.projectId}</span>
-                      </a>
-                    </div>
-                    <progress
-                      className="custom-progress"
-                      value={projectDetails.finalTasks}
-                      max={plan.totalTexts}
-                    ></progress>
-                    <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-5 py-2">
-                      <TaskComponent
-                        label="Status"
-                        name={projectDetails.projectStatus}
-                      />
-                      <TaskComponent
-                        label="Tasks"
-                        name={`${plan.textsCount}/${plan.totalTexts}`}
-                      />
-                      <TaskComponent label="Max Tasks" name={plan.totalTexts} />
-                      <TaskComponent label="Duration" name={plan.duration} />
-                      <TaskComponent
-                        label="Task per month"
-                        name={plan.tasksPerMonth}
-                      />
-                      <div>
-                        <p className="text-xs text-slate-700 dark:text-slate-300 ">
-                          Performance Period
-                        </p>
-                        <p className="text-black dark:text-white">
-                          {typeof plan.endDate === "string"
-                            ? formatDateString(plan.endDate)
-                            : null}
-                        </p>
+                          <span className="px-1">
+                            {projectDetails.projectId}
+                          </span>
+                        </a>
+                      </div>
+                      <progress
+                        className="custom-progress"
+                        value={projectDetails.finalTasks}
+                        max={plan.totalTexts}
+                      ></progress>
+                      <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-5 py-2">
+                        <TaskComponent
+                          label="Status"
+                          name={projectDetails.projectStatus}
+                        />
+                        <TaskComponent
+                          label="Tasks"
+                          name={`${plan.textsCount}/${plan.totalTexts}`}
+                        />
+                        <TaskComponent
+                          label="Max Tasks"
+                          name={plan.totalTexts}
+                        />
+                        <TaskComponent label="Duration" name={plan.duration} />
+                        <TaskComponent
+                          label="Task per month"
+                          name={plan.tasksPerMonth}
+                        />
+                        <div>
+                          <p className="text-xs text-slate-700 dark:text-slate-300 ">
+                            Performance Period
+                          </p>
+                          <p className="text-black dark:text-white">
+                            {typeof plan.endDate === "string"
+                              ? formatDateString(plan.endDate)
+                              : null}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-span-5 xl:col-span-2">
-                <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                  <div className="pt-8 pb-4 px-7 dark:border-strokedark flex justify-between items-center">
-                    <h3 className="font-medium text-black dark:text-white">
-                      Project members
-                    </h3>
-                    <p
-                      className="w-5 h-5 bg-blue-500 text-white flex items-center justify-center cursor-pointer"
-                      onClick={handleMembers}
-                    >
-                      <FontAwesomeIcon icon={faPlus} className="text-sm" />
-                    </p>
-                  </div>
-                  <div className="px-7">
-                    <div>
-                      <p className="text-sm">Project Manager</p>
-                      <div className="flex justify-start items-center py-2">
-                        <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
-                          {getInitials("Danile John")}
-                        </p>
-                        <p className="px-2.5 text-black dark:text-white">
-                          Danile John
-                        </p>
-                      </div>
+                <div className="col-span-5 xl:col-span-2">
+                  <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                    <div className="pt-8 pb-4 px-7 dark:border-strokedark flex justify-between items-center">
+                      <h3 className="font-medium text-black dark:text-white">
+                        Project members
+                      </h3>
+                      <p
+                        className="w-5 h-5 bg-blue-500 text-white flex items-center justify-center cursor-pointer"
+                        onClick={handleMembers}
+                      >
+                        <FontAwesomeIcon icon={faPlus} className="text-sm" />
+                      </p>
                     </div>
-                    <TaskMembers
-                      label={"Texter"}
-                      removeDelete={true}
-                      handleMembers={handleMembers}
-                      name={showAssignedRoles(projectDetails.texter) ?? ""}
-                    />
-                    <TaskMembers
-                      label={"Lector"}
-                      removeDelete={true}
-                      handleMembers={handleMembers}
-                      name={showAssignedRoles(projectDetails.lector) ?? ""}
-                    />
-                    <TaskMembers
-                      label={"SEO"}
-                      removeDelete={true}
-                      handleMembers={handleMembers}
-                      name={showAssignedRoles(projectDetails.seo) ?? ""}
-                    />
-                    <TaskMembers
-                      label={"Meta-lector"}
-                      removeDelete={true}
-                      handleMembers={handleMembers}
-                      name={"projectDetails.metaLector" ?? ""}
-                    />
+                    <div className="px-7">
+                      {/* <div>
+                        <p className="text-sm">Project Manager</p>
+                        <div className="flex justify-between items-center py-2">
+                          <div className="flex justify-start flex-row items-center">
+                            <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
+                              {getInitials(
+                                `${user?.user?.data?.user?.firstName} ${user?.user?.data?.user?.lastName}`
+                              )}
+                            </p>
+                            <p className="px-2.5 text-black dark:text-white">
+                              {user?.user?.data?.user?.firstName}{" "}
+                              {user?.user?.data?.user?.lastName}
+                            </p>
+                          </div>
+                          <div onClick={handleManager}>
+                            <FontAwesomeIcon
+                              icon={faEdit}
+                              className="text-sm px-1 text-blue-500"
+                            />
+                          </div>
+                          {editManager && <EditManager editUser={''} handleClose={handleManager}  />}
+                        </div>
+                      </div> */}
+                      <TaskMembers
+                        label={"Texter"}
+                        removeDelete={true}
+                        handleMembers={handleMembers}
+                        name={showAssignedRoles(projectDetails.texter) ?? ""}
+                      />
+                      <TaskMembers
+                        label={"Lector"}
+                        removeDelete={true}
+                        handleMembers={handleMembers}
+                        name={showAssignedRoles(projectDetails.lector) ?? ""}
+                      />
+                      <TaskMembers
+                        label={"SEO"}
+                        removeDelete={true}
+                        handleMembers={handleMembers}
+                        name={showAssignedRoles(projectDetails.seo) ?? ""}
+                      />
+                      <TaskMembers
+                        label={"Meta-lector"}
+                        removeDelete={true}
+                        handleMembers={handleMembers}
+                        name={"projectDetails.metaLector" ?? ""}
+                      />
+                    </div>
+                    <div className="px-7 py-2.5"></div>
                   </div>
-                  <div className="px-7 py-2.5"></div>
                 </div>
               </div>
-            </div>
             </>
           )}
           <div className="pt-14">

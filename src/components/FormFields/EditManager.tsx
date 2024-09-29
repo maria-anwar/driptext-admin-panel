@@ -25,7 +25,6 @@ const EditManager: React.FC<EditManagerProps> = ({ handleClose, editUser }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-console.log(editUser)
   const initialValues = {
     _id: editUser?._id || "",
     firstName: editUser?.firstName || "",
@@ -75,7 +74,6 @@ console.log(editUser)
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
-      enableReinitialize={true} // Ensure reinitialization is enabled
     >
       {({ handleChange, errors, touched, values }) => (
         <Form>
@@ -91,38 +89,37 @@ console.log(editUser)
                   icon={faTimes}
                 />
               </div>
-
               <div>
                 <GroupField
                   label="First Name"
                   type="text"
                   placeholder="Enter first name"
                   name="firstName"
+                  id="firstName"
                   value={values.firstName} // Ensure value is set
                   onChange={handleChange}
-                  error={touched.firstName && errors.firstName}
+                  errors={touched.firstName ? errors.firstName : ''}
                 />
-
                 <GroupField
                   label="Last Name"
                   type="text"
                   placeholder="Enter last name"
                   name="lastName"
+                  id="lastName"
                   value={values.lastName} // Ensure value is set
                   onChange={handleChange}
-                  error={touched.lastName && errors.lastName}
+                  errors={touched.lastName ? errors.lastName :''}
                 />
-
                 <GroupField
                   label="Email"
                   type="email"
                   placeholder="Enter email"
                   name="email"
+                  id="email"
                   value={values.email} // Ensure value is set
                   onChange={handleChange}
-                  error={touched.email && errors.email}
+                  errors={touched.email ? errors.email : ''}
                 />
-
                 <div className="flex justify-end items-center gap-3 pt-4">
                   <button
                     className="my-3 text-black dark:text-white flex justify-center rounded bg-transparent border border-slate-200 py-1.5 px-6 font-medium"
@@ -141,7 +138,6 @@ console.log(editUser)
                     {loading ? "Updating..." : "Update"}
                   </button>
                 </div>
-
                 {error && (
                   <div id="error" className="mt-2 text-sm text-red-500">
                     {errorMessage}

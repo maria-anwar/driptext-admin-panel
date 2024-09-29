@@ -90,9 +90,10 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
                   type="text"
                   placeholder="Enter first name"
                   name="firstName"
+                  id="firstName"
                   value={values.firstName} // Ensure value is set
                   onChange={handleChange}
-                  error={touched.firstName && errors.firstName}
+                  errors={touched.firstName ? errors.firstName : ''}
                 />
 
                 <GroupField
@@ -100,9 +101,10 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
                   type="text"
                   placeholder="Enter last name"
                   name="lastName"
+                  id="lastName"
                   value={values.lastName} // Ensure value is set
                   onChange={handleChange}
-                  error={touched.lastName && errors.lastName}
+                  errors={touched.lastName ? errors.lastName : ''}
                 />
 
                 <GroupField
@@ -110,9 +112,10 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
                   type="email"
                   placeholder="Enter email"
                   name="email"
+                  id="email"
                   value={values.email} // Ensure value is set
                   onChange={handleChange}
-                  error={touched.email && errors.email}
+                  errors={touched.email ? errors.email : ''}
                 />
 
                 <GroupField
@@ -120,8 +123,10 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
                   type="password"
                   placeholder="Enter password"
                   name="password"
+                  id="password"
+                  value={values.password} // Ensure value is set
                   onChange={handleChange}
-                  error={touched.password && errors.password}
+                  errors={touched.password ? errors.password : ''}
                 />
 
                 <div className="flex justify-end items-center gap-3 pt-4">
