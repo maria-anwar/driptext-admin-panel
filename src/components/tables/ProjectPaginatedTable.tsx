@@ -112,7 +112,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
           <table className="w-full table-auto  ">
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4 ">
-                <th className="min-w-[80px]  py-4 px-4 font-semibold text-black dark:text-white ">
+                <th className="min-w-[190px]  py-4 px-4 font-semibold text-black dark:text-white ">
                   Status
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold  text-black dark:text-white">
