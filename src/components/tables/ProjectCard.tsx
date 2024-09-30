@@ -91,7 +91,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects ,freelancer}) => {
                   project.projectStatus.toUpperCase() === "FINAL"
                     ? " text-success"
                     : project.projectStatus.toUpperCase() === "FREE TRIAL"
-                    ? " text-red-500"
+                    ? " text-warning"
                     : project.projectStatus.toUpperCase() === "READY"
                     ? " text-warning"
                     : project.projectStatus.toUpperCase() ===
@@ -100,7 +100,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects ,freelancer}) => {
                     : " text-violet-500"
                 }`}
               >
-                {project.projectStatus}
+                {project.projectStatus.toUpperCase() === 'FREE TRIAL' ? 'Ready' : project.projectStatus}
               </span>
             </p>
           </div>
