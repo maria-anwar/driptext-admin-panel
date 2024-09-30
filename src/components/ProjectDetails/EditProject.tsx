@@ -1,7 +1,7 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import React, { useRef, useState } from "react";
+import React, {  useState } from "react";
 import { useSelector } from "react-redux";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
@@ -15,6 +15,7 @@ import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import GroupTextArea from "../FormFields/GroupTextArea";
 import { GroupField } from "../FormFields/GroupField";
 import GroupDropdownField from "../FormFields/GroupDropdownField";
+import { OnBoarding,FormData } from "../../Types/Type";
 
 interface EditProjectProps {
   handleCloseEdit: () => void;
@@ -23,29 +24,7 @@ interface EditProjectProps {
   domain: string;
   speech: string;
   perspective: string;
-  onBoarding: OnBoarding;
-}
-interface FormData {
-  projectName: string;
-  speech: string;
-  perspective: string;
-  projectId: string;
-  companyInfo: string | null;
-  companyAttributes: string | null;
-  services: string | null;
-  content: string | null;
-  customers: string | null;
-  contentPurpose: string | null;
-  brand: string | null;
-}
-interface OnBoarding {
-  companyBackgorund: string | null;
-  companyAttributes: string | null;
-  comapnyServices: string | null;
-  customerContent: string | null;
-  customerIntrest: string | null;
-  contentPurpose: string | null;
-  contentInfo: string | null;
+  onBoarding: OnBoarding | undefined | null;
 }
 
 const EditProject: React.FC<EditProjectProps> = ({
@@ -58,7 +37,7 @@ const EditProject: React.FC<EditProjectProps> = ({
   onBoarding,
 }) => {
   const user = useSelector<any>((state) => state.user);
-  const [userToken, setUserToken] = useState(user.user.token);
+  const [userToken, setUserToken] = useState(user?.user?.token);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null); 
   const [formData, setFormData] = useState<FormData>({

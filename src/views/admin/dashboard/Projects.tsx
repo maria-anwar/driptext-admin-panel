@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Breadcrumb from "../../../components/breadcrumbs/Breadcrumb";
 import ToggleSwitch from "../../../components/buttons/ToggleButton";
 import {
   faThLarge,
@@ -11,25 +10,24 @@ import {
 import { Link } from "react-router-dom";
 import ProjectPaginatedTable from "../../../components/tables/ProjectPaginatedTable";
 import ProjectCard from "../../../components/tables/ProjectCard";
-import { allProjects } from "../../../components/Helpers/AllProjects";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import Loading from "../../../components/Helpers/Loading";
+import {Freelancer,Project} from '../../../Types/Type'
 
 const Projects: React.FC = () => {
   const user = useSelector<any>((state) => state.user);
-  const [loading, setLoading] = useState(true);
-  const [showCard, setShowCard] = useState(false);
-  const [showDraft, setShowDraft] = useState(false);
-  const [showArchived, setShowArchived] = useState(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [showCard, setShowCard] = useState<boolean>(false);
+  const [showDraft, setShowDraft] = useState<boolean>(false);
+  const [showArchived, setShowArchived] = useState<boolean>(false);
   const [showSearch, setShowSearch] = useState<boolean>(false);
-  const [projectData, setProjectData] = useState([]);
-  const [filteredProjects, setFilteredProjects] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [projectData, setProjectData] = useState<Project[]>([]);
+  const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [userId, setUserID] = useState(user.user.data.user._id);
   const [userToken, setUserToken] = useState(user.user.token);
-  const [freelancer, setFreelancer] = useState([]);
+  const [freelancer, setFreelancer] = useState<Freelancer[]>([]);
 
   useEffect(() => {
     getFreelancerData();
@@ -58,7 +56,7 @@ const Projects: React.FC = () => {
 
   useEffect(() => {
     const filtered = projectData.filter((project) =>
-      project.projectName.toLowerCase().includes(searchQuery.toLowerCase())
+      project?.projectName?.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredProjects(filtered);
   }, [searchQuery, projectData]);
@@ -72,6 +70,7 @@ const Projects: React.FC = () => {
       .then((response) => {
         const projectDataArray = response.data.freelancers;
         const allProjects = projectDataArray;
+        console.log("freelancer", allProjects);
         setFreelancer(allProjects);
       })
       .catch((err) => {

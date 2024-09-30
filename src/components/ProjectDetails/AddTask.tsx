@@ -178,7 +178,6 @@ const AddModel: React.FC<AddModelProps> = ({
                   value={values.wordCount}
                   onChange={handleChange}
                   errors={touched.wordCount ? errors.wordCount : ""}
-                  defaultValue={1500}
                   disabled={false}
                 />
 

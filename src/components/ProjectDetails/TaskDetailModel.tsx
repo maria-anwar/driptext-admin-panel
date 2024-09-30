@@ -27,38 +27,12 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-interface Task {
-  actualNumberOfWords: number | null;
-  comments: string | null;
-  createdAt: string; // ISO 8601 date string
-  desiredNumberOfWords: string; // or number, depending on how it is used
-  dueDate: string | null; // ISO 8601 date string or null
-  fileLink: string;
-  googleLink: string | null;
-  isActive: "Y" | "N"; // Assuming 'Y' and 'N' are the only possible values
-  keywords: string | null;
-  lector: string | null;
-  metaLector: string | null;
-  project: string; // or a more specific type if it's an ObjectId
-  published: boolean;
-  readyToWork: boolean;
-  seo: string | null;
-  status: string;
-  taskId: number;
-  taskName: string;
-  texter: string | null;
-  topic: string | null;
-  type: string | null;
-  updatedAt: string; // ISO 8601 date string
-  __v: number;
-  _id: string; // or a more specific type if it's an ObjectId
-}
+import {Task,Freelancer} from '../../Types/Type'
 
 interface TaskDetailModelProps {
   task: Task;
   closeModel: () => void;
-  freelancer: any;
+  freelancer: Freelancer[];
   userId: string;
   projectId: string;
   projectName: string;
@@ -72,7 +46,7 @@ interface FormData {
   projectId: string | null;
   projectName: string | null;
   userId: string | null;
-  date: string | null; // Initialize as null for date
+  date: string | Date; // Initialize as null for date
   textType: string | null;
   wordCount: 1500;
   comments: string | null;
@@ -94,14 +68,14 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   handleRefreshData,
 }) => {
   const user = useSelector<any>((state) => state.user);
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [userToken, setUserToken] = useState(user.user.token);
   const allRoles = ["texter", "lector", "seo-optimizer"];
   const [showCard, setShowCard] = useState(task.readyToWork);
-  const [memberModel, setMemberModel] = useState(false);
+  const [memberModel, setMemberModel] = useState<boolean>(false);
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [formData, setFormData] = useState<FormData>({
     desiredWords: task.desiredNumberOfWords,
@@ -112,15 +86,8 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     projectId: projectId,
     projectName: "",
     userId: userId,
-    date: task?.dueDate, // Initialize as null for date
+    date: task?.dueDate, 
     wordCount: task.desiredNumberOfWords,
-    // companyInfo: task?.onBoarding?.companyBackgorund,
-    // companyAttributes: task?.onBoarding?.companyAttributes,
-    // services: task?.onBoarding?.comapnyServices,
-    // content: task?.onBoarding?.customerContent,
-    // customers: task?.onBoarding?.customerIntrest,
-    // contentPurpose: task?.onBoarding?.contentPurpose,
-    // brand: task?.onBoarding?.contentInfo,
   });
 
   useEffect(() => {
@@ -143,16 +110,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     topic: Yup.string().required("Please select a topic"),
     textType: Yup.string().required("Please select type"),
     keywords: Yup.string().required("Please select keywords"),
-    date: Yup.date().nullable().required("Please select a date"), // Ensure date is required and nullable
-    // companyInfo: Yup.string().required("Please enter company information"),
-    // companyAttributes: Yup.string().required(
-    //   "Please enter company's attributes"
-    // ),
-    // services: Yup.string().required("Please enter company's services"),
-    // content: Yup.string().required("Above information is required"),
-    // customers: Yup.string().required("Above information is required"),
-    // contentPurpose: Yup.string().required("Above information is required"),
-    // brand: Yup.string().required("Above information is required"),
+    date: Yup.date().nullable().required("Please select a date"), 
   });
   const handleRoleSelect = (role: string, memberId: number) => {
     const token = userToken;
@@ -163,7 +121,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
       freelancerId: memberId?.toString(),
       role: role.toString(),
     };
-    console.log(payload); // Log payload to verify
+    console.log(payload); 
 
     axios
       .post(
@@ -172,8 +130,8 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
       )
       .then((response) => {
         const projectDataArray = response;
-        console.log(payload); // Log payload to verify
-        console.log(projectDataArray); // Log payload to verify
+        console.log(payload); 
+        console.log(projectDataArray);
         setDropdownVisible(null);
         handleRefreshData();
       })
@@ -209,19 +167,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     closeModel();
   };
 
-  const handlePublishedTask = () => {
-    if (
-      task?.dueDate &&
-      task?.keywords &&
-      task?.lector &&
-      task?.seo &&
-      task?.texter && task?.topic
-    ) {
-      setShowCard(!showCard);
-    }
-  };
-
-  const showAssignedRoles = (memberId: number) => {
+  const showAssignedRoles = (memberId: string | null) => {
     const foundFreelancer = freelancer.find((f) => f._id === memberId);
     if (foundFreelancer) {
       const fullName = `${foundFreelancer.firstName} ${foundFreelancer.lastName}`;
@@ -414,152 +360,6 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                     onChange={handleChange}
                     errors={touched.keywords ? errors.keywords : ""}
                   />
-
-                  {/* <Accordion
-                    allowToggle
-                    className={`appearance-none border-none py-4 `}
-                  >
-                    <AccordionItem
-                      className={`border-none bg-slate-100 dark:bg-meta-4 rounded`}
-                    >
-                      {({ isExpanded }) => (
-                        <>
-                          <h2>
-                            <AccordionButton className="flex justify-between items-center bg-slate-200 dark:bg-meta-4 ">
-                              <p className="font-semibold text-black dark:text-white ">
-                                OnBoarding
-                              </p>
-                              {isExpanded ? (
-                                <MinusIcon fontSize="12px" />
-                              ) : (
-                                <AddIcon fontSize="12px" />
-                              )}
-                            </AccordionButton>
-                          </h2>
-                          <AccordionPanel className="" pb={4}>
-                            <div className="bg-white dark:bg-boxdark rounded py-2 px-4">
-                              <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3 pb-3">
-                                1. General information:
-                              </h2>
-                              <div className="px-2">
-                                <p className="dark:text-white font-semibold pb-2">
-                                  Website
-                                </p>
-                                <p className="dark:text-white bg-slate-200 dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                                  {projectName}
-                                </p>
-                              </div>
-
-                              <div className="flex flex-col gap-3">
-                                <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
-                                  2. Company Information
-                                </h2>
-                                <GroupTextArea
-                                  label="Background information about the company"
-                                  type="text"
-                                  placeholder="Please describe here, ideally in just one sentence, what you do as a company, what you offer and how it helps the customer."
-                                  id="companyInfo"
-                                  name="companyInfo"
-                                  value={values.companyInfo}
-                                  errors={
-                                    touched.companyInfo
-                                      ? errors.companyInfo
-                                      : ""
-                                  }
-                                  onChange={handleChange}
-                                />
-
-                                <GroupTextArea
-                                  label="Which attributes best describe you as a company/your products/your services?"
-                                  type="text"
-                                  placeholder="Please give us as many attributes as you would like readers to perceive about you and your company in bullet points."
-                                  id="companyAttributes"
-                                  name="companyAttributes"
-                                  value={values.companyAttributes}
-                                  errors={
-                                    touched.companyAttributes
-                                      ? errors.companyAttributes
-                                      : ""
-                                  }
-                                  onChange={handleChange}
-                                />
-                                <GroupTextArea
-                                  label="What are your services?"
-                                  type="text"
-                                  placeholder="Please list all services offered online here."
-                                  id="services"
-                                  name="services"
-                                  value={values.services}
-                                  errors={
-                                    touched.services ? errors.services : ""
-                                  }
-                                  onChange={handleChange}
-                                />
-                              </div>
-                              <div className="flex flex-col gap-3 py-3">
-                                <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3.5">
-                                  3. Information About the Target Customers
-                                </h2>
-                                <GroupTextArea
-                                  label="Who is the content written for?"
-                                  type="text"
-                                  placeholder="Please describe the target group as precisely as possible"
-                                  id="content"
-                                  name="content"
-                                  value={values.content}
-                                  errors={touched.content ? errors.content : ""}
-                                  onChange={handleChange}
-                                />
-
-                                <GroupTextArea
-                                  label="Customers we want to address have an interest in..."
-                                  type="text"
-                                  placeholder="Please list here in bullet points which problems you solve for customers."
-                                  id="customers"
-                                  name="customers"
-                                  value={values.customers}
-                                  errors={
-                                    touched.customers ? errors.customers : ""
-                                  }
-                                  onChange={handleChange}
-                                />
-                              </div>
-                              <div className="flex flex-col gap-3 py-3">
-                                <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3.5">
-                                  4. Aim of the Content
-                                </h2>
-                                <GroupTextArea
-                                  label="What is the purpose of the content?"
-                                  type="text"
-                                  placeholder="Please briefly describe here how organic customers/readers should ideally react when they land on your site."
-                                  id="contentPurpose"
-                                  name="contentPurpose"
-                                  value={values.contentPurpose}
-                                  errors={
-                                    touched.contentPurpose
-                                      ? errors.contentPurpose
-                                      : ""
-                                  }
-                                  onChange={handleChange}
-                                />
-
-                                <GroupTextArea
-                                  label="Information about your brand and your content"
-                                  type="text"
-                                  placeholder="Please give us bullet points on how potential readers should describe the content they consume"
-                                  id="brand"
-                                  name="brand"
-                                  value={values.brand}
-                                  errors={touched.brand ? errors.brand : ""}
-                                  onChange={handleChange}
-                                />
-                              </div>
-                            </div>
-                          </AccordionPanel>
-                        </>
-                      )}
-                    </AccordionItem>
-                  </Accordion> */}
 
                   <GroupTextArea
                     label="Comment"

@@ -1,63 +1,17 @@
 import React, { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
+import { Freelancer,Project } from "../../Types/Type";
 
-interface Plan {
-  _id: string;
-  plan: string;
-  user: string;
-  subPlan: string;
-  project: string;
-  subscription: string;
-  startDate: string;
-  endDate: string;
-  totalTexts: number;
-  duration: number;
-  textsCount: number;
-  textsRemaining: number;
-  tasksPerMonth: number;
-  tasksPerMonthCount: number;
-  endMonthDate: string;
-  isActive: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-}
-
-// Define the Project interface to represent the main object
-interface Project {
-  _id: string;
-  projectId: string;
-  onBoarding: boolean;
-  projectName: string;
-  tasks: number;
-  speech: string;
-  keywords: string | null;
-  perspective: string | null;
-  projectStatus: string;
-  user: string;
-  projectTasks: string[];
-  plan: Plan;
-  texter: string | null;
-  lector: string | null;
-  seo: string | null;
-  metaLector: string | null;
-  isActive: string;
-  createdAt: string;
-  updatedAt: string;
-  id: number;
-  __v: number;
-  openTasks: number;
-  finalTasks: number;
-}
 interface ProjectCardProps {
   projects: Project[];
+  freelancer:Freelancer[];
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ projects ,freelancer}) => {
   const navigate = useNavigate();
 
-  const showAssignedRoles = (memberId: number) => {
+  const showAssignedRoles = (memberId: string | null) => {
     const foundFreelancer = freelancer.find((f) => f._id === memberId);
     if (foundFreelancer) {
       const fullName = `${foundFreelancer.firstName} ${foundFreelancer.lastName}`;

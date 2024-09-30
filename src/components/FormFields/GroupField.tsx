@@ -6,7 +6,7 @@ interface GroupFieldProps{
   placeholder: string;
   name: string;
   id: string;
-  value: string | number;
+  value: string | number  | undefined | null;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   errors?: string;
   disabled?: boolean;
@@ -42,7 +42,6 @@ export const GroupField:React.FC<GroupFieldProps> = ({
           disabled={disabled}
         />
         {errors ? <div className="text-sm text-red-700">{errors}</div> : ""}
-        {/* <div className="text-red-700">'Erroe here'</div> */}
       </div>
     </>
   );

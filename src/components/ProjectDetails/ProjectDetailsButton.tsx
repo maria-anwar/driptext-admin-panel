@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import AddModel from "./AddTask";
 import DeleteModel from "./DeleteProject";
 import EditProject from "./EditProject";
+import { OnBoarding } from "../../Types/Type";
 
 interface ProjectDetailsButtonProps {
   projectName: string;
@@ -17,17 +18,7 @@ interface ProjectDetailsButtonProps {
   firstName: string;
   lastName: string;
   email: string;
-  onBoarding: OnBoarding;
-}
-
-interface OnBoarding {
-  companyBackgorund: string | null;
-  companyAttributes: string | null;
-  comapnyServices: string | null;
-  customerContent: string | null;
-  customerIntrest: string | null;
-  contentPurpose: string | null;
-  contentInfo: string | null;
+  onBoarding: OnBoarding | undefined | null;
 }
 
 const ProjectDetailsButton: React.FC<ProjectDetailsButtonProps> = ({
