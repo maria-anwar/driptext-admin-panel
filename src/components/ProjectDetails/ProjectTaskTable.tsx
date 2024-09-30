@@ -268,10 +268,10 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                         label="S"
                         name={showAssignedRoles(task.seo) ?? ""}
                       />
-                      <WorkerComponent
+                      {/* <WorkerComponent
                         label="M"
                         name={showAssignedRoles(task.metaLector) ?? ""}
-                      />
+                      /> */}
                     </div>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

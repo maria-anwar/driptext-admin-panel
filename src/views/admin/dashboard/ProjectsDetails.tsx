@@ -1,44 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { google } from "googleapis";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPlus,
-  faEdit,
-  faDownload,
-  faUpload,
-  faTimes,
-  faCloudUploadAlt,
-  faGripLines,
-  faTrashAlt,
-} from "@fortawesome/free-solid-svg-icons";
-import DatePicker from "react-datepicker";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import "react-datepicker/dist/react-datepicker.css";
 import ProjectTaskTable from "../../../components/ProjectDetails/ProjectTaskTable";
-import * as XLSX from "xlsx";
 import Breadcrumb from "../../../components/breeadcrumbs/Breadcrumb";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { format } from "date-fns";
 import TaskComponent from "../../../components/ProjectDetails/TaskComponent";
-import DeleteModel from "../../../components/ProjectDetails/DeleteModel";
-import Loading from "../../../components/Helpers/Loading";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MemberModal from "../../../components/ProjectDetails/MemberModel";
-import AddModel from "../../../components/ProjectDetails/AddModel";
 import TaskMembers from "../../../components/ProjectDetails/TaskMembers";
-import getInitials from "../../../components/Helpers/UpperCaseName";
-import EditProject from "../../../components/ProjectDetails/EditProject";
 import { useNavigate } from "react-router-dom";
-import {
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-} from "@chakra-ui/accordion";
-import { AddIcon, MinusIcon } from "@chakra-ui/icons";
-import GroupTextArea from "../../../components/FormFields/GroupTextArea";
-import EditManager from "../../../components/FormFields/EditManager";
+import Import from "../../../components/ProjectDetails/Import";
+import Export from "../../../components/ProjectDetails/Export";
+import ProjectDetailsButton from "../../../components/ProjectDetails/ProjectDetailsButton";
+import AccordionData from "../../../components/ProjectDetails/AccordionData";
 
 const ProjectsDetails: React.FC = () => {
   const navigate = useNavigate();
@@ -47,10 +24,6 @@ const ProjectsDetails: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [memberModel, setMemberModel] = useState(false);
   const [deleteModel, setDeleteModel] = useState(false);
-  const [importModel, setImportModel] = useState(false);
-  const [addModel, setAddModel] = useState(false);
-  const [editModel, setEditModel] = useState(false);
-  const [date, setDate] = useState("");
   const [projectDetails, setProjectDetails] = useState([]);
   const [projectTasks, setProjectTasks] = useState([]);
   const [onBoarding, setOnBoarding] = useState({});
@@ -60,39 +33,12 @@ const ProjectsDetails: React.FC = () => {
   const [userId, setUserID] = useState(user.user.data.user._id);
   const [userToken, setUserToken] = useState(user.user.token);
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
-  const [fileData, setFileData] = useState(null);
-  const [modalKey, setModalKey] = useState(0);
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [importLoader, setImportLoader] = useState(false);
-  const [exportLoader, setExportLoader] = useState(false);
   const [editManager, setEditManager] = useState(false);
-
-  const [fileName, setFileName] = useState(
-    "Drag files here or click to select files"
-  );
-  const [file, setFile] = useState(null);
 
   useEffect(() => {
     getTaskData();
     getFreelancerData();
-    let token = userToken;
-    axios.defaults.headers.common["access-token"] = token;
-    let payload = {
-      projectId: projectId,
-    };
-    axios
-      .post(`${import.meta.env.VITE_DB_URL}/admin/wordCountProject`, payload)
-      .then((response) => {})
-      .catch((err) => {
-        console.error("Error updating word count of project:", err);
-      });
-    axios
-      .post(`${import.meta.env.VITE_DB_URL}/admin/wordCountProject`, payload)
-      .then((response) => {})
-      .catch((err) => {
-        console.error("Error updating word count of project:", err);
-      });
+    getWordCount();
   }, [projectId, userId]);
 
   const getTaskData = () => {
@@ -119,7 +65,25 @@ const ProjectsDetails: React.FC = () => {
         setLoading(false);
       });
   };
-
+  const getWordCount = () => {
+    let token = userToken;
+    axios.defaults.headers.common["access-token"] = token;
+    let payload = {
+      projectId: projectId,
+    };
+    axios
+      .post(`${import.meta.env.VITE_DB_URL}/admin/wordCountProject`, payload)
+      .then((response) => {})
+      .catch((err) => {
+        console.error("Error updating word count of project:", err);
+      });
+    axios
+      .post(`${import.meta.env.VITE_DB_URL}/admin/wordCountProject`, payload)
+      .then((response) => {})
+      .catch((err) => {
+        console.error("Error updating word count of project:", err);
+      });
+  };
   const getFreelancerData = () => {
     let token = userToken;
     axios.defaults.headers.common["access-token"] = token;
@@ -162,44 +126,6 @@ const ProjectsDetails: React.FC = () => {
         setDropdownVisible(null);
       });
   };
-
-  const showAssignedRoles = (memberId: number) => {
-    if (!freelancer) return "";
-    const foundFreelancer = freelancer.find((f) => f._id === memberId);
-    if (foundFreelancer) {
-      const fullName = `${foundFreelancer.firstName} ${foundFreelancer.lastName}`;
-      return fullName;
-    } else {
-      return "";
-    }
-  };
-
-  const allRoles = ["texter", "lector", "seo-optimizer"];
-
-  const handleDelete = () => {
-    setDeleteModel(true);
-  };
-  const handleImport = () => {
-    setImportModel(true);
-  };
-  const handleAdd = () => {
-    setAddModel(true);
-  };
-  const handleEdit = () => {
-    setEditModel(true);
-  };
-
-  const handleCloseDelete = () => {
-    setDeleteModel(false);
-  };
-
-  const handleCloseAdd = () => {
-    setAddModel(false);
-  };
-  const handleCloseEdit = () => {
-    setEditModel(false);
-  };
-
   const handleDeleteApi = () => {
     let token = userToken;
     axios.defaults.headers.common["access-token"] = token;
@@ -223,6 +149,19 @@ const ProjectsDetails: React.FC = () => {
       });
   };
 
+  const showAssignedRoles = (memberId: number) => {
+    if (!freelancer) return "";
+    const foundFreelancer = freelancer.find((f) => f._id === memberId);
+    if (foundFreelancer) {
+      const fullName = `${foundFreelancer.firstName} ${foundFreelancer.lastName}`;
+      return fullName;
+    } else {
+      return "";
+    }
+  };
+
+  const allRoles = ["texter", "lector", "seo-optimizer"];
+
   const handleMembers = () => {
     setMemberModel(true);
     setDropdownVisible(null);
@@ -232,111 +171,12 @@ const ProjectsDetails: React.FC = () => {
     setMemberModel(false);
   };
 
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      setFile((prv) => selectedFile);
-      setFileName(selectedFile.name);
-      setModalKey((prevKey) => prevKey + 1); // Change key to force re-render
-    }
-  };
-
-  const handleImportData = async (e, id) => {
-    e.preventDefault();
-    setImportLoader(true);
-
-    if (!file) {
-      toast.error("Please select a file.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("projectId", id);
-
-    try {
-      const response = await axios.post(
-        `https://driptext-api.malhoc.com/api/admin/importTasks`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      console.log("Response:", response);
-      setImportModel(false);
-      toast.success("Tasks imported successfully");
-      setFile(null);
-      setFileName("Drag files here or click to select files");
-      setError(false);
-      setImportLoader(false);
-    } catch (error) {
-      console.error("Error importing tasks:", error);
-      const err =
-        error.response.data.message ||
-        error.message ||
-        "Failed to import tasks.";
-      setError(true);
-      setErrorMessage(err);
-      setImportLoader(false);
-    }
-  };
-
-  const handleCloseImport = () => {
-    setFile(null);
-    setFileName("No file chosen");
-    setFileData(null);
-    setImportModel(false);
-    setError(false);
-    setErrorMessage("");
-  };
-
   const getAvailableRoles = () => {
     return allRoles;
   };
 
   const toggleDropdown = (memberId: number) => {
     setDropdownVisible((prev) => (prev === memberId ? null : memberId));
-  };
-
-  const handleExportData = (id) => {
-    setExportLoader(true);
-    if (projectTasks.length == 0) {
-      toast.error("No tasks to export");
-      return;
-    }
-    const token = userToken;
-    axios.defaults.headers.common["access-token"] = token;
-
-    const payload = {
-      projectId: id,
-    };
-
-    console.log("Payload:", payload);
-    axios
-      .post(`${import.meta.env.VITE_DB_URL}/admin/exportTasks`, payload)
-      .then((response) => {
-        console.log("Export URL:", response);
-        const exportUrl = response.data.exportUrl;
-        window.open(exportUrl, "_blank");
-        const link = document.createElement("a");
-        link.href = exportUrl;
-        link.setAttribute("download", "");
-        link.download = exportUrl;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        setExportLoader(false);
-      })
-      .catch((err) => {
-        console.error(
-          "Error fetching project details:",
-          err.response || err.message || err
-        );
-        setExportLoader(false);
-      });
   };
 
   function formatDateString(dateString: string): string | null {
@@ -383,207 +223,26 @@ const ProjectsDetails: React.FC = () => {
                 <div className="col-span-5 xl:col-span-3">
                   <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="py-6 px-7 dark:border-strokedark">
-                      <div className="flex justify-between items-center gap-3">
-                        <p className="text-xl font-semibold text-black dark:text-white pb-2">
-                          {projectDetails.projectName}
-                          {" | "}
-                          {projectDetails.projectId}
-                        </p>
-
-                        <div className="flex justify-center items-center gap-3">
-                          <button
-                            onClick={handleAdd}
-                            disabled={!projectDetails?.onBoarding}
-                            className="w-10 h-10 text-center bg-blue-500 text-white rounded-none my-2 flex justify-center items-center border-none"
-                          >
-                            <FontAwesomeIcon
-                              icon={faPlus}
-                              className="text-sm px-2"
-                            />
-                          </button>
-                          {addModel && (
-                            <AddModel
-                              projectName={projectDetails.projectName}
-                              projectId={projectDetails._id}
-                              userId={userData._id}
-                              handleCloseAdd={handleCloseAdd}
-                              getTaskData={getTaskData}
-                            />
-                          )}
-                          <button
-                            onClick={handleEdit}
-                            className="w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none my-2 flex justify-center items-center border-none"
-                          >
-                            <FontAwesomeIcon
-                              icon={faEdit}
-                              className="text-sm px-2"
-                            />
-                          </button>
-                          {editModel && (
-                            <EditProject
-                              onBoarding={onBoarding}
-                              projectId={projectDetails._id}
-                              domain={projectDetails?.projectName}
-                              speech={projectDetails?.speech}
-                              perspective={projectDetails?.prespective}
-                              handleCloseEdit={handleCloseEdit}
-                              handleRefreshData={getTaskData}
-                            />
-                          )}
-                          <button
-                            onClick={handleDelete}
-                            className="w-10 h-10 text-center bg-slate-100 text-slate-600 hover:bg-blue-500 hover:text-white rounded-none my-2 flex justify-center items-center border-none"
-                          >
-                            <FontAwesomeIcon icon={faTrashAlt} />
-                          </button>
-                          {deleteModel && (
-                            <DeleteModel
-                              handleDelete={handleDeleteApi}
-                              handleClose={handleCloseDelete}
-                            />
-                          )}
-                        </div>
-                      </div>
-                      <div className="py-2">
-                        <h3 className="font-medium text-black dark:text-white">
-                          Client
-                        </h3>
-                        <p className="text-sm text-black dark:text-white">
-                          {userData.firstName} {userData.lastName} {"("}
-                          {userData.email}
-                          {")"}
-                        </p>
-                      </div>
-                      <Accordion
-                        allowToggle
-                        className={`appearance-none border-none py-4 `}
-                      >
-                        <AccordionItem
-                          className={`border-none bg-slate-100 dark:bg-meta-4 rounded`}
-                        >
-                          {({ isExpanded }) => (
-                            <>
-                              <h2>
-                                <AccordionButton className="flex justify-between items-center bg-slate-200 dark:bg-meta-4 ">
-                                  <p className="font-semibold text-black dark:text-white ">
-                                    OnBoarding
-                                  </p>
-                                  {isExpanded ? (
-                                    <MinusIcon fontSize="12px" />
-                                  ) : (
-                                    <AddIcon fontSize="12px" />
-                                  )}
-                                </AccordionButton>
-                              </h2>
-                              <AccordionPanel className="" pb={4}>
-                                <div className="bg-white dark:bg-boxdark rounded py-2 px-4">
-                                  <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3 pb-3">
-                                    1. General information:
-                                  </h2>
-                                  <div className="px-2">
-                                    <p className="dark:text-white font-semibold pb-2">
-                                      Speech
-                                    </p>
-                                    <p className="dark:text-white bg-slate-200 dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                                      {projectDetails?.speech}
-                                    </p>
-                                  </div>
-                                  <div className="px-2">
-                                    <p className="dark:text-white font-semibold pb-2">
-                                      Perspective
-                                    </p>
-                                    <p className="dark:text-white bg-slate-200 dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                                      {projectDetails?.prespective}
-                                    </p>
-                                  </div>
-                                  <div className="px-2">
-                                    <p className="dark:text-white font-semibold pb-2">
-                                      Website
-                                    </p>
-                                    <p className="dark:text-white bg-slate-200 dark:bg-meta-4 py-2 px-4 mb-2 rounded">
-                                      {projectDetails?.projectName}
-                                    </p>
-                                  </div>
-                                  <div className="w-full flex flex-col gap-2.5">
-                                    <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
-                                      2. Company Information
-                                    </h2>
-                                    <div className="px-3">
-                                      <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
-                                        Background information about the company
-                                      </label>
-                                      <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
-                                        {onBoarding?.companyBackgorund}
-                                      </p>
-                                    </div>
-                                    <div className="px-3">
-                                      <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
-                                        Which attributes best describe you as a
-                                        company/your products/your services?
-                                      </label>
-                                      <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
-                                        {onBoarding?.companyAttributes}
-                                      </p>
-                                    </div>
-                                    <div className="px-3">
-                                      <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
-                                        What are your services?
-                                      </label>
-                                      <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
-                                        {onBoarding?.comapnyServices}
-                                      </p>
-                                    </div>
-                                  </div>
-                                  <div className="w-full flex flex-col gap-2.5">
-                                    <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
-                                      3. Information About the Target Customers
-                                    </h2>
-                                    <div className="px-3">
-                                      <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
-                                        Who is the content written for?
-                                      </label>
-                                      <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
-                                        {onBoarding?.customerContent}
-                                      </p>
-                                    </div>
-                                    <div className="px-3">
-                                      <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
-                                        Customers we want to address have an
-                                        interest in...
-                                      </label>
-                                      <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
-                                        {onBoarding?.customerIntrest}
-                                      </p>
-                                    </div>
-                                  </div>
-                                  <div className="w-full flex flex-col gap-2.5">
-                                    <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
-                                      4. Aim of the Content
-                                    </h2>
-                                    <div className="px-3">
-                                      <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
-                                        What is the purpose of the content?
-                                      </label>
-                                      <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
-                                        {onBoarding?.contentPurpose}
-                                      </p>
-                                    </div>
-                                    <div className="px-3">
-                                      <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
-                                        Information about your brand and your
-                                        content
-                                      </label>
-                                      <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
-                                        {onBoarding?.contentInfo}
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </AccordionPanel>
-                            </>
-                          )}
-                        </AccordionItem>
-                      </Accordion>
+                      <ProjectDetailsButton
+                        projectId={projectDetails?.projectId}
+                        projectName={projectDetails?.projectName}
+                        _id={projectDetails?._id}
+                        userId={userData?._id}
+                        onBoarding={onBoarding}
+                        getTaskData={getTaskData}
+                        speech={projectDetails?.speech}
+                        perspective={projectDetails?.prespective}
+                        handleDelete={handleDeleteApi}
+                        firstName={userData?.firstName}
+                        lastName={userData.lastName}
+                        email={userData.email}
+                      />
+                      <AccordionData
+                        speech={projectDetails?.speech}
+                        perspective={projectDetails?.prespective}
+                        projectName={projectDetails?.projectName}
+                        onBoarding={onBoarding}
+                      />
 
                       <div className="pt-1 pb-3">
                         <h2>Folder</h2>
@@ -710,11 +369,11 @@ const ProjectsDetails: React.FC = () => {
                         handleMembers={handleMembers}
                         name={showAssignedRoles(projectDetails.seo) ?? ""}
                       />
-                      <TaskMembers
+                      {/* <TaskMembers
                         label={"Meta-lector"}
                         handleMembers={handleMembers}
                         name={"projectDetails.metaLector" ?? ""}
-                      />
+                      /> */}
                     </div>
                     <div className="px-7 py-2.5"></div>
                   </div>
@@ -724,71 +383,11 @@ const ProjectsDetails: React.FC = () => {
           )}
           <div className="pt-14">
             <div className="flex justify-end items-end">
-              <button
-                onClick={handleImport}
-                className="w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none mr-1.5 flex justify-center items-center border-none"
-              >
-                <FontAwesomeIcon icon={faDownload} className="text-sm px-2" />
-              </button>
-              {importModel && (
-                <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
-                  <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-3/12 xl:w-3/12 2xl:w-4/12 3xl:w-3/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
-                    <div className="flex justify-between items-center mb-5">
-                      <h2 className="text-xl font-bold dark:text-white pr-12">
-                        Import
-                      </h2>
-                      <FontAwesomeIcon
-                        className="cursor-pointer text-lg text-red-500 pl-12"
-                        onClick={handleCloseImport}
-                        icon={faTimes}
-                      />
-                    </div>
-                    <div className="relative w-full h-40 cursor-pointer border border-black dark:border-white border-dotted ">
-                      {/* Hidden file input */}
-                      <input
-                        type="file"
-                        className="absolute top-0 left-0 opacity-0 w-full h-30 cursor-pointer"
-                        onClick={(e) => {
-                          handleFileChange(e);
-                        }}
-                        accept=".csv"
-                      />
-                      <div className="flex justify-start items-center py-15">
-                        <FontAwesomeIcon
-                          icon={faCloudUploadAlt}
-                          className="text-gray-600 w-12 h-12 px-4"
-                        />
-                        <p className="mt-2 text-gray-700 ">{fileName}</p>
-                      </div>
-                    </div>
-                    <button
-                      className="w-full mt-4 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90"
-                      type="submit"
-                      onClick={(e) => handleImportData(e, projectDetails._id)}
-                      disabled={importLoader}
-                    >
-                      {importLoader ? "Importing..." : "Import"}
-                    </button>
-                    {error && (
-                      <p className="pt-6 text-red-500">{errorMessage}</p>
-                    )}
-                  </div>
-                </div>
-              )}
-              <button
-                onClick={() => {
-                  handleExportData(projectDetails._id);
-                }}
-                className="w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none ml-1.5 flex justify-center items-center border-none"
-              >
-                {exportLoader ? (
-                  <div className="flex items-center justify-center">
-                    <div className="w-6 h-6 border-4 border-blue-500 border-solid rounded-full border-t-transparent animate-spin" />
-                  </div>
-                ) : (
-                  <FontAwesomeIcon icon={faUpload} className="text-sm px-2" />
-                )}
-              </button>
+              <Import id={projectDetails._id} />
+              <Export
+                id={projectDetails._id}
+                taskLength={projectTasks.length}
+              />
             </div>
 
             {loading ? (

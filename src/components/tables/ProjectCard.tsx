@@ -120,7 +120,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects ,freelancer}) => {
               <WorkerComponent label="T" name={showAssignedRoles(project.texter) ?? ""} />
               <WorkerComponent label="L" name={showAssignedRoles(project.lector) ?? ""} />
               <WorkerComponent label="S" name={showAssignedRoles(project.seo) ?? ""} />
-              <WorkerComponent label="M" name={showAssignedRoles(project.metaLector) ?? ""} />
+              {/* <WorkerComponent label="M" name={showAssignedRoles(project.metaLector) ?? ""} /> */}
             </div>
           </div>
 
