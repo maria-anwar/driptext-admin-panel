@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Breadcrumb from "../../../components/breeadcrumbs/Breadcrumb";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSearch,
@@ -11,24 +10,9 @@ import UserPaginatedTable from "../../../components/tables/UserPaginatedTable";
 import { Link } from "react-router-dom";
 import ToggleSwitch from "../../../components/buttons/ToggleButton";
 import axios from "axios";
-import Loading from "../../../components/Helpers/Loading";
 import { useSelector } from "react-redux";
 import AddManager from "../../../components/FormFields/AddManager";
-
-interface Role {
-  _id: string;
-  title: string;
-  isActive: "Y" | "N";
-}
-
-interface User {
-  _id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  isActive: "Y" | "N";
-  role: Role;
-}
+import {User} from "../../../Types/Type"
 
 const Users: React.FC = () => {
   const user = useSelector<any>((state) => state.user);
@@ -48,7 +32,7 @@ const Users: React.FC = () => {
   }, [user.user.token]);
 
   const getUser = () => {
-    const token = user.user.token;
+    const token = user?.user?.token;
     axios.defaults.headers.common["access-token"] = token;
 
     axios
@@ -83,7 +67,6 @@ const Users: React.FC = () => {
   };
 
   const applyFilters = () => {
-    console.log("Applying filters...");
     let filteredData = userData;
 
     if (showInactive) {

@@ -8,36 +8,24 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import react-toastify styles
-import AddManager from "../FormFields/AddManager";
 import EditManager from "../FormFields/EditManager";
-
-interface Role {
-  _id: string;
-  title: string;
-  isActive: "Y" | "N";
-}
-
-interface User {
-  _id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  isActive: "Y" | "N";
-  role: Role;
-}
+import { User } from "../../Types/Type";
 
 interface PaginatedTableProps {
   users: User[];
   refreshUser: () => void;
 }
 
-const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users, refreshUser }) => {
+const UserPaginatedTable: React.FC<PaginatedTableProps> = ({
+  users,
+  refreshUser,
+}) => {
   const user = useSelector<any>((state) => state.user);
   const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [userToken, setUserToken] = useState(user.user.token);
-  const [localUsers, setLocalUsers] = useState([]); 
-  const [editModel, setEditModel] = useState(false);
+  const [localUsers, setLocalUsers] = useState<User[]>([]);
+  const [editModel, setEditModel] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null); // State to hold selected user
 
   useEffect(() => {
@@ -233,7 +221,13 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({ users, refreshUser 
 
       <ToastContainer />
       {editModel && selectedUser && (
-          <EditManager editUser={selectedUser} handleClose={()=>{setEditModel(false);refreshUser();}}/>
+        <EditManager
+          editUser={selectedUser}
+          handleClose={() => {
+            setEditModel(false);
+            refreshUser();
+          }}
+        />
       )}
     </div>
   );

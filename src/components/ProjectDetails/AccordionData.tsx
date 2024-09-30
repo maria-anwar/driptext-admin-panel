@@ -6,21 +6,13 @@ import {
   AccordionPanel,
 } from "@chakra-ui/accordion";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import { OnBoarding } from "../../Types/Type";
 
-interface OnBoarding {
-  companyBackgorund: string | null;
-  companyAttributes: string | null;
-  comapnyServices: string | null;
-  customerContent: string | null;
-  customerIntrest: string | null;
-  contentPurpose: string | null;
-  contentInfo: string | null;
-}
 interface AccordionDataProps {
   speech: string;
   perspective: string;
   projectName: string;
-  onBoarding: OnBoarding;
+  onBoarding: OnBoarding | undefined | null;
 }
 const AccordionData: React.FC<AccordionDataProps> = ({
   speech,

@@ -19,33 +19,8 @@ import * as XLSX from "xlsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useWordCount from "../Helpers/useWordCount";
-interface Task {
-  actualNumberOfWords: number | null;
-  comments: string | null;
-  createdAt: string; // ISO 8601 date string
-  desiredNumberOfWords: string; // or number, depending on how it is used
-  dueDate: string | null; // ISO 8601 date string or null
-  googleLink: string | null;
-  fileLink: string;
-  fileId: string | null;
-  isActive: "Y" | "N"; // Assuming 'Y' and 'N' are the only possible values
-  keywords: string;
-  lector: string | null;
-  metaLector: string | null;
-  project: string; // or a more specific type if it's an ObjectId
-  published: boolean;
-  readyToWork: boolean;
-  seo: string | null;
-  status: string;
-  taskId: number;
-  taskName: string;
-  texter: string | null;
-  topic: string | null;
-  type: string | null;
-  updatedAt: string; // ISO 8601 date string
-  __v: number;
-  _id: string; // or a more specific type if it's an ObjectId
-}
+import { Freelancer,Task } from "../../Types/Type";
+
 
 interface ProjectProps {
   tasks: Task[];
@@ -53,6 +28,7 @@ interface ProjectProps {
   projectId: string;
   projectName: string;
   handleRefreshData: () => void;
+  freelancer:Freelancer[]
 }
 
 const ProjectTaskTable: React.FC<ProjectProps> = ({
@@ -66,7 +42,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
   const [showDetailsDialog, setShowDetailsDialog] = useState<boolean>(false);
   const [task, setTask] = useState({});
 
-  const showAssignedRoles = (memberId: number) => {
+  const showAssignedRoles = (memberId: string | null) => {
     const foundFreelancer = freelancer.find((f) => f._id === memberId);
     if (foundFreelancer) {
       const fullName = `${foundFreelancer.firstName} ${foundFreelancer.lastName}`;

@@ -6,7 +6,7 @@ interface GroupDateFieldProps {
   label: string;
   name: string;
   id: string;
-  value: Date | null; // Date or null for DatePicker
+  value: Date | string | undefined | null; // Date or null for DatePicker
   onChange: (date: Date | null) => void; // Handle date change
   errors?: string;
   disabled?: boolean;

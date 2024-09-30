@@ -1,75 +1,19 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCheck,
-  faTimes,
-  faFolder,
-  faEye,
-  faEyeSlash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faTimes, faEye } from "@fortawesome/free-solid-svg-icons";
 import { Pagination } from "antd";
-import "antd/dist/reset.css"; // Import Ant Design styles
+import "antd/dist/reset.css";
 import "./custompagination.css";
 import { format } from "date-fns";
-
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
-
-interface Plan {
-  _id: string;
-  plan: string;
-  user: string;
-  subPlan: string;
-  project: string;
-  subscription: string;
-  startDate: string;
-  endDate: string;
-  totalTexts: number;
-  duration: number;
-  textsCount: number;
-  textsRemaining: number;
-  tasksPerMonth: number;
-  tasksPerMonthCount: number;
-  endMonthDate: string;
-  isActive: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-}
-
-// Define the Project interface to represent the main object
-interface Project {
-  _id: string;
-  projectId: string;
-  onBoarding: boolean;
-  projectName: string;
-  folderLink: string;
-  folderId: string;
-  tasks: number;
-  speech: string;
-  keywords: string | null;
-  perspective: string | null;
-  projectStatus: string;
-  user: string;
-  projectTasks: string[];
-  plan: Plan;
-  texter: string | null;
-  lector: string | null;
-  seo: string | null;
-  metaLector: string | null;
-  isActive: string;
-  createdAt: string;
-  updatedAt: string;
-  id: number;
-  __v: number;
-  openTasks: number;
-  finalTasks: number;
-}
+import { Freelancer, Project } from "../../Types/Type";
 
 interface PaginatedTableProps {
   projects: Project[];
   handleRefreshData?: () => void;
+  freelancer: Freelancer[];
 }
 
 const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
@@ -78,14 +22,35 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
   handleRefreshData,
 }) => {
   const user = useSelector<any>((state) => state.user);
-  const [userId, setUserID] = useState(user.user.data.user._id);
-  const [userToken, setUserToken] = useState(user.user.token);
+  const [userToken, setUserToken] = useState(user?.user?.token);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const navigate = useNavigate();
 
-  const showAssignedRoles = (memberId: number) => {
-    const foundFreelancer = freelancer.find((f) => f._id === memberId);
+  const handleRevert = (projectId: string) => {
+    let token = userToken;
+    axios.defaults.headers.common["access-token"] = token;
+    let payload = {
+      projectId: projectId,
+      isArchived: false,
+    };
+
+    axios
+      .post(`${import.meta.env.VITE_DB_URL}/admin/archiveProject`, payload)
+      .then((response) => {
+        if (response.status === 200) {
+          handleRefreshData();
+        }
+      })
+      .catch((err) => {
+        console.error("Error archiving the project:", err);
+      });
+  };
+
+  const showAssignedRoles = (memberId: string | null) => {
+    const foundFreelancer = freelancer.find(
+      (freelance) => freelance._id === memberId
+    );
     if (foundFreelancer) {
       const fullName = `${foundFreelancer.firstName} ${foundFreelancer.lastName}`;
       return fullName;
@@ -106,7 +71,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(1); // Reset to first page when rows per page changes
+    setPage(1);
   };
 
   const handleProject = (projectId: string) => {
@@ -139,27 +104,6 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
 
   const offset = (page - 1) * rowsPerPage;
   const paginatedProjects = projects.slice(offset, offset + rowsPerPage);
-
-  const handleRevert = (projectId: string) => {
-    let token = userToken;
-    axios.defaults.headers.common["access-token"] = token;
-    let payload = {
-      projectId: projectId,
-      isArchived: false,
-    };
-
-    axios
-      .post(`${import.meta.env.VITE_DB_URL}/admin/archiveProject`, payload)
-      .then((response) => {
-        if (response.status === 200) {
-          console.log("Project archived successfully:", response);
-          handleRefreshData();
-        }
-      })
-      .catch((err) => {
-        console.error("Error archiving the project:", err);
-      });
-  };
 
   return (
     <div className="mt-6">
@@ -215,7 +159,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                           : "bg-violet-500/20 text-violet-500"
                       }`}
                     >
-                      { project.projectStatus}
+                      {project.projectStatus}
                     </p>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -290,15 +234,15 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                     <div className="flex justify-between items-center">
                       <WorkerComponent
                         label="T"
-                        name={showAssignedRoles(project.texter) ?? ""}
+                        name={showAssignedRoles(project?.texter) ?? ""}
                       />
                       <WorkerComponent
                         label="L"
-                        name={showAssignedRoles(project.lector) ?? ""}
+                        name={showAssignedRoles(project?.lector) ?? ""}
                       />
                       <WorkerComponent
                         label="S"
-                        name={showAssignedRoles(project.seo) ?? ""}
+                        name={showAssignedRoles(project?.seo) ?? ""}
                       />
                       {/* <WorkerComponent
                         label="M"
@@ -387,7 +331,6 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                             </g>
                           </g>
                         </svg>
-
                         <p className="text-white text-base font-medium text-center py-1 px-2">
                           Revert
                         </p>

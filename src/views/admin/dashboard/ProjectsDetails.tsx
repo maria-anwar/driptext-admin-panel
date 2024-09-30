@@ -16,24 +16,25 @@ import Import from "../../../components/ProjectDetails/Import";
 import Export from "../../../components/ProjectDetails/Export";
 import ProjectDetailsButton from "../../../components/ProjectDetails/ProjectDetailsButton";
 import AccordionData from "../../../components/ProjectDetails/AccordionData";
+import { Freelancer ,Project,OnBoarding,Plan,User} from "../../../Types/Type";
 
 const ProjectsDetails: React.FC = () => {
   const navigate = useNavigate();
   const user = useSelector<any>((state) => state.user);
   const projectId = localStorage.getItem("projectID");
-  const [loading, setLoading] = useState(true);
-  const [memberModel, setMemberModel] = useState(false);
-  const [deleteModel, setDeleteModel] = useState(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [memberModel, setMemberModel] = useState<boolean>(false);
+  const [deleteModel, setDeleteModel] = useState<boolean>(false);
   const [projectDetails, setProjectDetails] = useState([]);
   const [projectTasks, setProjectTasks] = useState([]);
-  const [onBoarding, setOnBoarding] = useState({});
-  const [freelancer, setFreelancer] = useState([]);
-  const [plan, setPlan] = useState({});
+  const [onBoarding, setOnBoarding] = useState<OnBoarding>();
+  const [freelancer, setFreelancer] = useState<Freelancer[]>([]);
+  const [plan, setPlan] = useState<Plan>();
   const [userData, setUserData] = useState({});
   const [userId, setUserID] = useState(user.user.data.user._id);
   const [userToken, setUserToken] = useState(user.user.token);
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
-  const [editManager, setEditManager] = useState(false);
+  const [editManager, setEditManager] = useState<boolean>(false);
 
   useEffect(() => {
     getTaskData();
@@ -149,11 +150,11 @@ const ProjectsDetails: React.FC = () => {
       });
   };
 
-  const showAssignedRoles = (memberId: number) => {
+  const showAssignedRoles = (memberId: string) => {
     if (!freelancer) return "";
     const foundFreelancer = freelancer.find((f) => f._id === memberId);
     if (foundFreelancer) {
-      const fullName = `${foundFreelancer.firstName} ${foundFreelancer.lastName}`;
+      const fullName = `${foundFreelancer?.firstName} ${foundFreelancer?.lastName}`;
       return fullName;
     } else {
       return "";
@@ -288,28 +289,28 @@ const ProjectsDetails: React.FC = () => {
                       <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-5 py-2">
                         <TaskComponent
                           label="Status"
-                          name={projectDetails.projectStatus}
+                          name={projectDetails?.projectStatus}
                         />
                         <TaskComponent
                           label="Tasks"
-                          name={`${plan.textsCount}/${plan.totalTexts}`}
+                          name={`${plan?.textsCount}/${plan?.totalTexts}`}
                         />
                         <TaskComponent
                           label="Max Tasks"
-                          name={plan.totalTexts}
+                          name={plan?.totalTexts}
                         />
-                        <TaskComponent label="Duration" name={plan.duration} />
+                        <TaskComponent label="Duration" name={plan?.duration} />
                         <TaskComponent
                           label="Task per month"
-                          name={plan.tasksPerMonth}
+                          name={plan?.tasksPerMonth}
                         />
                         <div>
                           <p className="text-xs text-slate-700 dark:text-slate-300 ">
                             Performance Period
                           </p>
                           <p className="text-black dark:text-white">
-                            {typeof plan.endDate === "string"
-                              ? formatDateString(plan.endDate)
+                            {typeof plan?.endDate === "string"
+                              ? formatDateString(plan?.endDate)
                               : null}
                           </p>
                         </div>
@@ -367,7 +368,7 @@ const ProjectsDetails: React.FC = () => {
                       <TaskMembers
                         label={"SEO"}
                         handleMembers={handleMembers}
-                        name={showAssignedRoles(projectDetails.seo) ?? ""}
+                        name={showAssignedRoles(projectDetails?.seo) ?? ""}
                       />
                       {/* <TaskMembers
                         label={"Meta-lector"}
@@ -396,9 +397,9 @@ const ProjectsDetails: React.FC = () => {
               <ProjectTaskTable
                 tasks={projectTasks}
                 freelancer={freelancer}
-                userId={userData._id}
-                projectId={projectDetails._id}
-                projectName={projectDetails.projectName}
+                userId={userData?._id}
+                projectId={projectDetails?._id}
+                projectName={projectDetails?.projectName}
                 handleRefreshData={getTaskData}
               />
             )}
