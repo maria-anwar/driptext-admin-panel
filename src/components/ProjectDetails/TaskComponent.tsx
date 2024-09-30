@@ -1,6 +1,6 @@
 import React from "react";
 
-const TaskComponent: React.FC<{ label: string; name: string | number }> = ({
+const TaskComponent: React.FC<{ label: string; name: undefined | number | string }> = ({
   label,
   name,
 }) => {

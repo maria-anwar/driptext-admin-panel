@@ -289,7 +289,7 @@ const ProjectsDetails: React.FC = () => {
                       <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-5 py-2">
                         <TaskComponent
                           label="Status"
-                          name={projectDetails?.projectStatus}
+                          name={projectDetails?.projectStatus.toUpperCase() === 'FREE TRIAL' ? 'Ready' : projectDetails?.projectStatus}
                         />
                         <TaskComponent
                           label="Tasks"

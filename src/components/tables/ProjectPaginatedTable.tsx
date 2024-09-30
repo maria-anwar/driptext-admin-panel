@@ -150,7 +150,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                         project.projectStatus.toUpperCase() === "FINAL"
                           ? "bg-success/20 text-success"
                           : project.projectStatus.toUpperCase() === "FREE TRIAL"
-                          ? "bg-red-300/20 text-red-600"
+                          ? "bg-warning/20 text-warning"
                           : project.projectStatus.toUpperCase() === "READY"
                           ? "bg-warning/20 text-warning"
                           : project.projectStatus.toUpperCase() ===
@@ -159,7 +159,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                           : "bg-violet-500/20 text-violet-500"
                       }`}
                     >
-                      {project.projectStatus}
+                      {project.projectStatus.toUpperCase() === 'FREE TRIAL' ? 'Ready' : project.projectStatus}
                     </p>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
