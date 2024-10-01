@@ -244,10 +244,10 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                         label="S"
                         name={showAssignedRoles(project?.seo) ?? ""}
                       />
-                      {/* <WorkerComponent
+                      <WorkerComponent
                         label="M"
                         name={project.metaLector ?? ""}
-                      /> */}
+                      />
                     </div>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
