@@ -370,11 +370,11 @@ const ProjectsDetails: React.FC = () => {
                         handleMembers={handleMembers}
                         name={showAssignedRoles(projectDetails?.seo) ?? ""}
                       />
-                      {/* <TaskMembers
+                      <TaskMembers
                         label={"Meta-lector"}
                         handleMembers={handleMembers}
-                        name={"projectDetails.metaLector" ?? ""}
-                      /> */}
+                        name={projectDetails?.metaLector ?? ""}
+                      />
                     </div>
                     <div className="px-7 py-2.5"></div>
                   </div>
