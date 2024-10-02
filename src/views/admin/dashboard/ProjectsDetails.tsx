@@ -118,6 +118,7 @@ const ProjectsDetails: React.FC = () => {
       .then((response) => {
         getTaskData();
         setDropdownVisible(null);
+        handleCloseMemberModel()
       })
       .catch((err) => {
         console.error(
