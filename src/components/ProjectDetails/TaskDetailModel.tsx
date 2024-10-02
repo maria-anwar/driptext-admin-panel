@@ -27,7 +27,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {Task,Freelancer} from '../../Types/Type'
+import { Task, Freelancer } from "../../Types/Type";
 
 interface TaskDetailModelProps {
   task: Task;
@@ -86,7 +86,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     projectId: projectId,
     projectName: "",
     userId: userId,
-    date: task?.dueDate, 
+    date: task?.dueDate,
     wordCount: task.desiredNumberOfWords,
   });
 
@@ -98,9 +98,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     };
     axios
       .post(`${import.meta.env.VITE_DB_URL}/admin/wordCountTask`, payload)
-      .then((response) => {
-       
-      })
+      .then((response) => {})
       .catch((err) => {
         console.error("Error updating word count of project:", err);
       });
@@ -110,7 +108,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     topic: Yup.string().required("Please select a topic"),
     textType: Yup.string().required("Please select type"),
     keywords: Yup.string().required("Please select keywords"),
-    date: Yup.date().nullable().required("Please select a date"), 
+    date: Yup.date().nullable().required("Please select a date"),
   });
   const handleRoleSelect = (role: string, memberId: number) => {
     const token = userToken;
@@ -121,7 +119,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
       freelancerId: memberId?.toString(),
       role: role.toString(),
     };
-    console.log(payload); 
+    console.log(payload);
 
     axios
       .post(
@@ -130,7 +128,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
       )
       .then((response) => {
         const projectDataArray = response;
-        console.log(payload); 
+        console.log(payload);
         console.log(projectDataArray);
         setDropdownVisible(null);
         handleRefreshData();
@@ -162,7 +160,6 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     setDropdownVisible(null);
   };
 
-
   const handleCancel = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     closeModel();
@@ -179,7 +176,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   };
 
   const onSubmit = async (values) => {
-    setLoading(true); 
+    setLoading(true);
     const payLoad = {
       taskId: task._id,
       dueDate: values.date,
@@ -191,23 +188,26 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     };
 
     try {
-      const response =await axios.post(`${import.meta.env.VITE_DB_URL}/admin/editTask`, payLoad);
-      if(response.status === 200){
+      const response = await axios.post(
+        `${import.meta.env.VITE_DB_URL}/admin/editTask`,
+        payLoad
+      );
+      if (response.status === 200) {
         handleRefreshData();
         closeModel();
-      }    
+      }
     } catch (error) {
-      const err= error.response.data.message || "Failed to update task";
+      const err = error.response.data.message || "Failed to update task";
       setError(true);
       setErrorMessage(err);
-      setLoading(false); 
-    } 
+      setLoading(false);
+    }
   };
-  
 
   return (
     <>
       <Formik
+        enableReinitialize
         initialValues={formData}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
@@ -265,7 +265,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                   </div>
 
                   <div className="w-full flex justify-between items-center   gap-2">
-                  <div className="w-1/2 ml-1">
+                    <div className="w-1/2 ml-1">
                       <label
                         className="mb-3  text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold"
                         htmlFor="document"
@@ -316,7 +316,6 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                         placeholderText="Choose a date"
                       />
                     </div>
-                   
                   </div>
                   <div className="w-full flex justify-between items-center ">
                     <div className="w-full mr-1">
@@ -384,17 +383,6 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                       >
                         <FontAwesomeIcon icon={faPlus} className="text-sm" />
                       </p>
-                      {memberModel && (
-                        <MemberModal
-                          isOpen={memberModel}
-                          freelancer={freelancer}
-                          handleCloseMemberModel={handleCloseMemberModel}
-                          toggleDropdown={toggleDropdown}
-                          dropdownVisible={dropdownVisible}
-                          getAvailableRoles={getAvailableRoles}
-                          handleRoleSelect={handleRoleSelect}
-                        />
-                      )}
                     </div>
 
                     <TaskMember
@@ -429,16 +417,28 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                     Cancel
                   </button>
                   <button
-                    type="submit" disabled={loading}
+                    type="submit"
+                    disabled={loading}
                     className="px-4 py-2 bg-blue-500 text-white rounded"
                   >
                     {loading ? "Submitting..." : "Submit"}
                   </button>
                 </div>
                 {error && (
-                    <p className="text-red-500 text-sm mt-4" >{errorMessage}</p>
+                  <p className="text-red-500 text-sm mt-4">{errorMessage}</p>
                 )}
               </div>
+              {memberModel && (
+                <MemberModal
+                  isOpen={memberModel}
+                  freelancer={freelancer}
+                  handleCloseMemberModel={handleCloseMemberModel}
+                  toggleDropdown={toggleDropdown}
+                  dropdownVisible={dropdownVisible}
+                  getAvailableRoles={getAvailableRoles}
+                  handleRoleSelect={handleRoleSelect}
+                />
+              )}
             </div>
           </Form>
         )}
