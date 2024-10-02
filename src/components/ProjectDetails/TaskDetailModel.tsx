@@ -72,7 +72,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [userToken, setUserToken] = useState(user.user.token);
+  const [userToken, setUserToken] = useState(user?.user?.token);
   const allRoles = ["texter", "lector", "seo-optimizer"];
   const [showCard, setShowCard] = useState(task.readyToWork);
   const [memberModel, setMemberModel] = useState<boolean>(false);
@@ -134,6 +134,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
         console.log(projectDataArray);
         setDropdownVisible(null);
         handleRefreshData();
+        handleCloseMemberModel();
       })
       .catch((err) => {
         console.error(
