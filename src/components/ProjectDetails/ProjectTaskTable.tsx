@@ -212,7 +212,10 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
               userId={userId}
               projectId={projectId}
               projectName={projectName}
-              handleRefreshData={handleRefreshData}
+              handleRefreshData={() => {
+                handleRefreshData();
+                hanldeCloseAllInfo();
+              }}
             />
           )}
         </div>
