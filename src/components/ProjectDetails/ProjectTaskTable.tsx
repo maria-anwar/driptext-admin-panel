@@ -20,6 +20,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useWordCount from "../Helpers/useWordCount";
 import { Freelancer, Task } from "../../Types/Type";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import MemberModal from "./MemberModel";
 
 interface ProjectProps {
   tasks: Task[];
@@ -38,8 +41,14 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
   projectName,
   handleRefreshData,
 }) => {
+  const user = useSelector<any>((state) => state.user);
+  const userToken = user?.user?.token;
   const [showDetailsDialog, setShowDetailsDialog] = useState<boolean>(false);
   const [task, setTask] = useState<Task | null>(null);
+  const [showMembersDialog, setShowMembersDialog] = useState<boolean>(false);
+  const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
+  const [memberModel, setMemberModel] = useState<boolean>(false);
+  const allRoles = ["texter", "lector", "seo-optimizer"];
 
   const showAssignedRoles = (memberId: string | null) => {
     const foundFreelancer = freelancer.find((f) => f._id === memberId);
@@ -50,14 +59,61 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
       return "";
     }
   };
+  const handleRoleSelect = (role: string, memberId: number) => {
+    const token = userToken;
+    axios.defaults.headers.common["access-token"] = token;
+
+    const payload = {
+      taskId: task._id,
+      freelancerId: memberId?.toString(),
+      role: role.toString(),
+    };
+    console.log(payload);
+
+    axios
+      .post(
+        `${import.meta.env.VITE_DB_URL}/admin/assignFreelancersByTask`,
+        payload
+      )
+      .then((response) => {
+        const projectDataArray = response;
+        console.log(payload);
+        console.log(projectDataArray);
+        setDropdownVisible(null);
+        handleRefreshData();
+        handleCloseMemberModel();
+      })
+      .catch((err) => {
+        console.error(
+          "Error fetching project details:",
+          err.response || err.message || err
+        );
+        setDropdownVisible(null);
+      });
+  };
+  const getAvailableRoles = () => {
+    return allRoles;
+  };
+
+  const handleCloseMemberModel = () => {
+    setMemberModel(false);
+  };
 
   const handleTasks = (task: Task) => {
     setTask(task);
     setShowDetailsDialog(true); // Open modal after setting the task
   };
 
+  const handleMembers = (task: Task) => {
+    setTask(task);
+    setMemberModel(true);
+  };
+
   const hanldeCloseAllInfo = () => {
     setShowDetailsDialog(false);
+  };
+  const toggleDropdown = (memberId: number) => {
+    setDropdownVisible((prev) => (prev === memberId ? null : memberId));
   };
 
   const formatDate = (dateString: Date | string) => {
@@ -107,8 +163,11 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
                   Team
                 </th>
-                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[100px] py-4 px-4 font-semibold text-black dark:text-white">
                   Action
+                </th>
+                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
+                  Members
                 </th>
               </tr>
             </thead>
@@ -200,6 +259,20 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                       </p>
                     </div>
                   </td>
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <div
+                      className={`${
+                        task.lector && task.seo && task.texter
+                          ? "bg-blue-500"
+                          : "bg-yellow-400/80"
+                      }  h-9 flex justify-center items-center rounded cursor-pointer`}
+                      onClick={() => handleMembers(task)}
+                    >
+                      <p className="text-white text-base font-medium text-center py-1 px-1">
+                        Add Member
+                      </p>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -219,6 +292,17 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
             />
           )}
         </div>
+        {memberModel && (
+          <MemberModal
+            isOpen={memberModel}
+            freelancer={freelancer}
+            handleCloseMemberModel={handleCloseMemberModel}
+            toggleDropdown={toggleDropdown}
+            dropdownVisible={dropdownVisible}
+            getAvailableRoles={getAvailableRoles}
+            handleRoleSelect={handleRoleSelect}
+          />
+        )}
       </div>
     </div>
   );
