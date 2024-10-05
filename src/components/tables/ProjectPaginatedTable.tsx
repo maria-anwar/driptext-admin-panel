@@ -148,18 +148,32 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                     <p
                       className={`text-sm uppercase text-center px-3 rounded-full py-1 ${
                         project.projectStatus.toUpperCase() === "FINAL"
-                          ? "bg-success/20 text-success"
+                          ? "bg-green-500/20 text-green-500"
                           : project.projectStatus.toUpperCase() === "FREE TRIAL"
-                          ? "bg-warning/20 text-warning"
+                          ? "bg-yellow-500/20 text-yellow-500"
                           : project.projectStatus.toUpperCase() === "READY"
-                          ? "bg-warning/20 text-warning"
+                          ? "bg-yellow-500/20 text-yellow-500"
                           : project.projectStatus.toUpperCase() ===
-                            "READY FOR PROFEADING"
-                          ? "bg-warning/20 text-warning"
-                          : "bg-violet-500/20 text-violet-500"
+                            "IN PROGRESS"
+                          ? "bg-blue-500/20 text-blue-500"
+                          : project.projectStatus.toUpperCase() ===
+                            "READY FOR PROOFREADING"
+                          ? "bg-orange-500/20 text-orange-500"
+                          : project.projectStatus.toUpperCase() ===
+                            "PROOFREADING IN PROGRESS"
+                          ? "bg-purple-500/20 text-purple-500"
+                          : project.projectStatus.toUpperCase() ===
+                            "READY FOR SEO OPTIMIZATION"
+                          ? "bg-indigo-500/20 text-indigo-500"
+                          : project.projectStatus.toUpperCase() ===
+                            "SEO OPTIMIZATION IN PROGRESS"
+                          ? "bg-pink-500/20 text-pink-500"
+                           : "bg-violet-500/20 text-violet-500"
                       }`}
                     >
-                      {project.projectStatus.toUpperCase() === 'FREE TRIAL' ? 'Ready' : project.projectStatus}
+                      {project.projectStatus.toUpperCase() === "FREE TRIAL"
+                        ? "Ready"
+                        : project.projectStatus}
                     </p>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">

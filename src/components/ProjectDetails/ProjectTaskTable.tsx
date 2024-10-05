@@ -166,9 +166,9 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                 <th className="min-w-[100px] py-4 px-4 font-semibold text-black dark:text-white">
                   Action
                 </th>
-                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
+                {/* <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
                   Members
-                </th>
+                </th> */}
               </tr>
             </thead>
             <tbody>
@@ -180,15 +180,27 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                         className={`text-xs uppercase text-center py-1.5 px-3 rounded-full
                         ${
                           task.status.toUpperCase() === "FINAL"
-                            ? "bg-success/20 text-success"
-                            : task.status.toUpperCase() === "FREE TRIAL"
-                            ? "bg-danger/20 text-danger"
-                            : task.status.toUpperCase() === "READY TO WORK"
-                            ? "bg-warning/20 text-warning"
-                            : task.status.toUpperCase() ===
-                              "READY FOR PROFEADING"
-                            ? "bg-warning/20 text-warning"
-                            : "bg-violet-500/20 text-violet-500"
+                          ? "bg-green-500/20 text-green-500"
+                          : task.status.toUpperCase() === "FREE TRIAL"
+                          ? "bg-yellow-500/20 text-yellow-500"
+                          : task.status.toUpperCase() === "READY TO WORK"
+                          ? "bg-yellow-500/20 text-yellow-500"
+                          : task.status.toUpperCase() ===
+                            "IN PROGRESS"
+                          ? "bg-blue-500/20 text-blue-500"
+                          : task.status.toUpperCase() ===
+                            "READY FOR PROOFREADING"
+                          ? "bg-orange-500/20 text-orange-500"
+                          : task.status.toUpperCase() ===
+                            "PROOFREADING IN PROGRESS"
+                          ? "bg-purple-500/20 text-purple-500"
+                          : task.status.toUpperCase() ===
+                            "READY FOR SEO OPTIMIZATION"
+                          ? "bg-indigo-500/20 text-indigo-500"
+                          : task.status.toUpperCase() ===
+                            "SEO OPTIMIZATION IN PROGRESS"
+                          ? "bg-pink-500/20 text-pink-500"
+                           : "bg-violet-500/20 text-violet-500"
                         }`}
                       >
                         {task.status}
@@ -259,7 +271,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                       </p>
                     </div>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  {/* <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
                       className={`${
                         task.lector && task.seo && task.texter
@@ -272,7 +284,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                         Add Member
                       </p>
                     </div>
-                  </td>
+                  </td> */}
                 </tr>
               ))}
             </tbody>
