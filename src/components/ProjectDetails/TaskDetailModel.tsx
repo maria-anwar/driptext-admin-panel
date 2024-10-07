@@ -98,7 +98,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     };
     axios
       .post(`${import.meta.env.VITE_DB_URL}/admin/wordCountTask`, payload)
-      .then((response) => {})
+      .then((response) => { console.log("word count"); })
       .catch((err) => {
         console.error("Error updating word count of project:", err);
       });
@@ -236,15 +236,27 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                       <p
                         className={`w-full py-0 text-sm uppercase ${
                           task.status.toUpperCase() === "FINAL"
-                            ? " text-success"
-                            : task.status.toUpperCase() === "FREE TRIAL"
-                            ? " text-warning"
-                            : task.status.toUpperCase() === "READY TO WORK"
-                            ? " text-warning"
-                            : task.status.toUpperCase() ===
-                              "READY FOR PROFEADING"
-                            ? " text-warning"
-                            : " text-violet-500"
+                          ? " text-green-500"
+                          : task.status.toUpperCase() === "FREE TRIAL"
+                          ? " text-yellow-500"
+                          : task.status.toUpperCase() === "READY TO WORK"
+                          ? " text-yellow-500"
+                          : task.status.toUpperCase() ===
+                            "IN PROGRESS"
+                          ? " text-blue-500"
+                          : task.status.toUpperCase() ===
+                            "READY FOR PROOFREADING"
+                          ? " text-orange-500"
+                          : task.status.toUpperCase() ===
+                            "PROOFREADING IN PROGRESS"
+                          ? " text-purple-500"
+                          : task.status.toUpperCase() ===
+                            "READY FOR SEO OPTIMIZATION"
+                          ? " text-indigo-500"
+                          : task.status.toUpperCase() ===
+                            "SEO OPTIMIZATION IN PROGRESS"
+                          ? " text-pink-500"
+                           : " text-violet-500"
                         }`}
                       >
                         {task.status}
