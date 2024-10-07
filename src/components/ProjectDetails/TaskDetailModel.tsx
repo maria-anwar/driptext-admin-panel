@@ -378,37 +378,37 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                       <h3 className="font-medium text-black dark:text-white">
                         Project members
                       </h3>
-                      {/* <p
+                      <p
                         className="w-5 h-5 bg-blue-500 text-white flex items-center justify-center cursor-pointer"
                         onClick={handleMembers}
                       >
                         <FontAwesomeIcon icon={faPlus} className="text-sm" />
-                      </p> */}
+                      </p>
                     </div>
 
                     <TaskMember
                       name={showAssignedRoles(task.texter) ?? ""}
                       label="Texter"
                       handleMembers={handleMembers}
-                      hide={true}
+                      hide={false}
                     />
                     <TaskMember
                       name={showAssignedRoles(task.lector) ?? ""}
                       label="Lector"
                       handleMembers={handleMembers}
-                      hide={true}
+                      hide={false}
                     />
                     <TaskMember
                       name={showAssignedRoles(task.seo) ?? ""}
                       label="SEO"
                       handleMembers={handleMembers}
-                      hide={true}
+                      hide={false}
                     />
                     <TaskMember
                       name={showAssignedRoles(task.metaLector) ?? ""}
                       label="Meta Lector"
                       handleMembers={handleMembers}
-                      hide={true}
+                      hide={false}
                     />
                   </div>
                 </div>

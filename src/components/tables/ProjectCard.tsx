@@ -84,7 +84,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects ,freelancer}) => {
               value={project.finalTasks}
               max={project.plan.totalTexts}
             ></progress>
-            <p className="py-2 uppercase">
+            <p className="py-0 uppercase">
               STATUS:{" "}
               <span
                 className={`${
@@ -100,12 +100,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects ,freelancer}) => {
                     : " text-violet-500"
                 }`}
               >
-                {project.projectStatus.toUpperCase() === 'FREE TRIAL' ? 'Ready' : project.projectStatus}
+               {project.projectStatus.toUpperCase() === "FREE TRIAL"
+                        ? "Ready"
+                        : project.projectStatus.toUpperCase()==="NOT INITALIZED" ? "Wating for onboarding" : project.projectStatus}
               </span>
             </p>
           </div>
 
-          <div className="mt-3 mb-3 flex items-end justify-between pt-8">
+          <div className="mt-5 mb-3 flex items-end justify-between pt-8">
             <div className="text-sm font-medium text-dark-gray">
               Manager <div className="text-meta-5">David Warner</div>
             </div>
