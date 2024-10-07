@@ -89,15 +89,27 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects ,freelancer}) => {
               <span
                 className={`${
                   project.projectStatus.toUpperCase() === "FINAL"
-                    ? " text-success"
-                    : project.projectStatus.toUpperCase() === "FREE TRIAL"
-                    ? " text-warning"
-                    : project.projectStatus.toUpperCase() === "READY"
-                    ? " text-warning"
-                    : project.projectStatus.toUpperCase() ===
-                      "READY FOR PROFEADING"
-                    ? " text-warning"
-                    : " text-violet-500"
+                  ? " text-green-500"
+                  : project.projectStatus.toUpperCase() === "FREE TRIAL"
+                  ? " text-yellow-500"
+                  : project.projectStatus.toUpperCase() === "READY"
+                  ? " text-yellow-500"
+                  : project.projectStatus.toUpperCase() ===
+                    "IN PROGRESS"
+                  ? " text-blue-500"
+                  : project.projectStatus.toUpperCase() ===
+                    "READY FOR PROOFREADING"
+                  ? " text-orange-500"
+                  : project.projectStatus.toUpperCase() ===
+                    "PROOFREADING IN PROGRESS"
+                  ? " text-purple-500"
+                  : project.projectStatus.toUpperCase() ===
+                    "READY FOR SEO OPTIMIZATION"
+                  ? " text-indigo-500"
+                  : project.projectStatus.toUpperCase() ===
+                    "SEO OPTIMIZATION IN PROGRESS"
+                  ? " text-pink-500"
+                   : " text-violet-500"
                 }`}
               >
                {project.projectStatus.toUpperCase() === "FREE TRIAL"
@@ -109,7 +121,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects ,freelancer}) => {
 
           <div className="mt-5 mb-3 flex items-end justify-between pt-8">
             <div className="text-sm font-medium text-dark-gray">
-              Manager <div className="text-meta-5">David Warner</div>
+              
             </div>
             <div className="text-sm font-medium text-dark-gray">
               Created on
