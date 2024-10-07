@@ -173,7 +173,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                     >
                       {project.projectStatus.toUpperCase() === "FREE TRIAL"
                         ? "Ready"
-                        : project.projectStatus}
+                        : project.projectStatus.toUpperCase()==="NOT INITALIZED" ? "Wating for onboarding" : project.projectStatus.toUpperCase()}
                     </p>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
