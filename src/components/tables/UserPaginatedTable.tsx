@@ -139,6 +139,8 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({
                     <p className="text-black dark:text-white capitalize">
                       {user?.role?.title === "ProjectManger"
                         ? "Project Manager"
+                        : user?.role?.title === "leads"
+                        ? "Lead"
                         : user?.role?.title}
                     </p>
                   </td>
