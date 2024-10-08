@@ -157,7 +157,7 @@ const Users: React.FC = () => {
               onClick={handleAddManager}
               className="inline-flex items-center cursor-pointer justify-center gap-2.5 bg-black py-3 text-sm xl:text-base  text-center font-medium text-white hover:bg-opacity-90 px-5"
             >
-              <h2>Add Manager</h2>
+              <h2>Add User</h2>
             </div>
           </div>
           {showAddManager && <AddManager handleClose={handleCloseManager}/>}
