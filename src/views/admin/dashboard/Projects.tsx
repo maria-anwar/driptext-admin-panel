@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ToggleSwitch from "../../../components/buttons/ToggleButton";
 import {
   faThLarge,
@@ -13,7 +13,8 @@ import ProjectCard from "../../../components/tables/ProjectCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import {Freelancer,Project} from '../../../Types/Type'
+import { Freelancer, Project } from "../../../Types/Type";
+import { debounce } from "lodash";
 
 const Projects: React.FC = () => {
   const user = useSelector<any>((state) => state.user);
@@ -25,28 +26,24 @@ const Projects: React.FC = () => {
   const [projectData, setProjectData] = useState<Project[]>([]);
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [userId, setUserID] = useState(user.user.data.user._id);
-  const [userToken, setUserToken] = useState(user.user.token);
   const [freelancer, setFreelancer] = useState<Freelancer[]>([]);
 
   useEffect(() => {
     getFreelancerData();
     getProjects();
-  }, [user, userToken, userId]);
+  }, []);
 
-  const getProjects = () => {
-    let token = userToken;
+  const getProjects = async () => {
+    let token = user?.user?.token;
     axios.defaults.headers.common["access-token"] = token;
-    let payload = {
-      userId: userId,
-    };
-    axios
+    await axios
       .get(`${import.meta.env.VITE_DB_URL}/admin/getProjects`)
       .then((response) => {
         const projectDataArray = response.data.projects;
-        console.log("projectDataArray", projectDataArray);
-        setProjectData(projectDataArray);
-        setFilteredProjects(projectDataArray);
+        setProjectData(() => {
+          setFilteredProjects(projectDataArray);
+          return projectDataArray;
+        });
         setLoading(false);
       })
       .catch((err) => {
@@ -54,29 +51,36 @@ const Projects: React.FC = () => {
       });
   };
 
-  useEffect(() => {
-    const filtered = projectData.filter((project) =>
-      project?.projectName?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredProjects(filtered);
-  }, [searchQuery, projectData]);
-
-  const getFreelancerData = () => {
-    let token = userToken;
+  const getFreelancerData =async () => {
+    let token = user?.user?.token;
     axios.defaults.headers.common["access-token"] = token;
-
-    axios
+    await axios
       .get(`${import.meta.env.VITE_DB_URL}/admin/getFreelancers`)
       .then((response) => {
         const projectDataArray = response.data.freelancers;
         const allProjects = projectDataArray;
-        console.log("freelancer", allProjects);
         setFreelancer(allProjects);
       })
       .catch((err) => {
         console.error("Error fetching freelancer details:", err);
       });
   };
+
+  const debouncedSearch = useMemo(
+    () =>
+      debounce((query: string) => {
+        const filtered = projectData.filter((project) =>
+          project?.projectName?.toLowerCase().includes(query.toLowerCase())
+        );
+        setFilteredProjects(filtered);
+      }, 300),
+    [projectData]
+  );
+
+  useEffect(() => {
+    debouncedSearch(searchQuery);
+  }, [searchQuery]);
+  
 
   const handleCard = (isOn: boolean) => {
     setShowCard(isOn);
@@ -86,13 +90,6 @@ const Projects: React.FC = () => {
     }
   };
 
-  // const handleDraft = (isOn: boolean) => {
-  //   setShowDraft(isOn);
-  //   if (isOn) {
-  //     setShowCard(false);
-  //     setShowArchived(false);
-  //   }
-  // };
 
   const handleArchived = (isOn: boolean) => {
     setShowArchived(isOn);
@@ -131,11 +128,6 @@ const Projects: React.FC = () => {
               isOn={showCard}
               onToggle={handleCard}
             />
-            {/* <ToggleSwitch
-              icon={faBatteryEmpty}
-              isOn={showDraft}
-              onToggle={handleDraft}
-            /> */}
             <ToggleSwitch
               icon={faTrashAlt}
               isOn={showArchived}
@@ -168,11 +160,9 @@ const Projects: React.FC = () => {
 
         <div>
           {
-            /* {!showDraft && */
             !showArchived &&
               (showCard ? (
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 2xl:grid-cols-3 5xl:grid-cols-4 4xl:px-14 pt-8">
-                  {/* Filter out archived projects before passing to ProjectCard */}
                   <ProjectCard
                     projects={filteredProjects.filter(
                       (project) => project?.isActive !== "N"
@@ -195,13 +185,6 @@ const Projects: React.FC = () => {
                 </>
               ))
           }
-
-          {/* {showDraft && (
-            <ProjectPaginatedTable
-              projects={filteredProjects}
-              freelancer={freelancer}
-            />
-          )} */}
           {showArchived && (
             <ProjectPaginatedTable
               handleRefreshData={getProjects}
