@@ -12,7 +12,7 @@ import ToggleSwitch from "../../../components/buttons/ToggleButton";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import AddManager from "../../../components/FormFields/AddManager";
-import {User} from "../../../Types/Type"
+import { User } from "../../../Types/Type";
 
 const Users: React.FC = () => {
   const user = useSelector<any>((state) => state.user);
@@ -29,7 +29,7 @@ const Users: React.FC = () => {
 
   useEffect(() => {
     getUser();
-  }, [user.user.token]);
+  }, [user?.user?.token]);
 
   const getUser = () => {
     const token = user?.user?.token;
@@ -40,7 +40,6 @@ const Users: React.FC = () => {
       .then((response) => {
         const allUsers = response.data.users;
         setUserData(allUsers);
-        console.log(allUsers);
         setFilteredUserData(allUsers);
         setLoading(false);
       })
@@ -109,10 +108,10 @@ const Users: React.FC = () => {
     if (toggleLeads) setToggleLeads(false);
   };
   const handleAddManager = () => {
-    setShowAddManager(true)
+    setShowAddManager(true);
   };
   const handleCloseManager = () => {
-    setShowAddManager(false)
+    setShowAddManager(false);
     getUser();
   };
 
@@ -130,9 +129,7 @@ const Users: React.FC = () => {
           </li>
           <li className="font-medium text-primary">Users</li>
         </ol>
-        <div className="flex justify-between items-center sm:flex-row gap-3 pt-3">
-
-        </div>
+        <div className="flex justify-between items-center sm:flex-row gap-3 pt-3"></div>
         <div className="flex justify-between items-center sm:flex-row gap-3 pt-3">
           <h2 className="text-title-md2 font-semibold text-black dark:text-white">
             Users
@@ -160,10 +157,9 @@ const Users: React.FC = () => {
               <h2>Add User</h2>
             </div>
           </div>
-          {showAddManager && <AddManager handleClose={handleCloseManager}/>}
+          {showAddManager && <AddManager handleClose={handleCloseManager} />}
         </div>
         <div className="flex justify-end items-end pt-3 pb-3 pr-2">
-          
           <div className="relative">
             <button
               onClick={handleDropdownToggle}
