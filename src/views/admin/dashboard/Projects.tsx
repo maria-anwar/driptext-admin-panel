@@ -40,6 +40,7 @@ const Projects: React.FC = () => {
       .get(`${import.meta.env.VITE_DB_URL}/admin/getProjects`)
       .then((response) => {
         const projectDataArray = response.data.projects;
+        console.log("projectDataArray", projectDataArray);
         setProjectData(() => {
           setFilteredProjects(projectDataArray);
           return projectDataArray;

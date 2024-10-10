@@ -40,7 +40,7 @@ const AddModel: React.FC<AddModelProps> = ({
     date: null, // Initialize as null for date
     topic: "",
     keywords: "",
-    textType: "",
+    textType: "Guide",
     wordCount: 1500,
     comment: "",
   };
