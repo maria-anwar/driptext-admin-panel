@@ -78,12 +78,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
         <NavLink to="/">
           <div className="w-full flex items-center justify-normal gap-1.5 cursor-pointer">
-            <img src={logo} alt="Logo" className="w-12 h-12 rounded-md" />
+            <img src={logo} alt="Logo" className="w-12 h-12 rounded-md " />
             <div>
-              <h1 className="text-[17px] 4xl:text-lg font-bold text-white">
+              <h1 className="text-[17px] font-bold text-white">
                 DRIPTEXT
               </h1>
-              <p className="text-gray-900 text-bodydark2 text-[13px] 4xl:text-sm">
+              <p className="text-gray-900 text-bodydark2 text-[13px]">
                 We love SEO & Content
               </p>
             </div>
@@ -123,7 +123,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <li>
                   <NavLink
                     to="/dashboard"
-                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:text-bodydark1 hover:bg-graydark dark:hover:bg-meta-4 ${
+                    className={`group relative   flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:text-bodydark1 hover:bg-graydark dark:hover:bg-meta-4 ${
                       pathname === "/dashboard" &&
                       "bg-graydark dark:bg-meta-4"
                     }`}
@@ -135,7 +135,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <li>
                   <NavLink
                     to="users"
-                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 hover:text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    className={`group relative   flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 hover:text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                       pathname.includes("users") &&
                       "bg-graydark dark:bg-meta-4"
                     }`}
@@ -148,7 +148,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <li>
                   <NavLink
                     to="system-settings"
-                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 hover:text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    className={`group relative   flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 hover:text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                       pathname.includes("system-settings") &&
                       "bg-graydark dark:bg-meta-4"
                     }`}
@@ -160,7 +160,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <li>
                   <NavLink
                     to="#"
-                    className={ `group text-zinc-500 cursor-not-allowed relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out 
+                    className={ `group text-zinc-500   cursor-not-allowed relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out 
                       "bg-graydark dark:bg-meta-4" : ""
                    }`
                     }
@@ -174,7 +174,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <li>
                   <NavLink
                     to="profile-settings"
-                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium hover:text-bodydark1 text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    className={`group relative flex    items-center gap-2.5 rounded-sm py-2 px-4 font-medium hover:text-bodydark1 text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                       pathname.includes("profile-settings") &&
                       "bg-graydark dark:bg-meta-4"
                     }`}
@@ -193,7 +193,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <NavLink
               onClick={handleLogout}
               to="/"
-              className={`group relative flex items-center gap-2.5 rounded-sm py-4 px-4 lg:px-8 font-medium hover:text-bodydark1 text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4`}
+              className={`group relative    flex items-center gap-2.5 rounded-sm py-4 px-4 lg:px-8 font-medium hover:text-bodydark1 text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4`}
             >
               {SidebarIcons[3].auth}
               Sign out
