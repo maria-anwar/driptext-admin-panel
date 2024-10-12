@@ -135,7 +135,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                   Onboarded
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
-                  View
+                  Action
                 </th>
               </tr>
             </thead>
