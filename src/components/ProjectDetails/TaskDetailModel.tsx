@@ -310,7 +310,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                         value={values.wordCount}
                         onChange={handleChange}
                         errors={touched.wordCount ? errors.wordCount : ""}
-                        disabled={true}
+                        disabled={false}
                       />
                     </div>
                   </div>
