@@ -40,7 +40,7 @@ const AccordionData: React.FC<AccordionDataProps> = ({
               </AccordionButton>
             </h2>
             <AccordionPanel className="" pb={4}>
-              <div className="bg-white dark:bg-boxdark rounded py-2 px-4">
+              <div className="bg-white dark:bg-boxdark rounded py-2 px-4 pb-6">
                 <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3 pb-3">
                   1. General information:
                 </h2>
@@ -95,7 +95,7 @@ const AccordionData: React.FC<AccordionDataProps> = ({
                   </div>
                 </div>
                 <div className="w-full flex flex-col gap-2.5">
-                  <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
+                  <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3 pt-3">
                     3. Information About the Target Customers
                   </h2>
                   <div className="px-3">
@@ -116,7 +116,7 @@ const AccordionData: React.FC<AccordionDataProps> = ({
                   </div>
                 </div>
                 <div className="w-full flex flex-col gap-2.5">
-                  <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
+                  <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3 pt-3">
                     4. Aim of the Content
                   </h2>
                   <div className="px-3">
