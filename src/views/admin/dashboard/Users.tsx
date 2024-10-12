@@ -154,11 +154,28 @@ const Users: React.FC = () => {
               onClick={handleAddManager}
               className="inline-flex items-center cursor-pointer justify-center gap-2.5 bg-black py-3 text-sm xl:text-base  text-center font-medium text-white hover:bg-opacity-90 px-5"
             >
+              <span>
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+              </span>
               <h2>Add User</h2>
             </div>
           </div>
-          {showAddManager && <AddManager handleClose={handleCloseManager} />}
+          
         </div>
+        {showAddManager ?<AddManager handleClose={handleCloseManager} />: null}
         <div className="flex justify-end items-end pt-3 pb-3 pr-2">
           <div className="relative">
             <button
