@@ -16,7 +16,13 @@ import Import from "../../../components/ProjectDetails/Import";
 import Export from "../../../components/ProjectDetails/Export";
 import ProjectDetailsButton from "../../../components/ProjectDetails/ProjectDetailsButton";
 import AccordionData from "../../../components/ProjectDetails/AccordionData";
-import { Freelancer ,Project,OnBoarding,Plan,User} from "../../../Types/Type";
+import {
+  Freelancer,
+  Project,
+  OnBoarding,
+  Plan,
+  User,
+} from "../../../Types/Type";
 
 const ProjectsDetails: React.FC = () => {
   const navigate = useNavigate();
@@ -74,13 +80,7 @@ const ProjectsDetails: React.FC = () => {
     };
     axios
       .post(`${import.meta.env.VITE_DB_URL}/admin/wordCountProject`, payload)
-      .then((response) => {})
-      .catch((err) => {
-        console.error("Error updating word count of project:", err);
-      });
-    axios
-      .post(`${import.meta.env.VITE_DB_URL}/admin/wordCountProject`, payload)
-      .then((response) => {})
+      .then((response) => console.log("Word count updated for all tasks"))
       .catch((err) => {
         console.error("Error updating word count of project:", err);
       });
@@ -118,7 +118,7 @@ const ProjectsDetails: React.FC = () => {
       .then((response) => {
         getTaskData();
         setDropdownVisible(null);
-        handleCloseMemberModel()
+        handleCloseMemberModel();
       })
       .catch((err) => {
         console.error(
@@ -162,7 +162,7 @@ const ProjectsDetails: React.FC = () => {
     }
   };
 
-  const allRoles = ["texter", "lector", "seo-optimizer"];
+  const allRoles = ["texter", "lector", "seo-optimizer", "meta-lector"];
 
   const handleMembers = () => {
     setMemberModel(true);
@@ -260,19 +260,19 @@ const ProjectsDetails: React.FC = () => {
                             xmlns="http://www.w3.org/2000/svg"
                             className="w-5.5 h-5.5"
                           >
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                             <g
                               id="SVGRepo_tracerCarrier"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              strokeLinecap="round" // Updated to camelCase
+                              strokeLinejoin="round" // Updated to camelCase
                             ></g>
                             <g id="SVGRepo_iconCarrier">
                               <path
                                 d="M20 4L12 12M20 4V8.5M20 4H15.5M19 12.5V16.8C19 17.9201 19 18.4802 18.782 18.908C18.5903 19.2843 18.2843 19.5903 17.908 19.782C17.4802 20 16.9201 20 15.8 20H7.2C6.0799 20 5.51984 20 5.09202 19.782C4.71569 19.5903 4.40973 19.2843 4.21799 18.908C4 18.4802 4 17.9201 4 16.8V8.2C4 7.0799 4 6.51984 4.21799 6.09202C4.40973 5.71569 4.71569 5.40973 5.09202 5.21799C5.51984 5 6.07989 5 7.2 5H11.5"
                                 stroke="#3b82f6"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="1.5"
+                                strokeLinecap="round" // Updated to camelCase
+                                strokeLinejoin="round" // Updated to camelCase
                               ></path>
                             </g>
                           </svg>
@@ -290,7 +290,12 @@ const ProjectsDetails: React.FC = () => {
                       <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-5 py-2">
                         <TaskComponent
                           label="Status"
-                          name={projectDetails?.projectStatus.toUpperCase() === 'FREE TRIAL' ? 'Ready' : projectDetails?.projectStatus}
+                          name={
+                            projectDetails?.projectStatus.toUpperCase() ===
+                            "FREE TRIAL"
+                              ? "Ready"
+                              : projectDetails?.projectStatus
+                          }
                         />
                         <TaskComponent
                           label="Tasks"
@@ -374,7 +379,7 @@ const ProjectsDetails: React.FC = () => {
                       <TaskMembers
                         label={"Meta-lector"}
                         handleMembers={handleMembers}
-                        name={projectDetails?.metaLector ?? ""}
+                        name={showAssignedRoles(projectDetails?.metaLector) ?? ""}
                       />
                     </div>
                     <div className="px-7 py-2.5"></div>
