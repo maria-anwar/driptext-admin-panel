@@ -100,6 +100,7 @@ const ProjectsDetails: React.FC = () => {
         console.error("Error fetching project details:", err);
       });
   };
+  
   const handleRoleSelect = (role: string, memberId: number) => {
     const token = userToken;
     axios.defaults.headers.common["access-token"] = token;
@@ -236,8 +237,8 @@ const ProjectsDetails: React.FC = () => {
                         perspective={projectDetails?.prespective}
                         handleDelete={handleDeleteApi}
                         firstName={userData?.firstName}
-                        lastName={userData.lastName}
-                        email={userData.email}
+                        lastName={userData?.lastName}
+                        email={userData?.email}
                       />
                       <AccordionData
                         speech={projectDetails?.speech}
