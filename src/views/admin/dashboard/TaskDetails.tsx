@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { format } from "date-fns";
 
 import getInitials from "../../../components/Helpers/UpperCaseName";
 
@@ -28,12 +29,18 @@ const TaskDetails: React.FC = () => {
       .then((response) => {
         const task = response?.data?.data;
         setTaskDetails(task);
+        console.log("task", task);
         setproject(task.project);
         setLoading(false);
       })
       .catch((err) => {
         console.error("Error fetching project details:", err);
       });
+  };
+
+  const formatDate = (dateString: Date | string) => {
+    const date = new Date(dateString);
+    return format(date, "MMMM yyyy"); // "August 2025"
   };
 
   const FreelancerInfo = ({ label, name }) => {
@@ -192,11 +199,107 @@ const TaskDetails: React.FC = () => {
           <div className="col-span-5 rounded-sm border border-stroke  pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1   w-full bg-slate-200 h-[350px] animate-pulse"></div>
         </div>
       ) : (
-        <div className="grid grid-cols-5 gap-8 mt-6">
-          <div className="col-span-5 ">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="py-6 px-7 dark:border-strokedark">
-                sdfsdfsdfsd
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+          <div className="col-span-1 md:col-span-2">
+            <div className="rounded border border-stroke bg-white p-6 shadow-md dark:border-strokedark dark:bg-boxdark">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="flex justify-start items-start flex-col">
+                  <span className="text-sm">Task Name:</span>
+                  <span className=" text-black dark:text-white">
+                    {taskdetails?.taskName || "N/A"}
+                  </span>
+                </div>
+                <div className="flex justify-start items-start flex-col">
+                  <span className="text-sm">Topic:</span>
+                  <span className=" text-black dark:text-white">
+                    {taskdetails?.topic || "N/A"}
+                  </span>
+                </div>
+                <div className="flex justify-start items-start flex-col">
+                  <span className="text-sm">Type:</span>
+                  <span className=" text-black dark:text-white">
+                    {taskdetails?.type || "N/A"}
+                  </span>
+                </div>
+                <div className="flex justify-start items-start flex-col">
+                  <span className="text-sm">Status:</span>
+                  <span
+                    className={`text-sm uppercase text-center py-0.5 px-3 rounded-full
+                      ${
+                        {
+                          FINAL: "bg-green-500/20 text-green-500",
+                          "FREE TRIAL": "bg-yellow-500/20 text-yellow-500",
+                          "READY TO WORK": "bg-yellow-500/20 text-yellow-500",
+                          "IN PROGRESS": "bg-blue-500/20 text-blue-500",
+                          "READY FOR PROOFREADING":
+                            "bg-orange-500/20 text-orange-500",
+                          "PROOFREADING IN PROGRESS":
+                            "bg-purple-500/20 text-purple-500",
+                          "READY FOR SEO OPTIMIZATION":
+                            "bg-indigo-500/20 text-indigo-500",
+                          "SEO OPTIMIZATION IN PROGRESS":
+                            "bg-pink-500/20 text-pink-500",
+                          "READY FOR 2ND PROOFREADING":
+                            "bg-violet-500/20 text-violet-500", // New color for "READY FOR 2ND PROOFREADING"
+                          "2ND PROOFREADING IN PROGRESS":
+                            "bg-lime-300/20 text-lime-700", // Different color for "2ND PROOFREADING IN PROGRESS"
+                        }[taskdetails?.status?.toUpperCase()] ||
+                        "bg-red-500/20 text-red-500"
+                      }`}
+                  >
+                    {taskdetails?.status || "N/A"}
+                  </span>
+                </div>
+                <div className="flex justify-start items-start flex-col">
+                  <span className="text-sm">Actual Words:</span>
+                  <span className=" text-black dark:text-white">
+                    {taskdetails?.actualNumberOfWords || "N/A"}
+                  </span>
+                </div>
+                <div className="flex justify-start items-start flex-col">
+                  <span className="text-sm">Desired Words:</span>
+                  <span className=" text-black dark:text-white">
+                    {taskdetails?.desiredNumberOfWords || "N/A"}
+                  </span>
+                </div>
+                <div className="flex justify-start items-start flex-col">
+                  <span className="text-sm">Due Date:</span>
+                  <span  className={`text-sm text-white px-2 py-0.5 rounded-full text-center flex justify-center items-center ${
+                        new Date(taskdetails?.dueDate) < new Date()
+                          ? "bg-red-500/85"
+                          : "bg-green-500/85"
+                      }`}>
+                    {formatDate(taskdetails?.dueDate) || "N/A"}
+                  </span>
+                </div>
+                <div className="flex justify-start items-start flex-col">
+                  <span className="text-sm">Keywords:</span>
+                  <span className=" text-black dark:text-white">
+                    {taskdetails?.keywords || "N/A"}
+                  </span>
+                </div>
+                <div className="flex justify-start items-start flex-col">
+                  <span className="text-sm">File Link:</span>
+                  <a
+                    href={taskdetails?.fileLink || "#"}
+                    className="text-blue-500 "
+                  >
+                    {taskdetails?.fileLink ? "Open File" : "N/A"}
+                  </a>
+                </div>
+                <div className="flex justify-start items-start flex-col">
+                  <span className="text-sm">Comments:</span>
+                  <span className=" text-black dark:text-white">
+                    {taskdetails?.comments || "N/A"
+                  }
+                  </span>
+                </div>
+                <div className="flex justify-start items-start flex-col">
+                  <span className="text-sm">Feedback:</span>
+                  <span className=" text-black dark:text-white">
+                    {taskdetails?.feedback || "N/A"}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
