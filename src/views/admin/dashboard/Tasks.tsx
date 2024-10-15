@@ -6,6 +6,7 @@ import { Freelancer } from "../../../Types/Type";
 import TaskTable from "../../../components/tables/TaskTable";
 import { DatePicker, Select } from "antd";
 import moment from "moment";
+import InfoCard from "../../../components/tables/InfoCard";
 
 const { RangePicker } = DatePicker;
 
@@ -25,7 +26,7 @@ const Tasks: React.FC = () => {
 
   // Dropdown toggle state
   const [filterDropdownOpen, setFilterDropdownOpen] = useState<boolean>(false);
-   const [roleFilter, setRoleFilter] = useState<string | null>(null); 
+  const [roleFilter, setRoleFilter] = useState<string | null>(null);
 
   useEffect(() => {
     getTaskData();
@@ -105,22 +106,32 @@ const Tasks: React.FC = () => {
       switch (roleFilter) {
         case "texter":
           filtered = filtered.filter((task) =>
-            ["ready to work", "in progress", "in revision"].includes(task.status.toLowerCase())
+            ["ready to work", "in progress", "in revision"].includes(
+              task.status.toLowerCase()
+            )
           );
           break;
         case "lector":
           filtered = filtered.filter((task) =>
-            ["ready for proofreading", "proofreading in progress"].includes(task.status.toLowerCase())
+            ["ready for proofreading", "proofreading in progress"].includes(
+              task.status.toLowerCase()
+            )
           );
           break;
         case "SEO":
           filtered = filtered.filter((task) =>
-            ["ready for SEO optimization", "SEO optimization in progress"].includes(task.status.toLowerCase())
+            [
+              "ready for SEO optimization",
+              "SEO optimization in progress",
+            ].includes(task.status.toLowerCase())
           );
           break;
         case "meta lector":
           filtered = filtered.filter((task) =>
-            ["ready for second proofreading", "second proofreading in progress"].includes(task.status.toLowerCase())
+            [
+              "ready for second proofreading",
+              "second proofreading in progress",
+            ].includes(task.status.toLowerCase())
           );
           break;
         default:
@@ -150,13 +161,32 @@ const Tasks: React.FC = () => {
           <li className="font-medium text-primary">Tasks</li>
         </ol>
       </div>
+      {loading ? (
+        <div className="grid grid-col-1 md:grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-6 mb-8">
+          <div className=" rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 w-full bg-slate-200 h-[160px] animate-pulse"></div>
+          <div className=" rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 w-full bg-slate-200 h-[160px] animate-pulse"></div>
+        </div>
+      ) : (
+        <div className="grid grid-col-1 md:grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-6 mb-8">
+          <InfoCard
+            title="Tracking"
+            revenue={10000}
+            cost={7000}
+            margin={3000}
+          />
+          <InfoCard
+            title="Forecast"
+            revenue={12000}
+            cost={8000}
+            margin={4000}
+          />
+        </div>
+      )}
       <div className="flex justify-between items-center relative">
         <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
           Tasks
         </h2>
         <div>
-        
-
           <button
             onClick={() => setFilterDropdownOpen(!filterDropdownOpen)}
             className="inline-flex items-center cursor-pointer justify-center gap-2.5 bg-black py-3 text-sm xl:text-base text-center font-medium text-white hover:bg-opacity-90 px-5"
@@ -238,19 +268,21 @@ const Tasks: React.FC = () => {
                 </Select>
               </div>
               <div className="mb-4">
-              <label className="block text-sm font-medium mb-2">Freelancer role</label>
-                    <Select
-                    placeholder="Select Role"
-                    onChange={(value) => setRoleFilter(value)}
-                    allowClear
-                    className="w-full mr-4"
-                    value={roleFilter}
+                <label className="block text-sm font-medium mb-2">
+                  Freelancer role
+                </label>
+                <Select
+                  placeholder="Select Role"
+                  onChange={(value) => setRoleFilter(value)}
+                  allowClear
+                  className="w-full mr-4"
+                  value={roleFilter}
                 >
-                    <Select.Option value="texter">Texter</Select.Option>
-                    <Select.Option value="lector">Lector</Select.Option>
-                    <Select.Option value="SEO">SEO</Select.Option>
-                    <Select.Option value="meta lector">Meta Lector</Select.Option>
-                    <Select.Option value="all">Show All</Select.Option>
+                  <Select.Option value="texter">Texter</Select.Option>
+                  <Select.Option value="lector">Lector</Select.Option>
+                  <Select.Option value="SEO">SEO</Select.Option>
+                  <Select.Option value="meta lector">Meta Lector</Select.Option>
+                  <Select.Option value="all">Show All</Select.Option>
                 </Select>
               </div>
               <div className="flex gap-x-2">
