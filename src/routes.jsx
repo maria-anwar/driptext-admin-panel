@@ -10,6 +10,9 @@ import SystemSettings from "./views/admin/dashboard/SystemSettings";
 import Users from "./views/admin/dashboard/Users";
 import ProjectsDetails from "./views/admin/dashboard/ProjectsDetails";
 import ProtectedRoute from "./components/Helpers/ProtectedRoutes";
+import Tasks from "./views/admin/dashboard/Tasks";
+import TaskDetails from "./views/admin/dashboard/TaskDetails";
+
 
 const WebRoutes = () => {
   return (
@@ -34,6 +37,8 @@ const WebRoutes = () => {
             <Route path="profile-settings" element={<ProfileSettings />} />
             <Route path="system-settings" element={<SystemSettings />} />
             <Route path="users" element={<Users />} />
+            <Route path="tasks" element={<Tasks />} />
+            <Route path="tasks/taskdetails" element={<TaskDetails />} />
           </Route>
         </Routes>
       </BrowserRouter>

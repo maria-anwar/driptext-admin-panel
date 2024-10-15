@@ -178,30 +178,35 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                     <div className="flex justify-start items-start flex-col">
                       <p
                         className={`text-xs uppercase text-center py-1.5 px-3 rounded-full
-                        ${
-                          task.status.toUpperCase() === "FINAL"
-                          ? "bg-green-500/20 text-green-500"
-                          : task.status.toUpperCase() === "FREE TRIAL"
-                          ? "bg-yellow-500/20 text-yellow-500"
-                          : task.status.toUpperCase() === "READY TO WORK"
-                          ? "bg-yellow-500/20 text-yellow-500"
-                          : task.status.toUpperCase() ===
-                            "IN PROGRESS"
-                          ? "bg-blue-500/20 text-blue-500"
-                          : task.status.toUpperCase() ===
-                            "READY FOR PROOFREADING"
-                          ? "bg-orange-500/20 text-orange-500"
-                          : task.status.toUpperCase() ===
-                            "PROOFREADING IN PROGRESS"
-                          ? "bg-purple-500/20 text-purple-500"
-                          : task.status.toUpperCase() ===
-                            "READY FOR SEO OPTIMIZATION"
-                          ? "bg-indigo-500/20 text-indigo-500"
-                          : task.status.toUpperCase() ===
-                            "SEO OPTIMIZATION IN PROGRESS"
-                          ? "bg-pink-500/20 text-pink-500"
-                           : "bg-violet-500/20 text-violet-500"
-                        }`}
+                          ${
+                            task?.status.toUpperCase() === "FINAL"
+                              ? "bg-green-500/20 text-green-500"
+                              : task.status.toUpperCase() === "FREE TRIAL"
+                              ? "bg-yellow-500/20 text-yellow-500"
+                              : task.status.toUpperCase() === "READY TO WORK"
+                              ? "bg-yellow-500/20 text-yellow-500"
+                              : task.status.toUpperCase() === "IN PROGRESS"
+                              ? "bg-blue-500/20 text-blue-500"
+                              : task.status.toUpperCase() ===
+                                "READY FOR PROOFREADING"
+                              ? "bg-orange-500/20 text-orange-500"
+                              : task.status.toUpperCase() ===
+                                "PROOFREADING IN PROGRESS"
+                              ? "bg-purple-500/20 text-purple-500"
+                              : task.status.toUpperCase() ===
+                                "READY FOR SEO OPTIMIZATION"
+                              ? "bg-indigo-500/20 text-indigo-500"
+                              : task.status.toUpperCase() ===
+                                "SEO OPTIMIZATION IN PROGRESS"
+                              ? "bg-pink-500/20 text-pink-500"
+                              : task.status.toUpperCase() ===
+                                "READY FOR 2ND PROOFREADING"
+                              ? "bg-sky-400/20 text-sky-500" // New color for "READY FOR 2ND PROOFREADING"
+                              : task.status.toUpperCase() ===
+                                "2ND PROOFREADING IN PROGRESS"
+                              ? "bg-lime-300/20 text-lime-700" // Different color for "2ND PROOFREADING IN PROGRESS"
+                              : "bg-violet-500/20 text-violet-500"
+                          }`}
                       >
                         {task.status}
                       </p>
@@ -218,8 +223,14 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                     </a>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-sm text-white bg-red-500/85 px-1 py-1 rounded-full text-center flex justify-center items-center ">
-                      <span className="px-1">{formatDate(task.dueDate)}</span>
+                    <p
+                      className={`text-sm text-white px-1 py-1 rounded-full text-center flex justify-center items-center ${
+                        new Date(task?.dueDate) < new Date()
+                          ? "bg-red-500/85"
+                          : "bg-green-500/85"
+                      }`}
+                    >
+                      <span className="px-1">{formatDate(task?.dueDate)}</span>
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
