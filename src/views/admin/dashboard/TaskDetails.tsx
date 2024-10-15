@@ -38,8 +38,10 @@ const TaskDetails: React.FC = () => {
       });
   };
 
-  const formatDate = (dateString: Date | string) => {
-    const date = new Date(dateString);
+  const formatDate = (dateString: Date | string | undefined) => {
+    if (!dateString) return "N/A"; // Handle undefined or null date
+    const date =
+      typeof dateString === "string" ? new Date(dateString) : dateString;
     return format(date, "MMMM yyyy"); // "August 2025"
   };
 
@@ -264,11 +266,13 @@ const TaskDetails: React.FC = () => {
                 </div>
                 <div className="flex justify-start items-start flex-col">
                   <span className="text-sm">Due Date:</span>
-                  <span  className={`text-sm text-white px-2 py-0.5 rounded-full text-center flex justify-center items-center ${
-                        new Date(taskdetails?.dueDate) < new Date()
-                          ? "bg-red-500/85"
-                          : "bg-green-500/85"
-                      }`}>
+                  <span
+                    className={`text-sm text-white px-2 py-0.5 rounded-full text-center flex justify-center items-center ${
+                      new Date(taskdetails?.dueDate) < new Date()
+                        ? "bg-red-500/85"
+                        : "bg-green-500/85"
+                    }`}
+                  >
                     {formatDate(taskdetails?.dueDate) || "N/A"}
                   </span>
                 </div>
@@ -290,8 +294,7 @@ const TaskDetails: React.FC = () => {
                 <div className="flex justify-start items-start flex-col">
                   <span className="text-sm">Comments:</span>
                   <span className=" text-black dark:text-white">
-                    {taskdetails?.comments || "N/A"
-                  }
+                    {taskdetails?.comments || "N/A"}
                   </span>
                 </div>
                 <div className="flex justify-start items-start flex-col">
