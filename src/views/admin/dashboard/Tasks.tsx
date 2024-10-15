@@ -25,6 +25,7 @@ const Tasks: React.FC = () => {
 
   // Dropdown toggle state
   const [filterDropdownOpen, setFilterDropdownOpen] = useState<boolean>(false);
+   const [roleFilter, setRoleFilter] = useState<string | null>(null); 
 
   useEffect(() => {
     getTaskData();
@@ -66,7 +67,8 @@ const Tasks: React.FC = () => {
     setStatusFilter(null);
     setDateRangeFilter(null);
     setMonthFilter(null);
-    setFilteredTasks(tasks); 
+    setRoleFilter(null); // Reset role filter
+    setFilteredTasks(tasks);
     setFilterDropdownOpen(false);
   };
 
@@ -98,12 +100,40 @@ const Tasks: React.FC = () => {
       });
     }
 
+    // New filtering logic for role-based filtering
+    if (roleFilter) {
+      switch (roleFilter) {
+        case "texter":
+          filtered = filtered.filter((task) =>
+            ["ready to work", "in progress", "in revision"].includes(task.status.toLowerCase())
+          );
+          break;
+        case "lector":
+          filtered = filtered.filter((task) =>
+            ["ready for proofreading", "proofreading in progress"].includes(task.status.toLowerCase())
+          );
+          break;
+        case "SEO":
+          filtered = filtered.filter((task) =>
+            ["ready for SEO optimization", "SEO optimization in progress"].includes(task.status.toLowerCase())
+          );
+          break;
+        case "meta lector":
+          filtered = filtered.filter((task) =>
+            ["ready for second proofreading", "second proofreading in progress"].includes(task.status.toLowerCase())
+          );
+          break;
+        default:
+          break;
+      }
+    }
+
     setFilteredTasks(filtered);
   };
 
   useEffect(() => {
     applyFilters();
-  }, [statusFilter, dateRangeFilter, monthFilter, tasks]);
+  }, [statusFilter, dateRangeFilter, monthFilter, roleFilter, tasks]);
 
   return (
     <div className="mx-auto 3xl:px-4">
@@ -125,6 +155,8 @@ const Tasks: React.FC = () => {
           Tasks
         </h2>
         <div>
+        
+
           <button
             onClick={() => setFilterDropdownOpen(!filterDropdownOpen)}
             className="inline-flex items-center cursor-pointer justify-center gap-2.5 bg-black py-3 text-sm xl:text-base text-center font-medium text-white hover:bg-opacity-90 px-5"
@@ -203,6 +235,22 @@ const Tasks: React.FC = () => {
                       {month}
                     </Select.Option>
                   ))}
+                </Select>
+              </div>
+              <div className="mb-4">
+              <label className="block text-sm font-medium mb-2">Freelancer role</label>
+                    <Select
+                    placeholder="Select Role"
+                    onChange={(value) => setRoleFilter(value)}
+                    allowClear
+                    className="w-full mr-4"
+                    value={roleFilter}
+                >
+                    <Select.Option value="texter">Texter</Select.Option>
+                    <Select.Option value="lector">Lector</Select.Option>
+                    <Select.Option value="SEO">SEO</Select.Option>
+                    <Select.Option value="meta lector">Meta Lector</Select.Option>
+                    <Select.Option value="all">Show All</Select.Option>
                 </Select>
               </div>
               <div className="flex gap-x-2">
