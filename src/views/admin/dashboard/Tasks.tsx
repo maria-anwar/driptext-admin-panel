@@ -5,9 +5,9 @@ import { useSelector } from "react-redux";
 import { Freelancer } from "../../../Types/Type";
 import TaskTable from "../../../components/tables/TaskTable";
 import { DatePicker, Select } from "antd";
-import moment from "moment";
+import moment, { Moment } from "moment";
+import dayjs from "dayjs";
 import InfoCard from "../../../components/tables/InfoCard";
-
 const { RangePicker } = DatePicker;
 
 const Tasks: React.FC = () => {
@@ -16,15 +16,11 @@ const Tasks: React.FC = () => {
   const [freelancer, setFreelancer] = useState<Freelancer[]>([]);
   const [tasks, setTasks] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
-
-  // State for filters
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const [dateRangeFilter, setDateRangeFilter] = useState<
-    [moment.Moment, moment.Moment] | null
+    [Moment, Moment] | null
   >(null);
   const [monthFilter, setMonthFilter] = useState<string | null>(null);
-
-  // Dropdown toggle state
   const [filterDropdownOpen, setFilterDropdownOpen] = useState<boolean>(false);
   const [roleFilter, setRoleFilter] = useState<string | null>(null);
 
@@ -33,7 +29,6 @@ const Tasks: React.FC = () => {
     getFreelancerData();
   }, [user]);
 
-  // Fetching task data
   const getTaskData = async () => {
     let token = user?.user?.token;
     axios.defaults.headers.common["access-token"] = token;
@@ -50,7 +45,6 @@ const Tasks: React.FC = () => {
       });
   };
 
-  // Fetching freelancer data
   const getFreelancerData = async () => {
     let token = user?.user?.token;
     axios.defaults.headers.common["access-token"] = token;
@@ -68,7 +62,7 @@ const Tasks: React.FC = () => {
     setStatusFilter(null);
     setDateRangeFilter(null);
     setMonthFilter(null);
-    setRoleFilter(null); // Reset role filter
+    setRoleFilter(null); 
     setFilteredTasks(tasks);
     setFilterDropdownOpen(false);
   };
@@ -82,15 +76,19 @@ const Tasks: React.FC = () => {
       );
     }
 
-    if (dateRangeFilter) {
+    if (dateRangeFilter && dateRangeFilter.length === 2) {
+      const startDate = new Date(dateRangeFilter[0]);
+      const endDate = new Date(dateRangeFilter[1]);
+      endDate.setHours(23, 59, 59, 999);
+
       filtered = filtered.filter((task) => {
-        const taskDate = moment(task.dueDate);
-        return taskDate.isBetween(
-          dateRangeFilter[0],
-          dateRangeFilter[1],
-          "days",
-          "[]"
-        );
+        const taskDate = new Date(task.dueDate);
+
+        if (isNaN(taskDate.getTime())) {
+          console.warn(`Invalid task date: ${task.dueDate}`);
+          return false;
+        }
+        return taskDate >= startDate && taskDate <= endDate;
       });
     }
 
@@ -101,7 +99,6 @@ const Tasks: React.FC = () => {
       });
     }
 
-    // New filtering logic for role-based filtering
     if (roleFilter) {
       switch (roleFilter) {
         case "texter":
@@ -244,9 +241,9 @@ const Tasks: React.FC = () => {
                   Date Range
                 </label>
                 <RangePicker
-                  onChange={(dates) =>
-                    setDateRangeFilter(dates ? [dates[0], dates[1]] : null)
-                  }
+                  onChange={(dates, dateStrings) => {
+                    setDateRangeFilter(dates ? [dates[0], dates[1]] : null);
+                  }}
                   className="w-full"
                 />
               </div>
