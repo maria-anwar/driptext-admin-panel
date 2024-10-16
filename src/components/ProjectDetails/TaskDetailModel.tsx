@@ -236,32 +236,32 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                       <p
                         className={`w-full py-0 text-sm uppercase  ${
                           task?.status.toUpperCase() === "FINAL"
-                            ? "bg-green-500/20 text-green-500"
+                            ? " text-green-500"
                             : task.status.toUpperCase() === "FREE TRIAL"
-                            ? "bg-yellow-500/20 text-yellow-500"
+                            ? " text-yellow-500"
                             : task.status.toUpperCase() === "READY TO WORK"
-                            ? "bg-yellow-500/20 text-yellow-500"
+                            ? " text-yellow-500"
                             : task.status.toUpperCase() === "IN PROGRESS"
-                            ? "bg-blue-500/20 text-blue-500"
+                            ? " text-blue-500"
                             : task.status.toUpperCase() ===
                               "READY FOR PROOFREADING"
-                            ? "bg-orange-500/20 text-orange-500"
+                            ? " text-orange-500"
                             : task.status.toUpperCase() ===
                               "PROOFREADING IN PROGRESS"
-                            ? "bg-purple-500/20 text-purple-500"
+                            ? " text-purple-500"
                             : task.status.toUpperCase() ===
                               "READY FOR SEO OPTIMIZATION"
-                            ? "bg-indigo-500/20 text-indigo-500"
+                            ? " text-indigo-500"
                             : task.status.toUpperCase() ===
                               "SEO OPTIMIZATION IN PROGRESS"
-                            ? "bg-pink-500/20 text-pink-500"
+                            ? " text-pink-500"
                             : task.status.toUpperCase() ===
                               "READY FOR 2ND PROOFREADING"
-                            ? "bg-sky-400/20 text-sky-500" // New color for "READY FOR 2ND PROOFREADING"
+                            ? " text-sky-500" // New color for "READY FOR 2ND PROOFREADING"
                             : task.status.toUpperCase() ===
                               "2ND PROOFREADING IN PROGRESS"
-                            ? "bg-lime-300/20 text-lime-700" // Different color for "2ND PROOFREADING IN PROGRESS"
-                            : "bg-violet-500/20 text-violet-500"
+                            ? " text-lime-700" // Different color for "2ND PROOFREADING IN PROGRESS"
+                            : " text-violet-500"
                         }`}
                       >
                         {task.status}

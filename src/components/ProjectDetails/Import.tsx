@@ -9,7 +9,7 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Import: React.FC<{ id: string }> = ({ id }) => {
+const Import: React.FC<{ id: string,handleRefreshData:()=> void }> = ({ id,handleRefreshData }) => {
   const [importModel, setImportModel] = useState(false);
   const [fileName, setFileName] = useState(
     "Drag files here or click to select files"
@@ -61,7 +61,7 @@ const Import: React.FC<{ id: string }> = ({ id }) => {
           },
         }
       );
-
+      
       console.log("Response:", response);
       setImportModel(false);
       toast.success("Tasks imported successfully");
@@ -69,6 +69,7 @@ const Import: React.FC<{ id: string }> = ({ id }) => {
       setFileName("Drag files here or click to select files");
       setError(false);
       setImportLoader(false);
+      handleRefreshData();
     } catch (error) {
       console.error("Error importing tasks:", error);
       const err =
