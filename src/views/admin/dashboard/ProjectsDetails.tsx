@@ -391,7 +391,7 @@ const ProjectsDetails: React.FC = () => {
           )}
           <div className="pt-14">
             <div className="flex justify-end items-end">
-              <Import id={projectDetails._id} />
+              <Import id={projectDetails._id} handleRefreshData={getTaskData} />
               <Export
                 id={projectDetails._id}
                 taskLength={projectTasks.length}

@@ -140,7 +140,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       "bg-graydark dark:bg-meta-4"
                     }`}
                   >
-                    {SidebarIcons[0].dashboard}
+                    {SidebarIcons[4].contact}
                     Tasks
                   </NavLink>
                 </li>
