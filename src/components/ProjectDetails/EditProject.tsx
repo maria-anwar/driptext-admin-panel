@@ -148,8 +148,8 @@ const EditProject: React.FC<EditProjectProps> = ({
                     <GroupDropdownField
                       label="Writing Perspective"
                       type="text"
-                      id="speech"
-                      name="speech"
+                      id="perspective"
+                      name="perspective"
                       placeholder=""
                       option1="we/our shop/our company"
                       option2="the company/shop"
