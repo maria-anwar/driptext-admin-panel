@@ -137,7 +137,7 @@ const Users: React.FC = () => {
           <div className="flex  items-center gap-2">
             {showSearch && (
               <input
-                type="text"
+                type="search"
                 value={search}
                 onChange={handleSearchFilter}
                 placeholder="Search by name"

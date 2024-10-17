@@ -33,7 +33,6 @@ const LoginForm = () => {
       password: values.password,
     };
     `${import.meta.env.VITE_DB_URL}/auth/login`;
-   
 
     try {
       setError(false);
@@ -45,7 +44,7 @@ const LoginForm = () => {
         response.data.data.user.role.title.toLowerCase() === "projectmanger"
       ) {
         dispatch(setUser(response?.data));
-        const expirationTime = Date.now() +(12* 60 * 60 * 1000);
+        const expirationTime = Date.now() + 12 * 60 * 60 * 1000;
         localStorage.setItem(
           "auth",
           JSON.stringify({
@@ -82,7 +81,6 @@ const LoginForm = () => {
       >
         {(props) => (
           <Form>
-         
             <div className="mb-1 flex flex-col gap-6">
               <label
                 htmlFor="email"
@@ -102,7 +100,7 @@ const LoginForm = () => {
                   setError(false);
                   setErrorMesssage("");
                 }}
-                className="outline-none border border-blue-gray-200 focus:border-gray-900 focus:ring-2 ring-1 ring-black px-3 py-1.5 rounded-lg bg-transparent text-black"
+                className="outline-none border border-blue-gray-200 focus:border-gray-900 focus:ring-2 ring-1 ring-black px-3 py-2 rounded-lg bg-transparent text-black"
               />
               {props.errors.email && (
                 <div id="email" className="-mt-4 text-sm text-red-500">
@@ -127,7 +125,7 @@ const LoginForm = () => {
                     setErrorMesssage("");
                   }}
                   placeholder="********"
-                  className="w-full outline-none border border-blue-gray-200 focus:border-gray-900 focus:ring-2 ring-1 ring-black px-3 py-1.5 rounded-lg bg-transparent text-black"
+                  className="w-full outline-none border border-blue-gray-200 focus:border-gray-900 focus:ring-2 ring-1 ring-black px-3 py-2 rounded-lg bg-transparent text-black"
                 />
                 <FontAwesomeIcon
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
@@ -164,12 +162,19 @@ const LoginForm = () => {
               </Link>
             </div>
             <button
-              className={`mt-6 w-full font-semibold h-9 bg-black text-white text-sm px-3 py-1.5 rounded-lg ${
+              className={`mt-6 w-full font-semibold h-10 bg-black text-white text-sm px-3 py-1.5 rounded-lg ${
                 loading ? "cursor-not-allowed" : "cursor-pointer"
               }`}
               type="submit"
+              disabled={loading}
             >
-              Sign In
+              {loading ? (
+                <div className="flex items-center justify-center">
+                  <div className="w-6 h-6 border-2 border-white border-solid rounded-full border-t-transparent animate-spin" />
+                </div>
+              ) : (
+                "Sign In"
+              )}
             </button>
             {error && (
               <div id="email" className="mt-4 text-sm text-red-500">
