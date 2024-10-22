@@ -2,6 +2,7 @@ import React, { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { Freelancer,Project } from "../../Types/Type";
+import getInitials from "../Helpers/UpperCaseName";
 
 interface ProjectCardProps {
   projects: Project[];
@@ -21,14 +22,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects ,freelancer}) => {
     }
   };
 
-  const getInitials = (name: string): string => {
-    if (!name) return "";
-    const words = name.split(" ");
-    const firstTwoWords = words.slice(0, 2);
-    return firstTwoWords
-      .map(word => word[0].toUpperCase())
-      .join("");
-  };
 
   const WorkerComponent: React.FC<{ label: string; name: string }> = ({
     label,

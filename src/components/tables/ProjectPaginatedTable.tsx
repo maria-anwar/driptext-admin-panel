@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { Freelancer, Project } from "../../Types/Type";
+import getInitials from "../Helpers/UpperCaseName";
 
 interface PaginatedTableProps {
   projects: Project[];
@@ -79,12 +80,6 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
     navigate("project-details");
   };
 
-  const getInitials = (name: string): string => {
-    if (!name) return "";
-    const words = name.split(" ");
-    const firstTwoWords = words.slice(0, 2);
-    return firstTwoWords.map((word) => word[0].toUpperCase()).join("");
-  };
 
   const WorkerComponent: React.FC<{ label: string; name: string }> = ({
     label,
