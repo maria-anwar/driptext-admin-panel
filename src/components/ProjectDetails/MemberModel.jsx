@@ -26,7 +26,7 @@ const MemberModal = ({
             icon={faTimes}
           />
         </div>
-        {freelancer.map((member) => (
+        {freelancer && Array.isArray(freelancer) && freelancer.map((member) => (
           <div key={member._id} className="flex justify-between items-center py-3">
             <div className="flex justify-start items-center">
               <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
