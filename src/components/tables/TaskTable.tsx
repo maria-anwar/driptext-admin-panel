@@ -7,6 +7,7 @@ import "./custompagination.css";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { Freelancer, Task } from "../../Types/Type";
+import getInitials from "../Helpers/UpperCaseName";
 
 interface PaginatedTableProps {
   tasks: Task[];
@@ -54,12 +55,6 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
     navigate("taskdetails");
   };
 
-  const getInitials = (name: string): string => {
-    if (!name) return "";
-    const words = name.split(" ");
-    const firstTwoWords = words.slice(0, 2);
-    return firstTwoWords.map((word) => word[0].toUpperCase()).join("");
-  };
 
   const WorkerComponent: React.FC<{ label: string; name: string }> = ({
     label,
