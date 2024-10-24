@@ -6,9 +6,10 @@ import { Tracking } from "../../Types/Type";
 
 interface KpiTableProps {
   users: Tracking[];
+  forecast: boolean;
 }
 
-const KpiInfoTable: React.FC<KpiTableProps> = ({ users }) => {
+const KpiInfoTable: React.FC<KpiTableProps> = ({ users,forecast }) => {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -40,7 +41,7 @@ const KpiInfoTable: React.FC<KpiTableProps> = ({ users }) => {
                   Project Name
                 </th>
                 <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Final Tasks
+                  {forecast ? "Open Tasks" : "Final Tasks"}
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
                   Revenue
@@ -69,7 +70,8 @@ const KpiInfoTable: React.FC<KpiTableProps> = ({ users }) => {
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white ">
-                      {user?.project?.finalTasks}
+                      {}
+                      {forecast ? user?.project?.openTasks : user?.project?.finalTasks}
                     </p>
                   </td>
 
