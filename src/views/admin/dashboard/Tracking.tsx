@@ -74,7 +74,7 @@ const Tracking: React.FC = () => {
       {loading ? (
         <div className="mt-4 rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 w-full bg-slate-200 h-[350px] animate-pulse"></div>
       ) : (
-        <KpiInfoTable users={users} />
+        <KpiInfoTable users={users}forecast={false} />
       )}
     </div>
   );
