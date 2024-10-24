@@ -12,6 +12,9 @@ import ProjectsDetails from "./views/admin/dashboard/ProjectsDetails";
 import ProtectedRoute from "./components/Helpers/ProtectedRoutes";
 import Tasks from "./views/admin/dashboard/Tasks";
 import TaskDetails from "./views/admin/dashboard/TaskDetails";
+import KPI from "./views/admin/dashboard/KPI";
+import Tracking from "./views/admin/dashboard/Tracking";
+import Forecast from "./views/admin/dashboard/Forecast";
 
 
 const WebRoutes = () => {
@@ -39,6 +42,9 @@ const WebRoutes = () => {
             <Route path="users" element={<Users />} />
             <Route path="tasks" element={<Tasks />} />
             <Route path="tasks/taskdetails" element={<TaskDetails />} />
+            <Route path="kpi" element={<KPI />} />
+            <Route path="kpi/tracking" element={<Tracking />} />
+            <Route path="kpi/forecast" element={<Forecast />} />
           </Route>
         </Routes>
       </BrowserRouter>

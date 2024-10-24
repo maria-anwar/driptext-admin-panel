@@ -130,3 +130,13 @@ export interface Plan {
     isActive: "Y" | "N";
     role: Role;
   }
+
+
+  
+  export interface Tracking {
+    cost: number;          
+    margin: number;       
+    revenue: number;        
+    project: Project;       
+  }
+  

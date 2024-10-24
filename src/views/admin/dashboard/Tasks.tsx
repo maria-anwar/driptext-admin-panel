@@ -2,20 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { Freelancer } from "../../../Types/Type";
+import { Freelancer,Task } from "../../../Types/Type";
 import TaskTable from "../../../components/tables/TaskTable";
 import { DatePicker, Select } from "antd";
 import moment, { Moment } from "moment";
-import dayjs from "dayjs";
-import InfoCard from "../../../components/tables/InfoCard";
 const { RangePicker } = DatePicker;
 
 const Tasks: React.FC = () => {
   const user = useSelector<any>((state) => state.user);
   const [loading, setLoading] = useState<boolean>(true);
   const [freelancer, setFreelancer] = useState<Freelancer[]>([]);
-  const [tasks, setTasks] = useState([]);
-  const [filteredTasks, setFilteredTasks] = useState([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const [dateRangeFilter, setDateRangeFilter] = useState<
     [Moment, Moment] | null
@@ -158,27 +156,6 @@ const Tasks: React.FC = () => {
           <li className="font-medium text-primary">Tasks</li>
         </ol>
       </div>
-      {loading ? (
-        <div className="grid grid-col-1 md:grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-6 mb-8">
-          <div className=" rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 w-full bg-slate-200 h-[160px] animate-pulse"></div>
-          <div className=" rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 w-full bg-slate-200 h-[160px] animate-pulse"></div>
-        </div>
-      ) : (
-        <div className="grid grid-col-1 md:grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-6 mb-8">
-          <InfoCard
-            title="Tracking"
-            revenue={10000}
-            cost={7000}
-            margin={3000}
-          />
-          <InfoCard
-            title="Forecast"
-            revenue={12000}
-            cost={8000}
-            margin={4000}
-          />
-        </div>
-      )}
       <div className="flex justify-between items-center relative">
         <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
           Tasks
