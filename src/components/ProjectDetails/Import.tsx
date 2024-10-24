@@ -52,6 +52,7 @@ const Import: React.FC<{ id: string,handleRefreshData:()=> void }> = ({ id,handl
     formData.append("projectId", id);
 
     try {
+      setImportModel(false);
       const response = await axios.post(
         `https://driptext-api.malhoc.com/api/admin/importTasks`,
         formData,
@@ -62,22 +63,17 @@ const Import: React.FC<{ id: string,handleRefreshData:()=> void }> = ({ id,handl
         }
       );
       
-      console.log("Response:", response);
-      setImportModel(false);
       toast.success("Tasks imported successfully");
       setFile(null);
       setFileName("Drag files here or click to select files");
-      setError(false);
       setImportLoader(false);
       handleRefreshData();
     } catch (error) {
-      console.error("Error importing tasks:", error);
       const err =
         error.response.data.message ||
         error.message ||
         "Failed to import tasks.";
-      setError(true);
-      setErrorMessage(err);
+      toast.error(err);
       setImportLoader(false);
     }
   };
@@ -85,7 +81,8 @@ const Import: React.FC<{ id: string,handleRefreshData:()=> void }> = ({ id,handl
     <>
       <button
         onClick={handleImport}
-        className="w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none mr-1.5 flex justify-center items-center border-none"
+        disabled={importLoader}
+        className={`w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none mr-1.5 flex justify-center items-center border-none ${importLoader ? "cursor-not-allowed" : "cursor-pointer"}`}
       >
         <FontAwesomeIcon icon={faDownload} className="text-sm px-2" />
       </button>
@@ -128,7 +125,6 @@ const Import: React.FC<{ id: string,handleRefreshData:()=> void }> = ({ id,handl
             >
               {importLoader ? "Importing..." : "Import"}
             </button>
-            {error && <p className="pt-6 text-red-500">{errorMessage}</p>}
           </div>
         </div>
       )}

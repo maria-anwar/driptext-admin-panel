@@ -339,29 +339,7 @@ const ProjectsDetails: React.FC = () => {
                       </p>
                     </div>
                     <div className="px-7">
-                      {/* <div>
-                        <p className="text-sm">Project Manager</p>
-                        <div className="flex justify-between items-center py-2">
-                          <div className="flex justify-start flex-row items-center">
-                            <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
-                              {getInitials(
-                                `${user?.user?.data?.user?.firstName} ${user?.user?.data?.user?.lastName}`
-                              )}
-                            </p>
-                            <p className="px-2.5 text-black dark:text-white">
-                              {user?.user?.data?.user?.firstName}{" "}
-                              {user?.user?.data?.user?.lastName}
-                            </p>
-                          </div>
-                          <div onClick={handleManager}>
-                            <FontAwesomeIcon
-                              icon={faEdit}
-                              className="text-sm px-1 text-blue-500"
-                            />
-                          </div>
-                          {editManager && <EditManager editUser={''} handleClose={handleManager}  />}
-                        </div>
-                      </div> */}
+                      
                       <TaskMembers
                         label={"Texter"}
                         handleMembers={handleMembers}
