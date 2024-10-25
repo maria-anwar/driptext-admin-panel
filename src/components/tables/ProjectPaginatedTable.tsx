@@ -4,12 +4,12 @@ import { faCheck, faTimes, faEye } from "@fortawesome/free-solid-svg-icons";
 import { Pagination } from "antd";
 import "antd/dist/reset.css";
 import "./custompagination.css";
-import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { Freelancer, Project } from "../../Types/Type";
 import getInitials from "../Helpers/UpperCaseName";
+import formatDate from "../Helpers/DateFormat";
 
 interface PaginatedTableProps {
   projects: Project[];
@@ -62,10 +62,6 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
 
   const handlePageChange = (page: number) => {
     setPage(page);
-  };
-  const formatDate = (dateString: Date | string) => {
-    const date = new Date(dateString);
-    return format(date, "MMMM yyyy"); // "August 2025"
   };
 
   const handleRowsPerPageChange = (

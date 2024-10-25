@@ -1,28 +1,15 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 import "antd/dist/reset.css";
 import TaskDetailModel from "./TaskDetailModel";
-import { format } from "date-fns";
-import getInitials from "../Helpers/UpperCaseName";
-import {
-  faPlus,
-  faEdit,
-  faDownload,
-  faUpload,
-  faTimes,
-  faCloudUploadAlt,
-  faGripLines,
-  faTrashAlt,
-} from "@fortawesome/free-solid-svg-icons";
-import * as XLSX from "xlsx";
-import { ToastContainer, toast } from "react-toastify";
+import getInitials from "../Helpers/UpperCaseName";;
 import "react-toastify/dist/ReactToastify.css";
-import useWordCount from "../Helpers/useWordCount";
 import { Freelancer, Task } from "../../Types/Type";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import MemberModal from "./MemberModel";
+import formatDate from "../Helpers/DateFormat";
 
 interface ProjectProps {
   tasks: Task[];
@@ -116,11 +103,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
     setDropdownVisible((prev) => (prev === memberId ? null : memberId));
   };
 
-  const formatDate = (dateString: Date | string) => {
-    if (!dateString) return "Not set";
-    const date = new Date(dateString);
-    return format(date, "MMMM yyyy"); // "August 2025"
-  };
+  
 
   const WorkerComponent: React.FC<{ label: string; name: string }> = ({
     label,

@@ -1,8 +1,8 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { format } from "date-fns";
 import { Freelancer,Project } from "../../Types/Type";
 import getInitials from "../Helpers/UpperCaseName";
+import formatDate from "../Helpers/DateFormat";
 
 interface ProjectCardProps {
   projects: Project[];
@@ -42,11 +42,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects ,freelancer}) => {
   const handleProject = (project: Project) => {
     localStorage.setItem("projectID", project._id);
     navigate("project-details");
-  };
-
-  const formatDate = (dateString: Date | string) => {
-    const date = new Date(dateString);
-    return format(date, "MMMM yyyy"); // "August 2025"
   };
 
   return (

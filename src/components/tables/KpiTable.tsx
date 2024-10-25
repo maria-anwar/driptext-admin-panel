@@ -48,7 +48,7 @@ const KpiTable: React.FC<KpiTableProps> = ({ users }) => {
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4">
-                <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[220px] py-4 px-4 font-semibold text-black dark:text-white">
                   Name
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
@@ -93,7 +93,7 @@ const KpiTable: React.FC<KpiTableProps> = ({ users }) => {
 
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
-                      className={`bg-blue-500 w-28 h-9 flex justify-center items-center rounded cursor-pointer`}
+                      className={`bg-blue-500 w-32 h-9 flex justify-center items-center rounded cursor-pointer`}
                       onClick={() => handleTracking(user?._id, user?.firstName, user?.lastName,user?.email)}
                     >
                       <FontAwesomeIcon className="text-white" icon={faEye} />
@@ -104,7 +104,7 @@ const KpiTable: React.FC<KpiTableProps> = ({ users }) => {
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
-                      className={`bg-blue-500 w-36 h-9 flex justify-center items-center rounded cursor-pointer`}
+                      className={`bg-blue-500 w-32 h-9 flex justify-center items-center rounded cursor-pointer`}
                       onClick={() => handleForercasting(user?._id, user?.firstName, user?.lastName,user?.email)}
                     >
                       <FontAwesomeIcon className="text-white" icon={faEye} />

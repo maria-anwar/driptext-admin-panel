@@ -23,6 +23,7 @@ import {
   Plan,
   User,
 } from "../../../Types/Type";
+import formatDate from "../../../components/Helpers/DateFormat";
 
 const ProjectsDetails: React.FC = () => {
   const navigate = useNavigate();
@@ -182,23 +183,6 @@ const ProjectsDetails: React.FC = () => {
     setDropdownVisible((prev) => (prev === memberId ? null : memberId));
   };
 
-  function formatDateString(dateString: string): string | null {
-    const date = new Date(dateString);
-
-    if (isNaN(date.getTime())) {
-      return null;
-    }
-
-    const options: Intl.DateTimeFormatOptions = {
-      year: "numeric",
-      month: "long",
-    };
-
-    return date.toLocaleDateString("en-US", options);
-  }
-  const handleManager = () => {
-    setEditManager(!editManager);
-  };
 
   return (
     <>
@@ -317,7 +301,7 @@ const ProjectsDetails: React.FC = () => {
                           </p>
                           <p className="text-black dark:text-white">
                             {typeof plan?.endDate === "string"
-                              ? formatDateString(plan?.endDate)
+                              ? formatDate(plan?.endDate)
                               : null}
                           </p>
                         </div>
