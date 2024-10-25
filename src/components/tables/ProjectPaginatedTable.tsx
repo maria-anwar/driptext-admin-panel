@@ -113,7 +113,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                 <th className="min-w-[120px] py-4 px-4 font-semibold text-black dark:text-white">
                   Domain
                 </th>
-                <th className="min-w-[120px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
                   Performance Period
                 </th>
                 <th className="min-w-[230px] py-4 px-4 font-semibold text-black dark:text-white">
@@ -207,7 +207,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                     </p>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black  dark:text-white text-sm">
+                    <p className={`text-black rounded-full text-center py-1 px-1  dark:text-white text-sm ${project.plan.endDate === null ? "bg-red-500" : 'bg-green-500'}`}>
                       {project.plan.endDate === null
                         ? "No Subscription"
                         : `${formatDate(project.plan.endDate)}`}
