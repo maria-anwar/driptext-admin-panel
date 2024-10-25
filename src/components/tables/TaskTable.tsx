@@ -230,6 +230,9 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
               <option className="dark:text-black" value={50}>
                 50
               </option>
+              <option className="dark:text-black" value={100}>
+                100
+              </option>
             </select>
             <Pagination
               current={page}

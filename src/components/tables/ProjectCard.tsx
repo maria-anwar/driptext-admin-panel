@@ -1,15 +1,15 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Freelancer,Project } from "../../Types/Type";
+import { Freelancer, Project } from "../../Types/Type";
 import getInitials from "../Helpers/UpperCaseName";
 import formatDate from "../Helpers/DateFormat";
 
 interface ProjectCardProps {
   projects: Project[];
-  freelancer:Freelancer[];
+  freelancer: Freelancer[];
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ projects ,freelancer}) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ projects, freelancer }) => {
   const navigate = useNavigate();
 
   const showAssignedRoles = (memberId: string | null) => {
@@ -21,7 +21,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects ,freelancer}) => {
       return "";
     }
   };
-
 
   const WorkerComponent: React.FC<{ label: string; name: string }> = ({
     label,
@@ -59,10 +58,22 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects ,freelancer}) => {
               {project.projectName}
             </h4>
             <div className="flex justify-between items-center w-1/2">
-              <WorkerComponent label="T" name={showAssignedRoles(project.texter) ?? ""} />
-              <WorkerComponent label="L" name={showAssignedRoles(project.lector) ?? ""} />
-              <WorkerComponent label="S" name={showAssignedRoles(project.seo) ?? ""} />
-              <WorkerComponent label="M" name={showAssignedRoles(project.metaLector) ?? ""} />
+              <WorkerComponent
+                label="T"
+                name={showAssignedRoles(project.texter) ?? ""}
+              />
+              <WorkerComponent
+                label="L"
+                name={showAssignedRoles(project.lector) ?? ""}
+              />
+              <WorkerComponent
+                label="S"
+                name={showAssignedRoles(project.seo) ?? ""}
+              />
+              <WorkerComponent
+                label="M"
+                name={showAssignedRoles(project.metaLector) ?? ""}
+              />
             </div>
           </div>
 
@@ -77,40 +88,39 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects ,freelancer}) => {
               <span
                 className={`${
                   project.projectStatus.toUpperCase() === "FINAL"
-                  ? " text-green-500"
-                  : project.projectStatus.toUpperCase() === "FREE TRIAL"
-                  ? " text-yellow-500"
-                  : project.projectStatus.toUpperCase() === "READY"
-                  ? " text-yellow-500"
-                  : project.projectStatus.toUpperCase() ===
-                    "IN PROGRESS"
-                  ? " text-blue-500"
-                  : project.projectStatus.toUpperCase() ===
-                    "READY FOR PROOFREADING"
-                  ? " text-orange-500"
-                  : project.projectStatus.toUpperCase() ===
-                    "PROOFREADING IN PROGRESS"
-                  ? " text-purple-500"
-                  : project.projectStatus.toUpperCase() ===
-                    "READY FOR SEO OPTIMIZATION"
-                  ? " text-indigo-500"
-                  : project.projectStatus.toUpperCase() ===
-                    "SEO OPTIMIZATION IN PROGRESS"
-                  ? " text-pink-500"
-                   : " text-violet-500"
+                    ? " text-green-500"
+                    : project.projectStatus.toUpperCase() === "FREE TRIAL"
+                    ? " text-yellow-500"
+                    : project.projectStatus.toUpperCase() === "READY"
+                    ? " text-yellow-500"
+                    : project.projectStatus.toUpperCase() === "IN PROGRESS"
+                    ? " text-blue-500"
+                    : project.projectStatus.toUpperCase() ===
+                      "READY FOR PROOFREADING"
+                    ? " text-orange-500"
+                    : project.projectStatus.toUpperCase() ===
+                      "PROOFREADING IN PROGRESS"
+                    ? " text-purple-500"
+                    : project.projectStatus.toUpperCase() ===
+                      "READY FOR SEO OPTIMIZATION"
+                    ? " text-indigo-500"
+                    : project.projectStatus.toUpperCase() ===
+                      "SEO OPTIMIZATION IN PROGRESS"
+                    ? " text-pink-500"
+                    : " text-violet-500"
                 }`}
               >
-               {project.projectStatus.toUpperCase() === "FREE TRIAL"
-                        ? "Ready"
-                        : project.projectStatus.toUpperCase()==="NOT INITALIZED" ? "Wating for onboarding" : project.projectStatus}
+                {project.projectStatus.toUpperCase() === "FREE TRIAL"
+                  ? "Ready"
+                  : project.projectStatus.toUpperCase() === "NOT INITALIZED"
+                  ? "Wating for onboarding"
+                  : project.projectStatus}
               </span>
             </p>
           </div>
 
           <div className="mt-5 mb-3 flex items-end justify-between pt-8">
-            <div className="text-sm font-medium text-dark-gray">
-              
-            </div>
+            <div className="text-sm font-medium text-dark-gray"></div>
             <div className="text-sm font-medium text-dark-gray">
               Created on
               <div className="text-meta-3 flex justify-end">
@@ -127,7 +137,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects ,freelancer}) => {
             </div>
             <div className="text-sm font-medium text-dark-gray">
               Performance Period{" "}
-              <div className="text-meta-5 flex justify-end">
+              <div
+                className={`flex  justify-end text-meta-5 rounded-full text-center py-1 px-1 text-sm ${
+                  project.plan.endDate === null ? "text-red-500" : "text-meta-5"
+                }`}
+              >
                 {project.plan.endDate === null
                   ? "No Subscription"
                   : `${formatDate(project.plan.endDate)}`}

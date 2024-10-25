@@ -207,7 +207,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                     </p>
                   </td>
                   <td className="border-b  border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className={`text-black rounded-full text-center py-1 px-1  dark:text-white text-sm ${project.plan.endDate === null ? "bg-red-500" : 'bg-green-500'}`}>
+                    <p className={` rounded-full text-center py-1 px-1  text-white text-sm ${project.plan.endDate === null ? "bg-red-500" : 'bg-green-500'}`}>
                       {project.plan.endDate === null
                         ? "No Subscription"
                         : `${formatDate(project.plan.endDate)}`}
