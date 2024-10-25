@@ -3,8 +3,6 @@ import ToggleSwitch from "../../../components/buttons/ToggleButton";
 import {
   faThLarge,
   faTrashAlt,
-  faBatteryEmpty,
-  faPlus,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";

@@ -2,8 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { format } from "date-fns";
-
+import formatDate from "../../../components/Helpers/DateFormat";
 import getInitials from "../../../components/Helpers/UpperCaseName";
 
 const TaskDetails: React.FC = () => {
@@ -36,13 +35,6 @@ const TaskDetails: React.FC = () => {
       .catch((err) => {
         console.error("Error fetching project details:", err);
       });
-  };
-
-  const formatDate = (dateString: Date | string | undefined) => {
-    if (!dateString) return "N/A"; // Handle undefined or null date
-    const date =
-      typeof dateString === "string" ? new Date(dateString) : dateString;
-    return format(date, "MMMM yyyy"); // "August 2025"
   };
 
   const FreelancerInfo = ({ label, name }) => {
