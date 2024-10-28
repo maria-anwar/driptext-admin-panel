@@ -42,12 +42,12 @@ const KPI: React.FC = () => {
               Dashboard /
             </Link>
           </li>
-          <li className="font-medium text-primary">KPI</li>
+          <li className="font-medium text-primary">KPIs</li>
         </ol>
       </div>
       <div className="flex justify-between items-center relative">
         <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
-          KPI
+          KPIs
         </h2>
       </div>
       {loading ? (

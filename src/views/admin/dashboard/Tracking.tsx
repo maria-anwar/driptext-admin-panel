@@ -51,7 +51,7 @@ const Tracking: React.FC = () => {
                 className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
                 to="/dashboard/kpi"
               >
-                KPI /
+                KPIs /
               </Link>
             </Link>
           </li>
