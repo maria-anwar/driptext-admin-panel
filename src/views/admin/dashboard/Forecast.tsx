@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import KpiTable from "../../../components/tables/KpiTable";
 import KpiInfoTable from "../../../components/tables/KpiInfoTable";
 
 const Forecast: React.FC = () => {
