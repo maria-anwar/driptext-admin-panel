@@ -153,7 +153,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     }`}
                   >
                     {SidebarIcons[4].contact}
-                    KPI
+                    KPIs
                   </NavLink>
                 </li>
                 <li>
