@@ -20,6 +20,7 @@ import Forecast from "./views/admin/dashboard/Forecast";
 const WebRoutes = () => {
   return (
     <>
+      
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SignIn />} />
