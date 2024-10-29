@@ -50,6 +50,7 @@ const GoogleTranslate = () => {
         translateElement.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.1)";
         translateElement.style.cursor = "pointer";
         translateElement.style.overflow = "hidden";
+        translateElement.style.marginLeft = "1rem";
 
         
 
