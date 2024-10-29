@@ -93,7 +93,7 @@ const KpiTable: React.FC<KpiTableProps> = ({ users }) => {
 
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
-                      className={`bg-blue-500 w-32 h-9 flex justify-center items-center rounded cursor-pointer`}
+                      className={`bg-blue-500  h-9 flex justify-center items-center rounded cursor-pointer`}
                       onClick={() => handleTracking(user?._id, user?.firstName, user?.lastName,user?.email)}
                     >
                       <FontAwesomeIcon className="text-white" icon={faEye} />
@@ -104,7 +104,7 @@ const KpiTable: React.FC<KpiTableProps> = ({ users }) => {
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
-                      className={`bg-blue-500 w-32 h-9 flex justify-center items-center rounded cursor-pointer`}
+                      className={`bg-blue-500  h-9 flex justify-center items-center rounded cursor-pointer`}
                       onClick={() => handleForercasting(user?._id, user?.firstName, user?.lastName,user?.email)}
                     >
                       <FontAwesomeIcon className="text-white" icon={faEye} />
