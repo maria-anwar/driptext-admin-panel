@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import DropdownUser from "./DropdownUser";
 import DropdownNotification from "./DropdownNotification";
 import DarkModeSwitcher from "./DarkModeSwitcher";
+import GoogleTranslate from "./GoogleTranslate";
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -124,6 +125,7 @@ const Header = (props: {
             {/* <!-- Notification Menu Area --> */}
           </ul>
           {/* <!-- User Area --> */}
+            <GoogleTranslate/>
           <DropdownUser />
           {/* <!-- User Area --> */}
         </div>
