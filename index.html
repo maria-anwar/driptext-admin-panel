@@ -11,8 +11,10 @@
 
 <body>
 
-    <div id="google_translate_element"></div>
+  <div id="google_translate_element"></div>
 
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
 
   <script type="text/javascript">
     function googleTranslateElementInit() {
@@ -23,29 +25,73 @@
       }, 'google_translate_element');
     }
 
-    // Apply custom styling after a short delay to ensure the widget has loaded
+    // Function to apply custom styling to the Google Translate widget
     function applyCustomTranslateStyles() {
-      const translateElement = document.querySelector("#google_translate_element .goog-te-gadget-simple");
+      const translateElement = document.querySelector("#google_translate_element");
       if (translateElement) {
-        translateElement.style.display = "flex";
-        // translateElement.style.alignItems = "center";
-        // translateElement.style.gap = "5px";
+        // Style the main translate element
+        translateElement.style.position = "absolute";
+        translateElement.style.zIndex = 99999;
+        translateElement.style.bottom = "70px";
+        translateElement.style.right = "50px";
 
-        // Optional: Hide "Powered by Google" text
-        const poweredBy = document.querySelector("#google_translate_element .goog-te-gadget span a");
-        if (poweredBy) poweredBy.style.display = "flex";
+        // Get the inner element where we apply more specific styles
+        const translateElementInner = translateElement.querySelector(".goog-te-gadget-simple");
+        if (translateElementInner) {
+          translateElementInner.style.display = "flex";
+          translateElementInner.style.alignItems = "center"; // Align items
+          translateElementInner.style.borderRadius = "50%"; // Apply border radius
+
+          // Select the original Google logo element
+          const googleLogo = translateElementInner.querySelector("img");
+          if (googleLogo) {
+            googleLogo.remove(); // Remove the original Google logo
+
+            // Create a new image element for the custom logo
+            const customLogo = document.createElement("img");
+            customLogo.src = "/language.png"; // Path to your custom logo
+            customLogo.alt = "Custom Logo";
+            customLogo.style.width = "50px"; // Adjust size
+            customLogo.style.height = "50px";
+
+            // Insert the custom logo in place of the original
+            translateElementInner.insertBefore(customLogo, translateElementInner.firstChild);
+          }
+
+          // Hide the default dropdown
+          const dropdown = translateElementInner.querySelector("span");
+          if (dropdown) {
+            dropdown.style.display = "none"; // Hide the dropdown
+          }
+
+          // Show the powered by link
+          const poweredBy = translateElementInner.querySelector("span a");
+          if (poweredBy) {
+            poweredBy.style.display = "flex"; // Ensure it displays properly
+          }
+        }
       }
     }
 
-    // Wait for the widget to load, then apply custom styles
-    setTimeout(applyCustomTranslateStyles, 1000);
-  </script> 
-  
-  <script type="text/javascript"
-    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    // Load Google Translate script and apply styles on load
+    const script = document.createElement('script');
+    script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    document.head.appendChild(script);
 
-  <div id="root"></div>
-  <script type="module" src="/src/main.jsx"></script>
+    // Once the script is loaded, apply styles after the widget has initialized
+    script.onload = function () {
+      // Initial style application
+      setTimeout(applyCustomTranslateStyles, 200);
+    };
+
+    // Add error handling for the script load
+    script.onerror = function () {
+      console.error("Error loading Google Translate script.");
+      // You can add additional error handling or fallback logic here
+    };
+  </script>
+
+
 </body>
 
 </html>
