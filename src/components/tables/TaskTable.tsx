@@ -149,11 +149,9 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p
-                      className={`text-sm text-white px-1 py-1 rounded-full text-center flex justify-center items-center ${
-                        new Date(task?.dueDate) < new Date()
-                          ? "bg-red-500/85"
-                          : "bg-green-500/85"
-                      }`}
+                      className={`text-sm text-white px-1 py-1 rounded-full text-center flex justify-center items-center
+                        ${new Date(task?.dueDate).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0) ? 'bg-green-600' : 'bg-red-600'}
+                      `}
                     >
                       <span className="px-1">{formatDate(task?.dueDate)}</span>
                     </p>

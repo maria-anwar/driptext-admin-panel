@@ -152,7 +152,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       "bg-graydark dark:bg-meta-4"
                     }`}
                   >
-                    {SidebarIcons[4].contact}
+                    {SidebarIcons[6].kpi}
                     KPIs
                   </NavLink>
                 </li>
