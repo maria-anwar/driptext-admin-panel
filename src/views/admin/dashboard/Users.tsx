@@ -134,7 +134,7 @@ const Users: React.FC = () => {
           <h2 className="text-title-md2 font-semibold text-black dark:text-white">
             Users
           </h2>
-          <div className="flex  items-center gap-2">
+          <div className="flex items-center gap-2">
             {showSearch && (
               <input
                 type="search"

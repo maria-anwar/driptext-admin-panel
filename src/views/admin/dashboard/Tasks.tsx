@@ -116,8 +116,8 @@ const Tasks: React.FC = () => {
         case "SEO":
           filtered = filtered.filter((task) =>
             [
-              "ready for SEO optimization",
-              "SEO optimization in progress",
+              "ready for seo optimization",
+              "seo optimization in progress",
             ].includes(task.status.toLowerCase())
           );
           break;
@@ -197,16 +197,16 @@ const Tasks: React.FC = () => {
                   </Select.Option>
                   <Select.Option value="in progress">In Progress</Select.Option>
                   <Select.Option value="in rivision">In Rivision</Select.Option>
-                  <Select.Option value="ready for proofreadng">
-                    Ready for Proofreadng
+                  <Select.Option value="ready for proofreading">
+                    Ready for Proofreading
                   </Select.Option>
                   <Select.Option value="proofreading in progress">
                     Proofreading in Progress
                   </Select.Option>
-                  <Select.Option value="ready for seo optimzation">
+                  <Select.Option value="ready for seo optimization">
                     Ready for SEO Optimzation
                   </Select.Option>
-                  <Select.Option value="seo optimzation in progress">
+                  <Select.Option value="seo optimization in progress">
                     SEO Optimzation in Progress
                   </Select.Option>
                   <Select.Option value="final">Final</Select.Option>

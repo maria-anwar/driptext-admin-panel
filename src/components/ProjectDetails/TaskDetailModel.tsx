@@ -112,6 +112,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     keywords: Yup.string().required("Please select keywords"),
     date: Yup.date().nullable().required("Please select a date"),
   });
+
   const handleRoleSelect = (role: string, memberId: number) => {
     const token = userToken;
     axios.defaults.headers.common["access-token"] = token;
@@ -144,6 +145,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
         setDropdownVisible(null);
       });
   };
+
   const getAvailableRoles = () => {
     return allRoles;
   };
@@ -330,7 +332,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                         onChange={(date) => setFieldValue("date", date)}
                         errors={touched.date ? errors.date : ""}
                         minDate={new Date()}
-                        dateFormat="yyyy-MM-dd"
+                        dateFormat="dd-MM-yyyy"
                         placeholderText="Choose a date"
                       />
                     </div>
