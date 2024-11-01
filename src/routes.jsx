@@ -15,6 +15,7 @@ import TaskDetails from "./views/admin/dashboard/TaskDetails";
 import KPI from "./views/admin/dashboard/KPI";
 import Tracking from "./views/admin/dashboard/Tracking";
 import Forecast from "./views/admin/dashboard/Forecast";
+import NotFound from './views/NotFound';
 
 
 const WebRoutes = () => {
@@ -46,7 +47,9 @@ const WebRoutes = () => {
             <Route path="kpi" element={<KPI />} />
             <Route path="kpi/tracking" element={<Tracking />} />
             <Route path="kpi/forecast" element={<Forecast />} />
+           
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </>
