@@ -208,10 +208,12 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p
                       className={`text-sm text-white px-1 py-1 rounded-full text-center flex justify-center items-center 
-                        ${new Date(task?.dueDate).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0) ? 'bg-green-600' : 'bg-red-600'}
+                        ${new Date(task?.dueDate).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0) || task?.status==='Final' ? 'bg-green-600' : 'bg-red-600'}
                       `}
                     >
-                      <span className="px-1">{formatDate(task?.dueDate)}</span>
+                      <span className="px-1">
+                      {task.status==='Final' ? "Finished" :formatDate(task?.dueDate)}
+                      </span>
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

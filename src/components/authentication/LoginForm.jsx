@@ -66,6 +66,7 @@ const LoginForm = () => {
       setError(true);
       setErrorMesssage(errorMessage);
       setLoading(false);
+      console.log(error);
     }
   };
   const togglePasswordVisibility = () => {
@@ -81,7 +82,7 @@ const LoginForm = () => {
       >
         {(props) => (
           <Form>
-            <div className="mb-1 flex flex-col gap-6">
+            <div className="mb-1 flex flex-col  gap-6">
               <label
                 htmlFor="email"
                 className="-mb-3 font-semibold text-sm text-blue-gray-700 text-black"
