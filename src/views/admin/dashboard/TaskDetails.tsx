@@ -259,13 +259,13 @@ const TaskDetails: React.FC = () => {
                 <div className="flex justify-start items-start flex-col">
                   <span className="text-sm">Due Date:</span>
                   <span
-                    className={`text-sm text-white px-2 py-0.5 rounded-full text-center flex justify-center items-center ${
-                      new Date(taskdetails?.dueDate) < new Date()
-                        ? "bg-red-500/85"
-                        : "bg-green-500/85"
-                    }`}
+                    className={`text-sm text-white px-2 py-0.5 rounded-full text-center flex justify-center items-center 
+                    ${new Date(taskdetails?.dueDate).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0) || taskdetails?.status==='Final' ? 'bg-green-600' : 'bg-red-600'}
+                    `}
                   >
-                    {formatDate(taskdetails?.dueDate) || "N/A"}
+                   <span className="px-1">
+                      {taskdetails?.status==='Final' ? "Finished" :formatDate(taskdetails?.dueDate)}
+                      </span>
                   </span>
                 </div>
                 <div className="flex justify-start items-start flex-col">
