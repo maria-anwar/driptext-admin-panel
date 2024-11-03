@@ -101,7 +101,7 @@ const Tasks: React.FC = () => {
       switch (roleFilter) {
         case "texter":
           filtered = filtered.filter((task) =>
-            ["ready to work", "in progress", "in revision"].includes(
+            ["ready to work", "in progress", "in rivision"].includes(
               task.status.toLowerCase()
             )
           );

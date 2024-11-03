@@ -14,7 +14,7 @@ interface PaginatedTableProps {
   freelancer: Freelancer[];
 }
 
-const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
+const TasksTable: React.FC<PaginatedTableProps> = ({
   tasks,
   freelancer,
 }) => {
@@ -248,4 +248,4 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
   );
 };
 
-export default ProjectPaginatedTable;
+export default TasksTable;
