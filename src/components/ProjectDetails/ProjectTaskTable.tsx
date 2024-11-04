@@ -170,6 +170,8 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                               ? "bg-yellow-500/20 text-yellow-500"
                               : task.status.toUpperCase() === "IN PROGRESS"
                               ? "bg-blue-500/20 text-blue-500"
+                              : task.status.toUpperCase() === "IN RIVISION"
+                              ? "bg-red-500/20 text-red-500"
                               : task.status.toUpperCase() ===
                                 "READY FOR PROOFREADING"
                               ? "bg-orange-500/20 text-orange-500"
