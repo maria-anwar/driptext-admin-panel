@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -23,9 +23,10 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false); // State for password visibility
 
   const initialValues = {
-    firstName:  "",
+    firstName: "",
     lastName: "",
     email: "",
     password: "",
@@ -47,7 +48,7 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
       lastName: values.lastName,
       email: values.email,
       password: values.password,
-    }
+    };
     console.log(payload);
     try {
       // const token = user.token;
@@ -69,7 +70,7 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
-      enableReinitialize={true}  // Ensure reinitialization is enabled
+      enableReinitialize={true} // Ensure reinitialization is enabled
     >
       {({ handleChange, errors, touched, values }) => (
         <Form>
@@ -93,7 +94,7 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
                   id="firstName"
                   value={values.firstName} // Ensure value is set
                   onChange={handleChange}
-                  errors={touched.firstName ? errors.firstName : ''}
+                  errors={touched.firstName ? errors.firstName : ""}
                 />
 
                 <GroupField
@@ -104,7 +105,7 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
                   id="lastName"
                   value={values.lastName} // Ensure value is set
                   onChange={handleChange}
-                  errors={touched.lastName ? errors.lastName : ''}
+                  errors={touched.lastName ? errors.lastName : ""}
                 />
 
                 <GroupField
@@ -115,19 +116,26 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
                   id="email"
                   value={values.email} // Ensure value is set
                   onChange={handleChange}
-                  errors={touched.email ? errors.email : ''}
+                  errors={touched.email ? errors.email : ""}
                 />
 
-                <GroupField
-                  label="Password"
-                  type="password"
-                  placeholder="Enter password"
-                  name="password"
-                  id="password"
-                  value={values.password} // Ensure value is set
-                  onChange={handleChange}
-                  errors={touched.password ? errors.password : ''}
-                />
+                <div className="relative">
+                  <GroupField
+                    label="Password"
+                    type={passwordVisible ? "text" : "password"} // Toggle type based on visibility state
+                    placeholder="Enter password"
+                    name="password"
+                    id="password"
+                    value={values.password}
+                    onChange={handleChange}
+                    errors={touched.password ? errors.password : ""}
+                  />
+                  <FontAwesomeIcon
+                    className="absolute right-3 top-2/3 transform -translate-y-1/2 cursor-pointer"
+                    onClick={() => setPasswordVisible(!passwordVisible)} // Toggle visibility
+                    icon={passwordVisible ? faEyeSlash : faEye}
+                  />
+                </div>
 
                 <div className="flex justify-end items-center gap-3 pt-4">
                   <button
