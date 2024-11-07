@@ -251,8 +251,6 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
                       className={`${
-                        task?.dueDate &&
-                        task?.keywords &&
                         task.lector &&
                         task.seo &&
                         task.texter
