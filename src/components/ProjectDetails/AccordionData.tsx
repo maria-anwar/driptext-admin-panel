@@ -45,13 +45,13 @@ const AccordionData: React.FC<AccordionDataProps> = ({
                   1. General information:
                 </h2>
                 <div className="px-2">
-                  <p className="dark:text-white font-semibold pb-2">Speech</p>
+                  <p className="dark:text-white font-medium pb-2">Speech</p>
                   <p className="dark:text-white bg-slate-200 dark:bg-meta-4 py-2 px-4 mb-2 rounded">
                     {speech}
                   </p>
                 </div>
                 <div className="px-2">
-                  <p className="dark:text-white font-semibold pb-2">
+                  <p className="dark:text-white font-medium pb-2">
                     Perspective
                   </p>
                   <p className="dark:text-white bg-slate-200 dark:bg-meta-4 py-2 px-4 mb-2 rounded">
@@ -59,7 +59,7 @@ const AccordionData: React.FC<AccordionDataProps> = ({
                   </p>
                 </div>
                 <div className="px-2">
-                  <p className="dark:text-white font-semibold pb-2">Website</p>
+                  <p className="dark:text-white font-medium pb-2">Website</p>
                   <p className="dark:text-white bg-slate-200 dark:bg-meta-4 py-2 px-4 mb-2 rounded">
                     {projectName}
                   </p>
@@ -69,7 +69,7 @@ const AccordionData: React.FC<AccordionDataProps> = ({
                     2. Company Information
                   </h2>
                   <div className="px-3">
-                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-medium pt-0">
                       Background information about the company
                     </label>
                     <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
@@ -77,7 +77,7 @@ const AccordionData: React.FC<AccordionDataProps> = ({
                     </p>
                   </div>
                   <div className="px-3">
-                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-medium pt-0">
                       Which attributes best describe you as a company/your
                       products/your services?
                     </label>
@@ -86,7 +86,7 @@ const AccordionData: React.FC<AccordionDataProps> = ({
                     </p>
                   </div>
                   <div className="px-3">
-                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-medium pt-0">
                       What are your services?
                     </label>
                     <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
@@ -99,7 +99,7 @@ const AccordionData: React.FC<AccordionDataProps> = ({
                     3. Information About the Target Customers
                   </h2>
                   <div className="px-3">
-                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-medium pt-0">
                       Who is the content written for?
                     </label>
                     <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
@@ -107,7 +107,7 @@ const AccordionData: React.FC<AccordionDataProps> = ({
                     </p>
                   </div>
                   <div className="px-3">
-                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-medium pt-0">
                       Customers we want to address have an interest in...
                     </label>
                     <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
@@ -120,15 +120,15 @@ const AccordionData: React.FC<AccordionDataProps> = ({
                     4. Aim of the Content
                   </h2>
                   <div className="px-3">
-                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-medium pt-0">
                       What is the purpose of the content?
                     </label>
                     <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
                       {onBoarding?.contentPurpose}
                     </p>
                   </div>
-                  <div className="px-3">
-                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-semibold 2xl:font-semibold pt-0">
+                  <div className="px-3 pb-3">
+                    <label className="text-black dark:text-white text-sm 3xl:text-[15px] font-medium pt-0">
                       Information about your brand and your content
                     </label>
                     <p className="w-full bg-slate-200 placeholder:text-black/60 dark:placeholder:text-white/50 text-black dark:text-white border border-transparent text-sm px-3 xs:px-3 py-2 font-normal rounded focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:focus:border-primary">
