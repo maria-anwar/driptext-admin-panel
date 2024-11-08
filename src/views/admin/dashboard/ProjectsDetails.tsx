@@ -23,7 +23,7 @@ import {
   Plan,
   User,
 } from "../../../Types/Type";
-import formatDate from "../../../components/Helpers/DateFormat";
+import format from "date-fns/format";
 
 const ProjectsDetails: React.FC = () => {
   const navigate = useNavigate();
@@ -181,6 +181,12 @@ const ProjectsDetails: React.FC = () => {
 
   const toggleDropdown = (memberId: number) => {
     setDropdownVisible((prev) => (prev === memberId ? null : memberId));
+  };
+
+  const formatDate = (dateString: Date | string) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return format(date, "MMMM yyyy"); // "August 2025"
   };
 
 
