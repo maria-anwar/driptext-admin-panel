@@ -140,8 +140,8 @@ const LoginForm = () => {
                 </div>
               )}
             </div>
-            <div className="flex items-center justify-between mt-6">
-              <div className="flex gap-2 items-center">
+            <div className="flex items-center justify-end mt-6">
+              {/* <div className="flex gap-2 items-center">
                 <input
                   id="default-checkbox"
                   type="checkbox"
@@ -154,7 +154,7 @@ const LoginForm = () => {
                 >
                   Save password
                 </label>
-              </div>
+              </div> */}
               <Link
                 to="/auth/lost/request"
                 className="text-sm text-gray-900 font-semibold text-black hover:text-black"

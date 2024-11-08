@@ -26,24 +26,21 @@ const DropdownUser = () => {
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
 
-      <Link
+<Link
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center gap-4"
+        className="flex items-center gap-4 h-12"
         to="#"
       >
-        <span className="hidden text-right lg:block">
+        <span className=" text-right ">
           <span className="block text-sm  font-medium text-black dark:text-white">
-            {user.user.data.user.firstName} {user.user.data.user.lastName}
+          {user.user.data.user.firstName} {user.user.data.user.lastName}
           </span>
           {/* <span className="block text-xs">UX Designer</span> */}
         </span>
 
-        <span className="h-12 w-12 rounded-full font-medium flex items-center justify-center bg-zinc-100">
-        {capitalizeFirstLetter(user.user.data.user.firstName)}{capitalizeFirstLetter(user.user.data.user.lastName)}  
-          {/* <img src={UserOne} alt="User" /> */}
-        </span>
+      
         <svg
-          className="hidden fill-current sm:block"
+          className=" fill-current "
           width="12"
           height="8"
           viewBox="0 0 12 8"

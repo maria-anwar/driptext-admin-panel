@@ -155,7 +155,7 @@ const SystemSettings: React.FC = () => {
                         className="mb-3 block text-sm font-semibold text-black dark:text-white"
                         htmlFor="seoPrice"
                       >
-                        SEO Price
+                       SEO Optimizer Price
                       </label>
                       <div className=" flex  flex-col">
                         <div className={"relative"}>

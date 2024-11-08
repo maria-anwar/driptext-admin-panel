@@ -9,7 +9,12 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { Freelancer, Project } from "../../Types/Type";
 import getInitials from "../Helpers/UpperCaseName";
-import formatDate from "../Helpers/DateFormat";
+import { format } from "date-fns"; // 2. import format from date-fns
+const formatDate = (dateString: Date | string) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return format(date, "dd.MM.yyyy"); // "August 2025"
+  };
 
 interface PaginatedTableProps {
   projects: Project[];
@@ -74,6 +79,12 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
   const handleProject = (projectId: string) => {
     localStorage.setItem("projectID", projectId);
     navigate("project-details");
+  };
+  
+  const formatDate = (dateString: Date | string) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return format(date, "MMMM yyyy"); // "August 2025"
   };
 
 
