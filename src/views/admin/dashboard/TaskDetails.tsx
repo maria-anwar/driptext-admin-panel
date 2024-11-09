@@ -250,7 +250,8 @@ const TaskDetails: React.FC = () => {
                 <div className="flex justify-start items-start flex-col">
                   <span className="text-sm">Actual Words:</span>
                   <span className=" text-black dark:text-white">
-                    {taskdetails?.actualNumberOfWords || "N/A"}
+                  {Number(taskdetails?.actualNumberOfWords) ===1? 0 :taskdetails?.actualNumberOfWords}
+
                   </span>
                 </div>
                 <div className="flex justify-start items-start flex-col">
