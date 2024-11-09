@@ -13,7 +13,7 @@ const PassRequestForm = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email().required("Email is required"),
+    email: Yup.string().email().required("E-Mail ist erforderlich"),
   });
 
   const onSubmit = async (values) => {
@@ -25,10 +25,10 @@ const PassRequestForm = () => {
     console.log('API:', apiUrl);
     try {
       const response = await axios.post(apiUrl, emailData);
-      console.log('Data submitted successfully:', response.emailData);
-      toast.success("Link sent successfully, click the link to reset password");
+      console.log('Daten erfolgreich gesendet:', response.emailData);
+      toast.success("Link erfolgreich gesendet, klicken Sie auf den Link, um Ihr Passwort zurückzusetzen");
     } catch (error) {
-      const errorMessage = error.response?.data?.message || "Error sending the link";
+      const errorMessage = error.response?.data?.message || "Fehler beim Senden des Links";
       toast.error(errorMessage);
     }
   };
@@ -48,7 +48,7 @@ const PassRequestForm = () => {
                 htmlFor="email"
                 className="-mb-3 font-semibold text-sm text-blue-gray-700 text-black"
               >
-                Your email
+                Deine E-Mail-Adresse
               </label>
               <input
                 size="lg"
@@ -71,7 +71,7 @@ const PassRequestForm = () => {
               className="mt-6 w-full font-semibold h-11 bg-black text-white text-sm p-2 rounded-lg"
               type="submit"
             >
-              Request Link
+              Link anfordern
             </button>
           </Form>
         )}
@@ -97,7 +97,7 @@ const PassRequestForm = () => {
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
           </svg>
-          <span>Back to Sign in</span>
+          <span>Zurück zum Anmelden</span>
         </Link>
       </div>
     </div>

@@ -8,6 +8,7 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/userSlice";
 import useAuth from "../Helpers/useAuth";
+
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -16,14 +17,15 @@ const LoginForm = () => {
   const [errorMessage, setErrorMesssage] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   useAuth();
+
   const initialValues = {
     email: "",
     password: "",
   };
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email().required("Email is required"),
-    password: Yup.string().min(8).required("Password is required"),
+    email: Yup.string().email().required("E-Mail ist erforderlich"),
+    password: Yup.string().min(8).required("Passwort ist erforderlich"),
   });
 
   const onSubmit = async (values) => {
@@ -55,20 +57,21 @@ const LoginForm = () => {
         );
         navigate("/dashboard");
       } else {
-        const errorMessage = "you can't login as a project manager";
+        const errorMessage = "Sie können sich nicht als Projektmanager anmelden";
         setError(true);
         setErrorMesssage(errorMessage);
         setLoading(false);
       }
     } catch (error) {
       const errorMessage =
-        error.response?.data?.message || error.message || "Error logging";
+        error.response?.data?.message || error.message || "Fehler beim Anmelden";
       setError(true);
       setErrorMesssage(errorMessage);
       setLoading(false);
       console.log(error);
     }
   };
+
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -87,7 +90,7 @@ const LoginForm = () => {
                 htmlFor="email"
                 className="-mb-3 font-semibold text-sm text-blue-gray-700 text-black"
               >
-                Your email
+                Deine E-Mail
               </label>
               <input
                 size="lg"
@@ -112,7 +115,7 @@ const LoginForm = () => {
                 htmlFor="password"
                 className="-mb-3 font-semibold text-sm text-blue-gray-700 text-black"
               >
-                Password
+                Passwort
               </label>
               <div className="relative">
                 <input
@@ -132,7 +135,7 @@ const LoginForm = () => {
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
                   onClick={togglePasswordVisibility}
                   icon={passwordVisible ? faEyeSlash : faEye}
-                />{" "}
+                />
               </div>
               {props.errors.password && (
                 <div id="password" className="-mt-4 text-red-500 text-sm">
@@ -141,25 +144,11 @@ const LoginForm = () => {
               )}
             </div>
             <div className="flex items-center justify-end mt-6">
-              {/* <div className="flex gap-2 items-center">
-                <input
-                  id="default-checkbox"
-                  type="checkbox"
-                  value=""
-                  className="w-4 h-4 rounded dark:bg-white"
-                />
-                <label
-                  htmlFor="default-checkbox"
-                  className="text-sm text-gray-700 font-semibold text-black "
-                >
-                  Save password
-                </label>
-              </div> */}
               <Link
                 to="/auth/lost/request"
                 className="text-sm text-gray-900 font-semibold text-black hover:text-black"
               >
-                Forgot Password
+                Passwort vergessen
               </Link>
             </div>
             <button
@@ -174,7 +163,7 @@ const LoginForm = () => {
                   <div className="w-6 h-6 border-2 border-white border-solid rounded-full border-t-transparent animate-spin" />
                 </div>
               ) : (
-                "Sign In"
+                "Anmelden"
               )}
             </button>
             {error && (
@@ -188,10 +177,10 @@ const LoginForm = () => {
 
       <div className="xl:hidden w-full flex justify-center gap-2.5 p-4 text-sm text-gray-700 border-gray-200">
         <Link to="/imprint" className="hover:underline">
-          Imprint
+          Impressum
         </Link>
         <Link to="/privacy-policy" className="hover:underline">
-          Privacy Policy
+          Datenschutzerklärung
         </Link>
       </div>
     </div>

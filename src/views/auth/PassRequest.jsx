@@ -1,14 +1,14 @@
-import React from 'react'
-import Auth2 from '../../components/authentication/Auth2'
-import LoginForm from '../../components/authentication/LoginForm'
-import PassRequestForm from '../../components/authentication/PassRequestForm'
+import React from 'react';
+import Auth2 from '../../components/authentication/Auth2';
+import LoginForm from '../../components/authentication/LoginForm';
+import PassRequestForm from '../../components/authentication/PassRequestForm';
 
 const PassRequest = () => {
   return (
-    <Auth2 authline={'Please enter your email address so we can send you a link to reset your password.'}>
+    <Auth2 authline={'Bitte gib deine E-Mail-Adresse ein, damit wir dir einen Link zum Zurücksetzen deines Passworts senden können.'}>
        <PassRequestForm/>
     </Auth2>
-  )
+  );
 }
 
-export default PassRequest
+export default PassRequest;
