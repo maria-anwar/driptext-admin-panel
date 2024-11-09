@@ -101,7 +101,7 @@ const ProjectsDetails: React.FC = () => {
         console.error("Error fetching project details:", err);
       });
   };
-  
+
   const handleRoleSelect = (role: string, memberId: number) => {
     const token = userToken;
     axios.defaults.headers.common["access-token"] = token;
@@ -188,7 +188,6 @@ const ProjectsDetails: React.FC = () => {
     const date = new Date(dateString);
     return format(date, "MMMM yyyy"); // "August 2025"
   };
-
 
   return (
     <>
@@ -296,7 +295,16 @@ const ProjectsDetails: React.FC = () => {
                           label="Max Tasks"
                           name={plan?.totalTexts}
                         />
-                        <TaskComponent label="Duration" name={plan?.duration} />
+                        <TaskComponent
+                          label="Duration"
+                          name={
+                            plan?.duration === null
+                              ? `${new Date().toLocaleString("default", {
+                                  month: "long",
+                                })}`
+                              : `${plan?.duration} month`
+                          }
+                        />
                         <TaskComponent
                           label="Task per month"
                           name={plan?.tasksPerMonth}
@@ -308,7 +316,9 @@ const ProjectsDetails: React.FC = () => {
                           <p className="text-black dark:text-white">
                             {typeof plan?.endDate === "string"
                               ? formatDate(plan?.endDate)
-                              : null}
+                              : `${new Date().toLocaleString("default", {
+                                month: "long",
+                              })} (no subscription)`}
                           </p>
                         </div>
                       </div>
@@ -329,7 +339,6 @@ const ProjectsDetails: React.FC = () => {
                       </p>
                     </div>
                     <div className="px-7">
-                      
                       <TaskMembers
                         label={"Texter"}
                         handleMembers={handleMembers}
@@ -348,7 +357,9 @@ const ProjectsDetails: React.FC = () => {
                       <TaskMembers
                         label={"Meta-lector"}
                         handleMembers={handleMembers}
-                        name={showAssignedRoles(projectDetails?.metaLector) ?? ""}
+                        name={
+                          showAssignedRoles(projectDetails?.metaLector) ?? ""
+                        }
                       />
                     </div>
                     <div className="px-7 py-2.5"></div>
