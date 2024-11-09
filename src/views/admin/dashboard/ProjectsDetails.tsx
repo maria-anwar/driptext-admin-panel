@@ -24,6 +24,7 @@ import {
   User,
 } from "../../../Types/Type";
 import format from "date-fns/format";
+import useTitle from "../../../hooks/useTitle";
 
 const ProjectsDetails: React.FC = () => {
   const navigate = useNavigate();
@@ -66,6 +67,7 @@ const ProjectsDetails: React.FC = () => {
         setUserData(allProjects.user);
         setProjectTasks(allProjects.projectTasks);
         setOnBoarding(allProjects.onBoardingInfo);
+        
         setLoading(false);
       })
       .catch((err) => {
@@ -73,6 +75,7 @@ const ProjectsDetails: React.FC = () => {
         setLoading(false);
       });
   };
+  useTitle(`${projectDetails?.projectId ?? ''}${projectDetails?.projectId ? ':' : ''}${projectDetails?.projectName ?? ''}`);
   const getWordCount = () => {
     let token = userToken;
     axios.defaults.headers.common["access-token"] = token;
@@ -188,7 +191,7 @@ const ProjectsDetails: React.FC = () => {
     const date = new Date(dateString);
     return format(date, "MMMM yyyy"); // "August 2025"
   };
-
+ 
   return (
     <>
       <div>

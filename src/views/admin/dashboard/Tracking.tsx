@@ -3,8 +3,10 @@ import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import KpiInfoTable from "../../../components/tables/KpiInfoTable";
+import useTitle from "../../../hooks/useTitle";
 
 const Tracking: React.FC = () => {
+  useTitle('Tracking Overview')
   const user = useSelector<any>((state) => state.user);
   const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState([]);

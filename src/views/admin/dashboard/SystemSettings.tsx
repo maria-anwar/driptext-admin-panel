@@ -4,8 +4,10 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import useTitle from "../../../hooks/useTitle";
 
 const SystemSettings: React.FC = () => {
+  useTitle("System Settings Overview");
   const user = useSelector((state: any) => state.user);
   const [initialValues, setInitialValues] = useState({
     texterPrice: 0,
