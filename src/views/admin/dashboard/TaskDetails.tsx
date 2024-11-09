@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import formatDate from "../../../components/Helpers/DateFormat";
 import getInitials from "../../../components/Helpers/UpperCaseName";
+import useTitle from "../../../hooks/useTitle";
 
 const TaskDetails: React.FC = () => {
   const user = useSelector<any>((state) => state.user);
@@ -36,6 +37,8 @@ const TaskDetails: React.FC = () => {
         console.error("Error fetching project details:", err);
       });
   };
+  useTitle(`${taskdetails?.taskName ?? ''}:Task`);
+
 
   const FreelancerInfo = ({ label, name }) => {
     return (

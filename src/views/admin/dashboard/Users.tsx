@@ -13,8 +13,10 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import AddManager from "../../../components/FormFields/AddManager";
 import { User } from "../../../Types/Type";
+import useTitle from "../../../hooks/useTitle";
 
 const Users: React.FC = () => {
+  useTitle("Users Overview");
   const user = useSelector<any>((state) => state.user);
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const [showInactive, setShowInactive] = useState<boolean>(false); // Show all users initially

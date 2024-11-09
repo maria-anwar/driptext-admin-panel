@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import KpiTable from "../../../components/tables/KpiTable";
+import useTitle from "../../../hooks/useTitle";
 
 const KPI: React.FC = () => {
+  useTitle('KPIs Overview')
   const user = useSelector<any>((state) => state.user);
   const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState([]);

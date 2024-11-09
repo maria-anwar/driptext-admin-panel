@@ -13,8 +13,10 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { Freelancer, Project } from "../../../Types/Type";
 import { debounce } from "lodash";
+import useTitle from "../../../hooks/useTitle";
 
 const Projects: React.FC = () => {
+  useTitle("Projects Overview");
   const user = useSelector<any>((state) => state.user);
   const [loading, setLoading] = useState<boolean>(true);
   const [showCard, setShowCard] = useState<boolean>(false);

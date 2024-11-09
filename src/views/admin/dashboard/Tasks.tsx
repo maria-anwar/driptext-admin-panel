@@ -6,9 +6,11 @@ import { Freelancer,Task } from "../../../Types/Type";
 import TaskTable from "../../../components/tables/TaskTable";
 import { DatePicker, Select } from "antd";
 import moment, { Moment } from "moment";
+import useTitle from "../../../hooks/useTitle";
 const { RangePicker } = DatePicker;
 
 const Tasks: React.FC = () => {
+  useTitle("Tasks Overview");
   const user = useSelector<any>((state) => state.user);
   const [loading, setLoading] = useState<boolean>(true);
   const [freelancer, setFreelancer] = useState<Freelancer[]>([]);

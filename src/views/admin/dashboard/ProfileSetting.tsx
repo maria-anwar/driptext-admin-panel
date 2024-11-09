@@ -5,8 +5,10 @@ import SidebarIcons from "../../../components/icons/SidebarIcons";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserFields,updateRoleTitle } from "../../../redux/userSlice";
 import axios from "axios";
+import useTitle from "../../../hooks/useTitle";
 
 const ProfileSettings: React.FC = () => {
+  useTitle("Profile Settings Overview");
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
