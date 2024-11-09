@@ -277,9 +277,8 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                         Word Real
                       </label>
                       <p className="w-full py-2 text-black dark:text-white">
-                        {task.actualNumberOfWords !== null
-                          ? task.actualNumberOfWords
-                          : "N/A"}
+                      {Number(task?.actualNumberOfWords) ===1? 0 :task?.actualNumberOfWords}
+
                       </p>
                     </div>
                   </div>
