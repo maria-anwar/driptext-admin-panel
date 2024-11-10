@@ -25,6 +25,7 @@
     "@reduxjs/toolkit": "^2.2.7",
     "antd": "^5.21.4",
     "axios": "^1.7.3",
+    "crypto-js": "^4.2.0",
     "formik": "^2.4.6",
     "framer-motion": "^11.3.29",
     "gapi-script": "^1.2.0",

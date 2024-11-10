@@ -117,7 +117,7 @@ const AddModel: React.FC<AddModelProps> = ({
                   onChange={(date) => setFieldValue("date", date)}
                   errors={touched.date ? errors.date : ""}
                   minDate={new Date()}
-                  dateFormat="yyyy-MM-dd"
+                  dateFormat="dd-MM-yyyy"
                   placeholderText="Choose a date"
                 />
                 <GroupField

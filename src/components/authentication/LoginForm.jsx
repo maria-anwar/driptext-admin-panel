@@ -134,7 +134,7 @@ const LoginForm = () => {
                 <FontAwesomeIcon
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
                   onClick={togglePasswordVisibility}
-                  icon={passwordVisible ? faEyeSlash : faEye}
+                  icon={passwordVisible ? faEye :  faEyeSlash}
                 />
               </div>
               {props.errors.password && (
@@ -144,6 +144,17 @@ const LoginForm = () => {
               )}
             </div>
             <div className="flex items-center justify-end mt-6">
+            {/* <div className="flex gap-2 items-center">
+                <input
+                  type="checkbox"
+                  id="save-password"
+                  name="save-password"
+                  className="w-4 h-4"
+                />
+                <p className="text-sm text-gray-900 font-semibold text-black hover:text-black">
+                  Save password
+                </p>
+              </div> */}
               <Link
                 to="/auth/lost/request"
                 className="text-sm text-gray-900 font-semibold text-black hover:text-black"
