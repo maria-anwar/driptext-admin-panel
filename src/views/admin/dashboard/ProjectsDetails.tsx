@@ -62,7 +62,6 @@ const ProjectsDetails: React.FC = () => {
         const projectDataArray = response.data.project;
         const allProjects = projectDataArray;
         setProjectDetails(allProjects);
-        console.log("Project Details:", allProjects);
         setPlan(allProjects.plan);
         setUserData(allProjects.user);
         setProjectTasks(allProjects.projectTasks);
@@ -145,7 +144,6 @@ const ProjectsDetails: React.FC = () => {
       .post(`${import.meta.env.VITE_DB_URL}/admin/archiveProject`, payload)
       .then((response) => {
         if (response.status === 200) {
-          console.log("Project archived successfully:", response);
           setDeleteModel(false);
           navigate("/dashboard", { replace: true });
         }

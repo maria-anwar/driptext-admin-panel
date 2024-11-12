@@ -25,21 +25,18 @@ const Export: React.FC<{ id: string; taskLength: number }> = ({
     const payload = {
       projectId: id,
     };
-    console.log("Payload:", payload);
     axios
       .post(`${import.meta.env.VITE_DB_URL}/admin/exportTasks`, payload)
       .then((response) => {
-        console.log("Export URL:", response);
         const exportUrl = response.data.exportUrl;
+        // window.open(exportUrl, "_blank", "noopener,noreferrer");
+        console.log(exportUrl)
+        if(exportUrl){
         window.open(exportUrl, "_blank");
-        const link = document.createElement("a");
-        link.href = exportUrl;
-        link.setAttribute("download", "");
-        link.download = exportUrl;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        console.log("window open")
         setExportLoader(false);
+
+        }
       })
       .catch((err) => {
         console.error(
