@@ -10,6 +10,7 @@ import axios from "axios";
 import { Freelancer, Project } from "../../Types/Type";
 import getInitials from "../Helpers/UpperCaseName";
 import { format } from "date-fns"; // 2. import format from date-fns
+import { useTranslation } from "react-i18next";
 const formatDate = (dateString: Date | string) => {
     if (!dateString) return "";
     const date = new Date(dateString);
@@ -27,6 +28,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
   freelancer,
   handleRefreshData,
 }) => {
+  const {t} = useTranslation();
   const user = useSelector<any>((state) => state.user);
   const [userToken, setUserToken] = useState(user?.user?.token);
   const [page, setPage] = useState(1);
@@ -115,29 +117,29 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4 ">
                 <th className="min-w-[190px]  py-4 px-4 font-semibold text-black dark:text-white ">
-                  Status
+                  {t("projects.status")}
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold  text-black dark:text-white">
-                  Google-Link
+                  {t("projects.googleLink")}
                 </th>
 
                 <th className="min-w-[120px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Domain
+                  {t("projects.domain")}
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Performance Period
+                  {t("projects.performancePeriod")}
                 </th>
                 <th className="min-w-[230px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Tasks
+                  {t("projects.tasks")}
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Team
+                  {t("projects.team")}
                 </th>
                 <th className="min-w-[100px] py-4 px-4 font-medsemiboldium text-black dark:text-white">
-                  Onboarded
+                  {t("projects.onboarded")}
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Action
+                  {t("projects.action")}
                 </th>
               </tr>
             </thead>
@@ -288,12 +290,12 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                           project.lector && project.seo && project.texter
                             ? "bg-blue-500"
                             : "bg-yellow-400/80"
-                        } w-24 h-9 flex justify-center items-center rounded cursor-pointer`}
+                        } w-28 h-9 flex justify-center items-center rounded cursor-pointer`}
                         onClick={() => handleProject(project._id)}
                       >
                         {project.lector && project.seo && project.texter ? (
                           <FontAwesomeIcon
-                            className="text-white"
+                            className="text-white pl-2"
                             icon={faEye}
                           />
                         ) : (
@@ -305,7 +307,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                           />
                         )}
                         <p className="text-white text-base font-medium text-center py-1 px-2">
-                          View
+                          {t("projects.view")}
                         </p>
                       </div>
                     ) : (
