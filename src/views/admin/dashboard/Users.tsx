@@ -137,21 +137,32 @@ const Users: React.FC = () => {
             Users
           </h2>
           <div className="flex items-center gap-2">
-            {showSearch && (
-              <input
-                type="search"
-                value={search}
-                onChange={handleSearchFilter}
-                placeholder="Search by name"
-                className="rounded ring-1 outline-none py-1 px-4 ring-slate-200 bg-slate-0 dark:bg-transparent w-45 lg:w-80 xl:w-80"
-              />
-            )}
-            <div
-              onClick={handleSearch}
-              className="h-8 w-8 ring-1 my-2 flex justify-center items-center cursor-pointer rounded mr-2 ring-slate-300 bg-slate-100 dark:bg-transparent"
-            >
-              <FontAwesomeIcon icon={faSearch} />
+            <div className="flex items-center gap-2">
+              {showSearch && (
+                <input
+                  type="search"
+                  value={search}
+                  onChange={handleSearchFilter}
+                  placeholder="Search by name"
+                  className="rounded ring-1 outline-none py-1 px-4 ring-slate-200 bg-slate-0 dark:bg-transparent w-45 lg:w-80 xl:w-80"
+                />
+              )}
+
+              <div className="relative group">
+                <div
+                  onClick={handleSearch}
+                  className="h-8 w-8 ring-1 my-2 flex justify-center items-center cursor-pointer rounded mr-2 ring-slate-300 bg-slate-100 dark:bg-transparent"
+                >
+                  <FontAwesomeIcon icon={faSearch} />
+                </div>
+
+                {/* Tooltip for Search Icon */}
+                <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-5 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  Search
+                </div>
+              </div>
             </div>
+
             <div
               onClick={handleAddManager}
               className="inline-flex items-center cursor-pointer justify-center gap-2.5 bg-black py-3 text-sm xl:text-base  text-center font-medium text-white hover:bg-opacity-90 px-5"
@@ -175,9 +186,10 @@ const Users: React.FC = () => {
               <h2>Add User</h2>
             </div>
           </div>
-          
         </div>
-        {showAddManager ?<AddManager handleClose={handleCloseManager} />: null}
+        {showAddManager ? (
+          <AddManager handleClose={handleCloseManager} />
+        ) : null}
         <div className="flex justify-end items-end pt-3 pb-3 pr-2">
           <div className="relative">
             <button
@@ -215,7 +227,9 @@ const Users: React.FC = () => {
                       isOn={toggleLeads}
                       onToggle={handleToggleLeads}
                     />
-                    <span className="pl-2">Show leads</span>
+                    <span className="pl-2">
+                      {!toggleLeads ? "Show Leads" : "Hide Leads"}
+                    </span>
                   </div>
                   <div className="flex items-center text-left">
                     <ToggleSwitch
@@ -223,7 +237,9 @@ const Users: React.FC = () => {
                       isOn={toggleClient}
                       onToggle={handleToggleClient}
                     />
-                    <span className="pl-2">Show Client</span>
+                    <span className="pl-2">
+                      {!toggleClient ? "Show Clients" : "Hide Clients"}
+                    </span>
                   </div>
                 </div>
               </div>

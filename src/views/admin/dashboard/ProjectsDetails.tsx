@@ -333,11 +333,18 @@ const ProjectsDetails: React.FC = () => {
                         Project members
                       </h3>
                       <p
-                        className="w-5 h-5 bg-blue-500 text-white flex items-center justify-center cursor-pointer"
-                        onClick={handleMembers}
-                      >
-                        <FontAwesomeIcon icon={faPlus} className="text-sm" />
-                      </p>
+  className="relative group w-5 h-5 bg-blue-500 text-white flex items-center justify-center cursor-pointer"
+  onClick={handleMembers}
+>
+  <FontAwesomeIcon icon={faPlus} className="text-sm" />
+
+  {/* Tooltip */}
+  <div className=" shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-7 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+  Add Freelancer
+  </div>
+</p>
+
+
                     </div>
                     <div className="px-7">
                       <TaskMembers
@@ -370,13 +377,27 @@ const ProjectsDetails: React.FC = () => {
             </>
           )}
           <div className="pt-14">
-            <div className="flex justify-end items-end">
-              <Import id={projectDetails._id} handleRefreshData={getTaskData} />
-              <Export
-                id={projectDetails._id}
-                taskLength={projectTasks.length}
-              />
-            </div>
+          <div className="flex justify-end items-end">
+  {/* Import Icon with Tooltip */}
+  <div className="relative group">
+    <Import id={projectDetails._id} handleRefreshData={getTaskData} />
+    <span className=" shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-7 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+    Import Tasks
+    </span>
+  </div>
+
+  {/* Export Icon with Tooltip */}
+  <div className="relative group ml-4">
+    <Export
+      id={projectDetails._id}
+      taskLength={projectTasks.length}
+    />
+            <span className=" shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-7 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            Export Tasks
+    </span>
+  </div>
+</div>
+
 
             {loading ? (
               <div className="mt-4 rounded-sm border border-stroke  pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1   w-full bg-slate-200 h-[350px] animate-pulse"></div>
