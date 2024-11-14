@@ -1,0 +1,30 @@
+{
+  "projects": {
+    "overview": "Projects Overview",
+    "dashboard": "Dashboard /",
+    "projects": "Projects",
+    "cardView": "Card View",
+    "tableView": "Table View",
+    "archived": "Archived",
+    "active": "Active",
+    "searchByDomain": "Search by domain",
+    "search": "Search",
+    "status": "Status",
+    "googleLink": "Google-Link",
+    "domain": "Domain",
+    "performancePeriod": "Performance Period",
+    "tasks": "Tasks",
+    "team": "Team",
+    "onboarded": "Onboarded",
+    "action": "Action",
+    "noSubscription": "No Subscription",
+    "view": "View",
+    "revert": "Revert",
+    "waitingForOnboarding": "Waiting for onboarding",
+    "ready": "Ready",
+    "createdOn": "Created on",
+    "freeTrial": "Ready",
+    "finalStatus": "Final",
+    "notInitialized": "Not Initialized"
+  }
+}

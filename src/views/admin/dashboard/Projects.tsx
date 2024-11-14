@@ -14,9 +14,12 @@ import axios from "axios";
 import { Freelancer, Project } from "../../../Types/Type";
 import { debounce } from "lodash";
 import useTitle from "../../../hooks/useTitle";
+import { useTranslation } from "react-i18next";
 
 const Projects: React.FC = () => {
-  useTitle("Projects Overview");
+  const { t } = useTranslation();
+  useTitle(t("projects.overview"));
+
   const user = useSelector<any>((state) => state.user);
   const [loading, setLoading] = useState<boolean>(true);
   const [showCard, setShowCard] = useState<boolean>(false);
@@ -115,29 +118,35 @@ const Projects: React.FC = () => {
                 className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
                 to="/dashboard"
               >
-                Dashboard /
+                {t("projects.dashboard")}
               </Link>
             </li>
-            <li className="font-medium text-primary">Projects</li>
+            <li className="font-medium text-primary">
+              {t("projects.projects")}
+            </li>
           </ol>
           <div className="gap-4 flex items-center">
             <ToggleSwitch
               icon={faThLarge}
               isOn={showCard}
               onToggle={handleCard}
-              hoverText={showCard ? "Card View" : "Table View"}
+              hoverText={
+                showCard ? t("projects.cardView") : t("projects.tableView")
+              }
             />
             <ToggleSwitch
               icon={faTrashAlt}
               isOn={showArchived}
               onToggle={handleArchived}
-              hoverText={showArchived ? "Archived" : "Active"}
+              hoverText={
+                showArchived ? t("projects.archived") : t("projects.active")
+              }
             />
           </div>
         </div>
         <div className="flex justify-between items-center pb-2 lg:pb-0 xl:items-center">
           <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
-            Projects
+            {t("projects.projects")}
           </h2>
           <div className="flex items-center mb-2 lg:mb-0 xl:mb-0 lg:pl-12 xl:pl-12">
             {showSearch && (
@@ -159,7 +168,7 @@ const Projects: React.FC = () => {
 
               {/* Tooltip */}
               <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-5 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              Search
+                {t("projects.search")}
               </div>
             </div>
           </div>
