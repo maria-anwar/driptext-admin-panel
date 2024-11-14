@@ -152,35 +152,56 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex justify-start items-center px-4">
                       {user?.isActive === "Y" ? (
-                        <div
-                          className="ring-1 w-6 h-6 flex justify-center items-center rounded cursor-pointer ring-red-500"
-                          onClick={() => handleDeactivite(user._id)}
-                        >
-                          <FontAwesomeIcon
-                            className="text-red-500"
-                            icon={faTrashCan}
-                          />
+                        <div className="relative group">
+                          <div
+                            className="ring-1 w-6 h-6 flex justify-center items-center rounded cursor-pointer ring-red-500"
+                            onClick={() => handleDeactivite(user._id)}
+                          >
+                            <FontAwesomeIcon
+                              className="text-red-500"
+                              icon={faTrashCan}
+                            />
+                          </div>
+
+                          {/* Tooltip for Deactivate Icon */}
+                          <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-7 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                            Deactivate
+                          </div>
                         </div>
                       ) : (
-                        <div
-                          className="ring-1 w-6 h-6 flex justify-center items-center rounded cursor-pointer ring-green-500 bg-green-500"
-                          onClick={() => handleActivite(user._id)}
-                        >
-                          <FontAwesomeIcon
-                            className="text-white"
-                            icon={faPlay}
-                          />
+                        <div className="relative group">
+                          <div
+                            className="ring-1 w-6 h-6 flex justify-center items-center rounded cursor-pointer ring-green-500 bg-green-500"
+                            onClick={() => handleActivite(user._id)}
+                          >
+                            <FontAwesomeIcon
+                              className="text-white"
+                              icon={faPlay}
+                            />
+                          </div>
+
+                          {/* Tooltip for Activate Icon */}
+                          <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-7 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                            Activate
+                          </div>
                         </div>
                       )}
                       {user?.role?.title === "ProjectManger" ? (
-                        <div
-                          className="ring-1 w-6 h-6 flex justify-center items-center rounded cursor-pointer ring-green-500 bg-green-500 mx-3"
-                          onClick={() => handleEdit(user)} // Set the clicked user
-                        >
-                          <FontAwesomeIcon
-                            className="text-white"
-                            icon={faEdit}
-                          />
+                        <div className="relative group">
+                          <div
+                            className="ring-1 w-6 h-6 flex justify-center items-center rounded cursor-pointer ring-green-500 bg-green-500 mx-3"
+                            onClick={() => handleEdit(user)} // Set the clicked user
+                          >
+                            <FontAwesomeIcon
+                              className="text-white"
+                              icon={faEdit}
+                            />
+                          </div>
+
+                          {/* Tooltip */}
+                          <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-7 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                            Edit Project Manager
+                          </div>
                         </div>
                       ) : (
                         <p></p>

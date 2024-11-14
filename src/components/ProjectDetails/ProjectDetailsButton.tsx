@@ -49,51 +49,74 @@ const ProjectDetailsButton: React.FC<ProjectDetailsButtonProps> = ({
         </p>
 
         <div className="flex justify-center items-center gap-3">
-          <button
-            onClick={() => setAddModel(true)}
-            disabled={!onBoarding}
-            className="w-10 h-10 text-center bg-blue-500 text-white rounded-none my-2 flex justify-center items-center border-none"
-          >
-            <FontAwesomeIcon icon={faPlus} className="text-sm px-2" />
-          </button>
-          {addModel && (
-            <AddModel
-              projectName={projectName}
-              projectId={_id}
-              userId={userId}
-              handleCloseAdd={() => setAddModel(false)}
-              getTaskData={getTaskData}
-            />
-          )}
-          <button
-            onClick={() => setEditModel(true)}
-            className="w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none my-2 flex justify-center items-center border-none"
-          >
-            <FontAwesomeIcon icon={faEdit} className="text-sm px-2" />
-          </button>
-          {editModel && (
-            <EditProject
-              onBoarding={onBoarding}
-              projectId={_id}
-              domain={projectName}
-              speech={speech}
-              perspective={perspective}
-              handleCloseEdit={() => setEditModel(false)}
-              handleRefreshData={getTaskData}
-            />
-          )}
-          <button
-            onClick={() => setDeleteModel(true)}
-            className="w-10 h-10 text-center bg-slate-100 text-slate-600 hover:bg-blue-500 hover:text-white rounded-none my-2 flex justify-center items-center border-none"
-          >
-            <FontAwesomeIcon icon={faTrashAlt} />
-          </button>
-          {deleteModel && (
-            <DeleteModel
-              handleDelete={handleDelete}
-              handleClose={() => setDeleteModel(false)}
-            />
-          )}
+          {/* Add Button */}
+          <div className="relative group">
+            <button
+              onClick={() => setAddModel(true)}
+              disabled={!onBoarding}
+              className="w-10 h-10 text-center bg-blue-500 text-white rounded-none my-2 flex justify-center items-center border-none"
+            >
+              <FontAwesomeIcon icon={faPlus} className="text-sm px-2" />
+            </button>
+            {/* Tooltip for Add Icon */}
+            <div className=" shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-5 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              Add Task
+            </div>
+            {addModel && (
+              <AddModel
+                projectName={projectName}
+                projectId={_id}
+                userId={userId}
+                handleCloseAdd={() => setAddModel(false)}
+                getTaskData={getTaskData}
+              />
+            )}
+          </div>
+
+          {/* Edit Button */}
+          <div className="relative group">
+            <button
+              onClick={() => setEditModel(true)}
+              className="w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none my-2 flex justify-center items-center border-none"
+            >
+              <FontAwesomeIcon icon={faEdit} className="text-sm px-2" />
+            </button>
+            {/* Tooltip for Edit Icon */}
+            <div className=" shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-5 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              Edit Project
+            </div>
+            {editModel && (
+              <EditProject
+                onBoarding={onBoarding}
+                projectId={_id}
+                domain={projectName}
+                speech={speech}
+                perspective={perspective}
+                handleCloseEdit={() => setEditModel(false)}
+                handleRefreshData={getTaskData}
+              />
+            )}
+          </div>
+
+          {/* Delete Button */}
+          <div className="relative group">
+            <button
+              onClick={() => setDeleteModel(true)}
+              className="w-10 h-10 text-center bg-slate-100 text-slate-600 hover:bg-blue-500 hover:text-white rounded-none my-2 flex justify-center items-center border-none"
+            >
+              <FontAwesomeIcon icon={faTrashAlt} />
+            </button>
+            {/* Tooltip for Delete Icon */}
+            <div className=" shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-5 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              Archive Project
+            </div>
+            {deleteModel && (
+              <DeleteModel
+                handleDelete={handleDelete}
+                handleClose={() => setDeleteModel(false)}
+              />
+            )}
+          </div>
         </div>
       </div>
       <div className="py-2">

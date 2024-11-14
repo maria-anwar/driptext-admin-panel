@@ -51,7 +51,7 @@ const Projects: React.FC = () => {
       });
   };
 
-  const getFreelancerData =async () => {
+  const getFreelancerData = async () => {
     let token = user?.user?.token;
     axios.defaults.headers.common["access-token"] = token;
     await axios
@@ -80,7 +80,6 @@ const Projects: React.FC = () => {
   useEffect(() => {
     debouncedSearch(searchQuery);
   }, [searchQuery]);
-  
 
   const handleCard = (isOn: boolean) => {
     setShowCard(isOn);
@@ -89,7 +88,6 @@ const Projects: React.FC = () => {
       setShowArchived(false);
     }
   };
-
 
   const handleArchived = (isOn: boolean) => {
     setShowArchived(isOn);
@@ -127,11 +125,13 @@ const Projects: React.FC = () => {
               icon={faThLarge}
               isOn={showCard}
               onToggle={handleCard}
+              hoverText={showCard ? "Card View" : "Table View"}
             />
             <ToggleSwitch
               icon={faTrashAlt}
               isOn={showArchived}
               onToggle={handleArchived}
+              hoverText={showArchived ? "Archived" : "Active"}
             />
           </div>
         </div>
@@ -149,42 +149,47 @@ const Projects: React.FC = () => {
                 className="rounded ring-1 outline-none py-1 px-4 ring-slate-200 bg-slate-0 dark:bg-transparent w-45 lg:w-60 xl:w-80"
               />
             )}
-            <div
-              onClick={handleSearch}
-              className="h-8 w-8 ring-1 my-2 flex justify-center items-center cursor-pointer rounded ml-2 ring-slate-300 bg-slate-100 dark:bg-transparent"
-            >
-              <FontAwesomeIcon icon={faSearch} />
+            <div className="relative group">
+              <div
+                onClick={handleSearch}
+                className="h-8 w-8 ring-1 my-2 flex justify-center items-center cursor-pointer rounded ml-2 ring-slate-300 bg-slate-100 dark:bg-transparent"
+              >
+                <FontAwesomeIcon icon={faSearch} />
+              </div>
+
+              {/* Tooltip */}
+              <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-5 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              Search
+              </div>
             </div>
           </div>
         </div>
 
         <div>
-          {
-            !showArchived &&
-              (showCard ? (
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 2xl:grid-cols-3 5xl:grid-cols-4 4xl:px-14 pt-8">
-                  <ProjectCard
+          {!showArchived &&
+            (showCard ? (
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 2xl:grid-cols-3 5xl:grid-cols-4 4xl:px-14 pt-8">
+                <ProjectCard
+                  projects={filteredProjects.filter(
+                    (project) => project?.isActive !== "N"
+                  )}
+                  freelancer={freelancer}
+                />
+              </div>
+            ) : (
+              <>
+                {loading ? (
+                  <div className="rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 mt-10 w-full bg-slate-200 h-[300px] animate-pulse"></div>
+                ) : (
+                  <ProjectPaginatedTable
                     projects={filteredProjects.filter(
                       (project) => project?.isActive !== "N"
                     )}
                     freelancer={freelancer}
                   />
-                </div>
-              ) : (
-                <>
-                  {loading ? (
-                    <div className="rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 mt-10 w-full bg-slate-200 h-[300px] animate-pulse"></div>
-                  ) : (
-                    <ProjectPaginatedTable
-                      projects={filteredProjects.filter(
-                        (project) => project?.isActive !== "N"
-                      )}
-                      freelancer={freelancer}
-                    />
-                  )}
-                </>
-              ))
-          }
+                )}
+              </>
+            ))}
           {showArchived && (
             <ProjectPaginatedTable
               handleRefreshData={getProjects}
