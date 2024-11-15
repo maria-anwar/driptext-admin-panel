@@ -50,6 +50,11 @@
     "successMessage": "Link successfully sent. Please click the link to reset your password.",
     "errorMessage": "Error sending the link"
   },
+  "notFound": {
+    "title": "Looks like you're lost",
+    "description": "404 error",
+    "backToHome": "Back to Home"
+  },
   "projects": {
     "overview": "Projects Overview",
     "dashboard": "Dashboard /",

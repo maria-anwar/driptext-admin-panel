@@ -50,6 +50,11 @@
     "successMessage": "Link erfolgreich gesendet, klicken Sie auf den Link, um Ihr Passwort zurückzusetzen",
     "errorMessage": "Fehler beim Senden des Links"
   },
+  "notFound": {
+    "title": "Sieht aus, als wären Sie verloren",
+    "description": "404 Fehler",
+    "backToHome": "Zurück zur Startseite"
+  },
   "projects": {
     "overview": "Übersicht der Projekte",
     "dashboard": "Dashboard /",

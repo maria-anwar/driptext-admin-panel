@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 const NotFound = () => {
-document.title = '404 | Driptext'
+  document.title = '404 | Driptext';
+  
+  const { t } = useTranslation(); // Initialize useTranslation hook
+
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-white text-black dark:bg-black dark:text-white">
       <div className="flex flex-col items-center gap-8 text-center">
@@ -14,14 +18,18 @@ document.title = '404 | Driptext'
           </div>
         </div>
         <div>
-          <h1 className="capitalize text-yellow-400 text-4xl md:text-5xl font-medium">Looks like you're lost</h1>
-          <p className="mt-2 text-lg md:text-xl font-light">404 error</p>
+          <h1 className="capitalize text-yellow-400 text-4xl md:text-5xl font-medium">
+            {t("notFound.title")} {/* Use translation for the title */}
+          </h1>
+          <p className="mt-2 text-lg md:text-xl font-light">
+            {t("notFound.description")} {/* Use translation for the description */}
+          </p>
         </div>
         <Link 
           to="/" 
           className="capitalize text-lg md:text-xl font-light px-6 py-3 border border-yellow-400 rounded-lg shadow-md transition ease-in-out duration-300 hover:bg-yellow-400 hover:text-white"
         >
-          back to home
+          {t("notFound.backToHome")} {/* Use translation for the "back to home" text */}
         </Link>
       </div>
     </main>
