@@ -8,16 +8,15 @@ import { useNavigate } from "react-router-dom";
 import { Freelancer, Task } from "../../Types/Type";
 import getInitials from "../Helpers/UpperCaseName";
 import formatDate from "../Helpers/DateFormat";
+import { useTranslation } from "react-i18next";
 
 interface PaginatedTableProps {
   tasks: Task[];
   freelancer: Freelancer[];
 }
 
-const TasksTable: React.FC<PaginatedTableProps> = ({
-  tasks,
-  freelancer,
-}) => {
+const TasksTable: React.FC<PaginatedTableProps> = ({ tasks, freelancer }) => {
+  const { t } = useTranslation(); // Adding translation hook
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const navigate = useNavigate();
@@ -38,7 +37,6 @@ const TasksTable: React.FC<PaginatedTableProps> = ({
     setPage(page);
   };
 
-
   const handleRowsPerPageChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -50,7 +48,6 @@ const TasksTable: React.FC<PaginatedTableProps> = ({
     localStorage.setItem("taskID", taskId);
     navigate("taskdetails");
   };
-
 
   const WorkerComponent: React.FC<{ label: string; name: string }> = ({
     label,
@@ -79,25 +76,25 @@ const TasksTable: React.FC<PaginatedTableProps> = ({
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4">
                 <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Status
+                  {t('tasksTable.status')}
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Google-Link
+                  {t('tasksTable.googleLink')}
                 </th>
                 <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Deadline
+                  {t('tasksTable.deadline')}
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Word count
+                  {t('tasksTable.wordCount')}
                 </th>
                 <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Keywords
+                  {t('tasksTable.keywords')}
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Team
+                  {t('tasksTable.team')}
                 </th>
                 <th className="min-w-[100px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Action
+                  {t('tasksTable.action')}
                 </th>
               </tr>
             </thead>
@@ -126,9 +123,9 @@ const TasksTable: React.FC<PaginatedTableProps> = ({
                               : task.status.toUpperCase() === "SEO OPTIMIZATION IN PROGRESS"
                               ? "bg-pink-500/20 text-pink-500"
                               : task.status.toUpperCase() === "READY FOR 2ND PROOFREADING"
-                              ? "bg-violet-500/20 text-violet-500" // New color for "READY FOR 2ND PROOFREADING"
+                              ? "bg-violet-500/20 text-violet-500"
                               : task.status.toUpperCase() === "2ND PROOFREADING IN PROGRESS"
-                              ? "bg-lime-300/20 text-lime-700" // Different color for "2ND PROOFREADING IN PROGRESS"
+                              ? "bg-lime-300/20 text-lime-700"
                               : "bg-red-500/20 text-red-500"
                           }`}
                       >
@@ -154,14 +151,14 @@ const TasksTable: React.FC<PaginatedTableProps> = ({
                       `}
                     >
                       <span className="px-1">
-                      {task.status==='Final' ? "Finished" :formatDate(task?.dueDate)}
+                        {task.status === 'Final' ? t('tasksTable.statusLabels.final') : formatDate(task?.dueDate)}
                       </span>
                     </p>
                   </td>
 
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white ">
-                    {Number(task?.actualNumberOfWords) ===1? 0 :task?.actualNumberOfWords}/{task?.desiredNumberOfWords}
+                      {Number(task?.actualNumberOfWords) === 1 ? 0 : task?.actualNumberOfWords}/{task?.desiredNumberOfWords}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -192,17 +189,15 @@ const TasksTable: React.FC<PaginatedTableProps> = ({
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
                       className={`${
-                        task?.lector &&
-                        task?.seo &&
-                        task?.texter
+                        task?.lector && task?.seo && task?.texter
                           ? "bg-blue-500"
                           : "bg-yellow-400/80"
-                      } w-24 h-9 flex justify-center items-center rounded cursor-pointer`}
+                      } w-26 h-9 flex justify-center items-center rounded cursor-pointer`}
                       onClick={() => handleTask(task?._id)}
                     >
                       <FontAwesomeIcon className="text-white" icon={faEye} />
                       <p className="text-white text-base font-medium text-center py-1 px-2">
-                        View
+                        {t('tasksTable.view')}
                       </p>
                     </div>
                   </td>
@@ -212,11 +207,11 @@ const TasksTable: React.FC<PaginatedTableProps> = ({
           </table>
           <div className="mt-4 mb-2 flex justify-between items-center">
             <select
-              className="p-2 ring-1 ml-2  ring-slate-200 bg-transparent rounded outline-none shadow-2 "
+              className="p-2 ring-1 ml-2 ring-slate-200 bg-transparent rounded outline-none shadow-2"
               value={rowsPerPage}
               onChange={handleRowsPerPageChange}
             >
-              <option className="dark:text-black " value={5}>
+              <option className="dark:text-black" value={5}>
                 5
               </option>
               <option className="dark:text-black" value={10}>

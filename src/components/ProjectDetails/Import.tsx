@@ -5,14 +5,16 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Import: React.FC<{ id: string,handleRefreshData:()=> void }> = ({ id,handleRefreshData }) => {
+  const { t } = useTranslation();
   const [importModel, setImportModel] = useState(false);
   const [fileName, setFileName] = useState(
-    "Drag files here or click to select files"
+    ""
   );
   const [fileData, setFileData] = useState(null);
   const [file, setFile] = useState(null);
@@ -20,6 +22,9 @@ const Import: React.FC<{ id: string,handleRefreshData:()=> void }> = ({ id,handl
   const [errorMessage, setErrorMessage] = useState("");
   const [modalKey, setModalKey] = useState(0);
   const [importLoader, setImportLoader] = useState(false);
+  useEffect(() => {
+    setFileName(t("projectDetails.import.modal.fileInput.placeholder"));
+  }, [t]);
   const handleImport = () => {
     setImportModel(true);
   };
@@ -43,7 +48,7 @@ const Import: React.FC<{ id: string,handleRefreshData:()=> void }> = ({ id,handl
     e.preventDefault();
 
     if (!file) {
-      toast.error("Please select a file.");
+      toast.error(t("projectDetails.import.modal.errorMessages.noFileSelected"));
       return;
     }
     setImportLoader(true);
@@ -63,9 +68,9 @@ const Import: React.FC<{ id: string,handleRefreshData:()=> void }> = ({ id,handl
         }
       );
       
-      toast.success("Tasks imported successfully");
+      toast.success(t("projectDetails.import.modal.toastMessages.success"));
       setFile(null);
-      setFileName("Drag files here or click to select files");
+      setFileName(t("projectDetails.import.modal.fileInput.placeholder"));
       setImportLoader(false);
       handleRefreshData();
     } catch (error) {
@@ -91,7 +96,7 @@ const Import: React.FC<{ id: string,handleRefreshData:()=> void }> = ({ id,handl
           <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-3/12 xl:w-3/12 2xl:w-4/12 3xl:w-3/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
             <div className="flex justify-between items-center mb-5">
               <h2 className="text-xl font-bold dark:text-white pr-12">
-                Import
+                {t("projectDetails.import.modal.title")}
               </h2>
               <FontAwesomeIcon
                 className="cursor-pointer text-lg text-red-500 pl-12"
@@ -123,7 +128,7 @@ const Import: React.FC<{ id: string,handleRefreshData:()=> void }> = ({ id,handl
               onClick={(e) => handleImportData(e, id)}
               disabled={importLoader}
             >
-              {importLoader ? "Importing..." : "Import"}
+              {importLoader ? t("projectDetails.import.button.disabledText"): t("projectDetails.import.modal.title")}
             </button>
           </div>
         </div>

@@ -10,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import react-toastify styles
 import EditManager from "../FormFields/EditManager";
 import { User } from "../../Types/Type";
+import { useTranslation } from "react-i18next";
 
 interface PaginatedTableProps {
   users: User[];
@@ -20,6 +21,7 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({
   users,
   refreshUser,
 }) => {
+  const { t } = useTranslation();
   const user = useSelector<any>((state) => state.user);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
@@ -55,11 +57,11 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({
       .post(`${import.meta.env.VITE_DB_URL}/admin/updateUserStatus`, payload)
       .then((response) => {
         refreshUser();
-        toast.success("User activated successfully.");
+        toast.success(t("user.userPaginatedTable.toast.userActivated"));
       })
       .catch((err) => {
         console.error("Error updating status:", err);
-        toast.error("Error updating status, please try again.");
+        toast.error(t("user.userPaginatedTable.toast.error"));
       });
   };
 
@@ -75,11 +77,11 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({
       .post(`${import.meta.env.VITE_DB_URL}/admin/updateUserStatus`, payload)
       .then((response) => {
         refreshUser();
-        toast.success("User deactivated successfully.");
+        toast.success(t("user.userPaginatedTable.toast.userDeactivated"));
       })
       .catch((err) => {
         console.error("Error updating status:", err);
-        toast.error("Error updating status, please try again.");
+        toast.error(t("user.userPaginatedTable.toast.error"));
       });
   };
 
@@ -99,19 +101,19 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4">
                 <th className="min-w-[140px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Name
+                  {t("user.userPaginatedTable.table.headers.name")}
                 </th>
                 <th className="min-w-[120px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Email
+                  {t("user.userPaginatedTable.table.headers.email")}
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-medsemiboldium text-black dark:text-white">
-                  Role
+                  {t("user.userPaginatedTable.table.headers.role")}
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-medsemiboldium text-black dark:text-white">
-                  Status
+                  {t("user.userPaginatedTable.table.headers.status")}
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Action
+                  {t("user.userPaginatedTable.table.headers.action")}
                 </th>
               </tr>
             </thead>
@@ -146,7 +148,9 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
-                      {user?.isActive === "Y" ? "Active" : "Inactive"}
+                      {user?.isActive === "Y"
+                        ? t("user.userPaginatedTable.table.status.active")
+                        : t("user.userPaginatedTable.table.status.inactive")}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -165,7 +169,9 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({
 
                           {/* Tooltip for Deactivate Icon */}
                           <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-7 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                            Deactivate
+                            {t(
+                              "user.userPaginatedTable.table.actions.deactivate"
+                            )}
                           </div>
                         </div>
                       ) : (
@@ -182,7 +188,9 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({
 
                           {/* Tooltip for Activate Icon */}
                           <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-7 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                            Activate
+                            {t(
+                              "user.userPaginatedTable.table.actions.activate"
+                            )}
                           </div>
                         </div>
                       )}
@@ -200,7 +208,9 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({
 
                           {/* Tooltip */}
                           <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-7 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                            Edit Project Manager
+                            {t(
+                              "user.userPaginatedTable.table.actions.editProjectManager"
+                            )}
                           </div>
                         </div>
                       ) : (

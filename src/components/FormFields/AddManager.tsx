@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { GroupField } from "./GroupField";
+import { useTranslation } from "react-i18next";
 
 interface User {
   firstName: string;
@@ -19,6 +20,7 @@ interface AddManagerProps {
 }
 
 const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
+  const {t} = useTranslation();
   const user = useSelector((state: any) => state.user);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -33,10 +35,10 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
   };
 
   const validationSchema = Yup.object().shape({
-    firstName: Yup.string().required("First name is required"),
-    lastName: Yup.string().required("Last name is required"),
-    email: Yup.string().email("Invalid email format").required("Email is required"),
-    password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+    firstName: Yup.string().required(t('user.addManager.form.fields.firstName.error')),
+    lastName: Yup.string().required(t('user.addManager.form.fields.lastName.error')),
+    email: Yup.string().email(t('user.addManager.form.fields.email.invalidEmail')).required(t('user.addManager.form.fields.email.error')),
+    password: Yup.string().min(8, t('user.addManager.form.fields.password.shortPassword')).required(t('user.addManager.form.fields.password.error')),
   });
 
   const onSubmit = async (values: typeof initialValues) => {
@@ -56,7 +58,6 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
 
       await axios.post(`${import.meta.env.VITE_DB_URL}/admin/createProjectManager`, payload);
       handleClose(); // Close the modal after success
-      console.log("Manager added successfully");
     } catch (err) {
       setErrorMessage(err.response?.data?.message || "Error adding manager");
       setError(true);
@@ -77,7 +78,7 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
           <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
             <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
               <div className="flex justify-between items-center mb-5">
-                <h2 className="text-xl font-bold dark:text-white pr-12">Add Manager</h2>
+                <h2 className="text-xl font-bold dark:text-white pr-12">{t('user.addManager.form.header')}</h2>
                 <FontAwesomeIcon
                   className="cursor-pointer text-lg text-red-500 pl-12"
                   onClick={handleClose}
@@ -87,9 +88,9 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
 
               <div>
                 <GroupField
-                  label="First Name"
+                  label={t('user.addManager.form.fields.firstName.label')}
                   type="text"
-                  placeholder="Enter first name"
+                  placeholder={t('user.addManager.form.fields.firstName.placeholder')}
                   name="firstName"
                   id="firstName"
                   value={values.firstName} // Ensure value is set
@@ -98,9 +99,9 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
                 />
 
                 <GroupField
-                  label="Last Name"
+                  label={t('user.addManager.form.fields.lastName.label')}
                   type="text"
-                  placeholder="Enter last name"
+                  placeholder={t('user.addManager.form.fields.lastName.placeholder')}
                   name="lastName"
                   id="lastName"
                   value={values.lastName} // Ensure value is set
@@ -109,9 +110,9 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
                 />
 
                 <GroupField
-                  label="Email"
+                  label={t('user.addManager.form.fields.email.label')}
                   type="email"
-                  placeholder="Enter email"
+                  placeholder={t('user.addManager.form.fields.email.placeholder')}
                   name="email"
                   id="email"
                   value={values.email} // Ensure value is set
@@ -121,9 +122,9 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
 
                 <div className="relative">
                   <GroupField
-                    label="Password"
+                    label={t('user.addManager.form.fields.password.label')}
                     type={passwordVisible ? "text" : "password"} // Toggle type based on visibility state
-                    placeholder="Enter password"
+                    placeholder={t('user.addManager.form.fields.password.placeholder')}
                     name="password"
                     id="password"
                     value={values.password}
@@ -131,7 +132,7 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
                     errors={touched.password ? errors.password : ""}
                   />
                   <FontAwesomeIcon
-                    className="absolute right-3 top-2/3 transform -translate-y-1/2 cursor-pointer"
+                    className="absolute right-3 top-15 transform -translate-y-1/2 cursor-pointer"
                     onClick={() => setPasswordVisible(!passwordVisible)} // Toggle visibility
                     icon={passwordVisible ? faEye :  faEyeSlash}
                   />
@@ -143,14 +144,14 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
                     type="button"
                     onClick={handleClose}
                   >
-                    Cancel
+                   {t('user.addManager.form.buttons.cancel')}
                   </button>
                   <button
                     className={`my-3 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90 ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
                     type="submit"
                     disabled={loading}
                   >
-                    {loading ? "Saving..." : "Save"}
+                    {loading ? t('user.addManager.form.buttons.saving') : t('user.addManager.form.buttons.save')}
                   </button>
                 </div>
 

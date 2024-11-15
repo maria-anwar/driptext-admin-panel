@@ -14,9 +14,11 @@ import { useSelector } from "react-redux";
 import AddManager from "../../../components/FormFields/AddManager";
 import { User } from "../../../Types/Type";
 import useTitle from "../../../hooks/useTitle";
+import { useTranslation } from "react-i18next";
 
 const Users: React.FC = () => {
-  useTitle("Users Overview");
+  const { t } = useTranslation();
+  useTitle(t("user.overviewUser"));
   const user = useSelector<any>((state) => state.user);
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const [showInactive, setShowInactive] = useState<boolean>(false); // Show all users initially
@@ -126,15 +128,17 @@ const Users: React.FC = () => {
               className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
               to="/dashboard"
             >
-              Dashboard /
+              {t("user.breadcrumb.dashboard")}
             </Link>
           </li>
-          <li className="font-medium text-primary">Users</li>
+          <li className="font-medium text-primary">
+            {t("user.breadcrumb.users")}
+          </li>
         </ol>
         <div className="flex justify-between items-center sm:flex-row gap-3 pt-3"></div>
         <div className="flex justify-between items-center sm:flex-row gap-3 pt-3">
           <h2 className="text-title-md2 font-semibold text-black dark:text-white">
-            Users
+            {t("user.breadcrumb.users")}
           </h2>
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-2">
@@ -143,7 +147,7 @@ const Users: React.FC = () => {
                   type="search"
                   value={search}
                   onChange={handleSearchFilter}
-                  placeholder="Search by name"
+                  placeholder={t("user.search.placeholder")}
                   className="rounded ring-1 outline-none py-1 px-4 ring-slate-200 bg-slate-0 dark:bg-transparent w-45 lg:w-80 xl:w-80"
                 />
               )}
@@ -158,7 +162,7 @@ const Users: React.FC = () => {
 
                 {/* Tooltip for Search Icon */}
                 <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-5 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  Search
+                  {t("user.search.button")}
                 </div>
               </div>
             </div>
@@ -183,7 +187,7 @@ const Users: React.FC = () => {
                   />
                 </svg>
               </span>
-              <h2>Add User</h2>
+              <h2> {t("user.addUser")}</h2>
             </div>
           </div>
         </div>
@@ -196,7 +200,7 @@ const Users: React.FC = () => {
               onClick={handleDropdownToggle}
               className="flex items-center border-none rounded text-black bg-gray-200 dark:bg-gray-800 dark:text-white"
             >
-              <span>Settings</span>
+              <span>{t("user.settings")}</span>
               <FontAwesomeIcon
                 icon={faChevronDown}
                 className={`ml-2 transition-transform ${
@@ -217,7 +221,7 @@ const Users: React.FC = () => {
                       checked={showInactive}
                       onChange={handleStatusToggle}
                     />
-                    <span className="pl-2">Show inactive users</span>
+                    <span className="pl-2">{t("user.showInactive")}</span>
                   </div>
 
                   {/* Toggle Button */}
@@ -228,7 +232,9 @@ const Users: React.FC = () => {
                       onToggle={handleToggleLeads}
                     />
                     <span className="pl-2">
-                      {!toggleLeads ? "Show Leads" : "Hide Leads"}
+                      {!toggleLeads
+                        ? t("user.toggle.leads.show")
+                        : t("user.toggle.leads.hide")}
                     </span>
                   </div>
                   <div className="flex items-center text-left">
@@ -238,7 +244,9 @@ const Users: React.FC = () => {
                       onToggle={handleToggleClient}
                     />
                     <span className="pl-2">
-                      {!toggleClient ? "Show Clients" : "Hide Clients"}
+                      {!toggleClient
+                        ? t("user.toggle.client.show")
+                        : t("user.toggle.client.hide")}
                     </span>
                   </div>
                 </div>
@@ -249,7 +257,15 @@ const Users: React.FC = () => {
         {loading ? (
           <div className="rounded-sm border border-stroke mt-5 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1  w-full bg-slate-200 h-[300px] animate-pulse"></div>
         ) : (
-          <UserPaginatedTable users={filteredUserData} refreshUser={getUser} />
+          // Sort filteredUserData before passing it to the table
+          <UserPaginatedTable
+            users={filteredUserData.sort((a, b) => {
+              const nameA = `${a.firstName} ${a.lastName}`.toLowerCase();
+              const nameB = `${b.firstName} ${b.lastName}`.toLowerCase();
+              return nameA.localeCompare(nameB); // Sort alphabetically
+            })}
+            refreshUser={getUser}
+          />
         )}
       </div>
     </>

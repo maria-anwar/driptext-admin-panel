@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faPlus } from '@fortawesome/free-solid-svg-icons';
 import getInitials from '../Helpers/UpperCaseName';
+import { useTranslation } from 'react-i18next';
 
 const MemberModal = ({
   isOpen,
@@ -13,13 +14,14 @@ const MemberModal = ({
   handleRoleSelect
 }) => {
   if (!isOpen) return null;
+  const {t} = useTranslation();
 
   
   return (
     <div className="w-auto fixed inset-0 flex items-center justify-center z-[9999] bg-neutral-200 dark:bg-slate dark:bg-opacity-15 bg-opacity-60 px-4">
       <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 min-h-[80vh] max-h-[90vh] overflow-y-auto scrollbar-hide">
         <div className="flex justify-between items-center mb-5">
-          <h2 className="text-xl font-bold dark:text-white pr-12">Add members</h2>
+          <h2 className="text-xl font-bold dark:text-white pr-12">{t('projectDetails.projectMembers.addFreelancerButton')}</h2>
           <FontAwesomeIcon
             className="cursor-pointer text-lg text-red-500 pl-12"
             onClick={handleCloseMemberModel}

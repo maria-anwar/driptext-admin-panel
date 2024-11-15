@@ -4,6 +4,7 @@ import logo from "../../assets/homeimages/driptext-logo.png";
 import SidebarIcons from "../icons/SidebarIcons";
 import { useDispatch } from "react-redux";
 import {  clearPersistedState } from '../../redux/store';
+import { useTranslation } from "react-i18next";
 
 
 interface SidebarProps {
@@ -12,6 +13,7 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+  const {t} = useTranslation();
   const location = useLocation();
   const { pathname } = location;
   const navigate = useNavigate();
@@ -84,7 +86,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 DRIPTEXT
               </h1>
               <p className="text-gray-900 text-bodydark2 text-[13px]">
-                We love SEO & Content
+              {t('logo.subtitle')}
               </p>
             </div>
           </div>
@@ -129,7 +131,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     }`}
                   >
                     {SidebarIcons[0].dashboard}
-                    Projects
+                    {t('menu.projects')}
                   </NavLink>
                 </li>
                 <li>
@@ -141,7 +143,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     }`}
                   >
                     {SidebarIcons[4].contact}
-                    Tasks
+                    {t('menu.tasks')}
                   </NavLink>
                 </li>
                 <li>
@@ -165,7 +167,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     }`}
                   >
                     {SidebarIcons[2].profile}
-                    Users
+                    {t('menu.users')}
                   </NavLink>
                 </li>
                
@@ -178,7 +180,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     }`}
                   >
                     {SidebarIcons[1].settings}
-                    System settings
+                    {t('menu.systemSettings')}
                   </NavLink>
                 </li>
                 <li>
@@ -190,7 +192,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     }
                   >
                     {SidebarIcons[5].edution}
-                    Driptext Academy
+                    {t('menu.driptextAcademy')}
                   </NavLink>
                 </li>
               </ul>
@@ -204,7 +206,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     }`}
                   >
                     {SidebarIcons[1].settings}
-                   Profile Settings
+                    {t('menu.profileSettings')}
                   </NavLink>
                 </li>
               </ul>
@@ -220,7 +222,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               className={`group relative    flex items-center gap-2.5 rounded-sm py-4 px-4 lg:px-8 font-medium hover:text-bodydark1 text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4`}
             >
               {SidebarIcons[3].auth}
-              Sign out
+              {t('logout')}
             </NavLink>
           </li>
         </ul>

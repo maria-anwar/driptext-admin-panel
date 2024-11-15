@@ -1,9 +1,11 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 interface BreadcrumbProps {
   pageName: string;
 }
 const Breadcrumb = ({ pageName }: BreadcrumbProps) => {
+  const {t} = useTranslation();
   return (
     <div className="mb-6 flex flex-col gap-6  items-start justify-start">
       <nav>
@@ -13,7 +15,7 @@ const Breadcrumb = ({ pageName }: BreadcrumbProps) => {
               className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
               to="/dashboard"
             >
-              Dashboard /
+              {t('projects.dashboard')}
             </Link>
           </li>
           <li className="font-medium text-primary">{pageName}</li>
