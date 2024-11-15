@@ -1,4 +1,55 @@
 {
+  "login": {
+    "authline": "Geben Sie Ihre E-Mail-Adresse und Ihr Passwort ein, um sich anzumelden.",
+  "pageTitle": "Anmelden",
+    "labels": {
+      "email": "Deine E-Mail",
+      "password": "Passwort"
+    },
+    "placeholders": {
+      "email": "jhon@gmail.com",
+      "password": "********"
+    },
+    "validationErrors": {
+      "emailRequired": "E-Mail ist erforderlich",
+      "emailInvalid": "E-Mail ist ungültig",
+      "passwordRequired": "Passwort ist erforderlich",
+      "passwordMinLength": "Passwort muss mindestens 8 Zeichen lang sein"
+    },
+    "buttons": {
+      "submit": "Anmelden",
+      "loading": "Lädt..."
+    },
+    "links": {
+      "forgotPassword": "Passwort vergessen",
+      "imprint": "Impressum",
+      "privacyPolicy": "Datenschutzerklärung"
+    },
+    "errorMessages": {
+      "genericError": "Fehler beim Anmelden",
+      "roleError": "Sie können sich nicht als Projektmanager anmelden"
+    }
+  },
+  "passRequest": {
+    "authline": "Bitte gib deine E-Mail-Adresse ein, damit wir dir einen Link zum Zurücksetzen deines Passworts senden können.",
+    "pageTitle": "Passwort zurücksetzen",
+    "labels": {
+      "email": "Deine E-Mail-Adresse"
+    },
+    "placeholders": {
+      "email": "jhon@gmail.com"
+    },
+    "validationErrors": {
+      "emailRequired": "E-Mail ist erforderlich",
+      "emailInvalid": "E-Mail ist ungültig"
+    },
+    "buttons": {
+      "submit": "Link anfordern"
+    },
+      "backToLogin": "Zurück zum Anmelden",
+    "successMessage": "Link erfolgreich gesendet, klicken Sie auf den Link, um Ihr Passwort zurückzusetzen",
+    "errorMessage": "Fehler beim Senden des Links"
+  },
   "projects": {
     "overview": "Übersicht der Projekte",
     "dashboard": "Dashboard /",

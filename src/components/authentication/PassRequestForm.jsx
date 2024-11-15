@@ -5,15 +5,17 @@ import { useNavigate, Link } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
+import { useTranslation } from 'react-i18next';
 
 const PassRequestForm = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const initialValues = {
     email: "",
   };
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email().required("E-Mail ist erforderlich"),
+    email: Yup.string().email(t("passRequest.validationErrors.emailInvalid")).required(t("passRequest.validationErrors.emailRequired")),
   });
 
   const onSubmit = async (values) => {
@@ -22,13 +24,11 @@ const PassRequestForm = () => {
     };
 
     const apiUrl = 'https://driptext-api.vercel.app/api/auth/forgot/password';
-    console.log('API:', apiUrl);
     try {
       const response = await axios.post(apiUrl, emailData);
-      console.log('Daten erfolgreich gesendet:', response.emailData);
-      toast.success("Link erfolgreich gesendet, klicken Sie auf den Link, um Ihr Passwort zurückzusetzen");
+      toast.success(t("passRequest.successMessage"));
     } catch (error) {
-      const errorMessage = error.response?.data?.message || "Fehler beim Senden des Links";
+      const errorMessage = error.response?.data?.message || t("passRequest.errorMessage");
       toast.error(errorMessage);
     }
   };
@@ -48,7 +48,7 @@ const PassRequestForm = () => {
                 htmlFor="email"
                 className="-mb-3 font-semibold text-sm text-blue-gray-700 text-black"
               >
-                Deine E-Mail-Adresse
+                {t("passRequest.labels.email")}
               </label>
               <input
                 size="lg"
@@ -56,7 +56,7 @@ const PassRequestForm = () => {
                 value={props.values.email}
                 name="email"
                 type="email"
-                placeholder="jhon@gmail.com"
+                placeholder={t("passRequest.placeholders.email")}
                 onChange={props.handleChange}
                 className="outline-none border border-blue-gray-200 focus:border-gray-900 focus:ring-2 ring-1 ring-black p-2.5 rounded-lg bg-transparent text-black"
               />
@@ -71,7 +71,7 @@ const PassRequestForm = () => {
               className="mt-6 w-full font-semibold h-11 bg-black text-white text-sm p-2 rounded-lg"
               type="submit"
             >
-              Link anfordern
+              {t("passRequest.buttons.submit")}
             </button>
           </Form>
         )}
@@ -97,7 +97,7 @@ const PassRequestForm = () => {
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
           </svg>
-          <span>Zurück zum Anmelden</span>
+          <span>{t("passRequest.backToLogin")}</span>
         </Link>
       </div>
     </div>

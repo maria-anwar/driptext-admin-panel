@@ -8,8 +8,10 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/userSlice";
 import useAuth from "../Helpers/useAuth";
+import { useTranslation } from "react-i18next"; // import useTranslation
 
 const LoginForm = () => {
+  const { t } = useTranslation(); // initialize translation
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -24,8 +26,8 @@ const LoginForm = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email().required("E-Mail ist erforderlich"),
-    password: Yup.string().min(8).required("Passwort ist erforderlich"),
+    email: Yup.string().email().required(t("login.validationErrors.emailRequired")),
+    password: Yup.string().min(8).required(t("login.validationErrors.passwordRequired")),
   });
 
   const onSubmit = async (values) => {
@@ -57,14 +59,14 @@ const LoginForm = () => {
         );
         navigate("/dashboard");
       } else {
-        const errorMessage = "Sie können sich nicht als Projektmanager anmelden";
+        const errorMessage = t("login.errorMessages.roleError");
         setError(true);
         setErrorMesssage(errorMessage);
         setLoading(false);
       }
     } catch (error) {
       const errorMessage =
-        error.response?.data?.message || error.message || "Fehler beim Anmelden";
+        error.response?.data?.message || error.message || t("login.errorMessages.genericError");
       setError(true);
       setErrorMesssage(errorMessage);
       setLoading(false);
@@ -85,12 +87,12 @@ const LoginForm = () => {
       >
         {(props) => (
           <Form>
-            <div className="mb-1 flex flex-col  gap-6">
+            <div className="mb-1 flex flex-col gap-6">
               <label
                 htmlFor="email"
                 className="-mb-3 font-semibold text-sm text-blue-gray-700 text-black"
               >
-                Deine E-Mail
+                {t("login.labels.email")}
               </label>
               <input
                 size="lg"
@@ -98,7 +100,7 @@ const LoginForm = () => {
                 value={props.values.email}
                 name="email"
                 type="email"
-                placeholder="jhon@gmail.com"
+                placeholder={t("login.placeholders.email")}
                 onChange={(e) => {
                   props.handleChange(e);
                   setError(false);
@@ -115,7 +117,7 @@ const LoginForm = () => {
                 htmlFor="password"
                 className="-mb-3 font-semibold text-sm text-blue-gray-700 text-black"
               >
-                Passwort
+                {t("login.labels.password")}
               </label>
               <div className="relative">
                 <input
@@ -128,13 +130,13 @@ const LoginForm = () => {
                     setError(false);
                     setErrorMesssage("");
                   }}
-                  placeholder="********"
+                  placeholder={t("login.placeholders.password")}
                   className="w-full outline-none border border-blue-gray-200 focus:border-gray-900 focus:ring-2 ring-1 ring-black px-3 py-2 rounded-lg bg-transparent text-black"
                 />
                 <FontAwesomeIcon
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
                   onClick={togglePasswordVisibility}
-                  icon={passwordVisible ? faEye :  faEyeSlash}
+                  icon={passwordVisible ? faEye : faEyeSlash}
                 />
               </div>
               {props.errors.password && (
@@ -144,22 +146,11 @@ const LoginForm = () => {
               )}
             </div>
             <div className="flex items-center justify-end mt-6">
-            {/* <div className="flex gap-2 items-center">
-                <input
-                  type="checkbox"
-                  id="save-password"
-                  name="save-password"
-                  className="w-4 h-4"
-                />
-                <p className="text-sm text-gray-900 font-semibold text-black hover:text-black">
-                  Save password
-                </p>
-              </div> */}
               <Link
                 to="/auth/lost/request"
                 className="text-sm text-gray-900 font-semibold text-black hover:text-black"
               >
-                Passwort vergessen
+                {t("login.links.forgotPassword")}
               </Link>
             </div>
             <button
@@ -174,7 +165,7 @@ const LoginForm = () => {
                   <div className="w-6 h-6 border-2 border-white border-solid rounded-full border-t-transparent animate-spin" />
                 </div>
               ) : (
-                "Anmelden"
+                t("login.buttons.submit")
               )}
             </button>
             {error && (
@@ -188,10 +179,10 @@ const LoginForm = () => {
 
       <div className="xl:hidden w-full flex justify-center gap-2.5 p-4 text-sm text-gray-700 border-gray-200">
         <Link to="/imprint" className="hover:underline">
-          Impressum
+          {t("login.links.imprint")}
         </Link>
         <Link to="/privacy-policy" className="hover:underline">
-          Datenschutzerklärung
+          {t("login.links.privacyPolicy")}
         </Link>
       </div>
     </div>

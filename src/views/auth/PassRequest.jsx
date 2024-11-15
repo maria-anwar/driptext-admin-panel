@@ -1,14 +1,17 @@
 import React from 'react';
 import Auth2 from '../../components/authentication/Auth2';
-import LoginForm from '../../components/authentication/LoginForm';
 import PassRequestForm from '../../components/authentication/PassRequestForm';
 import useTitle from '../../hooks/useTitle';
+import { useTranslation } from 'react-i18next'; // Import the translation hook
 
 const PassRequest = () => {
-  useTitle('Passwort zurücksetzen');
+  const { t } = useTranslation(); // Initialize the translation hook
+
+  useTitle(t('passRequest.pageTitle'));  // Dynamically set title using translation
+
   return (
-    <Auth2 authline={'Bitte gib deine E-Mail-Adresse ein, damit wir dir einen Link zum Zurücksetzen deines Passworts senden können.'}>
-       <PassRequestForm/>
+    <Auth2 authline={t('passRequest.authline')}> {/* Use translation for authline */}
+      <PassRequestForm />
     </Auth2>
   );
 }
