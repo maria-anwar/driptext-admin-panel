@@ -1,4 +1,55 @@
 {
+  "login": {
+    "authline": "Enter your email address and password to sign in.",
+  "pageTitle": "Sign In",
+    "labels": {
+      "email": "Your Email",
+      "password": "Password"
+    },
+    "placeholders": {
+      "email": "jhon@gmail.com",
+      "password": "********"
+    },
+    "validationErrors": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 8 characters long"
+    },
+    "buttons": {
+      "submit": "Sign In",
+      "loading": "Loading..."
+    },
+    "links": {
+      "forgotPassword": "Forgot Password",
+      "imprint": "Imprint",
+      "privacyPolicy": "Privacy Policy"
+    },
+    "errorMessages": {
+      "genericError": "Error during sign-in",
+      "roleError": "You cannot sign in as a Project Manager"
+    }
+  },
+  "passRequest": {
+    "authline": "Please enter your email address so we can send you a link to reset your password.",
+    "pageTitle": "Reset Password",
+    "labels": {
+      "email": "Your Email Address"
+    },
+    "placeholders": {
+      "email": "jhon@gmail.com"
+    },
+    "validationErrors": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Email is invalid"
+    },
+    "buttons": {
+      "submit": "Request Link"
+    },
+     "backToLogin": "Back to Login",
+    "successMessage": "Link successfully sent. Please click the link to reset your password.",
+    "errorMessage": "Error sending the link"
+  },
   "projects": {
     "overview": "Projects Overview",
     "dashboard": "Dashboard /",
