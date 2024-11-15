@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { Freelancer,Task } from "../../../Types/Type";
+import { Freelancer, Task } from "../../../Types/Type";
 import TaskTable from "../../../components/tables/TaskTable";
 import { DatePicker, Select } from "antd";
 import moment, { Moment } from "moment";
 import useTitle from "../../../hooks/useTitle";
+import { useTranslation } from "react-i18next";
 const { RangePicker } = DatePicker;
 
 const Tasks: React.FC = () => {
-  useTitle("Tasks Overview");
+  const { t } = useTranslation();
+  useTitle(t('overviewtask')); // Translated title
   const user = useSelector<any>((state) => state.user);
   const [loading, setLoading] = useState<boolean>(true);
   const [freelancer, setFreelancer] = useState<Freelancer[]>([]);
@@ -152,22 +154,22 @@ const Tasks: React.FC = () => {
               className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
               to="/dashboard"
             >
-              Dashboard /
+             {t('breadcrumb.dashboard')}
             </Link>
           </li>
-          <li className="font-medium text-primary">Tasks</li>
+          <li className="font-medium text-primary">{t('breadcrumb.tasks')}</li>
         </ol>
       </div>
       <div className="flex justify-between items-center relative">
         <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
-          Tasks
+          {t('heading')}
         </h2>
         <div>
           <button
             onClick={() => setFilterDropdownOpen(!filterDropdownOpen)}
             className="inline-flex items-center cursor-pointer justify-center gap-2.5 bg-black py-3 text-sm xl:text-base text-center font-medium text-white hover:bg-opacity-90 px-5"
           >
-            <span>Filter</span>
+            <span>{t('filters.button')}</span>
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -184,41 +186,29 @@ const Tasks: React.FC = () => {
           </button>
 
           {filterDropdownOpen && (
-            <div className="absolute right-0 mt-2 bg-white dark:bg-boxdark  p-4 shadow-md rounded w-full md:w-1/2 lg:w-1/3 z-50 border-1">
+            <div className="absolute right-0 mt-2 bg-white dark:bg-boxdark  p-4 shadow-md rounded w-full md:w-1/2 lg:w-2/3 xl:w-100 z-50 border-1">
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">Status</label>
+                <label className="block text-sm font-medium mb-2">{t('filters.status.label')}</label>
                 <Select
-                  placeholder="Select Status"
+                  placeholder={t('filters.status.label')}
                   onChange={(value) => setStatusFilter(value)}
                   allowClear
                   className="w-full"
                   value={statusFilter}
                 >
-                  <Select.Option value="ready to work">
-                    Ready to Work
-                  </Select.Option>
-                  <Select.Option value="in progress">In Progress</Select.Option>
-                  <Select.Option value="in rivision">In Rivision</Select.Option>
-                  <Select.Option value="ready for proofreading">
-                    Ready for Proofreading
-                  </Select.Option>
-                  <Select.Option value="proofreading in progress">
-                    Proofreading in Progress
-                  </Select.Option>
-                  <Select.Option value="ready for seo optimization">
-                    Ready for SEO Optimzation
-                  </Select.Option>
-                  <Select.Option value="seo optimization in progress">
-                    SEO Optimzation in Progress
-                  </Select.Option>
-                  <Select.Option value="final">Final</Select.Option>
+                  <Select.Option value="ready to work">{t('filters.status.options.readyToWork')}</Select.Option>
+                  <Select.Option value="in progress">{t('filters.status.options.inProgress')}</Select.Option>
+                  <Select.Option value="rivision">{t('filters.status.options.inRevision')}</Select.Option>
+                  <Select.Option value="ready for proofreading">{t('filters.status.options.readyForProofreading')}</Select.Option>
+                  <Select.Option value="proofreading in progress">{t('filters.status.options.proofreadingInProgress')}</Select.Option>
+                  <Select.Option value="ready for seo optimization">{t('filters.status.options.readyForSeoOptimization')}</Select.Option>
+                  <Select.Option value="seo optimization in progress">{t('filters.status.options.seoOptimizationInProgress')}</Select.Option>
+                  <Select.Option value="final">{t('filters.status.options.final')}</Select.Option>
                 </Select>
               </div>
 
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">
-                  Date Range
-                </label>
+                <label className="block text-sm font-medium mb-2">{t('filters.dateRange.label')}</label>
                 <RangePicker
                   onChange={(dates, dateStrings) => {
                     setDateRangeFilter(dates ? [dates[0], dates[1]] : null);
@@ -228,9 +218,9 @@ const Tasks: React.FC = () => {
               </div>
 
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">Month</label>
+                <label className="block text-sm font-medium mb-2">{t('filters.month.label')}</label>
                 <Select
-                  placeholder="Select Month"
+                  placeholder={t('filters.month.label')}
                   onChange={(value) => setMonthFilter(value)}
                   allowClear
                   className="w-full"
@@ -244,35 +234,33 @@ const Tasks: React.FC = () => {
                 </Select>
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">
-                  Freelancer role
-                </label>
+                <label className="block text-sm font-medium mb-2">{t('filters.role.label')}</label>
                 <Select
-                  placeholder="Select Role"
+                  placeholder={t('filters.role.label')}
                   onChange={(value) => setRoleFilter(value)}
                   allowClear
                   className="w-full mr-4"
                   value={roleFilter}
                 >
-                  <Select.Option value="texter">Texter</Select.Option>
-                  <Select.Option value="lector">Lector</Select.Option>
-                  <Select.Option value="SEO">SEO</Select.Option>
-                  <Select.Option value="meta lector">Meta Lector</Select.Option>
-                  <Select.Option value="all">Show All</Select.Option>
+                  <Select.Option value="texter">{t('filters.role.options.texter')}</Select.Option>
+                  <Select.Option value="lector">{t('filters.role.options.lector')}</Select.Option>
+                  <Select.Option value="SEO">{t('filters.role.options.SEO')}</Select.Option>
+                  <Select.Option value="meta lector">{t('filters.role.options.metaLector')}</Select.Option>
+                  <Select.Option value="all">{t('filters.role.options.all')}</Select.Option>
                 </Select>
               </div>
               <div className="flex gap-x-2">
                 <button
                   onClick={clearFilters}
-                  className="px-4 py-2 bg-red-500 text-white rounded cursor-pointer"
+                  className="px-2 text-md py-2 bg-red-500 text-white rounded cursor-pointer"
                 >
-                  Clear Filters
+                  {t('filters.buttons.clear')}
                 </button>
                 <button
                   onClick={() => setFilterDropdownOpen(false)}
-                  className="px-4 py-2 bg-green-500 text-white rounded  cursor-pointer"
+                  className="px-2 py-2 text-md bg-green-500 text-white rounded cursor-pointer"
                 >
-                  Apply Filters
+                  {t('filters.buttons.apply')}
                 </button>
               </div>
             </div>

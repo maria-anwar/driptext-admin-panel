@@ -10,6 +10,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import MemberModal from "./MemberModel";
 import formatDate from "../Helpers/DateFormat";
+import { useTranslation } from "react-i18next";
 
 interface ProjectProps {
   tasks: Task[];
@@ -28,6 +29,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
   projectName,
   handleRefreshData,
 }) => {
+  const {t} = useTranslation();
   const user = useSelector<any>((state) => state.user);
   const userToken = user?.user?.token;
   const [showDetailsDialog, setShowDetailsDialog] = useState<boolean>(false);
@@ -35,7 +37,12 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
   const [showMembersDialog, setShowMembersDialog] = useState<boolean>(false);
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [memberModel, setMemberModel] = useState<boolean>(false);
-  const allRoles = ["texter", "lector", "seo-optimizer"];
+
+  const allRoles = [
+    t("projectDetails.projectMembers.freelancerRole.texter"),
+    t("projectDetails.projectMembers.freelancerRole.lector"),
+    t("projectDetails.projectMembers.freelancerRole.seo"),
+  ];
 
   const showAssignedRoles = (memberId: string | null) => {
     const foundFreelancer = freelancer.find((f) => f._id === memberId);
@@ -129,29 +136,26 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4">
                 <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Status
+                  {t("projectDetails.taskTable.headers.status")}
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Google-Link
+                {t("projectDetails.taskTable.headers.googleLink")}
                 </th>
                 <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Deadline
+                {t("projectDetails.taskTable.headers.deadline")}
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Word count
+                {t("projectDetails.taskTable.headers.wordCount")}
                 </th>
                 <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Keywords
+                {t("projectDetails.taskTable.headers.keywords")}
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Team
+                {t("projectDetails.taskTable.headers.team")}
                 </th>
                 <th className="min-w-[100px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Action
+                {t("projectDetails.taskTable.headers.action")}
                 </th>
-                {/* <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Members
-                </th> */}
               </tr>
             </thead>
             <tbody>
@@ -256,29 +260,15 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                         task.texter
                           ? "bg-blue-500"
                           : "bg-yellow-400/80"
-                      } w-24 h-9 flex justify-center items-center rounded cursor-pointer`}
+                      } w-26 h-9 flex justify-center items-center rounded cursor-pointer`}
                       onClick={() => handleTasks(task)}
                     >
-                      <FontAwesomeIcon className="text-white" icon={faEye} />
+                      <FontAwesomeIcon className="text-white pl-2" icon={faEye} />
                       <p className="text-white text-base font-medium text-center py-1 px-2">
-                        View
+                        {t("projectDetails.taskTable.actionButton.view")}
                       </p>
                     </div>
                   </td>
-                  {/* <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <div
-                      className={`${
-                        task.lector && task.seo && task.texter
-                          ? "bg-blue-500"
-                          : "bg-yellow-400/80"
-                      }  h-9 flex justify-center items-center rounded cursor-pointer`}
-                      onClick={() => handleMembers(task)}
-                    >
-                      <p className="text-white text-base font-medium text-center py-1 px-1">
-                        Add Member
-                      </p>
-                    </div>
-                  </td> */}
                 </tr>
               ))}
             </tbody>

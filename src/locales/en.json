@@ -26,5 +26,571 @@
     "freeTrial": "Ready",
     "finalStatus": "Final",
     "notInitialized": "Not Initialized"
-  }
+  },
+  "overviewtask": "Tasks Overview",
+  "breadcrumb": {
+    "dashboard": "Dashboard /",
+    "tasks": "Tasks",
+    "taskDetail": "Task Detail"
+  },
+  "heading": "Tasks",
+  "filters": {
+    "button": "Filter",
+    "status": {
+      "label": "Status",
+      "options": {
+        "readyToWork": "Ready to Work",
+        "inProgress": "In Progress",
+        "inRevision": "In Revision",
+        "readyForProofreading": "Ready for Proofreading",
+        "proofreadingInProgress": "Proofreading in Progress",
+        "readyForSeoOptimization": "Ready for SEO Optimization",
+        "seoOptimizationInProgress": "SEO Optimization in Progress",
+        "final": "Finished"
+      }
+    },
+    "dateRange": {
+      "label": "Date Range"
+    },
+    "month": {
+      "label": "Month"
+    },
+    "role": {
+      "label": "Freelancer role",
+      "options": {
+        "texter": "Texter",
+        "lector": "Lector",
+        "SEO": "SEO",
+        "metaLector": "Meta Lector",
+        "all": "Show All"
+      }
+    },
+    "buttons": {
+      "clear": "Clear Filters",
+      "apply": "Apply Filters"
+    }
+  },
+  "loading": "Loading tasks...",
+  "error": {
+    "fetchError": "Error fetching project details:"
+  },
+  "tasksTable": {
+    "status": "Status",
+    "googleLink": "Google-Link",
+    "deadline": "Deadline",
+    "wordCount": "Word count",
+    "keywords": "Keywords",
+    "team": "Team",
+    "action": "Action",
+    "view": "View",
+    "taskName": "Task Name",
+    "taskDetails": "Task Details",
+    "statusLabels": {
+      "final": "Finished",
+      "pending": "Pending"
+    },
+    "rowsPerPage": "Rows per page",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "taskDetailPage": {
+    "breadcrumb": {
+      "dashboard": "Dashboard /",
+      "tasks": "Tasks /",
+      "taskDetail": "Task Detail"
+    },
+    "project": {
+      "client": "Client",
+      "folder": "Folder"
+    },
+    "taskFreelancer": "Task Freelancer",
+    "freelancerInfo": {
+      "texter": "Texter",
+      "lector": "Lector",
+      "seo": "SEO",
+      "metaLector": "Meta-Lector"
+    },
+    "taskInfo": {
+      "taskName": "Task Name",
+      "topic": "Topic",
+      "type": "Type",
+      "status": "Status",
+      "actualWords": "Actual Words",
+      "desiredWords": "Desired Words",
+      "dueDate": "Due Date",
+      "keywords": "Keywords",
+      "fileLink": "File Link",
+      "comments": "Comments",
+      "feedback": "Feedback",
+      "noComments": "N/A",
+      "noFeedback": "N/A"
+    }
+  },
+  "user": {
+    "overviewUser": "Users Overview",
+    "breadcrumb": {
+      "dashboard": "Dashboard /",
+      "users": "Users"
+    },
+    "search": {
+      "placeholder": "Search by name",
+      "button": "Search"
+    },
+    "addUser": "Add User",
+    "settings": "Settings",
+    "showInactive": "Show inactive users",
+    "toggle": {
+      "leads": {
+        "show": "Show Leads",
+        "hide": "Hide Leads"
+      },
+      "client": {
+        "show": "Show Clients",
+        "hide": "Hide Clients"
+      }
+    },
+    "error": {
+      "fetchError": "Error fetching user details:"
+    },
+    "userPaginatedTable": {
+      "table": {
+        "headers": {
+          "name": "Name",
+          "email": "Email",
+          "role": "Role",
+          "status": "Status",
+          "action": "Action"
+        },
+        "status": {
+          "active": "Active",
+          "inactive": "Inactive"
+        },
+        "actions": {
+          "activate": "Activate",
+          "deactivate": "Deactivate",
+          "editProjectManager": "Edit Project Manager"
+        },
+        "pagination": {
+          "rowsPerPage": "Rows per page",
+          "total": "Total"
+        }
+      },
+      "toast": {
+        "userActivated": "User activated successfully.",
+        "userDeactivated": "User deactivated successfully.",
+        "error": "Error updating status, please try again."
+      }
+    },
+    "addManager": {
+      "form": {
+        "header": "Add Manager",
+        "fields": {
+          "firstName": {
+            "label": "First Name",
+            "placeholder": "Enter first name",
+            "error": "First name is required"
+          },
+          "lastName": {
+            "label": "Last Name",
+            "placeholder": "Enter last name",
+            "error": "Last name is required"
+          },
+          "email": {
+            "label": "Email",
+            "placeholder": "Enter email",
+            "error": "Email is required",
+            "invalidEmail": "Invalid email format"
+          },
+          "password": {
+            "label": "Password",
+            "placeholder": "Enter password",
+            "error": "Password is required",
+            "shortPassword": "Password must be at least 8 characters"
+          }
+        },
+        "buttons": {
+          "cancel": "Cancel",
+          "save": "Save",
+          "saving": "Saving..."
+        },
+        "errorMessages": {
+          "generic": "Error adding manager"
+        }
+      },
+      "toast": {
+        "managerAdded": "Manager added successfully"
+      }
+    },
+    "editManager": {
+      "form": {
+        "header": "Edit Manager",
+        "fields": {
+          "firstName": {
+            "label": "First Name",
+            "placeholder": "Enter first name",
+            "error": "First name is required"
+          },
+          "lastName": {
+            "label": "Last Name",
+            "placeholder": "Enter last name",
+            "error": "Last name is required"
+          },
+          "email": {
+            "label": "Email",
+            "placeholder": "Enter email",
+            "error": "Email is required",
+            "invalidEmail": "Invalid email format"
+          }
+        },
+        "buttons": {
+          "cancel": "Cancel",
+          "update": "Update",
+          "updating": "Updating..."
+        },
+        "errorMessages": {
+          "generic": "Error updating manager"
+        }
+      },
+      "toast": {
+        "managerUpdated": "Manager updated successfully"
+      }
+    }
+  },
+  "systemSettings": {
+    "pageTitle": "System Settings Overview",
+    "breadcrumb": {
+      "pageName": "System Settings"
+    },
+    "form": {
+      "texterPriceLabel": "Texter Price",
+      "lectorPriceLabel": "Lector Price",
+      "seoPriceLabel": "SEO Optimizer Price",
+      "submitButton": {
+        "default": "Save",
+        "saving": "Saving..."
+      },
+      "texterPricePlaceholder": "Enter texter price",
+      "lectorPricePlaceholder": "Enter lector price",
+      "seoPricePlaceholder": "Enter SEO price",
+      "apiError": "Failed to update prices. Please try again."
+    },
+    "validationMessages": {
+      "texterPriceRequired": "Texter Price is required",
+      "lectorPriceRequired": "Lector Price is required",
+      "seoPriceRequired": "SEO Price is required",
+      "priceMinError": "Price must be greater than 0"
+    },
+    "loading": {
+      "loadingMessage": "Loading...",
+      "loadingPlaceholder": "Loading settings..."
+    },
+    "errorMessages": {
+      "fetchError": "Error fetching prices"
+    }
+  },
+  "profileSettings": {
+    "pageTitle": "Profile Settings Overview",
+    "breadcrumb": {
+      "pageName": "Profile Settings"
+    },
+    "personalInformation": {
+      "title": "Personal Informationn",
+      "labels": {
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "emailAddress": "Email Address"
+      },
+      "placeholders": {
+        "firstName": "firstname",
+        "lastName": "lastname",
+        "email": "xyz@gmail.com"
+      }
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "update": "Update",
+      "loadingUpdate": "Updating..."
+    },
+    "messages": {
+      "error": "Error fetching project details:",
+      "errorMessage": "Error occurred during the update."
+    },
+    "security": {
+      "title": "Security",
+      "resetPassword": "Reset Password"
+    }
+  },
+  "projectDetails": {
+    "breadcrumb": {
+      "pageName": "Project Details"
+    },
+    "onboarding": {
+      "incomplete": "Onboarding is not completed for this project, you can't add task"
+    },
+    "folder": {
+      "heading": "Folder",
+      "linkText": "Project Folder",
+      "tooltip": "View Project Folder"
+    },
+    "taskStatus": {
+      "status": "Status",
+      "tasks": "Tasks",
+      "maxTasks": "Max Tasks",
+      "duration": "Duration",
+      "taskPerMonth": "Task per month",
+      "performancePeriod": "Performance Period"
+    },
+    "projectMembers": {
+      "heading": "Project members",
+      "addFreelancerButton": "Add Freelancer",
+      "freelancerRole": {
+        "texter": "Texter",
+        "lector": "Lector",
+        "seo": "SEO Optimizer",
+        "metaLector": "Meta-lector"
+      }
+    },
+    "importExport": {
+      "importButtonTooltip": "Import Tasks",
+      "exportButtonTooltip": "Export Tasks"
+    },
+    "accordion": {
+      "onBoarding": {
+        "heading": "OnBoarding",
+        "generalInformation": {
+          "title": "1. General information:",
+          "speechLabel": "Speech",
+          "perspectiveLabel": "Perspective",
+          "websiteLabel": "Website"
+        },
+        "companyInformation": {
+          "title": "2. Company Information",
+          "backgroundLabel": "Background information about the company",
+          "attributesLabel": "Which attributes best describe you as a company/your products/your services?",
+          "servicesLabel": "What are your services?"
+        },
+        "targetCustomers": {
+          "title": "3. Information About the Target Customers",
+          "contentWrittenForLabel": "Who is the content written for?",
+          "interestLabel": "Customers we want to address have an interest in..."
+        },
+        "contentAim": {
+          "title": "4. Aim of the Content",
+          "contentPurposeLabel": "What is the purpose of the content?",
+          "brandInfoLabel": "Information about your brand and your content"
+        }
+      }
+    },
+    "addTask": {
+      "label": "Add Task",
+      "form": {
+        "generalInformation": "1. General Information",
+        "selectDateLabel": "Select Date",
+        "projectLabel": "Project",
+        "topicLabel": "Topic",
+        "keywordLabel": "Keyword",
+        "keywordTypeLabel": "Keyword type",
+        "wordCountLabel": "Word Count Expected",
+        "commentLabel": "Comment",
+        "cancelButton": "Cancel",
+        "saveButton": "Save",
+        "savingButton": "Saving...",
+        "errorMessage": "Error in adding task"
+      },
+      "options": {
+        "option1": "Guide",
+        "option2": "Shop (Category)",
+        "option3": "Shop (Product)",
+        "option4": "Definition/Wiki",
+        "option5": "Shop (Home page)",
+        "option6": "CMS page"
+      },
+      "validationNames": {
+        "date": "Please select a date",
+        "topic": "Please select a topic",
+        "keywords": "Please select keywords",
+        "textType": "Please select text type",
+        "wordCount": "Please enter word count"
+      },
+      "placeholders": {
+        "selectDateTooltip": "Choose a date",
+        "projectPlaceholder": "example.com",
+        "topicPlaceholder": "topic",
+        "keywordsPlaceholder": "keywords",
+        "wordCountPlaceholder": "1500",
+        "commentPlaceholder": "Add any comments."
+      },
+      "tooltips": {
+        "wordCountTooltip": "Enter expected word count"
+      }
+    },
+    "editProject": {
+      "label": "Edit Project",
+      "form": {
+        "generalInformation": "1. General information:",
+        "speechLabel": "Speech",
+        "writingPerspectiveLabel": "Writing Perspective",
+        "domainLabel": "Domain",
+        "onBoardingTitle": "OnBoarding",
+        "companyInfoTitle": "2. Company Information",
+        "companyBackgroundLabel": "Background information about the company",
+        "companyAttributesTitle": "Which attributes best describe you as a company/your products/your services?",
+        "servicesTitle": "What are your services?",
+        "targetCustomerInfoTitle": "3. Information About the Target Customers",
+        "targetCustomerDescriptionLabel": "Who is the content written for?",
+        "customerInterestLabel": "Customers we want to address have an interest in...",
+        "contentAimTitle": "4. Aim of the Content",
+        "contentPurposeLabel": "What is the purpose of the content?",
+        "brandInfoLabel": "Information about your brand and your content",
+        "saveButton": "Save",
+        "savingButton": "Saving...",
+        "errorMessage": "Error editing project details"
+      },
+      "validationNames": {
+        "speech": "Please select a speech",
+        "perspective": "Please select perspective",
+        "projectName": "Please enter project name",
+        "companyInfo": "Please enter company information",
+        "companyAttributes": "Please enter company's attributes",
+        "services": "Please enter company's services",
+        "content": "Above information is required",
+        "customers": "Above information is required",
+        "contentPurpose": "Above information is required",
+        "brand": "Above information is required"
+      },
+      "placeholders": {
+        "speechPlaceholder": "",
+        "writingPerspectivePlaceholder": "",
+        "domainPlaceholder": "projectName",
+        "companyInfoPlaceholder": "Please describe here, ideally in just one sentence, what you do as a company, what you offer and how it helps the customer.",
+        "companyAttributesPlaceholder": "Please give us as many attributes as you would like readers to perceive about you and your company in bullet points.",
+        "servicesPlaceholder": "Please list all services offered online here.",
+        "targetCustomerDescriptionPlaceholder": "Please describe the target group as precisely as possible",
+        "customerInterestPlaceholder": "Please list here in bullet points which problems you solve for customers.",
+        "contentPurposePlaceholder": "Please briefly describe here how organic customers/readers should ideally react when they land on your site.",
+        "brandInfoPlaceholder": "Please give us bullet points on how potential readers should describe the content they consume"
+      },
+      "tooltips": {
+        "speechTooltip": "Choose the appropriate speech style",
+        "writingPerspectiveTooltip": "Choose the writing perspective for your content",
+        "domainTooltip": "Enter the domain or project name"
+      },
+      "accordion": {
+        "companyInfoAccordion": {
+          "title": "Company Information",
+          "backgroundDescription": "Background information about the company",
+          "attributesDescription": "Which attributes best describe you as a company/your products/your services?",
+          "servicesDescription": "What are your services?"
+        },
+        "targetCustomerAccordion": {
+          "title": "Information About the Target Customers",
+          "contentDescription": "Who is the content written for?",
+          "customerInterestDescription": "Customers we want to address have an interest in..."
+        },
+        "contentAimAccordion": {
+          "title": "Aim of the Content",
+          "contentPurposeDescription": "What is the purpose of the content?",
+          "brandInfoDescription": "Information about your brand and your content"
+        }
+      }
+    },
+    "archiveProject": {
+      "label": "Archive Project",
+      "confirmationMessage": "Are you sure you want to archive this project?",
+      "confirmButton": "Confirm",
+      "closeButton": "Close"
+    },
+    "client": {
+      "heading": "Client"
+    },
+    "import": {
+      "button": {
+        "label": "Download",
+        "disabledText": "Importing..."
+      },
+      "modal": {
+        "title": "Import",
+        "fileInput": {
+          "placeholder": "Drag files here or click to select files",
+          "acceptFileType": ".csv"
+        },
+        "importButton": {
+          "label": "Import"
+        },
+        "errorMessages": {
+          "noFileSelected": "Please select a file.",
+          "importFailure": "Failed to import tasks."
+        },
+        "toastMessages": {
+          "success": "Tasks imported successfully"
+        },
+        "closeModalButton": {
+          "label": "Close"
+        }
+      }
+    },
+    "taskTable": {
+      "headers": {
+        "status": "Status",
+        "googleLink": "Google-Link",
+        "deadline": "Deadline",
+        "wordCount": "Word count",
+        "keywords": "Keywords",
+        "team": "Team",
+        "action": "Action"
+      },
+      "actionButton": {
+        "view": "View"
+      }
+    },
+    "memberModal": {
+      "title": "Assign Members",
+      "roleSelectPrompt": "Select a role",
+      "assignButton": "Assign Role"
+    },
+    "confirmationMessages": {
+      "roleAssignedSuccess": "Role assigned successfully",
+      "roleAssignmentError": "Error assigning role. Please try again later."
+    },
+    "taskDetailModel": {
+      "title": "Task Details",
+      "status": "Status",
+      "wordReal": "Word Real",
+      "document": "Document",
+      "wordCountExpected": "Word Count Expected",
+      "dueDate": "Due Date",
+      "topic": "Topic",
+      "keywordsType": "Keywords Type",
+      "keyword": "Keyword",
+      "comment": "Comment",
+      "projectMembers": "Project members",
+      "cancelButton": "Cancel",
+      "submitButton": "Submit",
+      "submittingButton": "Submitting...",
+      "formValidation": {
+        "topicRequired": "Please select a topic",
+        "textTypeRequired": "Please select type",
+        "keywordsRequired": "Please select keywords",
+        "dateRequired": "Please select a date"
+      }
+    }
+  },
+
+  "logo": {
+    "title": "DRIPTEXT",
+    "subtitle": "We love SEO & Content"
+  },
+  "menu": {
+    "projects": "Projects",
+    "tasks": "Tasks",
+    "kpis": "KPIs",
+    "users": "Users",
+    "systemSettings": "System settings",
+    "driptextAcademy": "Driptext Academy",
+    "profileSettings": "Profile Settings",
+    "accountSettings": "Account Settings"
+  },
+  "logout": "Sign out"
 }

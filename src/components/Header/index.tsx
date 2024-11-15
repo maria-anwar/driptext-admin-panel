@@ -1,14 +1,31 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DropdownUser from "./DropdownUser";
 import DropdownNotification from "./DropdownNotification";
 import DarkModeSwitcher from "./DarkModeSwitcher";
 import GoogleTranslation from "../../GoogleTransalation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGlobe } from "@fortawesome/free-solid-svg-icons";
+import { changeLanguage } from "../../i18n";
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState("English");
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const changeYourLanguage = (language) => {
+    setSelectedLanguage(language);
+    changeLanguage(language);
+    localStorage.setItem("language", language);
+    setIsOpen(false);
+  };
+
   const tasks = [
     {
       id: "1",
@@ -23,11 +40,11 @@ const Header = (props: {
       domain: "Driptext.com | 62 - DT",
     },
   ];
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
-  const filteredTasks = tasks.filter(task =>
+  const filteredTasks = tasks.filter((task) =>
     task.domain.toLowerCase().includes(searchTerm.toLowerCase())
   );
   return (
@@ -114,7 +131,7 @@ const Header = (props: {
             </div>
           </form> */}
         </div>
-        <div className="flex items-center gap-8 2xsm:gap-7">
+        <div className="flex items-center gap-5 2xsm:gap-2">
           <ul className="flex items-center gap-y-5 gap-x-3 2xsm:gap-4">
             {/* <!-- Dark Mode Toggler --> */}
             {/* <DarkModeSwitcher /> */}
@@ -124,9 +141,33 @@ const Header = (props: {
             {/* <DropdownNotification /> */}
             {/* <!-- Notification Menu Area --> */}
           </ul>
+
+          {/* Language Switcher Icon (Font Awesome Globe icon) */}
+          <div className="relative">
+            <button onClick={toggleDropdown} className="text-2xl">
+              <FontAwesomeIcon icon={faGlobe} /> {/* Font Awesome globe icon */}
+            </button>
+            {isOpen && (
+              <div className="absolute right-0 mt-2 bg-white dark:bg-boxdark ring-1  p-4 shadow-md rounded py-2">
+                <button
+                  onClick={() => changeYourLanguage("en")}
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left hover:text-primary"
+                >
+                  English
+                </button>
+                <button
+                  onClick={() => changeYourLanguage("de")}
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left hover:text-primary"
+                >
+                  German
+                </button>
+              </div>
+            )}
+          </div>
+
           {/* <!-- User Area --> */}
           <DropdownUser />
-          {/* <GoogleTranslation/> */}
+          {/* <GoogleTranslation /> */}
           {/* <!-- User Area --> */}
         </div>
       </div>

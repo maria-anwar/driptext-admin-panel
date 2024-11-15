@@ -3,9 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import ClickOutside from "../tables/ClickOutside";
 import {useDispatch, useSelector} from 'react-redux'
 import {clearPersistedState} from '../../redux/store'
+import { useTranslation } from "react-i18next";
 
 
 const DropdownUser = () => {
+  const {t} = useTranslation();
   const user = useSelector<any>((state) => state.user);
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -129,7 +131,7 @@ const DropdownUser = () => {
                     fill=""
                   />
                 </svg>
-                Account Settings
+                {t('menu.accountSettings')}
               </Link>
             </li>
           </ul>
@@ -151,7 +153,7 @@ const DropdownUser = () => {
                 fill=""
               />
             </svg>
-            Sign Out
+           {t('logout')}
           </Link>
         </div>
       )}

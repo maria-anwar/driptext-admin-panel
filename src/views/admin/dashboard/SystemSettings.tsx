@@ -5,9 +5,11 @@ import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import useTitle from "../../../hooks/useTitle";
+import { useTranslation } from "react-i18next";
 
 const SystemSettings: React.FC = () => {
-  useTitle("System Settings Overview");
+  const {t} = useTranslation();
+  useTitle(t("systemSettings.pageTitle"));
   const user = useSelector((state: any) => state.user);
   const [initialValues, setInitialValues] = useState({
     texterPrice: 0,
@@ -19,14 +21,14 @@ const SystemSettings: React.FC = () => {
 
   const validationSchema = Yup.object().shape({
     texterPrice: Yup.number()
-      .required("Texter Price is required")
-      .min(0, "Price must be greater than 0"),
+      .required(t("systemSettings.validationMessages.texterPriceRequired"))
+      .min(0, t("systemSettings.validationMessages.priceMinError")),
     lectorPrice: Yup.number()
-      .required("Lector Price is required")
-      .min(0, "Price must be greater than 0"),
+      .required(t("systemSettings.validationMessages.lectorPriceRequired"))
+      .min(0, t("systemSettings.validationMessages.priceMinError")),
     seoPrice: Yup.number()
-      .required("SEO Price is required")
-      .min(0, "Price must be greater than 0"),
+      .required(t("systemSettings.validationMessages.seoPriceRequired"))
+      .min(0, t("systemSettings.validationMessages.priceMinError")),
   });
 
   useEffect(() => {
@@ -76,14 +78,14 @@ const SystemSettings: React.FC = () => {
       setApiError("");
     } catch (error) {
       console.error("Error updating prices:", error);
-      setApiError("Failed to update prices. Please try again.");
+      setApiError(t("systemSettings.form.apiError"));
     }
   };
 
   return (
     <>
       <div className="mx-auto max-w-270 3xl:px-6">
-        <Breadcrumb pageName="System Settings" />
+        <Breadcrumb pageName={t('systemSettings.breadcrumb.pageName')}/>
         {loading ? (
           <div className="rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 mt-10 w-full bg-slate-200 h-[300px] animate-pulse"></div>
         ) : (
@@ -102,7 +104,7 @@ const SystemSettings: React.FC = () => {
                         className="mb-3 block text-sm font-semibold text-black dark:text-white"
                         htmlFor="texterPrice"
                       >
-                        Texter Price
+                        {t('systemSettings.form.texterPriceLabel')}
                       </label>
                       <div className=" flex  flex-col">
                         <div className={"relative"}>
@@ -111,6 +113,7 @@ const SystemSettings: React.FC = () => {
                             type="number"
                             name="texterPrice"
                             id="texterPrice"
+                            placeholder= {t('systemSettings.form.texterPricePlaceholder')}
                           />
                           <span className="absolute dark:text-white  transform translate-y-0 top-3.5 left-5">
                             €
@@ -130,7 +133,7 @@ const SystemSettings: React.FC = () => {
                         className="mb-3 block text-sm font-semibold text-black dark:text-white"
                         htmlFor="lectorPrice"
                       >
-                        Lector Price
+                        {t('systemSettings.form.lectorPriceLabel')}
                       </label>
                       <div className=" flex  flex-col">
                         <div className={"relative"}>
@@ -139,6 +142,7 @@ const SystemSettings: React.FC = () => {
                             type="number"
                             name="lectorPrice"
                             id="lectorPrice"
+                            placeholder= {t('systemSettings.form.lectorPricePlaceholder')}
                           />
                           <span className="absolute dark:text-white  transform translate-y-0 top-3.5 left-5">
                             €
@@ -157,7 +161,7 @@ const SystemSettings: React.FC = () => {
                         className="mb-3 block text-sm font-semibold text-black dark:text-white"
                         htmlFor="seoPrice"
                       >
-                       SEO Optimizer Price
+                        {t('systemSettings.form.seoPriceLabel')}
                       </label>
                       <div className=" flex  flex-col">
                         <div className={"relative"}>
@@ -166,6 +170,7 @@ const SystemSettings: React.FC = () => {
                             type="number"
                             name="seoPrice"
                             id="seoPrice"
+                            placeholder= {t('systemSettings.form.seoPricePlaceholder')}
                           />
                           <span className="absolute dark:text-white  transform translate-y-0 top-3.5 left-5">
                             €
@@ -182,11 +187,11 @@ const SystemSettings: React.FC = () => {
 
                     <div className="flex justify-end gap-4.5 pt-5 pb-6">
                       <button
-                        className="flex w-full justify-center rounded bg-boxdark py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                        className="flex w-full justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                         type="submit"
                         disabled={isSubmitting}
                       >
-                        {isSubmitting ? "Saving..." : "Save"}
+                        {isSubmitting ? t('systemSettings.form.submitButton.saving') : t('systemSettings.form.submitButton.default')}
                       </button>
                     </div>
 

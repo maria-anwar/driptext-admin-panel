@@ -16,6 +16,7 @@ import GroupTextArea from "../FormFields/GroupTextArea";
 import { GroupField } from "../FormFields/GroupField";
 import GroupDropdownField from "../FormFields/GroupDropdownField";
 import { OnBoarding,FormData } from "../../Types/Type";
+import { useTranslation } from "react-i18next";
 
 interface EditProjectProps {
   handleCloseEdit: () => void;
@@ -36,6 +37,7 @@ const EditProject: React.FC<EditProjectProps> = ({
   handleRefreshData,
   onBoarding,
 }) => {
+  const {t}= useTranslation();
   const user = useSelector<any>((state) => state.user);
   const [userToken, setUserToken] = useState(user?.user?.token);
   const [loading, setLoading] = useState(false);
@@ -54,18 +56,18 @@ const EditProject: React.FC<EditProjectProps> = ({
     brand: onBoarding?.contentInfo,
   });
   const validationSchema = Yup.object().shape({
-    speech: Yup.string().required("Please select a speech"),
-    perspective: Yup.string().required("Please select perspective"),
-    projectName: Yup.string().required("Please enter projectName"),
-    companyInfo: Yup.string().required("Please enter company information"),
+    speech: Yup.string().required(t('projectDetails.editProject.validationNames.speech')),
+    perspective: Yup.string().required(t('projectDetails.editProject.validationNames.perspective')),
+    projectName: Yup.string().required(t('projectDetails.editProject.validationNames.projectName')),
+    companyInfo: Yup.string().required(t('projectDetails.editProject.validationNames.companyInfo')),
     companyAttributes: Yup.string().required(
-      "Please enter company's attributes"
+      t('projectDetails.editProject.validationNames.companyAttributes')
     ),
-    services: Yup.string().required("Please enter company's services"),
-    content: Yup.string().required("Above information is required"),
-    customers: Yup.string().required("Above information is required"),
-    contentPurpose: Yup.string().required("Above information is required"),
-    brand: Yup.string().required("Above information is required"),
+    services: Yup.string().required(t('projectDetails.editProject.validationNames.services')),
+    content: Yup.string().required(t('projectDetails.editProject.validationNames.content')),
+    customers: Yup.string().required(t('projectDetails.editProject.validationNames.customers')),
+    contentPurpose: Yup.string().required(t('projectDetails.editProject.validationNames.contentPurpose')),
+    brand: Yup.string().required(t('projectDetails.editProject.validationNames.brand')),
   });
 
   const onSubmit = (values) => {
@@ -117,7 +119,7 @@ const EditProject: React.FC<EditProjectProps> = ({
               <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
                 <div className="flex justify-between items-center mb-5">
                   <h2 className="text-xl font-bold dark:text-white pr-12">
-                    Edit Project
+                   {t('projectDetails.editProject.label')}
                   </h2>
                   <FontAwesomeIcon
                     className="cursor-pointer text-lg text-red-500 pl-12"
@@ -128,10 +130,10 @@ const EditProject: React.FC<EditProjectProps> = ({
                 <div>
                   <div className="w-full py-2">
                     <h2 className="text-black dark:text-white text-base font-semibold">
-                      1. General information:
+                      {t('projectDetails.editProject.form.generalInformation')}
                     </h2>                    
                     <GroupDropdownField
-                      label="Speech"
+                      label={t('projectDetails.editProject.form.speechLabel')}
                       type="text"
                       id="speech"
                       name="speech"
@@ -146,7 +148,7 @@ const EditProject: React.FC<EditProjectProps> = ({
                       onChange={handleChange}
                     />
                     <GroupDropdownField
-                      label="Writing Perspective"
+                      label={t('projectDetails.editProject.form.writingPerspectiveLabel')}
                       type="text"
                       id="perspective"
                       name="perspective"
@@ -162,7 +164,7 @@ const EditProject: React.FC<EditProjectProps> = ({
                       onChange={handleChange}
                     />
                     <GroupField
-                      label="Domain"
+                      label={t('projectDetails.editProject.form.domainLabel')}
                       type="text"
                       placeholder="projectName"
                       name="projectName"
@@ -184,7 +186,7 @@ const EditProject: React.FC<EditProjectProps> = ({
                             <h2>
                               <AccordionButton className="flex justify-between items-center bg-slate-200 dark:bg-meta-4 ">
                                 <p className="font-semibold text-black dark:text-white ">
-                                  OnBoarding
+                                {t('projectDetails.editProject.form.onBoardingTitle')}
                                 </p>
                                 {isExpanded ? (
                                   <MinusIcon fontSize="12px" />
@@ -197,11 +199,11 @@ const EditProject: React.FC<EditProjectProps> = ({
                               <div className="bg-white dark:bg-boxdark rounded py-2 px-4">
                                 <div className="flex flex-col gap-3">
                                   <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
-                                    2. Company Information
+                                    {t('projectDetails.editProject.form.companyInfoTitle')}
                                   </h2>
                                   <GroupTextArea
-                                    label="Background information about the company"
-                                    placeholder="Please describe here, ideally in just one sentence, what you do as a company, what you offer and how it helps the customer."
+                                    label={t('projectDetails.editProject.form.companyBackgroundLabel')}
+                                    placeholder={t('projectDetails.editProject.placeholders.companyInfoPlaceholder')}
                                     id="companyInfo"
                                     name="companyInfo"
                                     value={values.companyInfo}
@@ -213,8 +215,8 @@ const EditProject: React.FC<EditProjectProps> = ({
                                     onChange={handleChange}
                                   />
                                   <GroupTextArea
-                                    label="Which attributes best describe you as a company/your products/your services?"
-                                    placeholder="Please give us as many attributes as you would like readers to perceive about you and your company in bullet points."
+                                    label={t('projectDetails.editProject.form.companyAttributesTitle')}
+                                    placeholder={t('projectDetails.editProject.placeholders.companyAttributesPlaceholder')}
                                     id="companyAttributes"
                                     name="companyAttributes"
                                     value={values.companyAttributes}
@@ -226,8 +228,8 @@ const EditProject: React.FC<EditProjectProps> = ({
                                     onChange={handleChange}
                                   />
                                   <GroupTextArea
-                                    label="What are your services?"
-                                    placeholder="Please list all services offered online here."
+                                    label={t('projectDetails.editProject.form.servicesTitle')}
+                                    placeholder={t('projectDetails.editProject.placeholders.servicesPlaceholder')}
                                     id="services"
                                     name="services"
                                     value={values.services}
@@ -239,11 +241,11 @@ const EditProject: React.FC<EditProjectProps> = ({
                                 </div>
                                 <div className="flex flex-col gap-3 py-3">
                                   <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3.5">
-                                    3. Information About the Target Customers
+                                  {t('projectDetails.editProject.form.targetCustomerInfoTitle')}
                                   </h2>
                                   <GroupTextArea
-                                    label="Who is the content written for?"
-                                    placeholder="Please describe the target group as precisely as possible"
+                                    label={t('projectDetails.editProject.form.targetCustomerDescriptionLabel')}
+                                    placeholder={t('projectDetails.editProject.placeholders.targetCustomerDescriptionPlaceholder')}
                                     id="content"
                                     name="content"
                                     value={values.content}
@@ -253,8 +255,8 @@ const EditProject: React.FC<EditProjectProps> = ({
                                     onChange={handleChange}
                                   />
                                   <GroupTextArea
-                                    label="Customers we want to address have an interest in..."
-                                    placeholder="Please list here in bullet points which problems you solve for customers."
+                                    label={t('projectDetails.editProject.form.customerInterestLabel')}
+                                    placeholder={t('projectDetails.editProject.placeholders.customerInterestPlaceholder')}
                                     id="customers"
                                     name="customers"
                                     value={values.customers}
@@ -266,11 +268,11 @@ const EditProject: React.FC<EditProjectProps> = ({
                                 </div>
                                 <div className="flex flex-col gap-3 py-3">
                                   <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3.5">
-                                    4. Aim of the Content
+                                  {t('projectDetails.editProject.form.contentAimTitle')}
                                   </h2>
                                   <GroupTextArea
-                                    label="What is the purpose of the content?"
-                                    placeholder="Please briefly describe here how organic customers/readers should ideally react when they land on your site."
+                                    label={t('projectDetails.editProject.form.contentPurposeLabel')}
+                                    placeholder={t('projectDetails.editProject.placeholders.contentPurposePlaceholder')}
                                     id="contentPurpose"
                                     name="contentPurpose"
                                     value={values.contentPurpose}
@@ -282,8 +284,8 @@ const EditProject: React.FC<EditProjectProps> = ({
                                     onChange={handleChange}
                                   />
                                   <GroupTextArea
-                                    label="Information about your brand and your content"            
-                                    placeholder="Please give us bullet points on how potential readers should describe the content they consume"
+                                    label={t('projectDetails.editProject.form.brandInfoLabel')}         
+                                    placeholder={t('projectDetails.editProject.placeholders.brandInfoPlaceholder')}
                                     id="brand"
                                     name="brand"
                                     value={values.brand}
@@ -303,7 +305,7 @@ const EditProject: React.FC<EditProjectProps> = ({
                     type="submit"
                     disabled={loading}
                   >
-                    {loading ? "Saving..." : "Save"}
+                    {loading ?  t('projectDetails.editProject.form.savingButton') : t('projectDetails.editProject.form.saveButton')   }
                   </button>
                   {errorMessage && ( // Conditionally render the error message if it exists
                     <div className="text-red-500 mt-3 text-center">

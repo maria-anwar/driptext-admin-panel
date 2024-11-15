@@ -28,6 +28,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Task, Freelancer } from "../../Types/Type";
+import { useTranslation } from "react-i18next";
 
 interface TaskDetailModelProps {
   task: Task;
@@ -67,13 +68,19 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   projectName,
   handleRefreshData,
 }) => {
+  const {t} = useTranslation();
   const user = useSelector<any>((state) => state.user);
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const [loading, setLoading] = useState<boolean>(false);
   const [userToken, setUserToken] = useState(user?.user?.token);
-  const allRoles = ["texter", "lector", "seo-optimizer"];
+  const allRoles = [
+    t("projectDetails.projectMembers.freelancerRole.texter"),
+    t("projectDetails.projectMembers.freelancerRole.lector"),
+    t("projectDetails.projectMembers.freelancerRole.seo"),
+  ];
+
   const [showCard, setShowCard] = useState(task.readyToWork);
   const [memberModel, setMemberModel] = useState<boolean>(false);
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
@@ -107,10 +114,10 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   }, [task]);
 
   const validationSchema = Yup.object().shape({
-    topic: Yup.string().required("Please select a topic"),
-    textType: Yup.string().required("Please select type"),
-    keywords: Yup.string().required("Please select keywords"),
-    date: Yup.date().nullable().required("Please select a date"),
+    topic: Yup.string().required(t("projectDetails.taskDetailModel.formValidation.topicRequired")),
+    textType: Yup.string().required(t("projectDetails.taskDetailModel.formValidation.textTypeRequired")),
+    keywords: Yup.string().required(t("projectDetails.taskDetailModel.formValidation.keywordsRequired")),
+    date: Yup.date().nullable().required(t("projectDetails.taskDetailModel.formValidation.dateRequired")),
   });
 
   const handleRoleSelect = (role: string, memberId: number) => {
@@ -222,7 +229,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                 <div className="space-y-1 mt-4">
                   <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-bold dark:text-white">
-                      Task Details
+                      {t("projectDetails.taskDetailModel.title")}
                     </h2>
                     <FontAwesomeIcon
                       className="cursor-pointer text-lg text-red-500 "
@@ -233,7 +240,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                   <div className="w-full flex justify-between items-center gap-2 ">
                     <div className="w-1/2">
                       <p className="mb-3 block text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold">
-                        Status
+                        {t("projectDetails.taskDetailModel.status")}
                       </p>
                       <p
                         className={`w-full py-0 text-sm uppercase  ${
@@ -274,7 +281,8 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                         className="text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold pb-1"
                         htmlFor="wordReal"
                       >
-                        Word Real
+                       {t("projectDetails.taskDetailModel.wordReal")}
+
                       </label>
                       <p className="w-full py-2 text-black dark:text-white">
                       {Number(task?.actualNumberOfWords) ===1? 0 :task?.actualNumberOfWords}
@@ -289,7 +297,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                         className="mb-3  text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold"
                         htmlFor="document"
                       >
-                        Document
+                        {t("projectDetails.taskDetailModel.document")}
                       </label>
                       <p className="w-full py-2 text-black dark:text-white">
                         <a
@@ -308,7 +316,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                     </div>
                     <div className="w-1/2 ">
                       <GroupField
-                        label="Word Count Expected"
+                        label={t("projectDetails.taskDetailModel.wordCountExpected")}
                         type="number"
                         placeholder="1500"
                         name="wordCount"
@@ -324,7 +332,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                   <div className="flex justify-between items-center w-full gap-2 ">
                     <div className="w-full">
                       <GroupDateField
-                        label="Due Date"
+                        label={t("projectDetails.taskDetailModel.dueDate")}
                         name="date"
                         id="date"
                         value={values.date}
@@ -339,7 +347,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                   <div className="w-full flex justify-between items-center ">
                     <div className="w-full mr-1">
                       <GroupField
-                        label="Topic"
+                        label={t("projectDetails.taskDetailModel.topic")}
                         type="text"
                         placeholder="topic"
                         name="topic"
@@ -352,7 +360,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                   </div>
                   <div className="w-full mr-1">
                     <GroupDropdownField
-                      label="Keywords type"
+                      label={t("projectDetails.taskDetailModel.keywordsType")}
                       type="text"
                       id="textType"
                       name="textType"
@@ -370,7 +378,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                   </div>
 
                   <GroupField
-                    label="Keyword"
+                    label={t("projectDetails.taskDetailModel.keyword")}
                     type="text"
                     placeholder="keywords"
                     name="keywords"
@@ -381,7 +389,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                   />
 
                   <GroupTextArea
-                    label="Comment"
+                    label={t("projectDetails.taskDetailModel.comment")}
                     type="text"
                     placeholder="Add any comments."
                     id="comments"
@@ -394,7 +402,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                   <div className="w-full pt-6">
                     <div className="flex justify-between items-center mb-6">
                       <h3 className="font-medium text-black dark:text-white">
-                        Project members
+                      {t("projectDetails.taskDetailModel.projectMembers")}
                       </h3>
                       <p
                         className="w-5 h-5 bg-blue-500 text-white flex items-center justify-center cursor-pointer"
@@ -406,25 +414,25 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
 
                     <TaskMember
                       name={showAssignedRoles(task.texter) ?? ""}
-                      label="Texter"
+                      label={t("projectDetails.projectMembers.freelancerRole.texter")}
                       handleMembers={handleMembers}
                       hide={false}
                     />
                     <TaskMember
                       name={showAssignedRoles(task.lector) ?? ""}
-                      label="Lector"
+                      label={t("projectDetails.projectMembers.freelancerRole.lector")}
                       handleMembers={handleMembers}
                       hide={false}
                     />
                     <TaskMember
                       name={showAssignedRoles(task.seo) ?? ""}
-                      label="SEO"
+                      label={t("projectDetails.projectMembers.freelancerRole.seo")}
                       handleMembers={handleMembers}
                       hide={false}
                     />
                     <TaskMember
                       name={showAssignedRoles(task.metaLector) ?? ""}
-                      label="Meta Lector"
+                      label={t("projectDetails.projectMembers.freelancerRole.metaLector")}
                       handleMembers={handleMembers}
                       hide={false}
                     />
@@ -437,14 +445,14 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                     onClick={handleCancel}
                     className="px-4 py-2 bg-gray-500 bg-transparent border border-neutral-200 text-black dark:text-white rounded"
                   >
-                    Cancel
+                    {t("projectDetails.taskDetailModel.cancelButton")}
                   </button>
                   <button
                     type="submit"
                     disabled={loading}
                     className="px-4 py-2 bg-blue-500 text-white rounded"
                   >
-                    {loading ? "Submitting..." : "Submit"}
+                    {loading ? t("projectDetails.taskDetailModel.submittingButton") : t("projectDetails.taskDetailModel.submitButton")}
                   </button>
                 </div>
                 {error && (

@@ -5,8 +5,10 @@ import { Link } from "react-router-dom";
 import formatDate from "../../../components/Helpers/DateFormat";
 import getInitials from "../../../components/Helpers/UpperCaseName";
 import useTitle from "../../../hooks/useTitle";
+import { useTranslation } from "react-i18next";
 
 const TaskDetails: React.FC = () => {
+  const {t} = useTranslation();
   const user = useSelector<any>((state) => state.user);
   const [loading, setLoading] = useState<boolean>(false);
   const [taskdetails, setTaskDetails] = useState(null);
@@ -65,20 +67,20 @@ const TaskDetails: React.FC = () => {
               className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
               to="/dashboard"
             >
-              Dashboard /{" "}
+             {t('taskDetailPage.breadcrumb.dashboard')}{" "}
               <Link
                 className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
                 to="/dashboard/tasks"
               >
-                Tasks /
+               {t('taskDetailPage.breadcrumb.tasks')}
               </Link>
             </Link>
           </li>
-          <li className="font-medium text-primary">Task Detail</li>
+          <li className="font-medium text-primary"> {t('taskDetailPage.breadcrumb.taskDetail')}</li>
         </ol>
       </div>
       <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
-        Task Detail
+      {t('taskDetailPage.breadcrumb.taskDetail')}
       </h2>
       {loading ? (
         <div className="grid grid-cols-5 gap-8 mt-6">
@@ -97,7 +99,7 @@ const TaskDetails: React.FC = () => {
                 </p>
                 <div className="py-2">
                   <h3 className="font-medium text-black dark:text-white">
-                    Client
+                   {t('taskDetailPage.project.client')}
                   </h3>
                   <p className="text-sm text-black dark:text-white">
                     {taskdetails?.user?.firstName} {taskdetails?.user?.lastName}{" "}
@@ -108,7 +110,7 @@ const TaskDetails: React.FC = () => {
                 </div>
 
                 <div className="pt-1 pb-3">
-                  <h2>Folder</h2>
+                  <h2>{t('taskDetailPage.project.folder')}</h2>
                   <a
                     href={project?.folderLink}
                     target="_blank"
@@ -148,13 +150,13 @@ const TaskDetails: React.FC = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="pt-8 pb-4 px-7 dark:border-strokedark flex justify-between items-center">
                 <h3 className="font-medium text-black dark:text-white">
-                  Task Freelancer
+                {t('taskDetailPage.taskFreelancer')}
                 </h3>
               </div>
               <div className="px-7">
                 {taskdetails?.texter && (
                   <FreelancerInfo
-                    label={"Texter"}
+                    label=  {t('taskDetailPage.freelancerInfo.texter')}
                     name={`${taskdetails.texter.firstName ?? ""} ${
                       taskdetails.texter.lastName ?? ""
                     }`}
@@ -162,7 +164,7 @@ const TaskDetails: React.FC = () => {
                 )}
                 {taskdetails?.lector && (
                   <FreelancerInfo
-                    label={"Lector"}
+                    label={t('taskDetailPage.freelancerInfo.lector')}
                     name={`${taskdetails.lector.firstName ?? ""} ${
                       taskdetails.lector.lastName ?? ""
                     }`}
@@ -170,7 +172,7 @@ const TaskDetails: React.FC = () => {
                 )}
                 {taskdetails?.seo && (
                   <FreelancerInfo
-                    label={"Seo"}
+                    label={t('taskDetailPage.freelancerInfo.seo')}
                     name={`${taskdetails.seo.firstName ?? ""} ${
                       taskdetails.seo.lastName ?? ""
                     }`}
@@ -178,7 +180,7 @@ const TaskDetails: React.FC = () => {
                 )}
                 {taskdetails?.metaLector && (
                   <FreelancerInfo
-                    label={"Meta-Lector"}
+                    label={t('taskDetailPage.freelancerInfo.metaLector')}
                     name={`${taskdetails.metaLector.firstName ?? ""} ${
                       taskdetails.metaLector.lastName ?? ""
                     }`}
@@ -201,25 +203,25 @@ const TaskDetails: React.FC = () => {
             <div className="rounded border border-stroke bg-white p-6 shadow-md dark:border-strokedark dark:bg-boxdark">
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div className="flex justify-start items-start flex-col">
-                  <span className="text-sm">Task Name:</span>
+                  <span className="text-sm">{t('taskDetailPage.taskInfo.taskName')}:</span>
                   <span className=" text-black dark:text-white">
-                    {taskdetails?.taskName || "N/A"}
+                    {taskdetails?.taskName || ""}
                   </span>
                 </div>
                 <div className="flex justify-start items-start flex-col">
-                  <span className="text-sm">Topic:</span>
+                  <span className="text-sm">{t('taskDetailPage.taskInfo.topic')}:</span>
                   <span className=" text-black dark:text-white">
-                    {taskdetails?.topic || "N/A"}
+                    {taskdetails?.topic || ""}
                   </span>
                 </div>
                 <div className="flex justify-start items-start flex-col">
-                  <span className="text-sm">Type:</span>
+                  <span className="text-sm">{t('taskDetailPage.taskInfo.type')}:</span>
                   <span className=" text-black dark:text-white">
-                    {taskdetails?.type || "N/A"}
+                    {taskdetails?.type || ""}
                   </span>
                 </div>
                 <div className="flex justify-start items-start flex-col">
-                  <span className="text-sm">Status:</span>
+                  <span className="text-sm">{t('taskDetailPage.taskInfo.status')}:</span>
                   <span
                     className={`text-sm uppercase text-center py-0.5 px-3 rounded-full
                       ${
@@ -244,24 +246,24 @@ const TaskDetails: React.FC = () => {
                         "bg-red-500/20 text-red-500"
                       }`}
                   >
-                    {taskdetails?.status || "N/A"}
+                    {taskdetails?.status || ""}
                   </span>
                 </div>
                 <div className="flex justify-start items-start flex-col">
-                  <span className="text-sm">Actual Words:</span>
+                  <span className="text-sm">{t('taskDetailPage.taskInfo.actualWords')}:</span>
                   <span className=" text-black dark:text-white">
                   {Number(taskdetails?.actualNumberOfWords) ===1? 0 :taskdetails?.actualNumberOfWords}
 
                   </span>
                 </div>
                 <div className="flex justify-start items-start flex-col">
-                  <span className="text-sm">Desired Words:</span>
+                  <span className="text-sm">{t('taskDetailPage.taskInfo.desiredWords')}:</span>
                   <span className=" text-black dark:text-white">
-                    {taskdetails?.desiredNumberOfWords || "N/A"}
+                    {taskdetails?.desiredNumberOfWords || ""}
                   </span>
                 </div>
                 <div className="flex justify-start items-start flex-col">
-                  <span className="text-sm">Due Date:</span>
+                  <span className="text-sm">{t('taskDetailPage.taskInfo.dueDate')}:</span>
                   <span
                     className={`text-sm text-white px-2 py-0.5 rounded-full text-center flex justify-center items-center 
                     ${new Date(taskdetails?.dueDate).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0) || taskdetails?.status==='Final' ? 'bg-green-600' : 'bg-red-600'}
@@ -273,30 +275,30 @@ const TaskDetails: React.FC = () => {
                   </span>
                 </div>
                 <div className="flex justify-start items-start flex-col">
-                  <span className="text-sm">Keywords:</span>
+                  <span className="text-sm">{t('taskDetailPage.taskInfo.keywords')}:</span>
                   <span className=" text-black dark:text-white">
-                    {taskdetails?.keywords || "N/A"}
+                    {taskdetails?.keywords || " "}
                   </span>
                 </div>
                 <div className="flex justify-start items-start flex-col">
-                  <span className="text-sm">File Link:</span>
+                  <span className="text-sm">{t('taskDetailPage.taskInfo.fileLink')}:</span>
                   <a
                     href={taskdetails?.fileLink || "#"}
                     className="text-blue-500 "
                   >
-                    {taskdetails?.fileLink ? "Open File" : "N/A"}
+                    {taskdetails?.fileLink ? t('taskDetailPage.taskInfo.fileLink') : " "}
                   </a>
                 </div>
                 <div className="flex justify-start items-start flex-col">
-                  <span className="text-sm">Comments:</span>
+                  <span className="text-sm">{t('taskDetailPage.taskInfo.comments')}:</span>
                   <span className=" text-black dark:text-white">
-                    {taskdetails?.comments || "N/A"}
+                    {taskdetails?.comments || t('taskDetailPage.taskInfo.noComments')}
                   </span>
                 </div>
                 <div className="flex justify-start items-start flex-col">
-                  <span className="text-sm">Feedback:</span>
+                  <span className="text-sm">{t('taskDetailPage.taskInfo.feedback')}:</span>
                   <span className=" text-black dark:text-white">
-                    {taskdetails?.feedback || "N/A"}
+                    {taskdetails?.feedback || t('taskDetailPage.taskInfo.noFeedback')}
                   </span>
                 </div>
               </div>

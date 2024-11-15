@@ -5,6 +5,7 @@ import AddModel from "./AddTask";
 import DeleteModel from "./DeleteProject";
 import EditProject from "./EditProject";
 import { OnBoarding } from "../../Types/Type";
+import { useTranslation } from "react-i18next";
 
 interface ProjectDetailsButtonProps {
   projectName: string;
@@ -35,6 +36,7 @@ const ProjectDetailsButton: React.FC<ProjectDetailsButtonProps> = ({
   lastName,
   email,
 }) => {
+  const { t } = useTranslation();
   const [addModel, setAddModel] = useState(false);
   const [editModel, setEditModel] = useState(false);
   const [deleteModel, setDeleteModel] = useState(false);
@@ -60,7 +62,7 @@ const ProjectDetailsButton: React.FC<ProjectDetailsButtonProps> = ({
             </button>
             {/* Tooltip for Add Icon */}
             <div className=" shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-5 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              Add Task
+              {t("projectDetails.addTask.label")}
             </div>
             {addModel && (
               <AddModel
@@ -83,7 +85,7 @@ const ProjectDetailsButton: React.FC<ProjectDetailsButtonProps> = ({
             </button>
             {/* Tooltip for Edit Icon */}
             <div className=" shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-5 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              Edit Project
+              {t("projectDetails.editProject.label")}
             </div>
             {editModel && (
               <EditProject
@@ -108,7 +110,7 @@ const ProjectDetailsButton: React.FC<ProjectDetailsButtonProps> = ({
             </button>
             {/* Tooltip for Delete Icon */}
             <div className=" shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-5 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              Archive Project
+              {t("projectDetails.archiveProject.label")}
             </div>
             {deleteModel && (
               <DeleteModel
@@ -120,7 +122,10 @@ const ProjectDetailsButton: React.FC<ProjectDetailsButtonProps> = ({
         </div>
       </div>
       <div className="py-2">
-        <h3 className="font-medium text-black dark:text-white">Client</h3>
+        <h3 className="font-medium text-black dark:text-white">
+          {" "}
+          {t("projectDetails.client.heading")}
+        </h3>
         <p className="text-sm text-black dark:text-white">
           {firstName} {lastName} {"("}
           {email}
