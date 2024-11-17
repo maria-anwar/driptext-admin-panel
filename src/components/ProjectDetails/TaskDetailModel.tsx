@@ -75,11 +75,8 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
 
   const [loading, setLoading] = useState<boolean>(false);
   const [userToken, setUserToken] = useState(user?.user?.token);
-  const allRoles = [
-    t("projectDetails.projectMembers.freelancerRole.texter"),
-    t("projectDetails.projectMembers.freelancerRole.lector"),
-    t("projectDetails.projectMembers.freelancerRole.seo"),
-  ];
+
+  const allRoles = ["Texter", "Lector","SEO-Optimizer"];
 
   const [showCard, setShowCard] = useState(task.readyToWork);
   const [memberModel, setMemberModel] = useState<boolean>(false);
@@ -404,12 +401,14 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                       <h3 className="font-medium text-black dark:text-white">
                       {t("projectDetails.taskDetailModel.projectMembers")}
                       </h3>
+                      {!(task.texter && task.lector && task.seo) ? (
                       <p
                         className="w-5 h-5 bg-blue-500 text-white flex items-center justify-center cursor-pointer"
                         onClick={handleMembers}
                       >
                         <FontAwesomeIcon icon={faPlus} className="text-sm" />
                       </p>
+                    ) : null}
                     </div>
 
                     <TaskMember
