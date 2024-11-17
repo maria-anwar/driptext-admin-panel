@@ -218,7 +218,7 @@ const AddModel: React.FC<AddModelProps> = ({
                   </button>
                 </div>
                 {error && (
-                  <div id="email" className="mt-2 text-sm text-red-500">
+                  <div id="email" className="mt-2 text-sm text-red-500 text-center">
                     {errorMessage}
                   </div>
                 )}
