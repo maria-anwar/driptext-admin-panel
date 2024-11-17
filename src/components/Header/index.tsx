@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import DropdownUser from "./DropdownUser";
 import DropdownNotification from "./DropdownNotification";
@@ -15,16 +15,36 @@ const Header = (props: {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("English");
 
+  // Ref for dropdown menu
+  const dropdownRef = useRef(null);
+
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
-  const changeYourLanguage = (language) => {
+  const changeYourLanguage = (language: string) => {
     setSelectedLanguage(language);
     changeLanguage(language);
     localStorage.setItem("language", language);
     setIsOpen(false);
   };
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);  // Close dropdown if clicked outside
+      }
+    };
+
+    // Add event listener for click outside
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const tasks = [
     {
@@ -40,13 +60,16 @@ const Header = (props: {
       domain: "Driptext.com | 62 - DT",
     },
   ];
+
   const [searchTerm, setSearchTerm] = useState("");
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
+
   const filteredTasks = tasks.filter((task) =>
     task.domain.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
       <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
@@ -97,40 +120,9 @@ const Header = (props: {
         </div>
 
         <div className="hidden sm:block">
-          {/* <form action="https://formbold.com/s/unique_form_id" method="POST">
-            <div className="relative">
-              <button className="absolute left-0 top-1/2 -translate-y-1/2">
-                <svg
-                  className="fill-body hover:fill-primary dark:fill-bodydark dark:hover:fill-primary"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M9.16666 3.33332C5.945 3.33332 3.33332 5.945 3.33332 9.16666C3.33332 12.3883 5.945 15 9.16666 15C12.3883 15 15 12.3883 15 9.16666C15 5.945 12.3883 3.33332 9.16666 3.33332ZM1.66666 9.16666C1.66666 5.02452 5.02452 1.66666 9.16666 1.66666C13.3088 1.66666 16.6667 5.02452 16.6667 9.16666C16.6667 13.3088 13.3088 16.6667 9.16666 16.6667C5.02452 16.6667 1.66666 13.3088 1.66666 9.16666Z"
-                    fill=""
-                  />
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M13.2857 13.2857C13.6112 12.9603 14.1388 12.9603 14.4642 13.2857L18.0892 16.9107C18.4147 17.2362 18.4147 17.7638 18.0892 18.0892C17.7638 18.4147 17.2362 18.4147 16.9107 18.0892L13.2857 14.4642C12.9603 14.1388 12.9603 13.6112 13.2857 13.2857Z"
-                    fill=""
-                  />
-                </svg>
-              </button>
-
-              <input
-                type="text"
-                placeholder="Type to search..."
-                className="w-full bg-transparent pl-9 pr-4 text-black focus:outline-none dark:text-white xl:w-125"
-              />
-            </div>
-          </form> */}
+          {/* Optional search form or other content */}
         </div>
+
         <div className="flex items-center gap-5 2xsm:gap-2">
           <ul className="flex items-center gap-y-5 gap-x-3 2xsm:gap-4">
             {/* <!-- Dark Mode Toggler --> */}
@@ -143,17 +135,16 @@ const Header = (props: {
           </ul>
 
           {/* Language Switcher Icon (Font Awesome Globe icon) */}
-          <div className="relative">
+          <div className="relative" ref={dropdownRef}>
             <button
               onClick={toggleDropdown}
-              className="text-2xl bg-boxdark dark:bg-white  border-2 border-boxdark dark:border-white flex justify-center items-center  rounded-full"
+              className="text-2xl bg-boxdark dark:bg-white  border-2 border-boxdark dark:border-white flex justify-center items-center rounded-full"
               title="Select Language"
             >
               <FontAwesomeIcon
                 icon={faGlobe}
                 className="dark:text-black text-white"
               />{" "}
-              {/* Font Awesome globe icon */}
             </button>
             {isOpen && (
               <div className="absolute right-0 mt-2 bg-white dark:bg-boxdark ring-1 p-4 shadow-md rounded py-2">
