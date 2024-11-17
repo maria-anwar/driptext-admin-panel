@@ -68,7 +68,7 @@ const ProjectsDetails: React.FC = () => {
         setUserData(allProjects.user);
         setProjectTasks(allProjects.projectTasks);
         setOnBoarding(allProjects.onBoardingInfo);
-
+        console.log(allProjects);
         setLoading(false);
       })
       .catch((err) => {
@@ -171,12 +171,7 @@ const ProjectsDetails: React.FC = () => {
     }
   };
 
-  const allRoles = [
-    t("projectDetails.projectMembers.freelancerRole.texter"),
-    t("projectDetails.projectMembers.freelancerRole.lector"),
-    t("projectDetails.projectMembers.freelancerRole.seo"),
-    t("projectDetails.projectMembers.freelancerRole.metaLector"),
-  ];
+  const allRoles = ["Texter", "Lector","SEO-Optimizer","Meta-lector"];
 
   const handleMembers = () => {
     setMemberModel(true);
@@ -347,6 +342,9 @@ const ProjectsDetails: React.FC = () => {
                       <h3 className="font-medium text-black dark:text-white">
                         {t("projectDetails.projectMembers.heading")}
                       </h3>
+                      {!(projectDetails.lector &&
+                        projectDetails.seo  &&
+                        projectDetails.texter  && projectDetails.metaLector) ? (
                       <p
                         className="relative group w-5 h-5 bg-blue-500 text-white flex items-center justify-center cursor-pointer"
                         onClick={handleMembers}
@@ -358,6 +356,7 @@ const ProjectsDetails: React.FC = () => {
                         {t("projectDetails.projectMembers.addFreelancerButton")}
                         </div>
                       </p>
+                        ) : null}
                     </div>
                     <div className="px-7">
                       <TaskMembers

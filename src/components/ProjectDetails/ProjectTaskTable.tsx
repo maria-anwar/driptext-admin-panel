@@ -38,11 +38,8 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [memberModel, setMemberModel] = useState<boolean>(false);
 
-  const allRoles = [
-    t("projectDetails.projectMembers.freelancerRole.texter"),
-    t("projectDetails.projectMembers.freelancerRole.lector"),
-    t("projectDetails.projectMembers.freelancerRole.seo"),
-  ];
+
+  const allRoles = ["Texter", "Lector","SEO-Optimizer"];
 
   const showAssignedRoles = (memberId: string | null) => {
     const foundFreelancer = freelancer.find((f) => f._id === memberId);
