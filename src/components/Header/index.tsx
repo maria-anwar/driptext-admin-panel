@@ -144,20 +144,30 @@ const Header = (props: {
 
           {/* Language Switcher Icon (Font Awesome Globe icon) */}
           <div className="relative">
-            <button onClick={toggleDropdown} className="text-2xl bg-boxdark dark:bg-white px-1 flex justify-center items-center py-1 rounded-full ">
-              <FontAwesomeIcon icon={faGlobe} className="dark:text-black text-white" /> {/* Font Awesome globe icon */}
+            <button
+              onClick={toggleDropdown}
+              className="text-2xl bg-boxdark dark:bg-white px-1 flex justify-center items-center py-1 rounded-full"
+              title="Select Language"
+            >
+              <FontAwesomeIcon
+                icon={faGlobe}
+                className="dark:text-black text-white"
+              />{" "}
+              {/* Font Awesome globe icon */}
             </button>
             {isOpen && (
-              <div className="absolute right-0 mt-2 bg-white dark:bg-boxdark ring-1  p-4 shadow-md rounded py-2">
+              <div className="absolute right-0 mt-2 bg-white dark:bg-boxdark ring-1 p-4 shadow-md rounded py-2">
                 <button
                   onClick={() => changeYourLanguage("en")}
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left hover:text-primary"
+                  title="Switch to English"
                 >
                   English
                 </button>
                 <button
                   onClick={() => changeYourLanguage("de")}
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left hover:text-primary"
+                  title="Switch to German"
                 >
                   German
                 </button>
