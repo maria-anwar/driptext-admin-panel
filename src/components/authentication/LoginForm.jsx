@@ -26,8 +26,12 @@ const LoginForm = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email().required(t("login.validationErrors.emailRequired")),
-    password: Yup.string().min(8).required(t("login.validationErrors.passwordRequired")),
+    email: Yup.string()
+      .email()
+      .required(t("login.validationErrors.emailRequired")),
+    password: Yup.string()
+      .min(8)
+      .required(t("login.validationErrors.passwordRequired")),
   });
 
   const onSubmit = async (values) => {
@@ -57,6 +61,14 @@ const LoginForm = () => {
             expiration: expirationTime,
           })
         );
+        const userId = {
+          userId: response.data.data.user._id,
+        };
+        const res = await axios.post(
+          `${import.meta.env.VITE_DB_URL}/language/getLanguage`,
+          userId
+        );
+        localStorage.setItem("language", res.data.language.language);
         navigate("/dashboard");
       } else {
         const errorMessage = t("login.errorMessages.roleError");
@@ -66,7 +78,9 @@ const LoginForm = () => {
       }
     } catch (error) {
       const errorMessage =
-        error.response?.data?.message || error.message || t("login.errorMessages.genericError");
+        error.response?.data?.message ||
+        error.message ||
+        t("login.errorMessages.genericError");
       setError(true);
       setErrorMesssage(errorMessage);
       setLoading(false);
