@@ -160,6 +160,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </li>
                 <li>
                   <NavLink
+                    to="freelancer-overview"
+                    className={`group relative   flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:text-bodydark1 hover:bg-graydark dark:hover:bg-meta-4 ${
+                      pathname.includes("freelancer-overview") &&
+                      "bg-graydark dark:bg-meta-4"
+                    }`}
+                  >
+                    {SidebarIcons[6].kpi}
+                    Freelancer Overview
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
                     to="users"
                     className={`group relative   flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 hover:text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                       pathname.includes("users") &&
