@@ -16,6 +16,7 @@ import KPI from "./views/admin/dashboard/KPI";
 import Tracking from "./views/admin/dashboard/Tracking";
 import Forecast from "./views/admin/dashboard/Forecast";
 import NotFound from './views/NotFound';
+import FreelancerOverview from "./views/admin/dashboard/FreelancerOverview";
 
 
 const WebRoutes = () => {
@@ -47,6 +48,8 @@ const WebRoutes = () => {
             <Route path="kpi" element={<KPI />} />
             <Route path="kpi/tracking" element={<Tracking />} />
             <Route path="kpi/forecast" element={<Forecast />} />
+            <Route path="freelancer-overview" element={<FreelancerOverview />} />
+
            
           </Route>
           <Route path="*" element={<NotFound />} />
