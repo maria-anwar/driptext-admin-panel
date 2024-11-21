@@ -83,7 +83,7 @@ const freelancers = [
     tasksAssignedThisMonth: 10,
     totalTasksAssigned: 20,
     reliabilityStatus: 2,  // yellow (1-10 missed deadlines)
-    textQualityStatus: null // No text quality status for Lectors
+    textQualityStatus: 0 // No text quality status for Lectors
   },
   {
     id: 8,
@@ -115,7 +115,7 @@ const freelancers = [
     tasksOpenThisMonth: 1,
     tasksAssignedThisMonth: 2,
     totalTasksAssigned: 10,
-    reliabilityStatus: 3,  // green (no missed deadlines)
+    reliabilityStatus: 12,  // green (no missed deadlines)
     textQualityStatus: 2   // yellow (11-25 returns from lector)
   },
   {
@@ -127,7 +127,7 @@ const freelancers = [
     tasksAssignedThisMonth: 20,
     totalTasksAssigned: 80,
     reliabilityStatus: 2,  // yellow (1-10 missed deadlines)
-    textQualityStatus: 1   // red (more than 25 returns from lector)
+    textQualityStatus: 27   // red (more than 25 returns from lector)
   },
   {
     id: 12,
@@ -137,7 +137,7 @@ const freelancers = [
     tasksOpenThisMonth: 4,
     tasksAssignedThisMonth: 7,
     totalTasksAssigned: 22,
-    reliabilityStatus: 1,  // red (more than 10 missed deadlines)
+    reliabilityStatus: 28,  // red (more than 10 missed deadlines)
     textQualityStatus: 3   // green (1-10 returns from lector)
   }
 ];
