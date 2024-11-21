@@ -15,7 +15,6 @@ interface KpiTableProps {
 const KpiTable: React.FC<KpiTableProps> = ({ users }) => {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const navigate = useNavigate();
 
   const handlePageChange = (page: number) => {
     setPage(page);
@@ -28,16 +27,6 @@ const KpiTable: React.FC<KpiTableProps> = ({ users }) => {
     setPage(1);
   };
 
-  const handleTracking = (clientId: string, firstName: string, lastName: string,email:string) => {
-    const fullName = `${firstName} ${lastName}`;
-    navigate("tracking", { state: { fullName ,clientId ,email } });
-  };
-  
-  const handleForercasting = (clientId: string, firstName: string, lastName: string,email:string) => {
-    const fullName = `${firstName} ${lastName}`;
-    navigate("forecast", { state: { fullName ,clientId,email } });
-  };
-
   const offset = (page - 1) * rowsPerPage;
   const paginatedProjects = users.slice(offset, offset + rowsPerPage);
 
@@ -48,20 +37,26 @@ const KpiTable: React.FC<KpiTableProps> = ({ users }) => {
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4">
-                <th className="min-w-[220px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Name
+                <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
+                  Texter Cost
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Gmail
+                  Lector Cost
+                </th>
+                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
+                  Seo Optimizer Cost
+                </th>
+                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
+                  Meta-Lector Cost
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Role
+                  Total Cost
                 </th>
                 <th className="min-w-[100px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Tracking
+                  Income
                 </th>
-                <th className="min-w-[100px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Forecast
+                <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
+                  Total Margin
                 </th>
               </tr>
             </thead>
@@ -69,49 +64,25 @@ const KpiTable: React.FC<KpiTableProps> = ({ users }) => {
               {paginatedProjects.map((user) => (
                 <tr className="text-left" key={user?._id}>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <div className="flex justify-start items-center">
-                      <p className="text-black uppercase dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
-                        {user?.firstName.charAt(0)}
-                        {user?.lastName === "-" ? "" : user?.lastName.charAt(0)}
-                      </p>
-                      <p className="text-black pl-2 dark:text-white capitalize">
-                        {user?.firstName} {user?.lastName}
-                      </p>
-                    </div>
-                  </td>
-
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white ">{user?.email}</p>
+                    <p className="text-black dark:text-white ">Costs</p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white capitalize">
-                      {user?.role?.title === "leads"
-                        ? "Lead"
-                        : user?.role?.title}
-                    </p>
-                  </td>
-
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <div
-                      className={`bg-blue-500 px-2 h-9 flex justify-center items-center rounded cursor-pointer`}
-                      onClick={() => handleTracking(user?._id, user?.firstName, user?.lastName,user?.email)}
-                    >
-                      <FontAwesomeIcon className="text-white" icon={faEye} />
-                      <p className="text-white text-base font-medium text-center py-1 px-2">
-                        Tracking
-                      </p>
-                    </div>
+                    <p className="text-black dark:text-white ">Costs</p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <div
-                      className={`bg-blue-500 px-2 h-9 flex justify-center items-center rounded cursor-pointer`}
-                      onClick={() => handleForercasting(user?._id, user?.firstName, user?.lastName,user?.email)}
-                    >
-                      <FontAwesomeIcon className="text-white" icon={faEye} />
-                      <p className="text-white text-base font-medium text-center py-1 px-2">
-                        Forecast
-                      </p>
-                    </div>
+                    <p className="text-black dark:text-white ">Costs</p>
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p className="text-black dark:text-white ">Costs</p>
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p className="text-black dark:text-white ">Costs</p>
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p className="text-black dark:text-white ">Costs</p>
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p className="text-black dark:text-white ">Costs</p>
                   </td>
                 </tr>
               ))}
