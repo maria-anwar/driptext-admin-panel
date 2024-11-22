@@ -107,6 +107,26 @@ const KpiCard: React.FC<KpiCardProps> = ({
         </div>
       </div>
 
+
+      <div className="rounded-sm border border-stroke bg-white px-5 py-5 shadow-default dark:border-strokedark dark:bg-boxdark">
+        <div className="flex items-center gap-8 px-2 py-2">
+          <div>
+            <p className="bg-slate-200 dark:bg-boxdark-2 w-12 h-12 rounded-full flex justify-center items-center">
+              <FontAwesomeIcon
+                icon={faRocket}
+                className="text-black dark:text-white w-6 h-6"
+              />
+            </p>
+          </div>
+          <div>
+            <p className="text-black dark:text-white">Total Revenue</p>
+            <h1 className="text-black dark:text-white font-semibold text-2xl">
+              € {income}
+            </h1>
+          </div>
+        </div>
+      </div>
+      
       <div className="rounded-sm border border-stroke bg-white px-5 py-5 shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex items-center gap-8 px-2 py-2">
           <div>
@@ -126,24 +146,6 @@ const KpiCard: React.FC<KpiCardProps> = ({
         </div>
       </div>
 
-      <div className="rounded-sm border border-stroke bg-white px-5 py-5 shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div className="flex items-center gap-8 px-2 py-2">
-          <div>
-            <p className="bg-slate-200 dark:bg-boxdark-2 w-12 h-12 rounded-full flex justify-center items-center">
-              <FontAwesomeIcon
-                icon={faRocket}
-                className="text-black dark:text-white w-6 h-6"
-              />
-            </p>
-          </div>
-          <div>
-            <p className="text-black dark:text-white">Income</p>
-            <h1 className="text-black dark:text-white font-semibold text-2xl">
-              € {income}
-            </h1>
-          </div>
-        </div>
-      </div>
 
       <div className="rounded-sm border border-stroke bg-white px-5 py-5 shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex items-center gap-8 px-2 py-2">
