@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import KpiCard from "../../../components/tables/KpiCard";
 import KpiTable from "../../../components/tables/KpiTable";
 import useTitle from "../../../hooks/useTitle";
 import { DatePicker, Select } from "antd";
@@ -35,8 +36,25 @@ const KPI: React.FC = () => {
   const [margin, setMargin] = useState(0);
 
   useEffect(() => {
+    getTaskData();
     getProjects();
-  }, []);
+  }, [user]);
+
+  const getTaskData = async () => {
+    setLoading(true);
+    let token = user?.user?.token;
+    axios.defaults.headers.common["access-token"] = token;
+    await axios
+      .get(`${import.meta.env.VITE_DB_URL}/admin/getAllClients`)
+      .then((response) => {
+        setUsers(response.data.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching project details:", err);
+        setLoading(false);
+      });
+  };
 
   const getProjects = async () => {
     let token = user?.user?.token;
@@ -97,10 +115,11 @@ const KPI: React.FC = () => {
     applyFilters();
   }, [statusFilter, dateRangeFilter, monthFilter, roleFilter, tasks]);
 
+  console.log("users", users);
   return (
     <div className="mx-auto 3xl:px-4">
       <div className="flex items-center justify-between space-x-4 mb-6 mt-2">
-        <ol className="flex items-center gap-2 text-left">
+        <ol className="  flex items-center gap-2 text-left">
           <li>
             <Link
               className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
@@ -187,17 +206,21 @@ const KPI: React.FC = () => {
         </div>
       </div>
       {loading ? (
-        <div className="mt-4 rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 w-full bg-slate-200 h-[350px] animate-pulse"></div>
+        <div className="mt-4 rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 w-full bg-slate-200 h-[600px] animate-pulse"></div>
       ) : (
-        <KpiTable
-          texter={texter}
-          lector={lector}
-          seo={seo}
-          meta={meta}
-          totalCost={totalCost}
-          income={income}
-          margin={margin}
-        />
+        <>
+          <KpiCard
+            texter={texter}
+            lector={lector}
+            seo={seo}
+            meta={meta}
+            totalCost={totalCost}
+            income={income}
+            margin={margin}
+          />
+          <div className="pt-8" />
+          <KpiTable users={users} />
+        </>
       )}
     </div>
   );
