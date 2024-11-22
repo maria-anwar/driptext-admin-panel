@@ -7,15 +7,15 @@ import useTitle from "../../../hooks/useTitle";
 import { DatePicker, Select } from "antd";
 import moment, { Moment } from "moment";
 const { RangePicker } = DatePicker;
+import { Project } from "../../../Types/Type";
 
 const KPI: React.FC = () => {
-  useTitle('KPIs Overview')
+  useTitle("KPIs Overview");
   const user = useSelector<any>((state) => state.user);
   const [loading, setLoading] = useState<boolean>(false);
   const [users, setUsers] = useState([]);
-  const [freelancer, setFreelancer] = useState<Freelancer[]>([]);
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState([]);
+  const [filteredTasks, setFilteredTasks] = useState([]);
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const [dateRangeFilter, setDateRangeFilter] = useState<
     [Moment, Moment] | null
@@ -23,12 +23,44 @@ const KPI: React.FC = () => {
   const [monthFilter, setMonthFilter] = useState<string | null>(null);
   const [filterDropdownOpen, setFilterDropdownOpen] = useState<boolean>(false);
   const [roleFilter, setRoleFilter] = useState<string | null>(null);
+  const [projectData, setProjectData] = useState<Project[]>([]);
+  const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
 
+  const [texter, setTexter] = useState(0);
+  const [lector, setLector] = useState(0);
+  const [seo, setSeo] = useState(0);
+  const [meta, setMeta] = useState(0);
+  const [totalCost, setTotalCost] = useState(0);
+  const [income, setIncome] = useState(0);
+  const [margin, setMargin] = useState(0);
+
+  useEffect(() => {
+    getProjects();
+  }, []);
+
+  const getProjects = async () => {
+    let token = user?.user?.token;
+    axios.defaults.headers.common["access-token"] = token;
+    await axios
+      .get(`${import.meta.env.VITE_DB_URL}/admin/getProjects`)
+      .then((response) => {
+        const projectDataArray = response.data.projects;
+        setProjectData(() => {
+          setFilteredProjects(projectDataArray);
+          console.log(projectDataArray);
+          return projectDataArray;
+        });
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching project details:", err);
+      });
+  };
   const clearFilters = () => {
     setStatusFilter(null);
     setDateRangeFilter(null);
     setMonthFilter(null);
-    setRoleFilter(null); 
+    setRoleFilter(null);
     setFilteredTasks(tasks);
     setFilterDropdownOpen(false);
   };
@@ -58,14 +90,12 @@ const KPI: React.FC = () => {
       });
     }
 
-
     setFilteredTasks(filtered);
   };
 
   useEffect(() => {
     applyFilters();
   }, [statusFilter, dateRangeFilter, monthFilter, roleFilter, tasks]);
-
 
   return (
     <div className="mx-auto 3xl:px-4">
@@ -110,13 +140,33 @@ const KPI: React.FC = () => {
           {filterDropdownOpen && (
             <div className="absolute right-0 mt-2 bg-white dark:bg-boxdark  p-4 shadow-md rounded w-full md:w-1/2 lg:w-2/3 xl:w-100 z-50 border-1">
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">Date Range</label>
+                <label className="block text-sm font-medium mb-2">
+                  Date Range
+                </label>
                 <RangePicker
                   onChange={(dates, dateStrings) => {
                     setDateRangeFilter(dates ? [dates[0], dates[1]] : null);
                   }}
                   className="w-full"
                 />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-2">
+                  Select Project
+                </label>
+                <Select
+                  placeholder={"Select Project"}
+                  onChange={(value) => setMonthFilter(value)}
+                  allowClear
+                  className="w-full"
+                  value={monthFilter}
+                >
+                  {projectData.map((project) => (
+                    <Select.Option key={project._id} value={project._id}>
+                      {`${project.projectName} | ${project.projectId}`}
+                    </Select.Option>
+                  ))}
+                </Select>
               </div>
               <div className="flex gap-x-2">
                 <button
@@ -139,7 +189,15 @@ const KPI: React.FC = () => {
       {loading ? (
         <div className="mt-4 rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 w-full bg-slate-200 h-[350px] animate-pulse"></div>
       ) : (
-        <KpiTable users={users} />
+        <KpiTable
+          texter={texter}
+          lector={lector}
+          seo={seo}
+          meta={meta}
+          totalCost={totalCost}
+          income={income}
+          margin={margin}
+        />
       )}
     </div>
   );
