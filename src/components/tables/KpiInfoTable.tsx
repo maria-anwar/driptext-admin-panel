@@ -41,7 +41,7 @@ const KpiInfoTable: React.FC<KpiTableProps> = ({ users,forecast }) => {
                   Project Name
                 </th>
                 <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
-                  {forecast ? "Open Tasks" : "Final Tasks"}
+                  {forecast ? "Open Tasks" : "Tasks In Progress"}
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
                   Revenue
@@ -71,7 +71,7 @@ const KpiInfoTable: React.FC<KpiTableProps> = ({ users,forecast }) => {
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white ">
                       {}
-                      {forecast ? user?.project?.openTasks : user?.project?.finalTasks}
+                      {forecast ? user?.openTasks : user?.inProgressTasks}
                     </p>
                   </td>
 

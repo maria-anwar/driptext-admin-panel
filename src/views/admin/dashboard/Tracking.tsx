@@ -30,7 +30,6 @@ const Tracking: React.FC = () => {
       .post(`${import.meta.env.VITE_DB_URL}/admin/getTracking`, payload)
       .then((response) => {
         setUsers(response.data.data);
-        console.log("response.data.data", response.data.data);
         setLoading(false);
       })
       .catch((err) => {

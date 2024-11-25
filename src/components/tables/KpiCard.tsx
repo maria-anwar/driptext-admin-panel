@@ -16,7 +16,7 @@ interface KpiCardProps {
   seo: number;
   meta: number;
   totalCost: number;
-  income: number;
+  revenue: number;
   margin: number;
 }
 
@@ -32,7 +32,7 @@ const KpiBlock: React.FC<{ icon: React.ComponentProps<typeof FontAwesomeIcon>['i
         </div>
         <div>
           <p className="text-black dark:text-white">{title}</p>
-          <h1 className="text-black dark:text-white font-semibold text-2xl">€ {value}</h1>
+          <h1 className="text-black dark:text-white font-semibold text-2xl">€ {value.toFixed(2)}</h1>
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@ const KpiCard: React.FC<KpiCardProps> = ({
   seo,
   meta,
   totalCost,
-  income,
+  revenue,
   margin,
 }) => {
   return (
@@ -54,7 +54,7 @@ const KpiCard: React.FC<KpiCardProps> = ({
       <KpiBlock icon={faMoneyBillWave} title="Lector Cost" value={lector} />
       <KpiBlock icon={faMoneyBillWave} title="Seo Optimizer Cost" value={seo} />
       <KpiBlock icon={faMoneyBillWave} title="Meta-Lector Cost" value={meta} />
-      <KpiBlock icon={faRocket} title="Total Revenue" value={income} />
+      <KpiBlock icon={faRocket} title="Total Revenue" value={revenue} />
       <KpiBlock icon={faUsers} title="Total Cost" value={totalCost} />
       <KpiBlock icon={faChartBar} title="Margin" value={margin} />
     </div>
