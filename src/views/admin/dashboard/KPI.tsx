@@ -13,7 +13,7 @@ import { Project } from "../../../Types/Type";
 const KPI: React.FC = () => {
   useTitle("KPIs Overview");
   const user = useSelector<any>((state) => state.user);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
@@ -32,14 +32,16 @@ const KPI: React.FC = () => {
   const [seo, setSeo] = useState(0);
   const [meta, setMeta] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
-  const [income, setIncome] = useState(0);
+  const [revenue, setRevenue] = useState(0);
   const [margin, setMargin] = useState(0);
 
   useEffect(() => {
+    getTaskCost();
     getTaskData();
     getProjects();
   }, [user]);
 
+  
   const getTaskData = async () => {
     setLoading(true);
     let token = user?.user?.token;
@@ -48,6 +50,30 @@ const KPI: React.FC = () => {
       .get(`${import.meta.env.VITE_DB_URL}/admin/getAllClients`)
       .then((response) => {
         setUsers(response.data.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching project details:", err);
+        setLoading(false);
+      });
+  };
+
+  const getTaskCost = async () => {
+    setLoading(true);
+    let token = user?.user?.token;
+    axios.defaults.headers.common["access-token"] = token;
+    await axios
+      .get(`${import.meta.env.VITE_DB_URL}/admin/getAllTasksCost`)
+      .then((response) => {
+        const tasksCostData = response?.data?.data;
+        setTexter(tasksCostData?.texterCost);
+        setLector(tasksCostData?.lectorCost);
+        setSeo(tasksCostData?.seoCost);
+        setMeta(tasksCostData?.metaLectorCost);
+        setTotalCost(tasksCostData?.totalCost);
+        setRevenue(tasksCostData?.totalRevenue);
+        setMargin(tasksCostData?.totalMargin);
+
         setLoading(false);
       })
       .catch((err) => {
@@ -65,7 +91,6 @@ const KPI: React.FC = () => {
         const projectDataArray = response.data.projects;
         setProjectData(() => {
           setFilteredProjects(projectDataArray);
-          console.log(projectDataArray);
           return projectDataArray;
         });
         setLoading(false);
@@ -115,7 +140,7 @@ const KPI: React.FC = () => {
     applyFilters();
   }, [statusFilter, dateRangeFilter, monthFilter, roleFilter, tasks]);
 
-  console.log("users", users);
+
   return (
     <div className="mx-auto 3xl:px-4">
       <div className="flex items-center justify-between space-x-4 mb-6 mt-2">
@@ -215,7 +240,7 @@ const KPI: React.FC = () => {
             seo={seo}
             meta={meta}
             totalCost={totalCost}
-            income={income}
+            revenue={revenue}
             margin={margin}
           />
           <div className="pt-8" />

@@ -134,9 +134,12 @@ export interface Plan {
 
   
   export interface Tracking {
+    _id: string;
     cost: number;          
     margin: number;       
-    revenue: number;        
+    revenue: number; 
+    inProgressTasks: number;  
+    openTasks: number;     
     project: Project;       
   }
   
