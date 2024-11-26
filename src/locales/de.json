@@ -94,16 +94,20 @@
     "button": "Filter",
     "status": {
       "label": "Status",
-      "options": {
-        "readyToWork": "Bereit zur Bearbeitung",
-        "inProgress": "In Bearbeitung",
-        "inRevision": "In Überarbeitung",
-        "readyForProofreading": "Bereit zur Korrekturlesung",
-        "proofreadingInProgress": "Korrekturlesung in Bearbeitung",
-        "readyForSeoOptimization": "Bereit zur SEO-Optimierung",
-        "seoOptimizationInProgress": "SEO-Optimierung in Bearbeitung",
-        "final": "Fertig"
-      }
+        "options": {
+          "readyToWork": "Bereit zur Arbeit",
+          "inProgress": "In Bearbeitung",
+          "inRevision": "In Revision",
+          "readyForProofreading": "Bereit zur Korrekturlesung",
+          "proofreadingInProgress": "Korrekturlesung in Bearbeitung",
+          "readyForSeoOptimization": "Bereit zur SEO-Optimierung",
+          "seoOptimizationInProgress": "SEO-Optimierung in Bearbeitung",
+          "final": "Fertig",
+          "readyForRivisionLector": "Bereit zur Revision (Lektor)",
+          "inRivisionLector": "In Revision (Lektor)",
+          "readyForRivisionMetaLector": "Bereit zur Revision (Meta Lektor)",
+          "inRivisionMetaLector": "In Revision (Meta Lektor)"
+        }      
     },
     "dateRange": {
       "label": "Zeitraum"
