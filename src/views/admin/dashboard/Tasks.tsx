@@ -12,7 +12,7 @@ const { RangePicker } = DatePicker;
 
 const Tasks: React.FC = () => {
   const { t } = useTranslation();
-  useTitle(t('overviewtask')); // Translated title
+  useTitle(t("overviewtask")); // Translated title
   const user = useSelector<any>((state) => state.user);
   const [loading, setLoading] = useState<boolean>(true);
   const [freelancer, setFreelancer] = useState<Freelancer[]>([]);
@@ -64,7 +64,7 @@ const Tasks: React.FC = () => {
     setStatusFilter(null);
     setDateRangeFilter(null);
     setMonthFilter(null);
-    setRoleFilter(null); 
+    setRoleFilter(null);
     setFilteredTasks(tasks);
     setFilterDropdownOpen(false);
   };
@@ -105,9 +105,14 @@ const Tasks: React.FC = () => {
       switch (roleFilter) {
         case "texter":
           filtered = filtered.filter((task) =>
-            ["ready to work", "in progress", "in rivision"].includes(
-              task.status.toLowerCase()
-            )
+            [
+              "ready to work",
+              "in progress",
+              "ready for rivision (lector)",
+              "in rivision (lector)",
+              "ready for rivision (meta lector)",
+              "in rivision (meta lector)",
+            ].includes(task.status.toLowerCase())
           );
           break;
         case "lector":
@@ -154,22 +159,22 @@ const Tasks: React.FC = () => {
               className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
               to="/dashboard"
             >
-             {t('breadcrumb.dashboard')}
+              {t("breadcrumb.dashboard")}
             </Link>
           </li>
-          <li className="font-medium text-primary">{t('breadcrumb.tasks')}</li>
+          <li className="font-medium text-primary">{t("breadcrumb.tasks")}</li>
         </ol>
       </div>
       <div className="flex justify-between items-center relative">
         <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
-          {t('heading')}
+          {t("heading")}
         </h2>
         <div>
           <button
             onClick={() => setFilterDropdownOpen(!filterDropdownOpen)}
             className="inline-flex items-center cursor-pointer justify-center gap-2.5 bg-black py-3 text-sm xl:text-base text-center font-medium text-white hover:bg-opacity-90 px-5"
           >
-            <span>{t('filters.button')}</span>
+            <span>{t("filters.button")}</span>
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -186,29 +191,58 @@ const Tasks: React.FC = () => {
           </button>
 
           {filterDropdownOpen && (
-            <div className="absolute right-0 mt-2 bg-white dark:bg-boxdark  p-4 shadow-md rounded w-full md:w-1/2 lg:w-2/3 xl:w-100 z-50 border-1">
+            <div className="absolute  right-0 mt-2 bg-white dark:bg-boxdark  p-4 shadow-md rounded w-full md:w-1/2 lg:w-2/3 xl:w-100 z-50 border-1">
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">{t('filters.status.label')}</label>
+                <label className="block text-sm font-medium mb-2">
+                  {t("filters.status.label")}
+                </label>
                 <Select
-                  placeholder={t('filters.status.label')}
+                  placeholder={t("filters.status.label")}
                   onChange={(value) => setStatusFilter(value)}
                   allowClear
                   className="w-full"
                   value={statusFilter}
                 >
-                  <Select.Option value="ready to work">{t('filters.status.options.readyToWork')}</Select.Option>
-                  <Select.Option value="in progress">{t('filters.status.options.inProgress')}</Select.Option>
-                  <Select.Option value="rivision">{t('filters.status.options.inRevision')}</Select.Option>
-                  <Select.Option value="ready for proofreading">{t('filters.status.options.readyForProofreading')}</Select.Option>
-                  <Select.Option value="proofreading in progress">{t('filters.status.options.proofreadingInProgress')}</Select.Option>
-                  <Select.Option value="ready for seo optimization">{t('filters.status.options.readyForSeoOptimization')}</Select.Option>
-                  <Select.Option value="seo optimization in progress">{t('filters.status.options.seoOptimizationInProgress')}</Select.Option>
-                  <Select.Option value="final">{t('filters.status.options.final')}</Select.Option>
+                  <Select.Option value="ready to work">
+                    {t("filters.status.options.readyToWork")}
+                  </Select.Option>
+                  <Select.Option value="in progress">
+                    {t("filters.status.options.inProgress")}
+                  </Select.Option>
+                  <Select.Option value="ready for rivision (lector)">
+                    {t("filters.status.options.readyForRivisionLector")}
+                  </Select.Option>
+                  <Select.Option value="in rivision (lector)">
+                    {t("filters.status.options.inRivisionLector")}
+                  </Select.Option>
+                  <Select.Option value="ready for rivision (meta lector)">
+                    {t("filters.status.options.readyForRivisionMetaLector")}
+                  </Select.Option>
+                  <Select.Option value="in rivision (meta lector)">
+                    {t("filters.status.options.inRivisionMetaLector")}
+                  </Select.Option>
+                  <Select.Option value="ready for proofreading">
+                    {t("filters.status.options.readyForProofreading")}
+                  </Select.Option>
+                  <Select.Option value="proofreading in progress">
+                    {t("filters.status.options.proofreadingInProgress")}
+                  </Select.Option>
+                  <Select.Option value="ready for seo optimization">
+                    {t("filters.status.options.readyForSeoOptimization")}
+                  </Select.Option>
+                  <Select.Option value="seo optimization in progress">
+                    {t("filters.status.options.seoOptimizationInProgress")}
+                  </Select.Option>
+                  <Select.Option value="final">
+                    {t("filters.status.options.final")}
+                  </Select.Option>
                 </Select>
               </div>
 
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">{t('filters.dateRange.label')}</label>
+                <label className="block text-sm font-medium mb-2">
+                  {t("filters.dateRange.label")}
+                </label>
                 <RangePicker
                   onChange={(dates, dateStrings) => {
                     setDateRangeFilter(dates ? [dates[0], dates[1]] : null);
@@ -218,9 +252,11 @@ const Tasks: React.FC = () => {
               </div>
 
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">{t('filters.month.label')}</label>
+                <label className="block text-sm font-medium mb-2">
+                  {t("filters.month.label")}
+                </label>
                 <Select
-                  placeholder={t('filters.month.label')}
+                  placeholder={t("filters.month.label")}
                   onChange={(value) => setMonthFilter(value)}
                   allowClear
                   className="w-full"
@@ -234,19 +270,31 @@ const Tasks: React.FC = () => {
                 </Select>
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">{t('filters.role.label')}</label>
+                <label className="block text-sm font-medium mb-2">
+                  {t("filters.role.label")}
+                </label>
                 <Select
-                  placeholder={t('filters.role.label')}
+                  placeholder={t("filters.role.label")}
                   onChange={(value) => setRoleFilter(value)}
                   allowClear
                   className="w-full mr-4"
                   value={roleFilter}
                 >
-                  <Select.Option value="texter">{t('filters.role.options.texter')}</Select.Option>
-                  <Select.Option value="lector">{t('filters.role.options.lector')}</Select.Option>
-                  <Select.Option value="SEO">{t('filters.role.options.SEO')}</Select.Option>
-                  <Select.Option value="meta lector">{t('filters.role.options.metaLector')}</Select.Option>
-                  <Select.Option value="all">{t('filters.role.options.all')}</Select.Option>
+                  <Select.Option value="texter">
+                    {t("filters.role.options.texter")}
+                  </Select.Option>
+                  <Select.Option value="lector">
+                    {t("filters.role.options.lector")}
+                  </Select.Option>
+                  <Select.Option value="SEO">
+                    {t("filters.role.options.SEO")}
+                  </Select.Option>
+                  <Select.Option value="meta lector">
+                    {t("filters.role.options.metaLector")}
+                  </Select.Option>
+                  <Select.Option value="all">
+                    {t("filters.role.options.all")}
+                  </Select.Option>
                 </Select>
               </div>
               <div className="flex gap-x-2">
@@ -254,13 +302,13 @@ const Tasks: React.FC = () => {
                   onClick={clearFilters}
                   className="px-2 text-md py-2 bg-red-500 text-white rounded cursor-pointer"
                 >
-                  {t('filters.buttons.clear')}
+                  {t("filters.buttons.clear")}
                 </button>
                 <button
                   onClick={() => setFilterDropdownOpen(false)}
                   className="px-2 py-2 text-md bg-green-500 text-white rounded cursor-pointer"
                 >
-                  {t('filters.buttons.apply')}
+                  {t("filters.buttons.apply")}
                 </button>
               </div>
             </div>
