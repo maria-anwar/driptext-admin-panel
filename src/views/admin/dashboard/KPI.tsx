@@ -23,7 +23,7 @@ const KPI: React.FC = () => {
     [Moment, Moment] | null
   >(null);
   const [projectCostFilter, setProjectCostFilter] = useState<string | null>(
-    null
+    'all'
   );
   const [filterDropdownOpen, setFilterDropdownOpen] = useState<boolean>(false);
   const [roleFilter, setRoleFilter] = useState<string | null>(null);
@@ -104,7 +104,7 @@ const KPI: React.FC = () => {
   const clearFilters = () => {
     setStatusFilter(null);
     setDateRangeFilter(null);
-    setProjectCostFilter(null);
+    setProjectCostFilter('all');
     setRoleFilter(null);
     setFilteredTasks(tasks);
     setFilterDropdownOpen(false);
@@ -147,7 +147,7 @@ const KPI: React.FC = () => {
 
   useEffect(() => {
     applyFilters();
-  }, [statusFilter, dateRangeFilter, projectCostFilter, roleFilter, tasks]);
+  }, [projectCostFilter]);
 
   return (
     <div className="mx-auto 3xl:px-4">
