@@ -9,6 +9,7 @@ import { DatePicker, Select } from "antd";
 import moment, { Moment } from "moment";
 const { RangePicker } = DatePicker;
 import { Project } from "../../../Types/Type";
+import { set } from "lodash";
 
 const KPI: React.FC = () => {
   useTitle("KPIs Overview");
@@ -21,7 +22,9 @@ const KPI: React.FC = () => {
   const [dateRangeFilter, setDateRangeFilter] = useState<
     [Moment, Moment] | null
   >(null);
-  const [monthFilter, setMonthFilter] = useState<string | null>(null);
+  const [projectCostFilter, setProjectCostFilter] = useState<string | null>(
+    null
+  );
   const [filterDropdownOpen, setFilterDropdownOpen] = useState<boolean>(false);
   const [roleFilter, setRoleFilter] = useState<string | null>(null);
   const [projectData, setProjectData] = useState<Project[]>([]);
@@ -41,7 +44,6 @@ const KPI: React.FC = () => {
     getProjects();
   }, [user]);
 
-  
   const getTaskData = async () => {
     setLoading(true);
     let token = user?.user?.token;
@@ -102,44 +104,50 @@ const KPI: React.FC = () => {
   const clearFilters = () => {
     setStatusFilter(null);
     setDateRangeFilter(null);
-    setMonthFilter(null);
+    setProjectCostFilter(null);
     setRoleFilter(null);
     setFilteredTasks(tasks);
     setFilterDropdownOpen(false);
   };
 
-  const applyFilters = () => {
-    let filtered = [...tasks];
-
-    if (statusFilter) {
-      filtered = filtered.filter(
-        (task) => task.status.toLowerCase() === statusFilter.toLowerCase()
-      );
+  const applyFilters = async () => {
+    console.log("Applying filters");
+    if (projectCostFilter !== "all" && projectCostFilter !== null) {
+      setLoading(true);
+      let token = user?.user?.token;
+      axios.defaults.headers.common["access-token"] = token;
+      let payLoad = {
+        projectId: projectCostFilter,
+      };
+      await axios
+        .post(
+          `${import.meta.env.VITE_DB_URL}/admin/getProjectTaskCost`,
+          payLoad
+        )
+        .then((response) => {
+          console.log(response);
+          const tasksCostData = response?.data?.data;
+          setTexter(tasksCostData?.texterCost);
+          setLector(tasksCostData?.lectorCost);
+          setSeo(tasksCostData?.seoCost);
+          setMeta(tasksCostData?.metaLectorCost);
+          setTotalCost(tasksCostData?.totalCost);
+          setRevenue(tasksCostData?.totalRevenue);
+          setMargin(tasksCostData?.totalMargin);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error("Error fetching project details:", err);
+          setLoading(false);
+        });
+    } else {
+      getTaskCost();
     }
-
-    if (dateRangeFilter && dateRangeFilter.length === 2) {
-      const startDate = new Date(dateRangeFilter[0]);
-      const endDate = new Date(dateRangeFilter[1]);
-      endDate.setHours(23, 59, 59, 999);
-
-      filtered = filtered.filter((task) => {
-        const taskDate = new Date(task.dueDate);
-
-        if (isNaN(taskDate.getTime())) {
-          console.warn(`Invalid task date: ${task.dueDate}`);
-          return false;
-        }
-        return taskDate >= startDate && taskDate <= endDate;
-      });
-    }
-
-    setFilteredTasks(filtered);
   };
 
   useEffect(() => {
     applyFilters();
-  }, [statusFilter, dateRangeFilter, monthFilter, roleFilter, tasks]);
-
+  }, [statusFilter, dateRangeFilter, projectCostFilter, roleFilter, tasks]);
 
   return (
     <div className="mx-auto 3xl:px-4">
@@ -200,11 +208,12 @@ const KPI: React.FC = () => {
                 </label>
                 <Select
                   placeholder={"Select Project"}
-                  onChange={(value) => setMonthFilter(value)}
+                  onChange={(value) => setProjectCostFilter(value)}
                   allowClear
                   className="w-full"
-                  value={monthFilter}
+                  value={projectCostFilter}
                 >
+                  <Select.Option value="all">All</Select.Option>
                   {projectData.map((project) => (
                     <Select.Option key={project._id} value={project._id}>
                       {`${project.projectName} | ${project.projectId}`}

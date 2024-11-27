@@ -32,7 +32,7 @@ const KpiBlock: React.FC<{ icon: React.ComponentProps<typeof FontAwesomeIcon>['i
         </div>
         <div>
           <p className="text-black dark:text-white">{title}</p>
-          <h1 className="text-black dark:text-white font-semibold text-2xl">€ {value.toFixed(2)}</h1>
+          <h1 className="text-black dark:text-white font-semibold text-2xl">€ {value}</h1>
         </div>
       </div>
     </div>
