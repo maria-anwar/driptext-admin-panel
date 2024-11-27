@@ -111,6 +111,7 @@ const KPI: React.FC = () => {
   };
 
   const applyFilters = async () => {
+    setFilterDropdownOpen(false);
     console.log("Applying filters");
     if (projectCostFilter !== "all" && projectCostFilter !== null) {
       setLoading(true);
