@@ -1,34 +1,23 @@
 import React, { useState } from "react";
 import { Pagination } from "antd";
 import "antd/dist/reset.css";
-import "./custompagination.css"; // For custom pagination styles
+import "./custompagination.css"; 
+import { freelancerData } from "../../Types/Type";
 
-interface Freelancer {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  tasksOpenThisMonth: number;
-  tasksAssignedThisMonth: number;
-  totalTasksAssigned: number;
-  reliabilityStatus: number; // number of missed deadlines in the last 90 days
-  textQualityStatus: number; // number of returns from lector
-}
+
 
 interface FreelancerOverviewTableProps {
-  users: Freelancer[];
+  freelancers: freelancerData[];
 }
 
-const FreelancerOverviewTable: React.FC<FreelancerOverviewTableProps> = ({ users }) => {
+const FreelancerOverviewTable: React.FC<FreelancerOverviewTableProps> = ({ freelancers }) => {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  // Handle page change
   const handlePageChange = (page: number) => {
     setPage(page);
   };
 
-  // Handle number of rows per page change
   const handleRowsPerPageChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -36,9 +25,8 @@ const FreelancerOverviewTable: React.FC<FreelancerOverviewTableProps> = ({ users
     setPage(1);
   };
 
-  // Pagination calculation
   const offset = (page - 1) * rowsPerPage;
-  const paginatedUsers = users.slice(offset, offset + rowsPerPage);
+  const paginatedfreelancers = freelancers.slice(offset, offset + rowsPerPage);
 
   return (
     <div className="mt-6">
@@ -49,7 +37,7 @@ const FreelancerOverviewTable: React.FC<FreelancerOverviewTableProps> = ({ users
               <tr className="bg-gray-3 text-left dark:bg-meta-4">
                 <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">Name</th>
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">Gmail</th>
-                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">Role</th>
+                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">Phone</th>
                 <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">Open This Month</th>
                 <th className="min-w-[200px] py-4 px-4 font-semibold text-black dark:text-white">Assigned This Month</th>
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">Total Assigned</th>
@@ -58,32 +46,33 @@ const FreelancerOverviewTable: React.FC<FreelancerOverviewTableProps> = ({ users
               </tr>
             </thead>
             <tbody>
-              {paginatedUsers.map((user) => (
-                <tr className="text-left" key={user.id}>
+              {paginatedfreelancers.map((freelancer) => (
+                <tr className="text-left" key={freelancer._id}>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white capitalize">{user.name}</p>
+                    <p className="text-black dark:text-white capitalize">{freelancer?.firstName} {freelancer?.lastName}</p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">{user.email}</p>
+                    <p className="text-black dark:text-white">{freelancer?.email}</p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white capitalize">{user.role}</p>
+                    <p className="text-black dark:text-white">{freelancer?.phone}</p>
+                  </td>
+                 
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p className="text-black dark:text-white">{freelancer?.openTasksThisMonth}</p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">{user.tasksOpenThisMonth}</p>
+                    <p className="text-black dark:text-white">{freelancer?.taskAssignThisMonth}</p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">{user.tasksAssignedThisMonth}</p>
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">{user.totalTasksAssigned}</p>
+                    <p className="text-black dark:text-white">{freelancer?.assignedTotalTasks}</p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
                       className={`w-4 h-4 rounded-full mx-auto transition-all duration-300 ease-in-out ${
-                        user.reliabilityStatus <= 10
+                        freelancer?.reliabilityStatus <= 10
                           ? "bg-green-500"
-                          : user.reliabilityStatus >= 11 && user.reliabilityStatus <= 25
+                          : freelancer?.reliabilityStatus >= 11 && freelancer?.reliabilityStatus <= 25
                           ? "bg-yellow-500"
                           : "bg-red-500"
                       }`}
@@ -92,9 +81,9 @@ const FreelancerOverviewTable: React.FC<FreelancerOverviewTableProps> = ({ users
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
                       className={`w-4 h-4 rounded-full mx-auto transition-all duration-300 ease-in-out ${
-                        user.textQualityStatus <= 10
+                        freelancer?.textQualityStatus <= 10
                           ? "bg-green-500"
-                          : user.textQualityStatus >= 11 && user.textQualityStatus <= 25
+                          : freelancer?.textQualityStatus >= 11 && freelancer?.textQualityStatus <= 25
                           ? "bg-yellow-500"
                           : "bg-red-500"
                       }`}
@@ -118,7 +107,7 @@ const FreelancerOverviewTable: React.FC<FreelancerOverviewTableProps> = ({ users
             <Pagination
               current={page}
               pageSize={rowsPerPage}
-              total={users.length}
+              total={freelancers.length}
               onChange={handlePageChange}
               className="ant-pagination"
             />
