@@ -101,6 +101,7 @@ const KPI: React.FC = () => {
         console.error("Error fetching project details:", err);
       });
   };
+
   const clearFilters = () => {
     setStatusFilter(null);
     setDateRangeFilter(null);
@@ -111,8 +112,6 @@ const KPI: React.FC = () => {
   };
 
   const applyFilters = async () => {
-    setFilterDropdownOpen(false);
-    console.log("Applying filters");
     if (projectCostFilter !== "all" && projectCostFilter !== null) {
       setLoading(true);
       let token = user?.user?.token;
@@ -126,7 +125,6 @@ const KPI: React.FC = () => {
           payLoad
         )
         .then((response) => {
-          console.log(response);
           const tasksCostData = response?.data?.data;
           setTexter(tasksCostData?.texterCost);
           setLector(tasksCostData?.lectorCost);
@@ -146,9 +144,53 @@ const KPI: React.FC = () => {
     }
   };
 
+
   useEffect(() => {
     applyFilters();
   }, [projectCostFilter]);
+
+
+  const applyDateRangeCost = async () => {
+    if (dateRangeFilter && dateRangeFilter.length === 2) {
+      const startDate = new Date(dateRangeFilter[0]).toLocaleDateString();
+      const endDate = new Date(dateRangeFilter[1]).toLocaleDateString();
+      setLoading(true);
+      let token = user?.user?.token;
+      axios.defaults.headers.common["access-token"] = token;
+      let payLoad = {
+        startDate: startDate,
+        endDate: endDate,
+      };
+      await axios
+        .post(
+          `${import.meta.env.VITE_DB_URL}/admin/getTasksCostDateFilter`,
+          payLoad
+        )
+        .then((response) => {
+          console.log(response);
+          const tasksCostData = response?.data?.data;
+          setTexter(tasksCostData?.texterCost);
+          setLector(tasksCostData?.lectorCost);
+          setSeo(tasksCostData?.seoCost);
+          setMeta(tasksCostData?.metaLectorCost);
+          setTotalCost(tasksCostData?.totalCost);
+          setRevenue(tasksCostData?.totalRevenue);
+          setMargin(tasksCostData?.totalMargin);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error("Error fetching project details:", err);
+          setLoading(false);
+        });
+    }
+     else {
+      getTaskCost();
+    }
+  };
+
+  useEffect(() => {
+    applyDateRangeCost();
+  }, [dateRangeFilter]);
 
   return (
     <div className="mx-auto 3xl:px-4">
