@@ -142,4 +142,17 @@ export interface Plan {
     openTasks: number;     
     project: Project;       
   }
+
+  export interface freelancerData {
+    _id: string;                
+    firstName: string;        
+    lastName: string;        
+    email: string;           
+    phone: string;            
+    assignedTotalTasks: number; 
+    openTasksThisMonth: number; 
+    taskAssignThisMonth: number; 
+    reliabilityStatus: number;
+    textQualityStatus: number;
+  }
   

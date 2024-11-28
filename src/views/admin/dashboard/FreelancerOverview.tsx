@@ -3,157 +3,46 @@ import { Link } from "react-router-dom";
 import { Select } from "antd";
 import FreelancerOverviewTable from "../../../components/tables/FreelancerOvervireTable";
 import useTitle from "../../../hooks/useTitle";
-
-const freelancers = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "johndoe@example.com",
-    role: "Texter",
-    tasksOpenThisMonth: 5,
-    tasksAssignedThisMonth: 8,
-    totalTasksAssigned: 30,
-    reliabilityStatus: 26, // yellow (1-10 missed deadlines)
-    textQualityStatus: 2, // yellow (11-25 returns from lector)
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    email: "janesmith@example.com",
-    role: "Texter",
-    tasksOpenThisMonth: 3,
-    tasksAssignedThisMonth: 6,
-    totalTasksAssigned: 18,
-    reliabilityStatus: 15, // green (no missed deadlines)
-    textQualityStatus: 29, // green (1-10 returns from lector)
-  },
-  {
-    id: 3,
-    name: "Alice Johnson",
-    email: "alicejohnson@example.com",
-    role: "Texter",
-    tasksOpenThisMonth: 7,
-    tasksAssignedThisMonth: 12,
-    totalTasksAssigned: 40,
-    reliabilityStatus: 11, // red (more than 10 missed deadlines)
-    textQualityStatus: 14, // red (more than 25 returns from lector)
-  },
-  {
-    id: 4,
-    name: "Bob Brown",
-    email: "bobbrown@example.com",
-    role: "Texter",
-    tasksOpenThisMonth: 2,
-    tasksAssignedThisMonth: 4,
-    totalTasksAssigned: 15,
-    reliabilityStatus: 29, // yellow (1-10 missed deadlines)
-    textQualityStatus: 3, // green (1-10 returns from lector)
-  },
-  {
-    id: 5,
-    name: "Charlie Williams",
-    email: "charliewilliams@example.com",
-    role: "Texter",
-    tasksOpenThisMonth: 6,
-    tasksAssignedThisMonth: 9,
-    totalTasksAssigned: 35,
-    reliabilityStatus: 1, // red (more than 10 missed deadlines)
-    textQualityStatus: 2, // yellow (11-25 returns from lector)
-  },
-  {
-    id: 6,
-    name: "Diana Scott",
-    email: "dianascott@example.com",
-    role: "Texter",
-    tasksOpenThisMonth: 4,
-    tasksAssignedThisMonth: 7,
-    totalTasksAssigned: 25,
-    reliabilityStatus: 12, // green (no missed deadlines)
-    textQualityStatus: 6, // yellow (11-25 returns from lector)
-  },
-  {
-    id: 7,
-    name: "Ethan Davis",
-    email: "ethandavis@example.com",
-    role: "Lector",
-    tasksOpenThisMonth: 5,
-    tasksAssignedThisMonth: 10,
-    totalTasksAssigned: 20,
-    reliabilityStatus: 2, // yellow (1-10 missed deadlines)
-    textQualityStatus: 0, // No text quality status for Lectors
-  },
-  {
-    id: 8,
-    name: "Fiona Miller",
-    email: "fionamiller@example.com",
-    role: "Texter",
-    tasksOpenThisMonth: 3,
-    tasksAssignedThisMonth: 5,
-    totalTasksAssigned: 20,
-    reliabilityStatus: 3, // green (no missed deadlines)
-    textQualityStatus: 3, // green (1-10 returns from lector)
-  },
-  {
-    id: 9,
-    name: "George Clark",
-    email: "georgeclark@example.com",
-    role: "Texter",
-    tasksOpenThisMonth: 8,
-    tasksAssignedThisMonth: 15,
-    totalTasksAssigned: 50,
-    reliabilityStatus: 2, // yellow (1-10 missed deadlines)
-    textQualityStatus: 1, // red (more than 25 returns from lector)
-  },
-  {
-    id: 10,
-    name: "Hannah Lewis",
-    email: "hannahlewis@example.com",
-    role: "Texter",
-    tasksOpenThisMonth: 1,
-    tasksAssignedThisMonth: 2,
-    totalTasksAssigned: 10,
-    reliabilityStatus: 12, // green (no missed deadlines)
-    textQualityStatus: 2, // yellow (11-25 returns from lector)
-  },
-  {
-    id: 11,
-    name: "Isabel Martinez",
-    email: "isabelmartinez@example.com",
-    role: "Texter",
-    tasksOpenThisMonth: 10,
-    tasksAssignedThisMonth: 20,
-    totalTasksAssigned: 80,
-    reliabilityStatus: 2, // yellow (1-10 missed deadlines)
-    textQualityStatus: 27, // red (more than 25 returns from lector)
-  },
-  {
-    id: 12,
-    name: "Jack Thompson",
-    email: "jackthompson@example.com",
-    role: "Texter",
-    tasksOpenThisMonth: 4,
-    tasksAssignedThisMonth: 7,
-    totalTasksAssigned: 22,
-    reliabilityStatus: 28, // red (more than 10 missed deadlines)
-    textQualityStatus: 3, // green (1-10 returns from lector)
-  },
-];
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { freelancerData } from "../../../Types/Type";
 
 const FreelancerOverview: React.FC = () => {
   useTitle("Freelancer Overview");
+  const user = useSelector<any>((state) => state.user);
   const [filterDropdownOpen, setFilterDropdownOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [filteredFreelancers, setFilteredFreelancers] = useState<Freelancer[]>(
-    []
-  );
+  const [filteredFreelancers, setFilteredFreelancers] = useState<
+    freelancerData[]
+  >([]);
   const [reliabilityFilter, setReliabilityFilter] = useState<number | null>(
     null
-  ); // Added for reliability filter
+  );
   const [qualityFilter, setQualityFilter] = useState<number | null>(null); // Added for quality filter
 
-  // Filter freelancers based on criteria
+  useEffect(() => {
+    getTaskData();
+  }, [user]);
+
+  const getTaskData = async () => {
+    setLoading(true);
+    let token = user?.user?.token;
+    axios.defaults.headers.common["access-token"] = token;
+    await axios
+      .get(`${import.meta.env.VITE_DB_URL}/admin/getFreelancersKPI`)
+      .then((response) => {
+        console.log(response);
+        setFilteredFreelancers(response.data.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching project details:", err);
+        setLoading(false);
+      });
+  };
+
   const applyFilters = () => {
-    let filtered = [...freelancers];
+    let filtered = [...filteredFreelancers];
 
     if (reliabilityFilter !== null) {
       filtered = filtered.filter((freelancer) => {
@@ -187,7 +76,7 @@ const FreelancerOverview: React.FC = () => {
   const clearFilters = () => {
     setReliabilityFilter(null);
     setQualityFilter(null);
-    setFilteredFreelancers(freelancers);
+    setFilteredFreelancers(filteredFreelancers);
   };
 
   return (
@@ -289,7 +178,7 @@ const FreelancerOverview: React.FC = () => {
       {loading ? (
         <div className="mt-4 rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 w-full bg-slate-200 h-[350px] animate-pulse"></div>
       ) : (
-        <FreelancerOverviewTable users={filteredFreelancers} />
+        <FreelancerOverviewTable freelancers={filteredFreelancers} />
       )}
     </div>
   );
