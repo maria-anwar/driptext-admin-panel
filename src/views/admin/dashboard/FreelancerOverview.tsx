@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Select } from "antd";
 import FreelancerOverviewTable from "../../../components/tables/FreelancerOvervireTable";
+import FreelancerRoleTable from "../../../components/tables/FreelancerRoleTable";
 import useTitle from "../../../hooks/useTitle";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -98,6 +99,17 @@ const FreelancerOverview: React.FC = () => {
         <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
           Freelancer Overview
         </h2>
+      </div>
+
+      {loading ? (
+        <div className="mt-4 rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 w-full bg-slate-200 h-[350px] animate-pulse"></div>
+      ) : (
+        <FreelancerOverviewTable freelancers={filteredFreelancers} />
+      )}
+       <div className="flex justify-between items-center relative mt-10">
+        <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
+          Freelancer By Role
+        </h2>
         <div>
           <button
             onClick={() => setFilterDropdownOpen(!filterDropdownOpen)}
@@ -174,12 +186,12 @@ const FreelancerOverview: React.FC = () => {
           )}
         </div>
       </div>
-
       {loading ? (
         <div className="mt-4 rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 w-full bg-slate-200 h-[350px] animate-pulse"></div>
       ) : (
-        <FreelancerOverviewTable freelancers={filteredFreelancers} />
+        <FreelancerRoleTable freelancers={filteredFreelancers} />
       )}
+
     </div>
   );
 };
