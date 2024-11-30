@@ -49,8 +49,6 @@ const WebRoutes = () => {
             <Route path="kpi/tracking" element={<Tracking />} />
             <Route path="kpi/forecast" element={<Forecast />} />
             <Route path="freelancer-overview" element={<FreelancerOverview />} />
-
-           
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

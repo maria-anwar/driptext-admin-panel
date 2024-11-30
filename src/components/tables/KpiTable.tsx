@@ -5,12 +5,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../Types/Type";
 import { Pagination } from "antd";
+import { useTranslation } from "react-i18next";
 
 interface KpiTableProps {
   users: User[];
 }
 
 const KpiTable: React.FC<KpiTableProps> = ({ users }) => {
+  const { t } = useTranslation();
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const navigate = useNavigate();
@@ -57,19 +59,19 @@ const KpiTable: React.FC<KpiTableProps> = ({ users }) => {
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4">
                 <th className="min-w-[220px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Name
+                  {t("kpi.tableHeaders.0")}
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Gmail
+                  {t("kpi.tableHeaders.1")}
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Role
+                  {t("kpi.tableHeaders.2")}
                 </th>
                 <th className="min-w-[100px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Tracking
+                  {t("kpi.tableHeaders.3")}
                 </th>
                 <th className="min-w-[100px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Forecast
+                  {t("kpi.tableHeaders.4")}
                 </th>
               </tr>
             </thead>
@@ -111,7 +113,7 @@ const KpiTable: React.FC<KpiTableProps> = ({ users }) => {
                     >
                       <FontAwesomeIcon className="text-white" icon={faEye} />
                       <p className="text-white text-base font-medium text-center py-1 px-2">
-                        Tracking
+                        {t("kpi.actions.tracking")}
                       </p>
                     </div>
                   </td>
@@ -129,7 +131,7 @@ const KpiTable: React.FC<KpiTableProps> = ({ users }) => {
                     >
                       <FontAwesomeIcon className="text-white" icon={faEye} />
                       <p className="text-white text-base font-medium text-center py-1 px-2">
-                        Forecast
+                        {t("kpi.actions.forecast")}
                       </p>
                     </div>
                   </td>

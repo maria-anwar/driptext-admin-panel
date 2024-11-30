@@ -7,22 +7,28 @@ import useTitle from "../../../hooks/useTitle";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { freelancerData } from "../../../Types/Type";
+import { set } from "lodash";
+import { useTranslation } from "react-i18next";
 
 const FreelancerOverview: React.FC = () => {
-  useTitle("Freelancer Overview");
+  const {t} = useTranslation();
+  useTitle(t('freelancer_overview.breadcrumbs.freelancerOverview'));
   const user = useSelector<any>((state) => state.user);
   const [filterDropdownOpen, setFilterDropdownOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [filteredFreelancers, setFilteredFreelancers] = useState<
     freelancerData[]
   >([]);
+  const [Freelancers, setFreelancers] = useState<freelancerData[]>([]);
   const [reliabilityFilter, setReliabilityFilter] = useState<number | null>(
     null
   );
   const [qualityFilter, setQualityFilter] = useState<number | null>(null); // Added for quality filter
+  const [costTraficData, setCostTraficData] = useState<any>([]);
 
   useEffect(() => {
     getTaskData();
+    getTaskCost();
   }, [user]);
 
   const getTaskData = async () => {
@@ -32,7 +38,24 @@ const FreelancerOverview: React.FC = () => {
     await axios
       .get(`${import.meta.env.VITE_DB_URL}/admin/getFreelancersKPI`)
       .then((response) => {
+        setFreelancers(response.data.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching project details:", err);
+        setLoading(false);
+      });
+  };
+
+  const getTaskCost = async () => {
+    setLoading(true);
+    let token = user?.user?.token;
+    axios.defaults.headers.common["access-token"] = token;
+    await axios
+      .get(`${import.meta.env.VITE_DB_URL}/admin/getFreelancerTrafficLights`)
+      .then((response) => {
         console.log(response);
+        setCostTraficData(response.data.data);
         setFilteredFreelancers(response.data.data);
         setLoading(false);
       })
@@ -43,11 +66,11 @@ const FreelancerOverview: React.FC = () => {
   };
 
   const applyFilters = () => {
-    let filtered = [...filteredFreelancers];
+    let filtered = [...costTraficData];
 
     if (reliabilityFilter !== null) {
       filtered = filtered.filter((freelancer) => {
-        const reliability = freelancer.reliabilityStatus;
+        const reliability = freelancer.deadlineTasks;
         return (
           (reliabilityFilter === 1 && reliability <= 10) ||
           (reliabilityFilter === 2 && reliability >= 11 && reliability <= 25) ||
@@ -58,7 +81,7 @@ const FreelancerOverview: React.FC = () => {
 
     if (qualityFilter !== null) {
       filtered = filtered.filter((freelancer) => {
-        const quality = freelancer.textQualityStatus;
+        const quality = freelancer.returnTasks;
         return (
           (qualityFilter === 1 && quality <= 10) ||
           (qualityFilter === 2 && quality >= 11 && quality <= 25) ||
@@ -78,6 +101,7 @@ const FreelancerOverview: React.FC = () => {
     setReliabilityFilter(null);
     setQualityFilter(null);
     setFilteredFreelancers(filteredFreelancers);
+    setFilterDropdownOpen(false);
   };
 
   return (
@@ -89,33 +113,33 @@ const FreelancerOverview: React.FC = () => {
               className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
               to="/dashboard"
             >
-              Dashboard /
+              {t('freelancer_overview.breadcrumbs.dashboard')}
             </Link>
           </li>
-          <li className="font-medium text-primary">Freelancer Overview</li>
+          <li className="font-medium text-primary">{t('freelancer_overview.titles.freelancerOverview')}</li>
         </ol>
       </div>
       <div className="flex justify-between items-center relative">
         <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
-          Freelancer Overview
+        {t('freelancer_overview.titles.freelancerOverview')}
         </h2>
       </div>
 
       {loading ? (
         <div className="mt-4 rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 w-full bg-slate-200 h-[350px] animate-pulse"></div>
       ) : (
-        <FreelancerOverviewTable freelancers={filteredFreelancers} />
+        <FreelancerOverviewTable freelancers={Freelancers} />
       )}
-       <div className="flex justify-between items-center relative mt-10">
+      <div className="flex justify-between items-center relative mt-10">
         <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
-          Freelancer By Role
+        {t('freelancer_overview.titles.freelancerByRole')}
         </h2>
         <div>
           <button
             onClick={() => setFilterDropdownOpen(!filterDropdownOpen)}
             className="inline-flex items-center cursor-pointer justify-center gap-2.5 bg-black py-3 text-sm xl:text-base text-center font-medium text-white hover:bg-opacity-90 px-5"
           >
-            <span>Filter</span>
+            <span>{t('freelancer_overview.buttons.filter')}</span>
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -135,7 +159,7 @@ const FreelancerOverview: React.FC = () => {
             <div className="absolute right-0 mt-2 bg-white dark:bg-boxdark p-4 shadow-md rounded w-full md:w-1/2 lg:w-2/3 xl:w-100 z-50 border-1">
               <div className="mb-4">
                 <label className="block text-sm font-medium mb-2">
-                  Text Reliability
+                  {t('freelancer_overview.filters.textReliability')}
                 </label>
                 <Select
                   placeholder="Select Reliability"
@@ -144,15 +168,15 @@ const FreelancerOverview: React.FC = () => {
                   className="w-full"
                   value={reliabilityFilter}
                 >
-                  <Select.Option value={1}>Green (0 to 10)</Select.Option>
-                  <Select.Option value={2}>Yellow (11 to 25)</Select.Option>
-                  <Select.Option value={3}>Red (Above 25)</Select.Option>
+                  <Select.Option value={1}>{t('freelancer_overview.filters.reliabilityOptions.1')}</Select.Option>
+                  <Select.Option value={2}>{t('freelancer_overview.filters.reliabilityOptions.2')}</Select.Option>
+                  <Select.Option value={3}>{t('freelancer_overview.filters.reliabilityOptions.3')}</Select.Option>
                 </Select>
               </div>
 
               <div className="mb-4">
                 <label className="block text-sm font-medium mb-2">
-                  Text Quality
+                {t('freelancer_overview.filters.textQuality')}
                 </label>
                 <Select
                   placeholder="Select Quality"
@@ -161,9 +185,9 @@ const FreelancerOverview: React.FC = () => {
                   className="w-full"
                   value={qualityFilter}
                 >
-                  <Select.Option value={1}>Green (0 to 10)</Select.Option>
-                  <Select.Option value={2}>Yellow (11 to 25)</Select.Option>
-                  <Select.Option value={3}>Red (Above 25)</Select.Option>
+                  <Select.Option value={1}>{t('freelancer_overview.filters.qualityOptions.1')}</Select.Option>
+                  <Select.Option value={2}>{t('freelancer_overview.filters.qualityOptions.2')}</Select.Option>
+                  <Select.Option value={3}>{t('freelancer_overview.filters.qualityOptions.3')}</Select.Option>
                 </Select>
               </div>
 
@@ -173,13 +197,13 @@ const FreelancerOverview: React.FC = () => {
                   onClick={clearFilters}
                   className="px-2 text-md py-2 bg-red-500 text-white rounded cursor-pointer"
                 >
-                  Clear filters
+                  {t('freelancer_overview.filters.clearFilters')}
                 </button>
                 <button
                   onClick={() => setFilterDropdownOpen(false)}
                   className="px-2 py-2 text-md bg-green-500 text-white rounded cursor-pointer"
                 >
-                  Apply filters
+                 {t('freelancer_overview.filters.applyFilters')}
                 </button>
               </div>
             </div>
@@ -191,7 +215,6 @@ const FreelancerOverview: React.FC = () => {
       ) : (
         <FreelancerRoleTable freelancers={filteredFreelancers} />
       )}
-
     </div>
   );
 };

@@ -1,7 +1,7 @@
 {
   "login": {
     "authline": "Geben Sie Ihre E-Mail-Adresse und Ihr Passwort ein, um sich anzumelden.",
-  "pageTitle": "Anmelden",
+    "pageTitle": "Anmelden",
     "labels": {
       "email": "Deine E-Mail",
       "password": "Passwort"
@@ -46,7 +46,7 @@
     "buttons": {
       "submit": "Link anfordern"
     },
-      "backToLogin": "Zurück zum Anmelden",
+    "backToLogin": "Zurück zum Anmelden",
     "successMessage": "Link erfolgreich gesendet, klicken Sie auf den Link, um Ihr Passwort zurückzusetzen",
     "errorMessage": "Fehler beim Senden des Links"
   },
@@ -94,20 +94,20 @@
     "button": "Filter",
     "status": {
       "label": "Status",
-        "options": {
-          "readyToWork": "Bereit zur Arbeit",
-          "inProgress": "In Bearbeitung",
-          "inRevision": "In Revision",
-          "readyForProofreading": "Bereit zur Korrekturlesung",
-          "proofreadingInProgress": "Korrekturlesung in Bearbeitung",
-          "readyForSeoOptimization": "Bereit zur SEO-Optimierung",
-          "seoOptimizationInProgress": "SEO-Optimierung in Bearbeitung",
-          "final": "Fertig",
-          "readyForRivisionLector": "Bereit zur Revision (Lektor)",
-          "inRivisionLector": "In Revision (Lektor)",
-          "readyForRivisionMetaLector": "Bereit zur Revision (Meta Lektor)",
-          "inRivisionMetaLector": "In Revision (Meta Lektor)"
-        }      
+      "options": {
+        "readyToWork": "Bereit zur Arbeit",
+        "inProgress": "In Bearbeitung",
+        "inRevision": "In Revision",
+        "readyForProofreading": "Bereit zur Korrekturlesung",
+        "proofreadingInProgress": "Korrekturlesung in Bearbeitung",
+        "readyForSeoOptimization": "Bereit zur SEO-Optimierung",
+        "seoOptimizationInProgress": "SEO-Optimierung in Bearbeitung",
+        "final": "Fertig",
+        "readyForRivisionLector": "Bereit zur Revision (Lektor)",
+        "inRivisionLector": "In Revision (Lektor)",
+        "readyForRivisionMetaLector": "Bereit zur Revision (Meta Lektor)",
+        "inRivisionMetaLector": "In Revision (Meta Lektor)"
+      }
     },
     "dateRange": {
       "label": "Zeitraum"
@@ -647,10 +647,118 @@
     "kpis": "KPIs",
     "users": "Benutzer",
     "systemSettings": "Systemeinstellungen",
-    "driptextAcademy": "Driptext Akademie",
+    "driptextAcademy": "Driptext Academy",
     "profileSettings": "Profileinstellungen",
-
-    "accountSettings": "Kontoeinstellungen"
+    "accountSettings": "Kontoeinstellungen",
+    "freelancerOverview": "Freelancer-Übersicht"
   },
-  "logout": "Abmelden"
+  "logout": "Abmelden",
+  "kpi": {
+    "pagetitle": "KPIs Übersicht",
+    "breadcrumbs": {
+      "dashboard": "Dashboard /",
+      "kpi": "KPIs"
+    },
+    "filters": {
+      "filter": "Filter",
+      "dateRange": "Datumsbereich",
+      "selectProject": "Projekt auswählen",
+      "clearFilters": "Filter zurücksetzen",
+      "applyFilters": "Filter anwenden",
+      "selectProjectPlaceholder": "Projekt auswählen"
+    },
+    "kpiBlocks": [
+      "Texter Kosten",
+      "Lektor Kosten",
+      "SEO Optimierer Kosten",
+      "Meta-Lektor Kosten",
+      "Gesamteinnahmen",
+      "Gesamtkosten",
+      "Marge"
+    ],
+    "tableHeaders": [
+      "Name",
+      "E-Mail",
+      "Rolle",
+      "Tracking",
+      "Prognose"
+    ],
+    "actions": {
+      "tracking": "Tracking",
+      "forecast": "Prognose"
+    }
+  },
+  "track_forcast": {
+    "breadcrumbs": {
+      "dashboard": "Dashboard /",
+      "kpi": "KPIs /",
+      "tracking": "Verfolgung",
+      "forecast": "Prognose"
+    },
+    "tracking": {
+      "title": "Verfolgung",
+      "trackingOverview": "Verfolgungsübersicht"
+    },
+    "forecast": {
+      "title": "Prognose",
+      "forecastOverview": "Prognoseübersicht"
+    },
+    "tableHeaders": {
+      "projectId": "Projekt-ID",
+      "projectName": "Projektname",
+      "tasks": {
+        "openTasks": "Offene Aufgaben",
+        "inProgressTasks": "Aufgaben in Bearbeitung"
+      },
+      "revenue": "Einnahmen",
+      "cost": "Kosten",
+      "margin": "Marge"
+    }
+  },
+  "freelancer_overview": {
+    "breadcrumbs": {
+      "dashboard": "Dashboard /",
+      "freelancerOverview": "Freelancer Übersicht"
+    },
+    "titles": {
+      "freelancerOverview": "Freelancer Übersicht",
+      "freelancerByRole": "Freelancer nach Rolle"
+    },
+    "filters": {
+      "textReliability": "Text Zuverlässigkeit",
+      "textQuality": "Text Qualität",
+      "reliabilityOptions": {
+        "1": "Grün (0 bis 10)",
+        "2": "Gelb (11 bis 25)",
+        "3": "Rot (Über 25)"
+      },
+      "qualityOptions": {
+        "1": "Grün (0 bis 10)",
+        "2": "Gelb (11 bis 25)",
+        "3": "Rot (Über 25)"
+      },
+      "clearFilters": "Filter zurücksetzen",
+      "applyFilters": "Filter anwenden"
+    },
+    "loading": {
+      "message": "Wird geladen...",
+      "loadingIndicator": "mt-4 abgerundet-sm Rand Border-Stroke pb-2.5 Schatten-Standard dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 w-full bg-slate-200 h-[350px] animate-pulse"
+    },
+    "buttons": {
+      "filter": "Filter"
+    },
+    "freelancer_overview_table": {
+      "tableHeaders": {
+        "name": "Name",
+        "gmail": "Gmail",
+        "phone": "Telefon",
+        "openThisMonth": "Diesen Monat offen",
+        "assignedThisMonth": "Diesen Monat zugewiesen",
+        "totalAssigned": "Gesamt zugewiesen",
+        "role": "Rolle",
+        "reliabilityStatus": "Zuverlässigkeitsstatus",
+        "textQualityStatus": "Textqualitätsstatus"
+      }
+    }
+  }
 }

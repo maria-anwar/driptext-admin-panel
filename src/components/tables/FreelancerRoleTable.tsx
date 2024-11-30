@@ -3,14 +3,16 @@ import { Pagination } from "antd";
 import "antd/dist/reset.css";
 import "./custompagination.css";
 import { freelancerData } from "../../Types/Type";
+import { useTranslation } from "react-i18next";
 
 interface FreelancerRoleTableProps {
-  freelancers: freelancerData[];
+  freelancers: any[];
 }
 
 const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
   freelancers,
 }) => {
+  const { t } = useTranslation();
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -35,29 +37,20 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4">
-                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Name
-                </th>
-                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Gmail
-                </th>
-                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Role
-                </th>
-                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Open This Month
-                </th>
                 <th className="min-w-[200px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Assigned This Month
+                {t('freelancer_overview.freelancer_overview_table.tableHeaders.name')}
                 </th>
-                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Total Assigned
-                </th>
-                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Reliability Status
+                <th className="min-w-[220px] py-4 px-4 font-semibold text-black dark:text-white">
+                {t('freelancer_overview.freelancer_overview_table.tableHeaders.gmail')}
                 </th>
                 <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Text Quality Status
+                {t('freelancer_overview.freelancer_overview_table.tableHeaders.role')}
+                </th>
+                <th className="w-[180px]  py-4 px-4 font-semibold text-black dark:text-white">
+                {t('freelancer_overview.freelancer_overview_table.tableHeaders.reliabilityStatus')}
+                </th>
+                <th className="w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
+                {t('freelancer_overview.freelancer_overview_table.tableHeaders.textQualityStatus')}
                 </th>
               </tr>
             </thead>
@@ -66,42 +59,26 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                 <tr className="text-left" key={freelancer._id}>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white capitalize">
-                      {freelancer?.firstName} {freelancer?.lastName}
+                      {freelancer?.freelancer?.firstName} {freelancer?.freelancer?.lastName}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
-                      {freelancer?.email}
+                      {freelancer?.freelancer?.email}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
-                      {freelancer?.phone}
+                      {freelancer?.role}
                     </p>
-                  </td>
-
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">
-                      {freelancer?.openTasksThisMonth}
-                    </p>
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">
-                      {freelancer?.taskAssignThisMonth}
-                    </p>
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">
-                      {freelancer?.assignedTotalTasks}
-                    </p>
-                  </td>
+                  </td>            
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
                       className={`w-4 h-4 rounded-full mx-auto transition-all duration-300 ease-in-out ${
-                        freelancer?.reliabilityStatus <= 10
+                        freelancer?.deadlineTasks <= 10
                           ? "bg-green-500"
-                          : freelancer?.reliabilityStatus >= 11 &&
-                            freelancer?.reliabilityStatus <= 25
+                          : freelancer?.deadlineTasks >= 11 &&
+                            freelancer?.deadlineTasks <= 25
                           ? "bg-yellow-500"
                           : "bg-red-500"
                       }`}
@@ -110,10 +87,10 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
                       className={`w-4 h-4 rounded-full mx-auto transition-all duration-300 ease-in-out ${
-                        freelancer?.textQualityStatus <= 10
+                        freelancer?.returnTasks <= 10
                           ? "bg-green-500"
-                          : freelancer?.textQualityStatus >= 11 &&
-                            freelancer?.textQualityStatus <= 25
+                          : freelancer?.returnTasks >= 11 &&
+                            freelancer?.returnTasks <= 25
                           ? "bg-yellow-500"
                           : "bg-red-500"
                       }`}
