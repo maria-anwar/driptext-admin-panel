@@ -41,8 +41,6 @@ const FreelancerOverviewTable: React.FC<FreelancerOverviewTableProps> = ({ freel
                 <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">Open This Month</th>
                 <th className="min-w-[200px] py-4 px-4 font-semibold text-black dark:text-white">Assigned This Month</th>
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">Total Assigned</th>
-                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">Reliability Status</th>
-                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">Text Quality Status</th>
               </tr>
             </thead>
             <tbody>
@@ -67,28 +65,7 @@ const FreelancerOverviewTable: React.FC<FreelancerOverviewTableProps> = ({ freel
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">{freelancer?.assignedTotalTasks}</p>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <div
-                      className={`w-4 h-4 rounded-full mx-auto transition-all duration-300 ease-in-out ${
-                        freelancer?.reliabilityStatus <= 10
-                          ? "bg-green-500"
-                          : freelancer?.reliabilityStatus >= 11 && freelancer?.reliabilityStatus <= 25
-                          ? "bg-yellow-500"
-                          : "bg-red-500"
-                      }`}
-                    />
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <div
-                      className={`w-4 h-4 rounded-full mx-auto transition-all duration-300 ease-in-out ${
-                        freelancer?.textQualityStatus <= 10
-                          ? "bg-green-500"
-                          : freelancer?.textQualityStatus >= 11 && freelancer?.textQualityStatus <= 25
-                          ? "bg-yellow-500"
-                          : "bg-red-500"
-                      }`}
-                    />
-                  </td>
+                 
                 </tr>
               ))}
             </tbody>

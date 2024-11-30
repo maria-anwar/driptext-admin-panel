@@ -16,13 +16,16 @@ const FreelancerOverview: React.FC = () => {
   const [filteredFreelancers, setFilteredFreelancers] = useState<
     freelancerData[]
   >([]);
+  const [Freelancers, setFreelancers] = useState<freelancerData[]>([]);
   const [reliabilityFilter, setReliabilityFilter] = useState<number | null>(
     null
   );
   const [qualityFilter, setQualityFilter] = useState<number | null>(null); // Added for quality filter
+  const [costTraficData, setCostTraficData] = useState<any>([]);
 
   useEffect(() => {
     getTaskData();
+    getTaskCost();
   }, [user]);
 
   const getTaskData = async () => {
@@ -32,8 +35,24 @@ const FreelancerOverview: React.FC = () => {
     await axios
       .get(`${import.meta.env.VITE_DB_URL}/admin/getFreelancersKPI`)
       .then((response) => {
+        setFreelancers(response.data.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching project details:", err);
+        setLoading(false);
+      });
+  };
+
+  const getTaskCost = async () => {
+    setLoading(true);
+    let token = user?.user?.token;
+    axios.defaults.headers.common["access-token"] = token;
+    await axios
+      .get(`${import.meta.env.VITE_DB_URL}/admin/getFreelancerTrafficLights`)
+      .then((response) => {
         console.log(response);
-        setFilteredFreelancers(response.data.data);
+        setCostTraficData(response.data.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -43,11 +62,11 @@ const FreelancerOverview: React.FC = () => {
   };
 
   const applyFilters = () => {
-    let filtered = [...filteredFreelancers];
+    let filtered = [...costTraficData];
 
     if (reliabilityFilter !== null) {
       filtered = filtered.filter((freelancer) => {
-        const reliability = freelancer.reliabilityStatus;
+        const reliability = freelancer.deadlineTasks;
         return (
           (reliabilityFilter === 1 && reliability <= 10) ||
           (reliabilityFilter === 2 && reliability >= 11 && reliability <= 25) ||
@@ -58,7 +77,7 @@ const FreelancerOverview: React.FC = () => {
 
     if (qualityFilter !== null) {
       filtered = filtered.filter((freelancer) => {
-        const quality = freelancer.textQualityStatus;
+        const quality = freelancer.returnTasks;
         return (
           (qualityFilter === 1 && quality <= 10) ||
           (qualityFilter === 2 && quality >= 11 && quality <= 25) ||
@@ -104,9 +123,9 @@ const FreelancerOverview: React.FC = () => {
       {loading ? (
         <div className="mt-4 rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 w-full bg-slate-200 h-[350px] animate-pulse"></div>
       ) : (
-        <FreelancerOverviewTable freelancers={filteredFreelancers} />
+        <FreelancerOverviewTable freelancers={Freelancers} />
       )}
-       <div className="flex justify-between items-center relative mt-10">
+      <div className="flex justify-between items-center relative mt-10">
         <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
           Freelancer By Role
         </h2>
@@ -191,7 +210,6 @@ const FreelancerOverview: React.FC = () => {
       ) : (
         <FreelancerRoleTable freelancers={filteredFreelancers} />
       )}
-
     </div>
   );
 };
