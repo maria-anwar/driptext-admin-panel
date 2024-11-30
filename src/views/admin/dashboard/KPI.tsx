@@ -10,9 +10,11 @@ import moment, { Moment } from "moment";
 const { RangePicker } = DatePicker;
 import { Project } from "../../../Types/Type";
 import { set } from "lodash";
+import { useTranslation } from "react-i18next";
 
 const KPI: React.FC = () => {
-  useTitle("KPIs Overview");
+  const {t} = useTranslation();
+  useTitle(t('kpi.pagetitle'));
   const user = useSelector<any>((state) => state.user);
   const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState([]);
@@ -201,22 +203,22 @@ const KPI: React.FC = () => {
               className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
               to="/dashboard"
             >
-              Dashboard /
+              {t('kpi.breadcrumbs.dashboard')}
             </Link>
           </li>
-          <li className="font-medium text-primary">KPIs</li>
+          <li className="font-medium text-primary">{t('kpi.breadcrumbs.kpi')}</li>
         </ol>
       </div>
       <div className="flex justify-between items-center relative">
         <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
-          KPIs
+        {t('kpi.breadcrumbs.kpi')}
         </h2>
         <div>
           <button
             onClick={() => setFilterDropdownOpen(!filterDropdownOpen)}
             className="inline-flex items-center cursor-pointer justify-center gap-2.5 bg-black py-3 text-sm xl:text-base text-center font-medium text-white hover:bg-opacity-90 px-5"
           >
-            <span>Filter</span>
+            <span>{t('kpi.filters.filter')}</span>
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -236,7 +238,7 @@ const KPI: React.FC = () => {
             <div className="absolute right-0 mt-2 bg-white dark:bg-boxdark  p-4 shadow-md rounded w-full md:w-1/2 lg:w-2/3 xl:w-100 z-50 border-1">
               <div className="mb-4">
                 <label className="block text-sm font-medium mb-2">
-                  Date Range
+                {t('kpi.filters.dateRange')}
                 </label>
                 <RangePicker
                   onChange={(dates, dateStrings) => {
@@ -247,10 +249,10 @@ const KPI: React.FC = () => {
               </div>
               <div className="mb-4">
                 <label className="block text-sm font-medium mb-2">
-                  Select Project
+                {t('kpi.filters.selectProject')}
                 </label>
                 <Select
-                  placeholder={"Select Project"}
+                  placeholder={t('kpi.filters.selectProject')}
                   onChange={(value) => setProjectCostFilter(value)}
                   allowClear
                   className="w-full"
@@ -269,13 +271,13 @@ const KPI: React.FC = () => {
                   onClick={clearFilters}
                   className="px-2 text-md py-2 bg-red-500 text-white rounded cursor-pointer"
                 >
-                  Clear filters
+                 {t('kpi.filters.clearFilters')}
                 </button>
                 <button
                   onClick={() => setFilterDropdownOpen(false)}
                   className="px-2 py-2 text-md bg-green-500 text-white rounded cursor-pointer"
                 >
-                  Apply filters
+                  {t('kpi.filters.applyFilters')}
                 </button>
               </div>
             </div>

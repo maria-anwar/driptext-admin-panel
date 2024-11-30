@@ -155,7 +155,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     }`}
                   >
                     {SidebarIcons[6].kpi}
-                    KPIs
+                    {t('menu.kpis')}
                   </NavLink>
                 </li>
                 <li>
@@ -167,7 +167,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     }`}
                   >
                     {SidebarIcons[6].kpi}
-                    Freelancer Overview
+                    {t('menu.freelancerOverview')}
                   </NavLink>
                 </li>
                 <li>

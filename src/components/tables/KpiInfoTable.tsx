@@ -3,13 +3,15 @@ import { Pagination } from "antd";
 import "antd/dist/reset.css";
 import "./custompagination.css";
 import { Tracking } from "../../Types/Type";
+import { useTranslation } from "react-i18next";
 
 interface KpiTableProps {
-  users: Tracking[];
+  tableData: Tracking[];
   forecast: boolean;
 }
 
-const KpiInfoTable: React.FC<KpiTableProps> = ({ users,forecast }) => {
+const KpiInfoTable: React.FC<KpiTableProps> = ({ tableData, forecast }) => {
+  const { t } = useTranslation();
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -25,7 +27,7 @@ const KpiInfoTable: React.FC<KpiTableProps> = ({ users,forecast }) => {
   };
 
   const offset = (page - 1) * rowsPerPage;
-  const paginatedProjects = users.slice(offset, offset + rowsPerPage);
+  const paginatedProjects = tableData.slice(offset, offset + rowsPerPage);
 
   return (
     <div className="mt-6">
@@ -35,60 +37,62 @@ const KpiInfoTable: React.FC<KpiTableProps> = ({ users,forecast }) => {
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4">
                 <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Project Id
+                  {t("track_forcast.tableHeaders.projectId")}
                 </th>
                 <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Project Name
+                  {t("track_forcast.tableHeaders.projectName")}
                 </th>
                 <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
-                  {forecast ? "Open Tasks" : "Tasks In Progress"}
+                  {forecast
+                    ? t("track_forcast.tableHeaders.tasks.openTasks")
+                    : t("track_forcast.tableHeaders.tasks.inProgressTasks")}
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Revenue
+                  {t("track_forcast.tableHeaders.revenue")}
                 </th>
 
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Cost
+                  {t("track_forcast.tableHeaders.cost")}
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Margin
+                  {t("track_forcast.tableHeaders.margin")}
                 </th>
               </tr>
             </thead>
             <tbody>
-              {paginatedProjects.map((user) => (
-                <tr className="text-left" key={user?._id}>
+              {paginatedProjects.map((data) => (
+                <tr className="text-left" key={data?._id}>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white ">
-                      {user?.project?.projectId}
+                      {data?.project?.projectId}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white ">
-                      {user?.project?.projectName}
+                      {data?.project?.projectName}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white ">
                       {}
-                      {forecast ? user?.openTasks : user?.inProgressTasks}
+                      {forecast ? data?.openTasks : data?.inProgressTasks}
                     </p>
                   </td>
 
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white ">
-                      {user?.revenue.toFixed(3)}
+                      {data?.revenue.toFixed(3)}
                     </p>
                   </td>
 
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white capitalize">
-                      {user?.cost.toFixed(3)}
+                      {data?.cost.toFixed(3)}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white capitalize">
-                      {user?.margin.toFixed(3)}
+                      {data?.margin.toFixed(3)}
                     </p>
                   </td>
                 </tr>
@@ -117,7 +121,7 @@ const KpiInfoTable: React.FC<KpiTableProps> = ({ users,forecast }) => {
             <Pagination
               current={page}
               pageSize={rowsPerPage}
-              total={users.length}
+              total={tableData.length}
               onChange={handlePageChange}
               className="ant-pagination"
             />

@@ -4,9 +4,11 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import KpiInfoTable from "../../../components/tables/KpiInfoTable";
 import useTitle from "../../../hooks/useTitle";
+import { useTranslation } from "react-i18next";
 
 const Tracking: React.FC = () => {
-  useTitle('Tracking Overview')
+  const { t } = useTranslation();
+  useTitle(t("track_forcast.tracking.trackingOverview"));
   const user = useSelector<any>((state) => state.user);
   const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState([]);
@@ -47,21 +49,23 @@ const Tracking: React.FC = () => {
               className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
               to="/dashboard"
             >
-              Dashboard /{" "}
+              {t("track_forcast.breadcrumbs.dashboard")}{" "}
               <Link
                 className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
                 to="/dashboard/kpi"
               >
-                KPIs /
+                {t("track_forcast.breadcrumbs.kpi")}
               </Link>
             </Link>
           </li>
-          <li className="font-medium text-primary">Tracking</li>
+          <li className="font-medium text-primary">
+            {t("track_forcast.breadcrumbs.tracking")}
+          </li>
         </ol>
       </div>
       <div className="flex justify-between items-center relative">
         <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
-          Tracking
+          {t("track_forcast.tracking.title")}
         </h2>
       </div>
       <div className="flex justify-start items-center mt-2 space-x-2">
@@ -74,7 +78,7 @@ const Tracking: React.FC = () => {
       {loading ? (
         <div className="mt-4 rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 w-full bg-slate-200 h-[350px] animate-pulse"></div>
       ) : (
-        <KpiInfoTable users={users}forecast={false} />
+        <KpiInfoTable tableData={users} forecast={false} />
       )}
     </div>
   );

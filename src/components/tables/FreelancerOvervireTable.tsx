@@ -3,6 +3,7 @@ import { Pagination } from "antd";
 import "antd/dist/reset.css";
 import "./custompagination.css"; 
 import { freelancerData } from "../../Types/Type";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -11,6 +12,7 @@ interface FreelancerOverviewTableProps {
 }
 
 const FreelancerOverviewTable: React.FC<FreelancerOverviewTableProps> = ({ freelancers }) => {
+  const { t } = useTranslation();
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -35,12 +37,12 @@ const FreelancerOverviewTable: React.FC<FreelancerOverviewTableProps> = ({ freel
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4">
-                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">Name</th>
-                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">Gmail</th>
-                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">Phone</th>
-                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">Open This Month</th>
-                <th className="min-w-[200px] py-4 px-4 font-semibold text-black dark:text-white">Assigned This Month</th>
-                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">Total Assigned</th>
+                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">{t('freelancer_overview.freelancer_overview_table.tableHeaders.name')}</th>
+                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">{t('freelancer_overview.freelancer_overview_table.tableHeaders.gmail')}</th>
+                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">{t('freelancer_overview.freelancer_overview_table.tableHeaders.phone')}</th>
+                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">{t('freelancer_overview.freelancer_overview_table.tableHeaders.openThisMonth')}</th>
+                <th className="min-w-[200px] py-4 px-4 font-semibold text-black dark:text-white">{t('freelancer_overview.freelancer_overview_table.tableHeaders.assignedThisMonth')}</th>
+                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">{t('freelancer_overview.freelancer_overview_table.tableHeaders.totalAssigned')}</th>
               </tr>
             </thead>
             <tbody>

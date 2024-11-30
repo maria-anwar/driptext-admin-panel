@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "antd/dist/reset.css";
 import "./custompagination.css";
+import { useTranslation } from "react-i18next";
 
 // Define the types for props
 interface KpiCardProps {
@@ -48,15 +49,16 @@ const KpiCard: React.FC<KpiCardProps> = ({
   revenue,
   margin,
 }) => {
+  const {t} = useTranslation();
   return (
     <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 4xl:grid-cols-4 gap-x-5 gap-y-5">
-      <KpiBlock icon={faMoneyBillWave} title="Texter Cost" value={texter} />
-      <KpiBlock icon={faMoneyBillWave} title="Lector Cost" value={lector} />
-      <KpiBlock icon={faMoneyBillWave} title="Seo Optimizer Cost" value={seo} />
-      <KpiBlock icon={faMoneyBillWave} title="Meta-Lector Cost" value={meta} />
-      <KpiBlock icon={faRocket} title="Total Revenue" value={revenue} />
-      <KpiBlock icon={faUsers} title="Total Cost" value={totalCost} />
-      <KpiBlock icon={faChartBar} title="Margin" value={margin} />
+      <KpiBlock icon={faMoneyBillWave} title={t('kpi.kpiBlocks.0')} value={texter} />
+      <KpiBlock icon={faMoneyBillWave} title={t('kpi.kpiBlocks.1')} value={lector} />
+      <KpiBlock icon={faMoneyBillWave} title={t('kpi.kpiBlocks.2')} value={seo} />
+      <KpiBlock icon={faMoneyBillWave} title={t('kpi.kpiBlocks.3')} value={meta} />
+      <KpiBlock icon={faRocket} title={t('kpi.kpiBlocks.4')} value={revenue} />
+      <KpiBlock icon={faUsers} title={t('kpi.kpiBlocks.5')} value={totalCost} />
+      <KpiBlock icon={faChartBar} title={t('kpi.kpiBlocks.6')} value={margin} />
     </div>
   );
 };

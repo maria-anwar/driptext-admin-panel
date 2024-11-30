@@ -3,6 +3,7 @@ import { Pagination } from "antd";
 import "antd/dist/reset.css";
 import "./custompagination.css";
 import { freelancerData } from "../../Types/Type";
+import { useTranslation } from "react-i18next";
 
 interface FreelancerRoleTableProps {
   freelancers: any[];
@@ -11,6 +12,7 @@ interface FreelancerRoleTableProps {
 const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
   freelancers,
 }) => {
+  const { t } = useTranslation();
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -36,19 +38,19 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4">
                 <th className="min-w-[200px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Name
+                {t('freelancer_overview.freelancer_overview_table.tableHeaders.name')}
                 </th>
                 <th className="min-w-[220px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Gmail
+                {t('freelancer_overview.freelancer_overview_table.tableHeaders.gmail')}
                 </th>
                 <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Role
+                {t('freelancer_overview.freelancer_overview_table.tableHeaders.role')}
                 </th>
-                <th className="min-w-[180px]  py-4 px-4 font-semibold text-black dark:text-white">
-                  Reliability Status
+                <th className="w-[180px]  py-4 px-4 font-semibold text-black dark:text-white">
+                {t('freelancer_overview.freelancer_overview_table.tableHeaders.reliabilityStatus')}
                 </th>
-                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
-                  Text Quality Status
+                <th className="w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
+                {t('freelancer_overview.freelancer_overview_table.tableHeaders.textQualityStatus')}
                 </th>
               </tr>
             </thead>
