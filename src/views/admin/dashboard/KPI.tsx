@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -9,11 +9,11 @@ import { DatePicker, Select } from "antd";
 import moment, { Moment } from "moment";
 const { RangePicker } = DatePicker;
 import { Project } from "../../../Types/Type";
-import { set } from "lodash";
 import { useTranslation } from "react-i18next";
+import { set } from "lodash";
 
 const KPI: React.FC = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   useTitle(t('kpi.pagetitle'));
   const user = useSelector<any>((state) => state.user);
   const [loading, setLoading] = useState<boolean>(true);
@@ -21,12 +21,8 @@ const KPI: React.FC = () => {
   const [tasks, setTasks] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
-  const [dateRangeFilter, setDateRangeFilter] = useState<
-    [Moment, Moment] | null
-  >(null);
-  const [projectCostFilter, setProjectCostFilter] = useState<string | null>(
-    'all'
-  );
+  const [dateRangeFilter, setDateRangeFilter] = useState<[Moment, Moment] | null>(null);
+  const [projectCostFilter, setProjectCostFilter] = useState<string | null>('all');
   const [filterDropdownOpen, setFilterDropdownOpen] = useState<boolean>(false);
   const [roleFilter, setRoleFilter] = useState<string | null>(null);
   const [projectData, setProjectData] = useState<Project[]>([]);
@@ -40,11 +36,32 @@ const KPI: React.FC = () => {
   const [revenue, setRevenue] = useState(0);
   const [margin, setMargin] = useState(0);
 
+  const dropdownRef = useRef(null); // Ref for the dropdown
+  const dropdownButtonRef = useRef(null); // Ref for the button to toggle dropdown
+
   useEffect(() => {
     getTaskCost();
     getTaskData();
     getProjects();
   }, [user]);
+
+  // // Closing the dropdown when clicking outside
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     if (
+  //       dropdownRef.current && 
+  //       !dropdownRef.current.contains(event.target as Node) && 
+  //       !dropdownButtonRef.current?.contains(event.target as Node)
+  //     ) {
+  //       setFilterDropdownOpen(false);
+  //     }
+  //   };
+
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, []);
 
   const getTaskData = async () => {
     setLoading(true);
@@ -127,6 +144,7 @@ const KPI: React.FC = () => {
           payLoad
         )
         .then((response) => {
+          setFilterDropdownOpen(false);
           const tasksCostData = response?.data?.data;
           setTexter(tasksCostData?.texterCost);
           setLector(tasksCostData?.lectorCost);
@@ -140,17 +158,16 @@ const KPI: React.FC = () => {
         .catch((err) => {
           console.error("Error fetching project details:", err);
           setLoading(false);
+          setFilterDropdownOpen(false);
         });
     } else {
       getTaskCost();
     }
   };
 
-
   useEffect(() => {
     applyFilters();
   }, [projectCostFilter]);
-
 
   const applyDateRangeCost = async () => {
     if (dateRangeFilter && dateRangeFilter.length === 2) {
@@ -170,6 +187,7 @@ const KPI: React.FC = () => {
         )
         .then((response) => {
           console.log(response);
+          setFilterDropdownOpen(false);
           const tasksCostData = response?.data?.data;
           setTexter(tasksCostData?.texterCost);
           setLector(tasksCostData?.lectorCost);
@@ -185,7 +203,7 @@ const KPI: React.FC = () => {
           setLoading(false);
         });
     }
-     else {
+    else {
       getTaskCost();
     }
   };
@@ -211,10 +229,11 @@ const KPI: React.FC = () => {
       </div>
       <div className="flex justify-between items-center relative">
         <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
-        {t('kpi.breadcrumbs.kpi')}
+          {t('kpi.breadcrumbs.kpi')}
         </h2>
         <div>
           <button
+            ref={dropdownButtonRef}
             onClick={() => setFilterDropdownOpen(!filterDropdownOpen)}
             className="inline-flex items-center cursor-pointer justify-center gap-2.5 bg-black py-3 text-sm xl:text-base text-center font-medium text-white hover:bg-opacity-90 px-5"
           >
@@ -235,10 +254,10 @@ const KPI: React.FC = () => {
           </button>
 
           {filterDropdownOpen && (
-            <div className="absolute right-0 mt-2 bg-white dark:bg-boxdark  p-4 shadow-md rounded w-full md:w-1/2 lg:w-2/3 xl:w-100 z-50 border-1">
+            <div ref={dropdownRef} className="absolute right-0 mt-2 bg-white dark:bg-boxdark p-4 shadow-md rounded w-full md:w-1/2 lg:w-2/3 xl:w-100 z-50 border-1">
               <div className="mb-4">
                 <label className="block text-sm font-medium mb-2">
-                {t('kpi.filters.dateRange')}
+                  {t('kpi.filters.dateRange')}
                 </label>
                 <RangePicker
                   onChange={(dates, dateStrings) => {
@@ -249,7 +268,7 @@ const KPI: React.FC = () => {
               </div>
               <div className="mb-4">
                 <label className="block text-sm font-medium mb-2">
-                {t('kpi.filters.selectProject')}
+                  {t('kpi.filters.selectProject')}
                 </label>
                 <Select
                   placeholder={t('kpi.filters.selectProject')}
@@ -271,7 +290,7 @@ const KPI: React.FC = () => {
                   onClick={clearFilters}
                   className="px-2 text-md py-2 bg-red-500 text-white rounded cursor-pointer"
                 >
-                 {t('kpi.filters.clearFilters')}
+                  {t('kpi.filters.clearFilters')}
                 </button>
                 <button
                   onClick={() => setFilterDropdownOpen(false)}
