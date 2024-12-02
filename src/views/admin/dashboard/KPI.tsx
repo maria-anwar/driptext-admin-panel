@@ -5,28 +5,37 @@ import { useSelector } from "react-redux";
 import KpiCard from "../../../components/tables/KpiCard";
 import KpiTable from "../../../components/tables/KpiTable";
 import useTitle from "../../../hooks/useTitle";
-import { DatePicker, Select } from "antd";
-import moment, { Moment } from "moment";
-const { RangePicker } = DatePicker;
+import { Select } from "antd";
 import { Project } from "../../../Types/Type";
 import { useTranslation } from "react-i18next";
-import { set } from "lodash";
+import "react-date-range/dist/styles.css"; // main css file
+import "react-date-range/dist/theme/default.css";
+import { DateRangePicker } from "react-date-range";
 
 const KPI: React.FC = () => {
   const { t } = useTranslation();
-  useTitle(t('kpi.pagetitle'));
+  useTitle(t("kpi.pagetitle"));
   const user = useSelector<any>((state) => state.user);
   const [loading, setLoading] = useState<boolean>(true);
   const [users, setUsers] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
-  const [dateRangeFilter, setDateRangeFilter] = useState<[Moment, Moment] | null>(null);
-  const [projectCostFilter, setProjectCostFilter] = useState<string | null>('all');
+  const [dateRangeFilter, setDateRangeFilter] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: "selection",
+    },
+  ]);
+  const [projectCostFilter, setProjectCostFilter] = useState<string | null>(
+    "all"
+  );
   const [filterDropdownOpen, setFilterDropdownOpen] = useState<boolean>(false);
   const [roleFilter, setRoleFilter] = useState<string | null>(null);
   const [projectData, setProjectData] = useState<Project[]>([]);
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
 
   const [texter, setTexter] = useState(0);
   const [lector, setLector] = useState(0);
@@ -38,30 +47,30 @@ const KPI: React.FC = () => {
 
   const dropdownRef = useRef(null); // Ref for the dropdown
   const dropdownButtonRef = useRef(null); // Ref for the button to toggle dropdown
+  const dropdownRefRange = useRef<HTMLDivElement | null>(null);
+
+  // Close the dropdown if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRefRange.current && !dropdownRefRange.current.contains(event.target as Node)) {
+        setIsPickerOpen(false); // Close the dropdown
+      }
+    };
+
+    // Add event listener to document
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     getTaskCost();
     getTaskData();
     getProjects();
   }, [user]);
-
-  // // Closing the dropdown when clicking outside
-  // useEffect(() => {
-  //   const handleClickOutside = (event: MouseEvent) => {
-  //     if (
-  //       dropdownRef.current && 
-  //       !dropdownRef.current.contains(event.target as Node) && 
-  //       !dropdownButtonRef.current?.contains(event.target as Node)
-  //     ) {
-  //       setFilterDropdownOpen(false);
-  //     }
-  //   };
-
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, []);
 
   const getTaskData = async () => {
     setLoading(true);
@@ -121,13 +130,26 @@ const KPI: React.FC = () => {
       });
   };
 
+  const handleTogglePicker = () => {
+    setIsPickerOpen(!isPickerOpen); // Toggle visibility
+  };
+
   const clearFilters = () => {
     setStatusFilter(null);
-    setDateRangeFilter(null);
-    setProjectCostFilter('all');
+    setDateRangeFilter([
+      {
+        startDate: new Date(),
+        endDate: new Date(),
+        key: "selection",
+      },
+    ]);
+    setProjectCostFilter("all");
     setRoleFilter(null);
     setFilteredTasks(tasks);
     setFilterDropdownOpen(false);
+
+    // Trigger the API call with the default date range after clearing filters
+    getTaskCost();
   };
 
   const applyFilters = async () => {
@@ -169,25 +191,43 @@ const KPI: React.FC = () => {
     applyFilters();
   }, [projectCostFilter]);
 
+  const handleDateChange = (ranges) => {
+    // Assuming ranges.selection contains the range of dates
+    const newRanges = ranges.selection;
+
+    // Reset the date range filter to only have the new range selected
+    setDateRangeFilter([newRanges]);
+  };
+
+  useEffect(() => {
+    applyDateRangeCost();
+  }, [dateRangeFilter]);
+
   const applyDateRangeCost = async () => {
-    if (dateRangeFilter && dateRangeFilter.length === 2) {
-      const startDate = new Date(dateRangeFilter[0]).toLocaleDateString();
-      const endDate = new Date(dateRangeFilter[1]).toLocaleDateString();
+    if (dateRangeFilter && dateRangeFilter.length === 1) {
+      const startDate = new Date(
+        dateRangeFilter[0].startDate
+      ).toLocaleDateString();
+      const endDate = new Date(dateRangeFilter[0].endDate).toLocaleDateString();
+
+      setIsPickerOpen(false);
+      setFilterDropdownOpen(false);
       setLoading(true);
       let token = user?.user?.token;
       axios.defaults.headers.common["access-token"] = token;
-      let payLoad = {
-        startDate: startDate,
-        endDate: endDate,
+      const payLoad = {
+        startDate,
+        endDate,
       };
+      console.log(payLoad);
+
       await axios
         .post(
           `${import.meta.env.VITE_DB_URL}/admin/getTasksCostDateFilter`,
           payLoad
         )
         .then((response) => {
-          console.log(response);
-          setFilterDropdownOpen(false);
+          console.log("date range call");
           const tasksCostData = response?.data?.data;
           setTexter(tasksCostData?.texterCost);
           setLector(tasksCostData?.lectorCost);
@@ -196,21 +236,17 @@ const KPI: React.FC = () => {
           setTotalCost(tasksCostData?.totalCost);
           setRevenue(tasksCostData?.totalRevenue);
           setMargin(tasksCostData?.totalMargin);
+
           setLoading(false);
         })
         .catch((err) => {
           console.error("Error fetching project details:", err);
           setLoading(false);
         });
-    }
-    else {
+    } else {
       getTaskCost();
     }
   };
-
-  useEffect(() => {
-    applyDateRangeCost();
-  }, [dateRangeFilter]);
 
   return (
     <div className="mx-auto 3xl:px-4">
@@ -221,15 +257,17 @@ const KPI: React.FC = () => {
               className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
               to="/dashboard"
             >
-              {t('kpi.breadcrumbs.dashboard')}
+              {t("kpi.breadcrumbs.dashboard")}
             </Link>
           </li>
-          <li className="font-medium text-primary">{t('kpi.breadcrumbs.kpi')}</li>
+          <li className="font-medium text-primary">
+            {t("kpi.breadcrumbs.kpi")}
+          </li>
         </ol>
       </div>
       <div className="flex justify-between items-center relative">
         <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
-          {t('kpi.breadcrumbs.kpi')}
+          {t("kpi.breadcrumbs.kpi")}
         </h2>
         <div>
           <button
@@ -237,7 +275,7 @@ const KPI: React.FC = () => {
             onClick={() => setFilterDropdownOpen(!filterDropdownOpen)}
             className="inline-flex items-center cursor-pointer justify-center gap-2.5 bg-black py-3 text-sm xl:text-base text-center font-medium text-white hover:bg-opacity-90 px-5"
           >
-            <span>{t('kpi.filters.filter')}</span>
+            <span>{t("kpi.filters.filter")}</span>
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -254,24 +292,65 @@ const KPI: React.FC = () => {
           </button>
 
           {filterDropdownOpen && (
-            <div ref={dropdownRef} className="absolute right-0 mt-2 bg-white dark:bg-boxdark p-4 shadow-md rounded w-full md:w-1/2 lg:w-2/3 xl:w-100 z-50 border-1">
-              <div className="mb-4">
+            <div
+              ref={dropdownRef}
+              className="absolute right-0 mt-2 bg-white dark:bg-boxdark p-4 shadow-md rounded w-full md:w-1/2 lg:w-2/3 xl:w-100 z-50 border-1"
+            >
+              <div className="mb-4 relative">
                 <label className="block text-sm font-medium mb-2">
-                  {t('kpi.filters.dateRange')}
+                  {/* Assuming you are using the `t` function for translations */}
+                  {t("kpi.filters.dateRange")}
                 </label>
-                <RangePicker
-                  onChange={(dates, dateStrings) => {
-                    setDateRangeFilter(dates ? [dates[0], dates[1]] : null);
-                  }}
-                  className="w-full"
-                />
+
+                <button
+                  onClick={handleTogglePicker}
+                  className="text-sm text-left text-black bg-white border px-2 py-1 rounded-md w-full"
+                >
+                  {dateRangeFilter.length
+                    ? `${new Date(
+                        dateRangeFilter[0].startDate
+                      ).toLocaleDateString()} - ${new Date(
+                        dateRangeFilter[0].endDate
+                      ).toLocaleDateString()}`
+                    : "Select date range"}
+                </button>
+
+                {/* Conditional rendering of the DateRangePicker */}
+                {isPickerOpen && (
+                  <div className="absolute top-full  -left-48 mt-2 w-full z-10"
+                  ref={dropdownRefRange}>
+                    <DateRangePicker
+                      ranges={
+                        dateRangeFilter.length
+                          ? dateRangeFilter
+                          : [
+                              {
+                                startDate: new Date(),
+                                endDate: new Date(),
+                                key: "selection",
+                              },
+                            ]
+                      } // Pass the entire array of ranges
+                      onChange={handleDateChange}
+                      months={2}
+                      direction="vertical"
+                      rangeColors={["#3B82F6", "#FF5733"]}
+                      showSelectionPreview={true}
+                      moveRangeOnFirstSelection={false}
+                      editableDateInputs={true}
+                      showMonthAndYearPickers={false}
+                      preventSnapRefocus={true}
+                      scroll={{ enabled: true }}
+                    />
+                  </div>
+                )}
               </div>
               <div className="mb-4">
                 <label className="block text-sm font-medium mb-2">
-                  {t('kpi.filters.selectProject')}
+                  {t("kpi.filters.selectProject")}
                 </label>
                 <Select
-                  placeholder={t('kpi.filters.selectProject')}
+                  placeholder={t("kpi.filters.selectProject")}
                   onChange={(value) => setProjectCostFilter(value)}
                   allowClear
                   className="w-full"
@@ -290,13 +369,13 @@ const KPI: React.FC = () => {
                   onClick={clearFilters}
                   className="px-2 text-md py-2 bg-red-500 text-white rounded cursor-pointer"
                 >
-                  {t('kpi.filters.clearFilters')}
+                  {t("kpi.filters.clearFilters")}
                 </button>
                 <button
                   onClick={() => setFilterDropdownOpen(false)}
                   className="px-2 py-2 text-md bg-green-500 text-white rounded cursor-pointer"
                 >
-                  {t('kpi.filters.applyFilters')}
+                  {t("kpi.filters.applyFilters")}
                 </button>
               </div>
             </div>
