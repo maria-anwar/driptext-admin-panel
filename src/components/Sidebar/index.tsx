@@ -3,9 +3,8 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/homeimages/driptext-logo.png";
 import SidebarIcons from "../icons/SidebarIcons";
 import { useDispatch } from "react-redux";
-import {  clearPersistedState } from '../../redux/store';
+import { clearPersistedState } from "../../redux/store";
 import { useTranslation } from "react-i18next";
-
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -13,12 +12,11 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const location = useLocation();
   const { pathname } = location;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
 
   const trigger = useRef<HTMLButtonElement>(null);
   const sidebar = useRef<HTMLDivElement>(null);
@@ -65,8 +63,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   const handleLogout = () => {
     localStorage.removeItem("auth");
-    localStorage.removeItem('projectID')
-    dispatch(clearPersistedState())
+    localStorage.removeItem("projectID");
+    dispatch(clearPersistedState());
   };
 
   return (
@@ -82,11 +80,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           <div className="w-full flex items-center justify-normal gap-1.5 cursor-pointer">
             <img src={logo} alt="Logo" className="w-12 h-12 rounded-md " />
             <div>
-              <h1 className="text-[17px] font-bold text-white">
-                DRIPTEXT
-              </h1>
+              <h1 className="text-[17px] font-bold text-white">DRIPTEXT</h1>
               <p className="text-gray-900 text-bodydark2 text-[13px]">
-              {t('logo.subtitle')}
+                {t("logo.subtitle")}
               </p>
             </div>
           </div>
@@ -126,36 +122,33 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   <NavLink
                     to="/dashboard"
                     className={`group relative   flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:text-bodydark1 hover:bg-graydark dark:hover:bg-meta-4 ${
-                      pathname === "/dashboard" &&
-                      "bg-graydark dark:bg-meta-4"
+                      pathname === "/dashboard" && "bg-graydark dark:bg-meta-4"
                     }`}
                   >
                     {SidebarIcons[0].dashboard}
-                    {t('menu.projects')}
+                    {t("menu.projects")}
                   </NavLink>
                 </li>
                 <li>
                   <NavLink
                     to="tasks"
                     className={`group relative   flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:text-bodydark1 hover:bg-graydark dark:hover:bg-meta-4 ${
-                      pathname.includes("tasks") &&
-                      "bg-graydark dark:bg-meta-4"
+                      pathname.includes("tasks") && "bg-graydark dark:bg-meta-4"
                     }`}
                   >
                     {SidebarIcons[4].contact}
-                    {t('menu.tasks')}
+                    {t("menu.tasks")}
                   </NavLink>
                 </li>
                 <li>
                   <NavLink
                     to="kpi"
                     className={`group relative   flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:text-bodydark1 hover:bg-graydark dark:hover:bg-meta-4 ${
-                      pathname.includes("kpi") &&
-                      "bg-graydark dark:bg-meta-4"
+                      pathname.includes("kpi") && "bg-graydark dark:bg-meta-4"
                     }`}
                   >
                     {SidebarIcons[6].kpi}
-                    {t('menu.kpis')}
+                    {t("menu.kpis")}
                   </NavLink>
                 </li>
                 <li>
@@ -166,23 +159,32 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       "bg-graydark dark:bg-meta-4"
                     }`}
                   >
-                    {SidebarIcons[6].kpi}
-                    {t('menu.freelancerOverview')}
+                    <svg
+                      fill="#FFFFFF"
+                      viewBox="0 0 32 32"
+                      className="w-5 h-5"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <title>analytics</title>
+                      <path d="M4,2H2V28a2,2,0,0,0,2,2H30V28H4Z"></path>
+                      <path d="M30,9H23v2h3.59L19,18.59l-4.29-4.3a1,1,0,0,0-1.42,0L6,21.59,7.41,23,14,16.41l4.29,4.3a1,1,0,0,0,1.42,0L28,12.41V16h2Z"></path>
+                    </svg>
+
+                    {t("menu.freelancerOverview")}
                   </NavLink>
                 </li>
                 <li>
                   <NavLink
                     to="users"
                     className={`group relative   flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 hover:text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                      pathname.includes("users") &&
-                      "bg-graydark dark:bg-meta-4"
+                      pathname.includes("users") && "bg-graydark dark:bg-meta-4"
                     }`}
                   >
                     {SidebarIcons[2].profile}
-                    {t('menu.users')}
+                    {t("menu.users")}
                   </NavLink>
                 </li>
-               
+
                 <li>
                   <NavLink
                     to="system-settings"
@@ -192,19 +194,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     }`}
                   >
                     {SidebarIcons[1].settings}
-                    {t('menu.systemSettings')}
+                    {t("menu.systemSettings")}
                   </NavLink>
                 </li>
                 <li>
                   <NavLink
                     to="#"
-                    className={ `group text-zinc-500   cursor-not-allowed relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out 
+                    className={`group text-zinc-500   cursor-not-allowed relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out 
                       "bg-graydark dark:bg-meta-4" : ""
-                   }`
-                    }
+                   }`}
                   >
                     {SidebarIcons[5].edution}
-                    {t('menu.driptextAcademy')}
+                    {t("menu.driptextAcademy")}
                   </NavLink>
                 </li>
               </ul>
@@ -218,7 +219,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     }`}
                   >
                     {SidebarIcons[1].settings}
-                    {t('menu.profileSettings')}
+                    {t("menu.profileSettings")}
                   </NavLink>
                 </li>
               </ul>
@@ -234,7 +235,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               className={`group relative    flex items-center gap-2.5 rounded-sm py-4 px-4 lg:px-8 font-medium hover:text-bodydark1 text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4`}
             >
               {SidebarIcons[3].auth}
-              {t('logout')}
+              {t("logout")}
             </NavLink>
           </li>
         </ul>

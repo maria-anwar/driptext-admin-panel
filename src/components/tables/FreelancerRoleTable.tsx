@@ -46,10 +46,10 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                 <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
                 {t('freelancer_overview.freelancer_overview_table.tableHeaders.role')}
                 </th>
-                <th className="w-[180px]  py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[180px]  py-4 px-4 font-semibold text-black dark:text-white">
                 {t('freelancer_overview.freelancer_overview_table.tableHeaders.reliabilityStatus')}
                 </th>
-                <th className="w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
                 {t('freelancer_overview.freelancer_overview_table.tableHeaders.textQualityStatus')}
                 </th>
               </tr>
@@ -74,7 +74,7 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                   </td>            
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
-                      className={`w-4 h-4 rounded-full mx-auto transition-all duration-300 ease-in-out ${
+                      className={`w-4 h-4 rounded-full ml-[60px] transition-all duration-300 ease-in-out ${
                         freelancer?.deadlineTasks <= 10
                           ? "bg-green-500"
                           : freelancer?.deadlineTasks >= 11 &&
@@ -86,7 +86,7 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
-                      className={`w-4 h-4 rounded-full mx-auto transition-all duration-300 ease-in-out ${
+                      className={`w-4 h-4 rounded-full ml-[68px] transition-all duration-300 ease-in-out ${
                         freelancer?.returnTasks <= 10
                           ? "bg-green-500"
                           : freelancer?.returnTasks >= 11 &&
