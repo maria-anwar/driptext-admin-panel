@@ -38,13 +38,13 @@ const KpiBlock: React.FC<{
           <p className="bg-slate-200 dark:bg-boxdark-2 w-12 h-12 rounded-full flex justify-center items-center">
             <FontAwesomeIcon
               icon={icon}
-              className="text-black dark:text-white w-6 h-6"
+              className="text-primary dark:text-white w-6 h-6"
             />
           </p>
         </div>
         <div>
           <p className="text-black dark:text-white">{title}</p>
-          <h1 className="text-black dark:text-white font-semibold text-2xl">
+          <h1 className="text-black dark:text-white font-medium text-2xl">
             € {value}
           </h1>
         </div>

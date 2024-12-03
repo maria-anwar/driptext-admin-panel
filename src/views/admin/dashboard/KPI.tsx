@@ -202,9 +202,9 @@ const KPI: React.FC = () => {
     if (dateRangeFilter && dateRangeFilter.length === 1) {
       const startDate = new Date(
         dateRangeFilter[0].startDate
-      ).toLocaleDateString();
-      const endDate = new Date(dateRangeFilter[0].endDate).toLocaleDateString();
-
+      ).toLocaleDateString("en-CA");
+      const endDate = new Date(dateRangeFilter[0].endDate).toLocaleDateString("en-CA");
+ 
       setIsPickerOpen(false);
       setFilterDropdownOpen(false);
       setLoading(true);
@@ -214,7 +214,7 @@ const KPI: React.FC = () => {
         startDate,
         endDate,
       };
-      console.log(payLoad);
+
 
       await axios
         .post(
@@ -222,7 +222,6 @@ const KPI: React.FC = () => {
           payLoad
         )
         .then((response) => {
-          console.log("date range call");
           const tasksCostData = response?.data?.data;
           setTexter(tasksCostData?.texterCost);
           setLector(tasksCostData?.lectorCost);
@@ -294,7 +293,6 @@ const KPI: React.FC = () => {
             >
               <div className="mb-4 relative">
                 <label className="block text-sm font-medium mb-2">
-                  {/* Assuming you are using the `t` function for translations */}
                   {t("kpi.filters.dateRange")}
                 </label>
 
@@ -310,8 +308,6 @@ const KPI: React.FC = () => {
                       ).toLocaleDateString()}`
                     : "Select date range"}
                 </button>
-
-                {/* Conditional rendering of the DateRangePicker */}
                 {isPickerOpen && (
                   <div
                     className="absolute top-full xl:-left-[530px] mt-2 w-full xl:w-[960px] max-w-screen-xl z-[99999999] mx-auto p-2 bg-white shadow-lg border rounded-lg overflow-auto"
@@ -328,7 +324,7 @@ const KPI: React.FC = () => {
                                 key: "selection",
                               },
                             ]
-                      } // Pass the entire array of ranges
+                      }
                       onChange={handleDateChange}
                       months={2}
                       direction="horizontal"
@@ -338,7 +334,7 @@ const KPI: React.FC = () => {
                     />
 
                     {/* Add a button below the DateRangePicker */}
-                    <div className="mt-4 text-right ">
+                    <div className="mt-4 text-right flex flex-row justify-end items-center absolue ">
                       <button
                         className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition mr-2"
                         onClick={getTaskCost} // Call API when button is clicked
@@ -399,7 +395,7 @@ const KPI: React.FC = () => {
           )}
         </div>
       </div>
-      <p className="text-base font-semibold text-black dark:text-white pb-2 lg:pb-0">{projectsName}</p>
+      <p className="text-base font-semibold text-primary dark:text-white pb-2 lg:pb-0">{projectsName}</p>
       {loading ? (
         <div className="mt-4 rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 w-full bg-slate-200 h-[600px] animate-pulse"></div>
       ) : (
