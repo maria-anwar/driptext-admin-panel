@@ -395,7 +395,7 @@ const KPI: React.FC = () => {
           )}
         </div>
       </div>
-      <p className="text-base font-semibold text-primary dark:text-white pb-2 lg:pb-0">{projectsName}</p>
+      <p className="text-base font-medium text-primary dark:text-white pb-2 lg:pb-0">{projectsName}</p>
       {loading ? (
         <div className="mt-4 rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 w-full bg-slate-200 h-[600px] animate-pulse"></div>
       ) : (
