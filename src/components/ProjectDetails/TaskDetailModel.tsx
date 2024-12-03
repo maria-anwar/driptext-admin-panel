@@ -184,15 +184,18 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
 
   const onSubmit = async (values) => {
     setLoading(true);
+    let localDate = new Date(values.date);
+    let dueDateFormatted = localDate.toLocaleDateString("en-CA"); // 'en-CA' uses YYYY-MM-DD format
     const payLoad = {
       taskId: task._id,
-      dueDate: values.date,
+      dueDate: dueDateFormatted,
       topic: values.topic,
       keywordType: values.textType,
       keyword: values.keywords,
       comment: values.comments,
       wordCount: values.wordCount,
     };
+    console.log(payLoad);
 
     try {
       const response = await axios.post(
