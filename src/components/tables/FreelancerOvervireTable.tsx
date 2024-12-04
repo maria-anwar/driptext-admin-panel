@@ -59,13 +59,13 @@ const FreelancerOverviewTable: React.FC<FreelancerOverviewTableProps> = ({ freel
                   </td>
                  
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">{freelancer?.openTasksThisMonth ? freelancer?.openTasksThisMonth: 0 }</p>
+                    <p className="text-black dark:text-white text-center">{freelancer?.openTasksThisMonth ? freelancer?.openTasksThisMonth: 0 }</p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">{freelancer?.taskAssignThisMonth  ? freelancer?.taskAssignThisMonth  : 0}</p>
+                    <p className="text-black dark:text-white text-center">{freelancer?.taskAssignThisMonth  ? freelancer?.taskAssignThisMonth  : 0}</p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">{freelancer?.assignedTotalTasks ? freelancer?.assignedTotalTasks : 0}</p>
+                    <p className="text-black dark:text-white text-center">{freelancer?.assignedTotalTasks ? freelancer?.assignedTotalTasks : 0}</p>
                   </td>
                  
                 </tr>

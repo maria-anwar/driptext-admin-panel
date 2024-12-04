@@ -650,7 +650,7 @@
     "driptextAcademy": "Driptext Academy",
     "profileSettings": "Profileinstellungen",
     "accountSettings": "Kontoeinstellungen",
-    "freelancerOverview": "Freelancer-Übersicht"
+    "freelancerOverview": "Freelancer-Analytik"
   },
   "logout": "Abmelden",
   "kpi": {
@@ -685,7 +685,7 @@
     ],
     "actions": {
       "tracking": "Tracking",
-      "forecast": "Prognose"
+     "forecast": "Prognose"
     }
   },
   "track_forcast": {
@@ -718,7 +718,7 @@
   "freelancer_overview": {
     "breadcrumbs": {
       "dashboard": "Dashboard /",
-      "freelancerOverview": "Freelancer Übersicht"
+      "freelancerOverview": "Freelancer-Analytik"
     },
     "titles": {
       "freelancerOverview": "Freelancer Übersicht",
