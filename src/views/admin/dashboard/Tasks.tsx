@@ -199,7 +199,7 @@ const Tasks: React.FC = () => {
                 <Select
                   placeholder={t("filters.status.label")}
                   onChange={(value) => setStatusFilter(value)}
-                  allowClear
+                  
                   className="w-full"
                   value={statusFilter}
                 >
@@ -244,6 +244,7 @@ const Tasks: React.FC = () => {
                   {t("filters.dateRange.label")}
                 </label>
                 <RangePicker
+                allowClear={false}
                   onChange={(dates, dateStrings) => {
                     setDateRangeFilter(dates ? [dates[0], dates[1]] : null);
                   }}
@@ -258,7 +259,7 @@ const Tasks: React.FC = () => {
                 <Select
                   placeholder={t("filters.month.label")}
                   onChange={(value) => setMonthFilter(value)}
-                  allowClear
+                  
                   className="w-full"
                   value={monthFilter}
                 >
@@ -276,7 +277,7 @@ const Tasks: React.FC = () => {
                 <Select
                   placeholder={t("filters.role.label")}
                   onChange={(value) => setRoleFilter(value)}
-                  allowClear
+                  
                   className="w-full mr-4"
                   value={roleFilter}
                 >
