@@ -693,14 +693,14 @@
       "dashboard": "Dashboard /",
       "kpi": "KPIs /",
       "tracking": "Tracking",
-      "forecast": "Forecast"
+      "forecast": "Forecasting"
     },
     "tracking": {
       "title": "Tracking",
       "trackingOverview": "Tracking Overview"
     },
     "forecast": {
-      "title": "Forecast",
+      "title": "Forecasting",
       "forecastOverview": "Forecast Overview"
     },
     "tableHeaders": {
