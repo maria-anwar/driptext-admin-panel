@@ -650,7 +650,7 @@
     "driptextAcademy": "Driptext Academy",
     "profileSettings": "Profile Settings",
     "accountSettings": "Account Settings",
-    "freelancerOverview": "Freelancer Overview"
+    "freelancerOverview": "Freelancers Analytics"
   },
   "logout": "Sign out",
   "kpi": {
@@ -685,7 +685,7 @@
     ],
     "actions": {
       "tracking": "Tracking",
-      "forecast": "Forecast"
+      "forecast": "Forecasting"
     }
   },
   "track_forcast": {
@@ -718,11 +718,11 @@
   "freelancer_overview": {
     "breadcrumbs": {
       "dashboard": "Dashboard /",
-      "freelancerOverview": "Freelancer Overview"
+      "freelancerOverview": "Freelancers Analytics"
     },
     "titles": {
-      "freelancerOverview": "Freelancer Overview",
-      "freelancerByRole": "Freelancer By Role"
+      "freelancerOverview": "Freelancers Overview",
+      "freelancerByRole": "Freelancers By Role"
     },
     "filters": {
       "textReliability": "Text Reliability",

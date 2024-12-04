@@ -54,7 +54,7 @@ const FreelancerOverview: React.FC = () => {
     await axios
       .get(`${import.meta.env.VITE_DB_URL}/admin/getFreelancerTrafficLights`)
       .then((response) => {
-        console.log(response);
+        console.log(response.data.data);
         setCostTraficData(response.data.data);
         setFilteredFreelancers(response.data.data);
         setLoading(false);
@@ -116,7 +116,7 @@ const FreelancerOverview: React.FC = () => {
               {t('freelancer_overview.breadcrumbs.dashboard')}
             </Link>
           </li>
-          <li className="font-medium text-primary">{t('freelancer_overview.titles.freelancerOverview')}</li>
+          <li className="font-medium text-primary"> {t('freelancer_overview.breadcrumbs.freelancerOverview')}</li>
         </ol>
       </div>
       <div className="flex justify-between items-center relative">
