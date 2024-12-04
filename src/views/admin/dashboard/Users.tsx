@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSearch,
@@ -30,6 +30,24 @@ const Users: React.FC = () => {
   const [userData, setUserData] = useState<User[]>([]);
   const [filteredUserData, setFilteredUserData] = useState<User[]>([]);
   const [showAddManager, setShowAddManager] = useState<boolean>(false);
+
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    // Close the dropdown if clicking outside of it
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
 
   useEffect(() => {
     getUser();
@@ -211,7 +229,7 @@ const Users: React.FC = () => {
 
             {/* Dropdown Content */}
             {dropdownOpen && (
-              <div className="absolute top-full mt-2 w-60 lg:right-0 xl:right-0 bg-white dark:bg-boxdark border border-gray-300 dark:border-gray-700 rounded shadow-lg z-10">
+              <div ref={dropdownRef} className="absolute top-full mt-2 w-60 lg:right-0 xl:right-0 bg-white dark:bg-boxdark border border-gray-300 dark:border-gray-700 rounded shadow-lg z-10">
                 <div className="p-4 space-y-4">
                   {/* Checkbox */}
                   <div className="flex items-center text-left">

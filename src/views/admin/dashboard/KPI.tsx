@@ -156,6 +156,13 @@ const KPI: React.FC = () => {
 
   const applyFilters = async () => {
     if (projectCostFilter !== "all" && projectCostFilter !== null) {
+      setDateRangeFilter([
+        {
+          startDate: new Date(),
+          endDate: new Date(),
+          key: "selection",
+        },
+      ]);
       setLoading(true);
       let token = user?.user?.token;
       axios.defaults.headers.common["access-token"] = token;
@@ -337,7 +344,15 @@ const KPI: React.FC = () => {
                     <div className="mt-4 text-right flex flex-row justify-end items-center absolue ">
                       <button
                         className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition mr-2"
-                        onClick={getTaskCost} // Call API when button is clicked
+                        onClick={()=>{
+                          setDateRangeFilter([
+                            {
+                              startDate: new Date(),
+                              endDate: new Date(),
+                              key: "selection",
+                            },
+                          ]);
+                          getTaskCost()}} // Call API when button is clicked
                       >
                         Clear Date Range
                       </button>

@@ -26,6 +26,8 @@ const FreelancerOverview: React.FC = () => {
   const [qualityFilter, setQualityFilter] = useState<number | null>(null); // Added for quality filter
   const [costTraficData, setCostTraficData] = useState<any>([]);
 
+  
+
   useEffect(() => {
     getTaskData();
     getTaskCost();
@@ -164,7 +166,7 @@ const FreelancerOverview: React.FC = () => {
                 <Select
                   placeholder="Select Reliability"
                   onChange={(value) => setReliabilityFilter(value)}
-                  allowClear
+                  allowClear={false}
                   className="w-full"
                   value={reliabilityFilter}
                 >
@@ -181,7 +183,7 @@ const FreelancerOverview: React.FC = () => {
                 <Select
                   placeholder="Select Quality"
                   onChange={(value) => setQualityFilter(value)}
-                  allowClear
+                  allowClear={false}
                   className="w-full"
                   value={qualityFilter}
                 >
