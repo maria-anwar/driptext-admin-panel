@@ -341,9 +341,9 @@ const KPI: React.FC = () => {
                     />
 
                     {/* Add a button below the DateRangePicker */}
-                    <div className="mt-4 text-right flex flex-row justify-end items-center absolue ">
+                    <div className="mt-4 text-right flex flex-row justify-end items-center absolue mr-12">
                       <button
-                        className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition mr-2"
+                        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600/90 transition mr-2"
                         onClick={()=>{
                           setDateRangeFilter([
                             {
@@ -357,7 +357,7 @@ const KPI: React.FC = () => {
                         Clear Date Range
                       </button>
                       <button
-                        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+                        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600/90 transition"
                         onClick={applyDateRangeCost} // Call API when button is clicked
                       >
                         Apply Date Range
@@ -395,13 +395,13 @@ const KPI: React.FC = () => {
               <div className="flex gap-x-2">
                 <button
                   onClick={clearFilters}
-                  className="px-2 text-md py-2 bg-red-500 text-white rounded cursor-pointer"
+                  className="px-2 text-md py-2 bg-red-500 hover:bg-red-600/90 text-white rounded cursor-pointer"
                 >
                   {t("kpi.filters.clearFilters")}
                 </button>
                 <button
                   onClick={() => setFilterDropdownOpen(false)}
-                  className="px-2 py-2 text-md bg-green-500 text-white rounded cursor-pointer"
+                  className="px-2 py-2 text-md bg-green-500 hover:bg-green-600/90 text-white rounded cursor-pointer"
                 >
                   {t("kpi.filters.applyFilters")}
                 </button>

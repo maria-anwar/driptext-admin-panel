@@ -150,7 +150,7 @@ const LoginForm = () => {
                 <FontAwesomeIcon
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
                   onClick={togglePasswordVisibility}
-                  icon={passwordVisible ? faEye : faEyeSlash}
+                  icon={passwordVisible ? faEyeSlash  : faEye}
                 />
               </div>
               {props.errors.password && (
@@ -168,7 +168,7 @@ const LoginForm = () => {
               </Link>
             </div>
             <button
-              className={`mt-6 w-full font-semibold h-10 bg-black text-white text-sm px-3 py-1.5 rounded-lg ${
+              className={`mt-6 w-full font-semibold h-10 bg-custom-black hover:bg-custom-black/90 text-white text-sm px-3 py-1.5 rounded-lg ${
                 loading ? "cursor-not-allowed" : "cursor-pointer"
               }`}
               type="submit"

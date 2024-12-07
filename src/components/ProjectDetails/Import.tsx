@@ -98,6 +98,7 @@ const Import: React.FC<{ id: string,handleRefreshData:()=> void }> = ({ id,handl
               <h2 className="text-xl font-bold dark:text-white pr-12">
                 {t("projectDetails.import.modal.title")}
               </h2>
+              <ToastContainer/>
               <FontAwesomeIcon
                 className="cursor-pointer text-lg text-red-500 pl-12"
                 onClick={handleCloseImport}

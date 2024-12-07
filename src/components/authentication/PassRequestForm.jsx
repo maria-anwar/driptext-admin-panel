@@ -68,7 +68,7 @@ const PassRequestForm = () => {
             </div>
 
             <button
-              className="mt-6 w-full font-semibold h-11 bg-black text-white text-sm p-2 rounded-lg"
+              className="mt-6 w-full font-semibold h-11 bg-custom-black hover:bg-custom-black/90 text-white text-sm p-2 rounded-lg"
               type="submit"
             >
               {t("passRequest.buttons.submit")}

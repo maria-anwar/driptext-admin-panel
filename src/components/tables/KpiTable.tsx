@@ -101,7 +101,7 @@ const KpiTable: React.FC<KpiTableProps> = ({ users }) => {
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
-                      className={`bg-blue-500 px-2 h-9 flex justify-center items-center rounded cursor-pointer`}
+                      className={`bg-blue-500 hover:bg-blue-500/90 px-2 h-9 flex justify-center items-center rounded cursor-pointer`}
                       onClick={() =>
                         handleTracking(
                           user?._id,
@@ -119,7 +119,7 @@ const KpiTable: React.FC<KpiTableProps> = ({ users }) => {
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
-                      className={`bg-blue-500 px-2 h-9 flex justify-center items-center rounded cursor-pointer`}
+                      className={`bg-blue-500 hover:bg-blue-500/90 px-2 h-9 flex justify-center items-center rounded cursor-pointer`}
                       onClick={() =>
                         handleForercasting(
                           user?._id,
