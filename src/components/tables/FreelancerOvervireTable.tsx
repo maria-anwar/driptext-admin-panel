@@ -49,7 +49,13 @@ const FreelancerOverviewTable: React.FC<FreelancerOverviewTableProps> = ({ freel
               {paginatedfreelancers.map((freelancer) => (
                 <tr className="text-left" key={freelancer._id}>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <div className="flex justify-start items-center gap-x-2">
+                        <p className="text-black uppercase w-7 h-7 text-center dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs  flex justify-center items-center">
+                          {freelancer?.firstName.charAt(0)}
+                          {freelancer?.lastName === "-" ? "" : freelancer?.lastName.charAt(0)}
+                        </p>
                     <p className="text-black dark:text-white capitalize">{freelancer?.firstName} {freelancer?.lastName}</p>
+                    </div>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">{freelancer?.email}</p>

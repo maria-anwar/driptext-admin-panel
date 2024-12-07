@@ -118,8 +118,8 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
         <p className="dark:text-white text-black text-xs text-center py-1">
           {label}
         </p>
-        <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
-          {getInitials(name)}
+        <p className="text-black uppercase w-7 h-7 text-center dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs  flex justify-center items-center">
+        {getInitials(name)}
         </p>
       </div>
     );
