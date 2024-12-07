@@ -201,8 +201,7 @@ const ProjectsDetails: React.FC = () => {
       <div>
         <div className="mx-auto">
           <Breadcrumb pageName={t("projectDetails.breadcrumb.pageName")} />
-          <ToastContainer />
-
+        
           {loading ? (
             <div className="grid grid-cols-5 gap-8">
               <div className="col-span-5 xl:col-span-3 rounded-sm border border-stroke  pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1   w-full bg-slate-200 h-[350px] animate-pulse"></div>

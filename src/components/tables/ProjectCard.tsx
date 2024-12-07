@@ -53,31 +53,28 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects, freelancer }) => {
             "relative rounded-sm border border-stroke bg-white py-6 px-5 shadow-default dark:border-strokedark dark:bg-boxdark cursor-pointer"
           }
         >
-          <div className="flex justify-between items-center w-full ">
-            <h4 className="text-title-md font-bold text-black dark:text-white  w-1/2 ">
-              {project.projectName}
-            </h4>
-            <div className="flex justify-between items-center w-1/2 ">
-              <WorkerComponent
-                label="T"
-                name={showAssignedRoles(project.texter) ?? ""}
-              />
-              <WorkerComponent
-                label="L"
-                name={showAssignedRoles(project.lector) ?? ""}
-              />
-              <WorkerComponent
-                label="S"
-                name={showAssignedRoles(project.seo) ?? ""}
-              />
-              <WorkerComponent
-                label="M"
-                name={showAssignedRoles(project.metaLector) ?? ""}
-              />
-            </div>
+          <h4 className="text-title-md font-bold text-black dark:text-white mb-2 ">
+            {project.projectName}
+          </h4>
+          <div className="flex justify-between items-center w-1/2 ">
+            <WorkerComponent
+              label="T"
+              name={showAssignedRoles(project.texter) ?? ""}
+            />
+            <WorkerComponent
+              label="L"
+              name={showAssignedRoles(project.lector) ?? ""}
+            />
+            <WorkerComponent
+              label="S"
+              name={showAssignedRoles(project.seo) ?? ""}
+            />
+            <WorkerComponent
+              label="M"
+              name={showAssignedRoles(project.metaLector) ?? ""}
+            />
           </div>
-
-          <div className="h-3 bg-gray-200 rounded py-6">
+          <div className="h-3 bg-gray-200 rounded py-4">
             <progress
               className="custom-progress"
               value={project.finalTasks}
@@ -128,7 +125,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects, freelancer }) => {
               </div>
             </div>
           </div>
-          <div className="mt-8 mb-3 flex items-end justify-between">
+          <div className="mt-5 mb-3 flex items-end justify-between">
             <div className="text-sm font-medium text-dark-gray">
               Tasks
               <div className="text-meta-5 flex justify-end flex-col">

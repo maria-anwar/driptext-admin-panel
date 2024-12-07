@@ -452,7 +452,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                   <button
                     type="submit"
                     disabled={loading}
-                    className="px-4 py-2 bg-blue-500 text-white rounded"
+                    className="px-4 py-2 bg-blue-500 hover:bg-blue-500/90 text-white rounded"
                   >
                     {loading ? t("projectDetails.taskDetailModel.submittingButton") : t("projectDetails.taskDetailModel.submitButton")}
                   </button>

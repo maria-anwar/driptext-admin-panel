@@ -190,8 +190,8 @@ const TasksTable: React.FC<PaginatedTableProps> = ({ tasks, freelancer }) => {
                     <div
                       className={`${
                         task?.lector && task?.seo && task?.texter
-                          ? "bg-blue-500"
-                          : "bg-yellow-400/80"
+                          ? "bg-blue-500 hover:bg-blue-500/90"
+                          : "bg-yellow-400/80 hover:bg-yellow-400"
                       } w-26 h-9 flex justify-center items-center rounded cursor-pointer`}
                       onClick={() => handleTask(task?._id)}
                     >

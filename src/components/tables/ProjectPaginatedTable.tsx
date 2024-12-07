@@ -296,8 +296,8 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                         <div
                           className={` ${
                             project?.lector && project?.seo && project?.texter
-                              ? "bg-blue-500"
-                              : "bg-yellow-400/80"
+                               ? "bg-blue-500 hover:bg-blue-500/90"
+                              : "bg-yellow-400/80 hover:bg-yellow-400"
                           } w-28 h-9 flex justify-center items-center rounded cursor-pointer`}
                           onClick={() => handleProject(project._id)}
                         >
@@ -324,8 +324,8 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                         <div
                           className={` ${
                             project?.lector && project?.seo && project?.texter
-                              ? "bg-blue-500"
-                              : "bg-yellow-400/80"
+                              ? "bg-blue-500 hover:bg-blue-500/90"
+                              : "bg-yellow-400/80 hover:bg-yellow-400"
                           } w-24 h-9 flex justify-center items-center rounded cursor-pointer`}
                           onClick={() => handleRevert(project?._id)}
                         >

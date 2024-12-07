@@ -27,6 +27,20 @@ const KpiBlock: React.FC<{
   title: string;
   value: number;
 }> = ({ svg, title, value }) => {
+
+  const formatCurrency = (value) => {
+    try {
+      if (value == null || isNaN(value)) return `${value} €`;
+      const number = parseFloat(value).toFixed(2); 
+      let [integer, decimal] = number.split('.'); 
+      integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); 
+      return `${integer},${decimal} €`; 
+    } catch (error) {
+      return  `${value} €`; 
+    }
+  };
+  
+
   return (
     <div className="flex items-center gap-4 rounded-sm border border-stroke bg-white pl-6 pr-2 py-8 shadow-default dark:border-strokedark dark:bg-boxdark">
       <div>
@@ -37,7 +51,7 @@ const KpiBlock: React.FC<{
       <div>
         <p className="text-black/70  dark:text-white/70">{title}</p>
         <h1 className="text-black dark:text-white font-medium text-2xl">
-          € {value}
+          {formatCurrency(value)}
         </h1>
       </div>
     </div>
@@ -54,6 +68,8 @@ const KpiCard: React.FC<KpiCardProps> = ({
   margin,
 }) => {
   const { t } = useTranslation();
+
+  
 
   const kpiSVG = [
     {

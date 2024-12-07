@@ -197,13 +197,13 @@ const FreelancerOverview: React.FC = () => {
               <div className="flex gap-x-2">
                 <button
                   onClick={clearFilters}
-                  className="px-2 text-md py-2 bg-red-500 text-white rounded cursor-pointer"
+                  className="px-2 text-md py-2 bg-red-500 hover:bg-red-600/90 text-white rounded cursor-pointer"
                 >
                   {t('freelancer_overview.filters.clearFilters')}
                 </button>
                 <button
                   onClick={() => setFilterDropdownOpen(false)}
-                  className="px-2 py-2 text-md bg-green-500 text-white rounded cursor-pointer"
+                  className="px-2 py-2 text-md bg-green-500 hover:bg-green-600/90 text-white rounded cursor-pointer"
                 >
                  {t('freelancer_overview.filters.applyFilters')}
                 </button>
