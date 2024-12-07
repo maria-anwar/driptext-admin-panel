@@ -38,19 +38,29 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4">
                 <th className="min-w-[200px] py-4 px-4 font-semibold text-black dark:text-white">
-                {t('freelancer_overview.freelancer_overview_table.tableHeaders.name')}
+                  {t(
+                    "freelancer_overview.freelancer_overview_table.tableHeaders.name"
+                  )}
                 </th>
                 <th className="min-w-[220px] py-4 px-4 font-semibold text-black dark:text-white">
-                {t('freelancer_overview.freelancer_overview_table.tableHeaders.gmail')}
+                  {t(
+                    "freelancer_overview.freelancer_overview_table.tableHeaders.gmail"
+                  )}
                 </th>
                 <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
-                {t('freelancer_overview.freelancer_overview_table.tableHeaders.role')}
+                  {t(
+                    "freelancer_overview.freelancer_overview_table.tableHeaders.role"
+                  )}
                 </th>
                 <th className="min-w-[180px]  py-4 px-4 font-semibold text-black dark:text-white">
-                {t('freelancer_overview.freelancer_overview_table.tableHeaders.reliabilityStatus')}
+                  {t(
+                    "freelancer_overview.freelancer_overview_table.tableHeaders.reliabilityStatus"
+                  )}
                 </th>
                 <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
-                {t('freelancer_overview.freelancer_overview_table.tableHeaders.textQualityStatus')}
+                  {t(
+                    "freelancer_overview.freelancer_overview_table.tableHeaders.textQualityStatus"
+                  )}
                 </th>
               </tr>
             </thead>
@@ -58,9 +68,16 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
               {paginatedfreelancers.map((freelancer) => (
                 <tr className="text-left" key={freelancer._id}>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <div className="flex justify-start items-center gap-x-2">
+                      <p className="text-black uppercase w-7 h-7 text-center dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs  flex justify-center items-center">
+                        {freelancer?.freelancer?.firstName.charAt(0)}
+                        {freelancer?.freelancer?.lastName === "-" ? "" : freelancer?.freelancer?.lastName.charAt(0)}
+                      </p>
                     <p className="text-black dark:text-white capitalize">
-                      {freelancer?.freelancer?.firstName} {freelancer?.freelancer?.lastName}
+                      {freelancer?.freelancer?.firstName}{" "}
+                      {freelancer?.freelancer?.lastName}
                     </p>
+                    </div>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
@@ -71,10 +88,10 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                     <p className="text-black dark:text-white">
                       {freelancer?.role}
                     </p>
-                  </td>            
+                  </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
-                      className={`w-4 h-4 rounded-full ml-[60px] transition-all duration-300 ease-in-out ${
+                      className={`w-4 h-4 relative group rounded-full ml-[60px] transition-all duration-300 ease-in-out ${
                         freelancer?.deadlineTasks <= 10
                           ? "bg-green-500"
                           : freelancer?.deadlineTasks >= 11 &&
@@ -82,11 +99,15 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                           ? "bg-yellow-500"
                           : "bg-red-500"
                       }`}
-                    />
+                    >
+                      <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-8 left-2  transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-3 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        {freelancer?.deadlineTasks}
+                      </div>
+                    </div>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div
-                      className={`w-4 h-4 rounded-full ml-[68px] transition-all duration-300 ease-in-out ${
+                      className={`w-4 h-4 relative group rounded-full ml-[68px] transition-all duration-300 ease-in-out ${
                         freelancer?.returnTasks <= 10
                           ? "bg-green-500"
                           : freelancer?.returnTasks >= 11 &&
@@ -94,7 +115,11 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                           ? "bg-yellow-500"
                           : "bg-red-500"
                       }`}
-                    />
+                    >
+                      <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-8 left-2  transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-3 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        {freelancer?.returnTasks}
+                      </div>
+                    </div>
                   </td>
                 </tr>
               ))}

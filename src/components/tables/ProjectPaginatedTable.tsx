@@ -98,8 +98,8 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
         <p className="dark:text-white text-black text-xs text-center py-1">
           {label}
         </p>
-        <p className="text-black w-6 h-6 dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
-          {getInitials(name)}
+        <p className="text-black uppercase w-7 h-7 text-center dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs  flex justify-center items-center">
+        {getInitials(name)}
         </p>
       </div>
     );
@@ -131,7 +131,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                 <th className="min-w-[230px] py-4 px-4 font-semibold text-black dark:text-white">
                   {t("projects.tasks")}
                 </th>
-                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[160px] py-4 px-4 font-semibold text-black dark:text-white">
                   {t("projects.team")}
                 </th>
                 <th className="min-w-[100px] py-4 px-4 font-medsemiboldium text-black dark:text-white">

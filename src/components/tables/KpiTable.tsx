@@ -80,8 +80,8 @@ const KpiTable: React.FC<KpiTableProps> = ({ users }) => {
                 <tr className="text-left" key={user?._id}>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex justify-start items-center">
-                      <p className="text-black uppercase dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs px-1 py-1 flex justify-center items-center">
-                        {user?.firstName.charAt(0)}
+                    <p className="text-black uppercase w-7 h-7 text-center dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs  flex justify-center items-center">
+                    {user?.firstName.charAt(0)}
                         {user?.lastName === "-" ? "" : user?.lastName.charAt(0)}
                       </p>
                       <p className="text-black pl-2 dark:text-white capitalize">
