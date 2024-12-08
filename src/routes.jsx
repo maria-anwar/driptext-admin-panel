@@ -27,8 +27,7 @@ const WebRoutes = () => {
         <Routes>
           <Route path="/" element={<SignIn />} />
           <Route path="/auth/lost/request" element={<PassRequest />} />
-          <Route path="/redirectroute/:data" element={<RedirectRoute />} />
-
+          <Route path="/redirectroute" element={<RedirectRoute />} />
           <Route
             path="/dashboard"
             element={
