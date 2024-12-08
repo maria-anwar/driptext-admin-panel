@@ -31,7 +31,6 @@ const TaskDetails: React.FC = () => {
       .then((response) => {
         const task = response?.data?.data;
         setTaskDetails(task);
-        console.log("task", task);
         setproject(task.project);
         setLoading(false);
       })

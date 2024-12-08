@@ -68,7 +68,6 @@ const ProjectsDetails: React.FC = () => {
         setUserData(allProjects.user);
         setProjectTasks(allProjects.projectTasks);
         setOnBoarding(allProjects.onBoardingInfo);
-        console.log(allProjects);
         setLoading(false);
       })
       .catch((err) => {

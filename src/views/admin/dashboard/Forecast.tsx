@@ -27,7 +27,6 @@ const Forecast: React.FC = () => {
     let payload = {
       clientId: clientId,
     };
-    console.log("payload", payload);
     await axios
       .post(`${import.meta.env.VITE_DB_URL}/admin/getForecasting`, payload)
       .then((response) => {
