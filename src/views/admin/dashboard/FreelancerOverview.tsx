@@ -56,7 +56,6 @@ const FreelancerOverview: React.FC = () => {
     await axios
       .get(`${import.meta.env.VITE_DB_URL}/admin/getFreelancerTrafficLights`)
       .then((response) => {
-        console.log(response.data.data);
         setCostTraficData(response.data.data);
         setFilteredFreelancers(response.data.data);
         setLoading(false);

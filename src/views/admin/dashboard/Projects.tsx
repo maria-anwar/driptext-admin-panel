@@ -9,18 +9,32 @@ import { Link } from "react-router-dom";
 import ProjectPaginatedTable from "../../../components/tables/ProjectPaginatedTable";
 import ProjectCard from "../../../components/tables/ProjectCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { Freelancer, Project } from "../../../Types/Type";
 import { debounce } from "lodash";
 import useTitle from "../../../hooks/useTitle";
 import { useTranslation } from "react-i18next";
+import { setUser } from "../../../redux/userSlice";
 
 const Projects: React.FC = () => {
   const { t } = useTranslation();
   useTitle(t("projects.overview"));
-
+  const dispatch = useDispatch();
+  const urlParams = new URLSearchParams(window.location.search);
+  const dataString = urlParams.get('data');
+  const data = dataString ? JSON.parse(dataString) : null;
+  dispatch(setUser(data));
   const user = useSelector<any>((state) => state.user);
+  const expirationTime = Date.now() + 12 * 60 * 60 * 1000;
+  localStorage.setItem(
+    "key",
+    JSON.stringify({
+      token: data.data.token,
+      role: data.data.data.user.role.title,
+      expiration: expirationTime,
+    })
+  );
   const [loading, setLoading] = useState<boolean>(true);
   const [showCard, setShowCard] = useState<boolean>(false);
   const [showDraft, setShowDraft] = useState<boolean>(false);
