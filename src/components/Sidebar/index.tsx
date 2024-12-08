@@ -220,14 +220,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <hr className="text-zinc-600" />
         <ul>
           <li className="">
-            <NavLink
+             <a href={'https://driptext-app.vercel.app'} target="_self"
               onClick={handleLogout}
-              to="/"
+
               className={`group relative    flex items-center gap-2.5 rounded-sm py-4 px-4 lg:px-8 font-medium hover:text-bodydark1 text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4`}
             >
               {SidebarIcons[3].auth}
               {t("logout")}
-            </NavLink>
+            </a>
           </li>
         </ul>
       </div>
