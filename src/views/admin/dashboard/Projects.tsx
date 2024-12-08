@@ -5,37 +5,22 @@ import {
   faTrashAlt,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ProjectPaginatedTable from "../../../components/tables/ProjectPaginatedTable";
 import ProjectCard from "../../../components/tables/ProjectCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import { Freelancer, Project } from "../../../Types/Type";
 import { debounce } from "lodash";
 import useTitle from "../../../hooks/useTitle";
 import { useTranslation } from "react-i18next";
-import { setUser } from "../../../redux/userSlice";
 
 const Projects: React.FC = () => {
   const { t } = useTranslation();
   useTitle(t("projects.overview"));
-  const dispatch = useDispatch();
-  const location = useLocation();  // Get the location object
-  const queryParams = new URLSearchParams(location.search);  // Parse the query string
-  const dataString = queryParams.get('data');
-  const data = dataString ? JSON.parse(dataString) : null;
-  dispatch(setUser(data));
+
   const user = useSelector<any>((state) => state.user);
-  const expirationTime = Date.now() + 12 * 60 * 60 * 1000;
-  localStorage.setItem(
-    "key",
-    JSON.stringify({
-      token: data.data.token,
-      role: data.data.data.user.role.title,
-      expiration: expirationTime,
-    })
-  );
   const [loading, setLoading] = useState<boolean>(true);
   const [showCard, setShowCard] = useState<boolean>(false);
   const [showDraft, setShowDraft] = useState<boolean>(false);
