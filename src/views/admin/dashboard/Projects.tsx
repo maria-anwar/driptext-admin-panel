@@ -5,7 +5,7 @@ import {
   faTrashAlt,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ProjectPaginatedTable from "../../../components/tables/ProjectPaginatedTable";
 import ProjectCard from "../../../components/tables/ProjectCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,8 +21,9 @@ const Projects: React.FC = () => {
   const { t } = useTranslation();
   useTitle(t("projects.overview"));
   const dispatch = useDispatch();
-  const urlParams = new URLSearchParams(window.location.search);
-  const dataString = urlParams.get('data');
+  const location = useLocation();  // Get the location object
+  const queryParams = new URLSearchParams(location.search);  // Parse the query string
+  const dataString = queryParams.get('data');
   const data = dataString ? JSON.parse(dataString) : null;
   dispatch(setUser(data));
   const user = useSelector<any>((state) => state.user);

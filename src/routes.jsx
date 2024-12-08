@@ -29,7 +29,7 @@ const WebRoutes = () => {
           <Route path="/auth/lost/request" element={<PassRequest />} />
 
           <Route
-            path="/dashboard"
+            path="/dashboard/:data"
             element={
               <ProtectedRoute
                 element={<DefaultLayout />}
