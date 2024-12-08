@@ -17,7 +17,7 @@ import Tracking from "./views/admin/dashboard/Tracking";
 import Forecast from "./views/admin/dashboard/Forecast";
 import NotFound from './views/NotFound';
 import FreelancerOverview from "./views/admin/dashboard/FreelancerOverview";
-
+import RedirectRoute from "./views/auth/RedirectRoute";
 
 const WebRoutes = () => {
   return (
@@ -27,9 +27,10 @@ const WebRoutes = () => {
         <Routes>
           <Route path="/" element={<SignIn />} />
           <Route path="/auth/lost/request" element={<PassRequest />} />
+          <Route path="/redirectroute/:data" element={<RedirectRoute />} />
 
           <Route
-            path="/dashboard/:data"
+            path="/dashboard"
             element={
               <ProtectedRoute
                 element={<DefaultLayout />}
