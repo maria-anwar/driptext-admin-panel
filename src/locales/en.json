@@ -754,8 +754,8 @@
         "role": "Role",
         "reliabilityStatus": "Reliability Status",
         "textQualityStatus": "Text Quality Status",
-        "totalDeadline": "Total Deadline",
-        "totalReturn": "Total Return",
+        "totalDeadline": "Total Deadlines missed",
+        "totalReturn": "Total returns",
         "deadline": "Deadline",
         "return": "Return"
       }
