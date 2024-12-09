@@ -757,7 +757,11 @@
         "totalAssigned": "Gesamt zugewiesen",
         "role": "Rolle",
         "reliabilityStatus": "Zuverlässigkeitsstatus",
-        "textQualityStatus": "Textqualitätsstatus"
+        "textQualityStatus": "Textqualitätsstatus",
+        "totalDeadline": "Gesamtfrist",
+        "totalReturn": "Gesamtrückgabe",
+        "deadline": "Frist",
+        "return": "Rückgabe"
       }
     }
   }

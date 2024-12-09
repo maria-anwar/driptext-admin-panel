@@ -753,7 +753,11 @@
         "totalAssigned": "Total Assigned",
         "role": "Role",
         "reliabilityStatus": "Reliability Status",
-        "textQualityStatus": "Text Quality Status"
+        "textQualityStatus": "Text Quality Status",
+        "totalDeadline": "Total Deadline",
+        "totalReturn": "Total Return",
+        "deadline": "Deadline",
+        "return": "Return"
       }
     }
   }
