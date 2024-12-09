@@ -685,7 +685,7 @@
     ],
     "actions": {
       "tracking": "Tracking",
-     "forecast": "Prognose"
+      "forecast": "Prognose"
     }
   },
   "track_forcast": {
