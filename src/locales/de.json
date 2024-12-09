@@ -758,8 +758,8 @@
         "role": "Rolle",
         "reliabilityStatus": "Zuverlässigkeitsstatus",
         "textQualityStatus": "Textqualitätsstatus",
-        "totalDeadline": "Gesamtfrist",
-        "totalReturn": "Gesamtrückgabe",
+        "totalDeadline": "Gesamtzahl der verpassten Fristen",
+        "totalReturn": "Gesamtzahl der Rückgaben",
         "deadline": "Frist",
         "return": "Rückgabe"
       }
