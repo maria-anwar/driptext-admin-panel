@@ -756,8 +756,8 @@
         "textQualityStatus": "Text Quality Status",
         "totalDeadline": "Total Deadlines missed",
         "totalReturn": "Total returns",
-        "deadline": "Deadline",
-        "return": "Return"
+        "deadline": "Deadlines missed",
+        "return": "Returns"
       }
     }
   }

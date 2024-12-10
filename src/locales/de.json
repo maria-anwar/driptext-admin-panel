@@ -760,8 +760,8 @@
         "textQualityStatus": "Textqualitätsstatus",
         "totalDeadline": "Gesamtzahl der verpassten Fristen",
         "totalReturn": "Gesamtzahl der Rückgaben",
-        "deadline": "Frist",
-        "return": "Rückgabe"
+        "deadline": "Fristen verpasst",
+        "return": "Rückgaben"
       }
     }
   }

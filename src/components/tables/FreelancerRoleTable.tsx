@@ -15,6 +15,7 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
   const { t } = useTranslation();
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  console.log(freelancers);
 
   const totalReturnTasks = freelancers
     .map((freelancer) => freelancer.returnTasks)
@@ -44,23 +45,23 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
         <div className="max-w-full overflow-x-auto px-4 py-2">
           <table className="w-full table-auto">
             <thead>
-              <tr className="bg-gray-3 text-left dark:bg-meta-4">
-                <th className="min-w-[200px] py-4 px-4 font-semibold text-black dark:text-white">
+              <tr className="bg-gray-3 text-left dark:bg-meta-4 ">
+                <th className="min-w-[200px] py-5 px-4 font-semibold text-black dark:text-white">
                   {t(
                     "freelancer_overview.freelancer_overview_table.tableHeaders.name"
                   )}
                 </th>
-                <th className="min-w-[220px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[220px] py-5 px-4 font-semibold text-black dark:text-white">
                   {t(
                     "freelancer_overview.freelancer_overview_table.tableHeaders.gmail"
                   )}
                 </th>
-                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[180px] py-5 px-4 font-semibold text-black dark:text-white">
                   {t(
                     "freelancer_overview.freelancer_overview_table.tableHeaders.role"
                   )}
                 </th>
-                <th className="min-w-[180px]  py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[180px]  py-5 px-4 font-semibold text-black dark:text-white">
                   <div className={"relative group "}>
                     {t(
                       "freelancer_overview.freelancer_overview_table.tableHeaders.reliabilityStatus"
@@ -72,7 +73,7 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                     </div>
                   </div>
                 </th>
-                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[180px] py-5 px-4 font-semibold text-black dark:text-white">
                   <div className={"relative group "}>
                     {t(
                       "freelancer_overview.freelancer_overview_table.tableHeaders.textQualityStatus"
@@ -127,7 +128,7 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                       <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-8 left-2  transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-3 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                       {t(
                       "freelancer_overview.freelancer_overview_table.tableHeaders.deadline"
-                    )}: {freelancer?.deadlineTasks}
+                    )}: {freelancer?.deadlineTasks}/{freelancer?.totalTasks}
                       </div>
                     </div>
                   </td>
@@ -145,7 +146,7 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                       <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-8 left-2  transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-3 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                       {t(
                       "freelancer_overview.freelancer_overview_table.tableHeaders.return"
-                    )}: {freelancer?.returnTasks}
+                    )}: {freelancer?.returnTasks}/{freelancer?.totalTasks}
                       </div>
                     </div>
                   </td>
