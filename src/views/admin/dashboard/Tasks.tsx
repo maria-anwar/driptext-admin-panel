@@ -249,6 +249,10 @@ const Tasks: React.FC = () => {
                     setDateRangeFilter(dates ? [dates[0], dates[1]] : null);
                   }}
                   className="w-full"
+                  placeholder={[
+                    t("filters.dateRange.start"),
+                    t("filters.dateRange.end"),
+                  ]}
                 />
               </div>
 

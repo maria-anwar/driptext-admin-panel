@@ -163,7 +163,7 @@ const FreelancerOverview: React.FC = () => {
                   {t('freelancer_overview.filters.textReliability')}
                 </label>
                 <Select
-                  placeholder="Select Reliability"
+                  placeholder={t('freelancer_overview.filters.reliabilityPlaceholder')}
                   onChange={(value) => setReliabilityFilter(value)}
                   allowClear={false}
                   className="w-full"
@@ -180,7 +180,7 @@ const FreelancerOverview: React.FC = () => {
                 {t('freelancer_overview.filters.textQuality')}
                 </label>
                 <Select
-                  placeholder="Select Quality"
+                  placeholder={t('freelancer_overview.filters.qualityPlaceholder')}
                   onChange={(value) => setQualityFilter(value)}
                   allowClear={false}
                   className="w-full"

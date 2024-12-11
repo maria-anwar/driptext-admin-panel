@@ -51,7 +51,7 @@ const Export: React.FC<{ id: string; taskLength: number }> = ({
       onClick={() => {
         handleExportData(id);
       }}
-      className="w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none ml-1.5 flex justify-center items-center border-none"
+      className="w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none flex justify-center items-center border-none"
     >
       {exportLoader ? (
         <div className="flex items-center justify-center">

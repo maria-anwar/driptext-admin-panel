@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 const NotFound = () => {
@@ -25,12 +24,13 @@ const NotFound = () => {
             {t("notFound.description")} {/* Use translation for the description */}
           </p>
         </div>
-        <Link 
-          to="/" 
+        <a 
+          href='https://driptext-app.vercel.app/'
+          target='_self'
           className="capitalize text-lg md:text-xl font-light px-6 py-3 border border-yellow-400 rounded-lg shadow-md transition ease-in-out duration-300 hover:bg-yellow-400 hover:text-white"
         >
           {t("notFound.backToHome")} {/* Use translation for the "back to home" text */}
-        </Link>
+        </a>
       </div>
     </main>
   );

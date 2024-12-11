@@ -194,7 +194,7 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({
                           </div>
                         </div>
                       )}
-                      {user?.role?.title === "ProjectManger" ? (
+                      {/* {user?.role?.title === "ProjectManger" ? (
                         <div className="relative group">
                           <div
                             className="ring-1 w-6 h-6 flex justify-center items-center rounded cursor-pointer ring-green-500 bg-green-500 mx-3"
@@ -206,7 +206,6 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({
                             />
                           </div>
 
-                          {/* Tooltip */}
                           <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-7 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                             {t(
                               "user.userPaginatedTable.table.actions.editProjectManager"
@@ -215,7 +214,7 @@ const UserPaginatedTable: React.FC<PaginatedTableProps> = ({
                         </div>
                       ) : (
                         <p></p>
-                      )}
+                      )} */}
                     </div>
                   </td>
                 </tr>

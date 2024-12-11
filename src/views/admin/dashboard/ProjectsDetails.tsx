@@ -26,6 +26,7 @@ import {
 import format from "date-fns/format";
 import useTitle from "../../../hooks/useTitle";
 import { useTranslation } from "react-i18next";
+import AddModel from "../../../components/ProjectDetails/AddTask";
 
 const ProjectsDetails: React.FC = () => {
   const { t } = useTranslation();
@@ -45,6 +46,7 @@ const ProjectsDetails: React.FC = () => {
   const [userToken, setUserToken] = useState(user.user.token);
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [editManager, setEditManager] = useState<boolean>(false);
+  const [addModel, setAddModel] = useState(false);
 
   useEffect(() => {
     getTaskData();
@@ -170,7 +172,7 @@ const ProjectsDetails: React.FC = () => {
     }
   };
 
-  const allRoles = ["Texter", "Lector","SEO-Optimizer","Meta-lector"];
+  const allRoles = ["Texter", "Lector", "SEO-Optimizer", "Meta-lector"];
 
   const handleMembers = () => {
     setMemberModel(true);
@@ -199,8 +201,14 @@ const ProjectsDetails: React.FC = () => {
     <>
       <div>
         <div className="mx-auto">
-          <Breadcrumb pageName={t("projectDetails.breadcrumb.pageName")} />
-        
+          <Breadcrumb
+            pageName={t("projectDetails.breadcrumb.pageName")}
+            link={` ${projectDetails?.projectId ?? ""}${
+              projectDetails?.projectId ? ":" : ""
+            }${projectDetails?.projectName ?? ""}`}
+            linkshift={" / "}
+          />
+
           {loading ? (
             <div className="grid grid-cols-5 gap-8">
               <div className="col-span-5 xl:col-span-3 rounded-sm border border-stroke  pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1   w-full bg-slate-200 h-[350px] animate-pulse"></div>
@@ -223,7 +231,6 @@ const ProjectsDetails: React.FC = () => {
                         projectId={projectDetails?.projectId}
                         projectName={projectDetails?.projectName}
                         _id={projectDetails?._id}
-                        userId={userData?._id}
                         onBoarding={onBoarding}
                         getTaskData={getTaskData}
                         speech={projectDetails?.speech}
@@ -232,6 +239,7 @@ const ProjectsDetails: React.FC = () => {
                         firstName={userData?.firstName}
                         lastName={userData?.lastName}
                         email={userData?.email}
+                        folderLink={projectDetails?.folderLink}
                       />
                       <AccordionData
                         speech={projectDetails?.speech}
@@ -240,49 +248,8 @@ const ProjectsDetails: React.FC = () => {
                         onBoarding={onBoarding}
                       />
 
-                      <div className="pt-1 pb-3">
-                        <h2>{t("projectDetails.folder.heading")}</h2>
-                        <a
-                          href={projectDetails?.folderLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-500 w-max underline-none flex justify-start items-center py-1 relative group"
-                        >
-                          <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-5.5 h-5.5"
-                          >
-                            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                            <g
-                              id="SVGRepo_tracerCarrier"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            ></g>
-                            <g id="SVGRepo_iconCarrier">
-                              <path
-                                d="M20 4L12 12M20 4V8.5M20 4H15.5M19 12.5V16.8C19 17.9201 19 18.4802 18.782 18.908C18.5903 19.2843 18.2843 19.5903 17.908 19.782C17.4802 20 16.9201 20 15.8 20H7.2C6.0799 20 5.51984 20 5.09202 19.782C4.71569 19.5903 4.40973 19.2843 4.21799 18.908C4 18.4802 4 17.9201 4 16.8V8.2C4 7.0799 4 6.51984 4.21799 6.09202C4.40973 5.71569 4.71569 5.40973 5.09202 5.21799C5.51984 5 6.07989 5 7.2 5H11.5"
-                                stroke="#3b82f6"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              ></path>
-                            </g>
-                          </svg>
-
-                          <span className="px-1">
-                            {projectDetails.projectId}
-                          </span>
-
-                          {/* Custom Tooltip */}
-                          <span className=" shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-6 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                         {t("projectDetails.folder.tooltip")}
-                          </span>
-                        </a>
-                      </div>
                       <progress
-                        className="custom-progress"
+                        className="custom-progress mt-4"
                         value={projectDetails.finalTasks}
                         max={plan.totalTexts}
                       ></progress>
@@ -320,7 +287,7 @@ const ProjectsDetails: React.FC = () => {
                         />
                         <div>
                           <p className="text-xs text-slate-700 dark:text-slate-300 ">
-                          {t("projectDetails.taskStatus.performancePeriod")}
+                            {t("projectDetails.taskStatus.performancePeriod")}
                           </p>
                           <p className="text-black dark:text-white">
                             {typeof plan?.endDate === "string"
@@ -340,40 +307,53 @@ const ProjectsDetails: React.FC = () => {
                       <h3 className="font-medium text-black dark:text-white">
                         {t("projectDetails.projectMembers.heading")}
                       </h3>
-                      {!(projectDetails.lector &&
-                        projectDetails.seo  &&
-                        projectDetails.texter  && projectDetails.metaLector) ? (
-                      <p
-                        className="relative group w-5 h-5 bg-blue-500 text-white flex items-center justify-center cursor-pointer"
-                        onClick={handleMembers}
-                      >
-                        <FontAwesomeIcon icon={faPlus} className="text-sm" />
+                      {!(
+                        projectDetails.lector &&
+                        projectDetails.seo &&
+                        projectDetails.texter &&
+                        projectDetails.metaLector
+                      ) ? (
+                        <p
+                          className="relative group w-5 h-5 bg-blue-500 text-white flex items-center justify-center cursor-pointer"
+                          onClick={handleMembers}
+                        >
+                          <FontAwesomeIcon icon={faPlus} className="text-sm" />
 
-                        {/* Tooltip */}
-                        <div className=" shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-7 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                        {t("projectDetails.projectMembers.addFreelancerButton")}
-                        </div>
-                      </p>
-                        ) : null}
+                          {/* Tooltip */}
+                          <div className=" shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-7 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                            {t(
+                              "projectDetails.projectMembers.addFreelancerButton"
+                            )}
+                          </div>
+                        </p>
+                      ) : null}
                     </div>
                     <div className="px-7">
                       <TaskMembers
-                        label={t("projectDetails.projectMembers.freelancerRole.texter")}
+                        label={t(
+                          "projectDetails.projectMembers.freelancerRole.texter"
+                        )}
                         handleMembers={handleMembers}
                         name={showAssignedRoles(projectDetails.texter) ?? ""}
                       />
                       <TaskMembers
-                        label={t("projectDetails.projectMembers.freelancerRole.lector")}
+                        label={t(
+                          "projectDetails.projectMembers.freelancerRole.lector"
+                        )}
                         handleMembers={handleMembers}
                         name={showAssignedRoles(projectDetails.lector) ?? ""}
                       />
                       <TaskMembers
-                        label={t("projectDetails.projectMembers.freelancerRole.seo")}
+                        label={t(
+                          "projectDetails.projectMembers.freelancerRole.seo"
+                        )}
                         handleMembers={handleMembers}
                         name={showAssignedRoles(projectDetails?.seo) ?? ""}
                       />
                       <TaskMembers
-                        label={t("projectDetails.projectMembers.freelancerRole.metaLector")}
+                        label={t(
+                          "projectDetails.projectMembers.freelancerRole.metaLector"
+                        )}
                         handleMembers={handleMembers}
                         name={
                           showAssignedRoles(projectDetails?.metaLector) ?? ""
@@ -387,8 +367,30 @@ const ProjectsDetails: React.FC = () => {
             </>
           )}
           <div className="pt-14">
-            <div className="flex justify-end items-end">
+            <div className="flex justify-end items-center gap-3">
               {/* Import Icon with Tooltip */}
+              <div className="relative group">
+                <button
+                  onClick={() => setAddModel(true)}
+                  disabled={!onBoarding}
+                  className="w-10 h-10 text-center bg-blue-500 text-white rounded-none my-2 flex justify-center items-center border-none"
+                >
+                  <FontAwesomeIcon icon={faPlus} className="text-sm px-2" />
+                </button>
+                {/* Tooltip for Add Icon */}
+                <div className=" shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-5 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  {t("projectDetails.addTask.label")}
+                </div>
+                {addModel && (
+                  <AddModel
+                    projectName={projectDetails?.projectName}
+                    projectId={projectDetails?._id}
+                    userId={userData?._id}
+                    handleCloseAdd={() => setAddModel(false)}
+                    getTaskData={getTaskData}
+                  />
+                )}
+              </div>
               <div className="relative group">
                 <Import
                   id={projectDetails._id}
@@ -400,13 +402,13 @@ const ProjectsDetails: React.FC = () => {
               </div>
 
               {/* Export Icon with Tooltip */}
-              <div className="relative group ml-4">
+              <div className="relative group">
                 <Export
                   id={projectDetails._id}
                   taskLength={projectTasks.length}
                 />
                 <span className=" shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-7 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                {t("projectDetails.importExport.exportButtonTooltip")}
+                  {t("projectDetails.importExport.exportButtonTooltip")}
                 </span>
               </div>
             </div>

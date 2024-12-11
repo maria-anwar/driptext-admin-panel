@@ -3,8 +3,10 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 interface BreadcrumbProps {
   pageName: string;
+  link?: string;
+  linkshift?: string;
 }
-const Breadcrumb = ({ pageName }: BreadcrumbProps) => {
+const Breadcrumb = ({ pageName ,link,linkshift}: BreadcrumbProps) => {
   const {t} = useTranslation();
   return (
     <div className="mb-6 flex flex-col gap-6  items-start justify-start">
@@ -18,11 +20,11 @@ const Breadcrumb = ({ pageName }: BreadcrumbProps) => {
               {t('projects.dashboard')}
             </Link>
           </li>
-          <li className="font-medium text-primary">{pageName}</li>
+          <li className="font-medium text-primary">{pageName}{linkshift}{link}</li>
         </ol>
       </nav>
       <h2 className="text-title-md2 font-semibold text-black dark:text-white">
-        {pageName}
+        {link ? `${pageName} details zu ${link}` : `${pageName}`}
       </h2>
     </div>
   );

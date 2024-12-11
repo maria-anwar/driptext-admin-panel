@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Freelancer, Project } from "../../Types/Type";
 import getInitials from "../Helpers/UpperCaseName";
 import formatDate from "../Helpers/DateFormat";
+import { useTranslation } from "react-i18next";
 
 interface ProjectCardProps {
   projects: Project[];
@@ -11,6 +12,7 @@ interface ProjectCardProps {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ projects, freelancer }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const showAssignedRoles = (memberId: string | null) => {
     const foundFreelancer = freelancer.find((f) => f._id === memberId);
@@ -119,7 +121,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects, freelancer }) => {
           <div className="mt-5 mb-3 flex items-end justify-between pt-8">
             <div className="text-sm font-medium text-dark-gray"></div>
             <div className="text-sm font-medium text-dark-gray">
-              Created on
+             {t("projects.createdOn")}
               <div className="text-meta-3 flex justify-end">
                 {formatDate(project.createdAt)}
               </div>
@@ -127,13 +129,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects, freelancer }) => {
           </div>
           <div className="mt-5 mb-3 flex items-end justify-between">
             <div className="text-sm font-medium text-dark-gray">
-              Tasks
+            {t("projects.tasks")}
               <div className="text-meta-5 flex justify-end flex-col">
                 {project.plan.textsCount}/{project.plan.totalTexts}
               </div>
             </div>
             <div className="text-sm font-medium text-dark-gray">
-              Performance Period{" "}
+            {t("projects.performancePeriod")}{" "}
               <div
                 className={`flex  justify-end text-meta-5 rounded-full text-center py-1 px-1 text-sm ${
                   project.plan.endDate === null ? "text-red-500" : "text-meta-5"

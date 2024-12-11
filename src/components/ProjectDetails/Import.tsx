@@ -87,7 +87,7 @@ const Import: React.FC<{ id: string,handleRefreshData:()=> void }> = ({ id,handl
       <button
         onClick={handleImport}
         disabled={importLoader}
-        className={`w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none mr-1.5 flex justify-center items-center border-none ${importLoader ? "cursor-not-allowed" : "cursor-pointer"}`}
+        className={`w-10 h-10 text-center bg-slate-100 text-blue-500 hover:bg-blue-500 hover:text-white rounded-none flex justify-center items-center border-none ${importLoader ? "cursor-not-allowed" : "cursor-pointer"}`}
       >
         <FontAwesomeIcon icon={faDownload} className="text-sm px-2" />
       </button>
