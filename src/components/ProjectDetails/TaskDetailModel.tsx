@@ -118,6 +118,10 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   });
 
   const handleRoleSelect = (role: string, memberId: number) => {
+    setDropdownVisible(null);
+    handleCloseMemberModel();
+    closeModel();
+
     const token = userToken;
     axios.defaults.headers.common["access-token"] = token;
 
@@ -135,18 +139,13 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
       )
       .then((response) => {
         const projectDataArray = response;
-        console.log(payload);
-        console.log(projectDataArray);
-        setDropdownVisible(null);
         handleRefreshData();
-        handleCloseMemberModel();
       })
       .catch((err) => {
         console.error(
           "Error fetching project details:",
           err.response || err.message || err
         );
-        setDropdownVisible(null);
       });
   };
 
@@ -204,7 +203,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
       );
       if (response.status === 200) {
         handleRefreshData();
-        closeModel();
+        
       }
     } catch (error) {
       const err = error.response.data.message || "Failed to update task";
