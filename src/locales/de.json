@@ -85,7 +85,6 @@
     "open": "Offen",
     "final": "Abgeschlossen",
     "total": "Insgesamt"
-
   },
   "overviewtask": "Übersicht der Tasks",
   "breadcrumb": {
@@ -115,11 +114,25 @@
     },
     "dateRange": {
       "label": "Zeitraum",
-      "start":"von",
-      "end":"bis"
+      "start": "von",
+      "end": "bis"
     },
     "month": {
-      "label": "Filter nach Kalendermonat"
+      "label": "Filter nach Kalendermonat",
+      "months": [
+        "Januar",
+        "Februar",
+        "März",
+        "April",
+        "Mai",
+        "Juni",
+        "Juli",
+        "August",
+        "September",
+        "Oktober",
+        "November",
+        "Dezember"
+      ]
     },
     "role": {
       "label": "Filter nach Freelancer-Rollen",
@@ -207,6 +220,7 @@
     "addUser": "Benutzer hinzufügen",
     "settings": "Einstellungen",
     "showInactive": "Inaktive Benutzer anzeigen",
+    "hideInactive": "Inaktive Benutzer ausblenden",
     "toggle": {
       "leads": {
         "show": "Leads anzeigen",
@@ -741,7 +755,7 @@
         "3": "Rot: 25+ verpasste Fristen"
       },
       "qualityOptions": {
-       "1": "Grün: 0 - 10 verpasste Fristen",
+        "1": "Grün: 0 - 10 verpasste Fristen",
         "2": "Gelb: 11 - 25 verpasste Fristen",
         "3": "Rot: 25+ verpasste Fristen"
       },

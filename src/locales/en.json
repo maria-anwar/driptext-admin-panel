@@ -118,7 +118,21 @@
       "end": "End Date"
     },
     "month": {
-      "label": "Month"
+      "label": "Month",
+      "months": [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ]
     },
     "role": {
       "label": "Freelancer role",
@@ -206,6 +220,7 @@
     "addUser": "Add User",
     "settings": "Settings",
     "showInactive": "Show inactive users",
+    "hideInactive": "Hide inactive users",
     "toggle": {
       "leads": {
         "show": "Show Leads",

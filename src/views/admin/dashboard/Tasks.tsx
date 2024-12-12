@@ -97,7 +97,9 @@ const Tasks: React.FC = () => {
     if (monthFilter) {
       filtered = filtered.filter((task) => {
         const taskDate = moment(task.dueDate);
-        return taskDate.format("MMMM") === monthFilter;
+        return (
+          taskDate.format("MMMM").toLowerCase() === monthFilter.toLowerCase()
+        );
       });
     }
 
@@ -199,7 +201,6 @@ const Tasks: React.FC = () => {
                 <Select
                   placeholder={t("filters.status.label")}
                   onChange={(value) => setStatusFilter(value)}
-                  
                   className="w-full"
                   value={statusFilter}
                 >
@@ -244,7 +245,7 @@ const Tasks: React.FC = () => {
                   {t("filters.dateRange.label")}
                 </label>
                 <RangePicker
-                allowClear={false}
+                  allowClear={false}
                   onChange={(dates, dateStrings) => {
                     setDateRangeFilter(dates ? [dates[0], dates[1]] : null);
                   }}
@@ -263,15 +264,45 @@ const Tasks: React.FC = () => {
                 <Select
                   placeholder={t("filters.month.label")}
                   onChange={(value) => setMonthFilter(value)}
-                  
                   className="w-full"
                   value={monthFilter}
                 >
-                  {moment.months().map((month) => (
-                    <Select.Option key={month} value={month}>
-                      {month}
-                    </Select.Option>
-                  ))}
+                  <Select.Option value="January">
+                    {t("filters.month.months.0")}
+                  </Select.Option>
+                  <Select.Option value="February">
+                    {t("filters.month.months.1")}
+                  </Select.Option>
+                  <Select.Option value="March">
+                    {t("filters.month.months.2")}
+                  </Select.Option>
+                  <Select.Option value="April">
+                    {t("filters.month.months.3")}
+                  </Select.Option>
+                  <Select.Option value="May">
+                    {t("filters.month.months.4")}
+                  </Select.Option>
+                  <Select.Option value="June">
+                    {t("filters.month.months.5")}
+                  </Select.Option>
+                  <Select.Option value="July">
+                    {t("filters.month.months.6")}
+                  </Select.Option>
+                  <Select.Option value="August">
+                    {t("filters.month.months.7")}
+                  </Select.Option>
+                  <Select.Option value="September">
+                    {t("filters.month.months.8")}
+                  </Select.Option>
+                  <Select.Option value="October">
+                    {t("filters.month.months.9")}
+                  </Select.Option>
+                  <Select.Option value="November">
+                    {t("filters.month.months.10")}
+                  </Select.Option>
+                  <Select.Option value="December">
+                    {t("filters.month.months.11")}
+                  </Select.Option>
                 </Select>
               </div>
               <div className="mb-4">
@@ -281,7 +312,6 @@ const Tasks: React.FC = () => {
                 <Select
                   placeholder={t("filters.role.label")}
                   onChange={(value) => setRoleFilter(value)}
-                  
                   className="w-full mr-4"
                   value={roleFilter}
                 >
