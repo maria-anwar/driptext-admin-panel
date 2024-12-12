@@ -23,7 +23,6 @@ const Users: React.FC = () => {
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const [showInactive, setShowInactive] = useState<boolean>(false); // Show all users initially
   const [search, setSearch] = useState<string>("");
-  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [toggleLeads, setToggleLeads] = useState<boolean>(false);
   const [toggleClient, setToggleClient] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -31,25 +30,6 @@ const Users: React.FC = () => {
   const [filteredUserData, setFilteredUserData] = useState<User[]>([]);
   const [showAddManager, setShowAddManager] = useState<boolean>(false);
 
-  const dropdownRef = useRef(null);
-
-  useEffect(() => {
-    // Close the dropdown if clicking outside of it
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   useEffect(() => {
     getUser();
@@ -118,9 +98,6 @@ const Users: React.FC = () => {
     setFilteredUserData(filteredData);
   };
 
-  const handleDropdownToggle = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
 
   const handleToggleLeads = () => {
     setToggleLeads(!toggleLeads);
@@ -208,7 +185,7 @@ const Users: React.FC = () => {
                   value={search}
                   onChange={handleSearchFilter}
                   placeholder={t("user.search.placeholder")}
-                  className="rounded ring-1 outline-none py-1 px-4 ring-slate-200 bg-slate-0 dark:bg-transparent w-45 lg:w-80 xl:w-80"
+                  className="rounded ring-1 outline-none py-1 px-4 ring-slate-200 bg-slate-0 dark:bg-transparent w-40 lg:w-80 xl:w-80"
                 />
               )}
 
@@ -220,7 +197,6 @@ const Users: React.FC = () => {
                   <FontAwesomeIcon icon={faSearch} />
                 </div>
 
-                {/* Tooltip for Search Icon */}
                 <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-5 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                   {t("user.search.button")}
                 </div>
@@ -256,65 +232,6 @@ const Users: React.FC = () => {
         {showAddManager ? (
           <AddManager handleClose={handleCloseManager} />
         ) : null}
-        {/* <div className="flex justify-end items-end pt-3 pb-3 pr-2">
-          <div className="relative">
-            <button
-              onClick={handleDropdownToggle}
-              className="flex items-center border-none rounded text-black bg-gray-200 dark:bg-gray-800 dark:text-white"
-            >
-              <span>{t("user.settings")}</span>
-              <FontAwesomeIcon
-                icon={faChevronDown}
-                className={`ml-2 transition-transform ${
-                  dropdownOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-
-            {dropdownOpen && (
-              <div
-                ref={dropdownRef}
-                className="absolute top-full mt-2 w-60 lg:right-0 xl:right-0 bg-white dark:bg-boxdark border border-gray-300 dark:border-gray-700 rounded shadow-lg z-10"
-              >
-                <div className="p-4 space-y-4">
-                  <div className="flex items-center text-left">
-                    <input
-                      type="checkbox"
-                      className="h-5 w-5"
-                      checked={showInactive}
-                      onChange={handleStatusToggle}
-                    />
-                    <span className="pl-2">{t("user.showInactive")}</span>
-                  </div>
-                  <div className="flex items-center text-left">
-                    <ToggleSwitch
-                      icon={toggleLeads ? faCheck : faTimes}
-                      isOn={toggleLeads}
-                      onToggle={handleToggleLeads}
-                    />
-                    <span className="pl-2">
-                      {!toggleLeads
-                        ? t("user.toggle.leads.show")
-                        : t("user.toggle.leads.hide")}
-                    </span>
-                  </div>
-                  <div className="flex items-center text-left">
-                    <ToggleSwitch
-                      icon={toggleClient ? faCheck : faTimes}
-                      isOn={toggleClient}
-                      onToggle={handleToggleClient}
-                    />
-                    <span className="pl-2">
-                      {!toggleClient
-                        ? t("user.toggle.client.show")
-                        : t("user.toggle.client.hide")}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div> */}
         {loading ? (
           <div className="rounded-sm border border-stroke mt-5 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1  w-full bg-slate-200 h-[300px] animate-pulse"></div>
         ) : (

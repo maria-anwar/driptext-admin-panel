@@ -118,7 +118,21 @@
       "end": "End Date"
     },
     "month": {
-      "label": "Month"
+      "label": "Month",
+      "months": [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ]
     },
     "role": {
       "label": "Freelancer role",
