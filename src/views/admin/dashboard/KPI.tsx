@@ -380,7 +380,6 @@ const KPI: React.FC = () => {
                   className="w-full"
                   value={projectsName || projectCostFilter}
                 >
-                  <Select.Option value="all">All Projects</Select.Option>
                   {projectData.map((project) => (
                     <Select.Option
                       key={project._id}

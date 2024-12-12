@@ -67,10 +67,10 @@ const KpiTable: React.FC<KpiTableProps> = ({ users }) => {
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
                   {t("kpi.tableHeaders.2")}
                 </th>
-                <th className="min-w-[100px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[230px] py-4 px-4 font-semibold text-black dark:text-white">
                   {t("kpi.tableHeaders.3")}
                 </th>
-                <th className="min-w-[100px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[230px] py-4 px-4 font-semibold text-black dark:text-white">
                   {t("kpi.tableHeaders.4")}
                 </th>
               </tr>

@@ -152,7 +152,7 @@ const Projects: React.FC = () => {
             {showSearch && (
               <input
                 type="text"
-                placeholder="Search by domain"
+                placeholder={t("projects.searchByDomain")}
                 value={searchQuery}
                 onChange={handleSearchChange}
                 className="rounded ring-1 outline-none py-1 px-4 ring-slate-200 bg-slate-0 dark:bg-transparent w-45 lg:w-60 xl:w-80"

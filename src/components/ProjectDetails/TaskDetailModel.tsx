@@ -229,7 +229,8 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                 <div className="space-y-1 mt-4">
                   <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-bold dark:text-white">
-                      {t("projectDetails.taskDetailModel.title")}
+                      {/* {t("projectDetails.taskDetailModel.title")} */}
+                      Details zu {task.taskName} ({task.keywords})
                     </h2>
                     <FontAwesomeIcon
                       className="cursor-pointer text-lg text-red-500 "

@@ -51,9 +51,9 @@
     "errorMessage": "Fehler beim Senden des Links"
   },
   "notFound": {
-    "title": "Sieht aus, als wären Sie verloren",
-    "description": "404 Fehler",
-    "backToHome": "Zurück zur Startseite"
+    "title": "404 - Seite konnte nicht gefunden werden",
+    "description": "Die Seite, die du aufrufen wolltest, existiert leider nicht mehr. Bitte gehe zurück auf die Startseite: ",
+    "backToHome": "Zur Startseite"
   },
   "projects": {
     "overview": "Übersicht der Projekte",
@@ -63,33 +63,37 @@
     "tableView": "Tabellenansicht",
     "archived": "Archiviert",
     "active": "Aktiv",
-    "searchByDomain": "Suche nach Domain",
+    "searchByDomain": "Bitte Domain eingeben",
     "search": "Suche",
     "status": "Status",
     "googleLink": "Google-Link",
     "domain": "Domain",
     "performancePeriod": "Leistungszeitraum",
-    "tasks": "Aufgaben",
+    "tasks": "Tasks",
     "team": "Team",
-    "onboarded": "Eingearbeitet",
+    "onboarded": "Onboarding erhalten",
     "action": "Aktion",
     "noSubscription": "Keine Abonnement",
-    "view": "Ansehen",
+    "view": "Details",
     "revert": "Rückgängig machen",
     "waitingForOnboarding": "Warten auf Onboarding",
     "ready": "Bereit",
     "createdOn": "Erstellt am",
     "freeTrial": "Kostenlose Testversion",
     "finalStatus": "Endstatus",
-    "notInitialized": "Nicht initialisiert"
+    "notInitialized": "Nicht initialisiert",
+    "open": "Offen",
+    "final": "Abgeschlossen",
+    "total": "Insgesamt"
+
   },
-  "overviewtask": "Übersicht der Aufgaben",
+  "overviewtask": "Übersicht der Tasks",
   "breadcrumb": {
-    "dashboard": "Dashboard /",
-    "tasks": "Aufgaben",
+    "dashboard": "Projekte /",
+    "tasks": "Alle Tasks",
     "taskDetail": "Aufgabendetails"
   },
-  "heading": "Aufgaben",
+  "heading": "Tasks",
   "filters": {
     "button": "Filter",
     "status": {
@@ -110,13 +114,15 @@
       }
     },
     "dateRange": {
-      "label": "Zeitraum"
+      "label": "Zeitraum",
+      "start":"von",
+      "end":"bis"
     },
     "month": {
-      "label": "Monat"
+      "label": "Filter nach Kalendermonat"
     },
     "role": {
-      "label": "Freelancer-Rolle",
+      "label": "Filter nach Freelancer-Rollen",
       "options": {
         "texter": "Texter",
         "lector": "Lektor",
@@ -130,19 +136,19 @@
       "apply": "Filter anwenden"
     }
   },
-  "loading": "Lade Aufgaben...",
+  "loading": "Lade Tasks...",
   "error": {
     "fetchError": "Fehler beim Abrufen der Projektdetails:"
   },
   "tasksTable": {
     "status": "Status",
     "googleLink": "Google-Link",
-    "deadline": "Frist",
-    "wordCount": "Wortanzahl",
-    "keywords": "Schlüsselwörter",
+    "deadline": "Target date",
+    "wordCount": "Anzahl Wörter",
+    "keywords": "Keyword",
     "team": "Team",
     "action": "Aktion",
-    "view": "Ansehen",
+    "view": "Details",
     "taskName": "Aufgabenname",
     "taskDetails": "Aufgabendetails",
     "statusLabels": {
@@ -158,7 +164,7 @@
   "taskDetailPage": {
     "breadcrumb": {
       "dashboard": "Dashboard /",
-      "tasks": "Aufgaben /",
+      "tasks": "Tasks /",
       "taskDetail": "Aufgabendetails"
     },
     "project": {
@@ -174,13 +180,13 @@
     },
     "taskInfo": {
       "taskName": "Aufgabenname",
-      "topic": "Thema",
+      "topic": "Thema des Textes",
       "type": "Typ",
       "status": "Status",
       "actualWords": "Tatsächliche Wörter",
       "desiredWords": "Gewünschte Wörter",
-      "dueDate": "Fälligkeitsdatum",
-      "keywords": "Schlüsselwörter",
+      "dueDate": "Target Date",
+      "keywords": "Keyword",
       "fileLink": "Dateilink",
       "comments": "Kommentare",
       "feedback": "Feedback",
@@ -218,7 +224,7 @@
       "table": {
         "headers": {
           "name": "Name",
-          "email": "E-Mail",
+          "email": "E-Mail-Adresse",
           "role": "Rolle",
           "status": "Status",
           "action": "Aktion"
@@ -306,11 +312,11 @@
         },
         "buttons": {
           "cancel": "Abbrechen",
-          "update": "Aktualisieren",
-          "updating": "Aktualisieren..."
+          "update": "Speichern",
+          "updating": "Speichern..."
         },
         "errorMessages": {
-          "generic": "Fehler beim Aktualisieren des Managers"
+          "generic": "Fehler beim Speichern des Managers"
         }
       },
       "toast": {
@@ -370,7 +376,7 @@
     },
     "buttons": {
       "cancel": "Abbrechen",
-      "update": "Aktualisieren",
+      "update": "Speichern",
       "loadingUpdate": "Wird aktualisiert..."
     },
     "messages": {
@@ -384,10 +390,10 @@
   },
   "projectDetails": {
     "breadcrumb": {
-      "pageName": "Projekt Details"
+      "pageName": "Projekt"
     },
     "onboarding": {
-      "incomplete": "Das Onboarding für dieses Projekt ist nicht abgeschlossen, Sie können keine Aufgaben hinzufügen"
+      "incomplete": "Das Onboarding für dieses Projekt ist nicht abgeschlossen, Sie können keine Tasks hinzufügen"
     },
     "folder": {
       "heading": "Ordner",
@@ -396,14 +402,14 @@
     },
     "taskStatus": {
       "status": "Status",
-      "tasks": "Aufgaben",
-      "maxTasks": "Max. Aufgaben",
+      "tasks": "Tasks",
+      "maxTasks": "Max. Tasks",
       "duration": "Dauer",
-      "taskPerMonth": "Aufgaben pro Monat",
+      "taskPerMonth": "Anzahl Task pro Monat",
       "performancePeriod": "Leistungszeitraum"
     },
     "projectMembers": {
-      "heading": "Projektmitglieder",
+      "heading": "Freelancer",
       "addFreelancerButton": "Freelancer hinzufügen",
       "freelancerRole": {
         "texter": "Texter",
@@ -413,12 +419,12 @@
       }
     },
     "importExport": {
-      "importButtonTooltip": "Aufgaben importieren",
-      "exportButtonTooltip": "Aufgaben exportieren"
+      "importButtonTooltip": "Tasks importieren",
+      "exportButtonTooltip": "Tasks exportieren"
     },
     "accordion": {
       "onBoarding": {
-        "heading": "OnBoarding",
+        "heading": "Onboarding Daten",
         "generalInformation": {
           "title": "1. Allgemeine Informationen:",
           "speechLabel": "Rede",
@@ -449,10 +455,10 @@
         "generalInformation": "1. Allgemeine Informationen",
         "selectDateLabel": "Datum auswählen",
         "projectLabel": "Projekt",
-        "topicLabel": "Thema",
-        "keywordLabel": "Schlüsselwörter",
-        "keywordTypeLabel": "Schlüsselworttyp",
-        "wordCountLabel": "Erwartete Wortanzahl",
+        "topicLabel": "Thema des Textes",
+        "keywordLabel": "Keyword",
+        "keywordTypeLabel": "Text Art",
+        "wordCountLabel": "Anzahl Wörter (SOLL)",
         "commentLabel": "Kommentar",
         "cancelButton": "Abbrechen",
         "saveButton": "Speichern",
@@ -470,15 +476,15 @@
       "validationNames": {
         "date": "Bitte wählen Sie ein Datum aus",
         "topic": "Bitte wählen Sie ein Thema aus",
-        "keywords": "Bitte wählen Sie Schlüsselwörter aus",
+        "keywords": "Bitte wählen Sie Keyword aus",
         "textType": "Bitte wählen Sie den Texttyp aus",
         "wordCount": "Bitte geben Sie die Wortanzahl ein"
       },
       "placeholders": {
         "selectDateTooltip": "Wählen Sie ein Datum",
         "projectPlaceholder": "beispiel.com",
-        "topicPlaceholder": "Thema",
-        "keywordsPlaceholder": "Schlüsselwörter",
+        "topicPlaceholder": "Thema des Textes",
+        "keywordsPlaceholder": "Keyword",
         "wordCountPlaceholder": "1500",
         "commentPlaceholder": "Fügen Sie Kommentare hinzu."
       },
@@ -581,10 +587,10 @@
         },
         "errorMessages": {
           "noFileSelected": "Bitte wählen Sie eine Datei aus.",
-          "importFailure": "Fehler beim Importieren der Aufgaben."
+          "importFailure": "Fehler beim Importieren der Tasks."
         },
         "toastMessages": {
-          "success": "Aufgaben erfolgreich importiert"
+          "success": "Tasks erfolgreich importiert"
         },
         "closeModalButton": {
           "label": "Schließen"
@@ -595,14 +601,14 @@
       "headers": {
         "status": "Status",
         "googleLink": "Google-Link",
-        "deadline": "Frist",
-        "wordCount": "Wortanzahl",
-        "keywords": "Schlüsselwörter",
+        "deadline": "Target date",
+        "wordCount": "Anzahl Wörter",
+        "keywords": "Keyword",
         "team": "Team",
         "action": "Aktion"
       },
       "actionButton": {
-        "view": "Ansehen"
+        "view": "Details"
       }
     },
     "memberModal": {
@@ -617,22 +623,22 @@
     "taskDetailModel": {
       "title": "Aufgabendetails",
       "status": "Status",
-      "wordReal": "Wirkliche Wörter",
-      "document": "Dokument",
-      "wordCountExpected": "Erwartete Wortanzahl",
-      "dueDate": "Fälligkeitsdatum",
-      "topic": "Thema",
-      "keywordsType": "Schlüsselwort-Typ",
-      "keyword": "Schlüsselwort",
+      "wordReal": "Anzahl Wörter (IST)",
+      "document": "Google-Link",
+      "wordCountExpected": "Anzahl Wörter (SOLL)",
+      "dueDate": "Target Date",
+      "topic": "Thema des Textes",
+      "keywordsType": "Text Art",
+      "keyword": "Keyword",
       "comment": "Kommentar",
-      "projectMembers": "Projektmitglieder",
+      "projectMembers": "Freelancer",
       "cancelButton": "Abbrechen",
-      "submitButton": "Absenden",
+      "submitButton": "Speichern",
       "submittingButton": "Wird übermittelt...",
       "formValidation": {
         "topicRequired": "Bitte ein Thema auswählen",
         "textTypeRequired": "Bitte einen Typ auswählen",
-        "keywordsRequired": "Bitte Schlüsselwörter auswählen",
+        "keywordsRequired": "Bitte Keyword auswählen",
         "dateRequired": "Bitte ein Datum auswählen"
       }
     }
@@ -643,99 +649,101 @@
   },
   "menu": {
     "projects": "Projekte",
-    "tasks": "Aufgaben",
-    "kpis": "KPIs",
+    "tasks": "Tasks",
+    "kpis": "Projekt KPIs",
     "users": "Benutzer",
     "systemSettings": "Systemeinstellungen",
     "driptextAcademy": "Driptext Academy",
-    "profileSettings": "Profileinstellungen",
+    "profileSettings": "Einstellungen",
     "accountSettings": "Kontoeinstellungen",
-    "freelancerOverview": "Freelancer-Analytik"
+    "freelancerOverview": "Freelancer KPIs"
   },
   "logout": "Abmelden",
   "kpi": {
     "pagetitle": "KPIs Übersicht",
     "breadcrumbs": {
-      "dashboard": "Dashboard /",
-      "kpi": "KPIs"
+      "dashboard": "Projekte /",
+      "kpi": "Projekt KPIs"
     },
     "filters": {
       "filter": "Filter",
-      "dateRange": "Datumsbereich",
-      "selectProject": "Projekt auswählen",
+      "dateRange": "Datumsbereich auswählen",
+      "selectProject": "Alle Projekte",
       "clearFilters": "Filter zurücksetzen",
       "applyFilters": "Filter anwenden",
-      "selectProjectPlaceholder": "Projekt auswählen"
+      "selectProjectPlaceholder": "Alle Projekte"
     },
     "kpiBlocks": [
-      "Texter Kosten",
-      "Lektor Kosten",
-      "SEO Optimierer Kosten",
-      "Meta-Lektor Kosten",
-      "Gesamteinnahmen",
-      "Gesamtkosten",
-      "Marge"
+      "Kosten: Texter",
+      "Kosten: Lektoriat",
+      "Kosten: SEO-Optimierung",
+      "Kosten: Meta-Lektoriat",
+      "Umsatz (gesamt)",
+      "Kosten (gesamt)",
+      "Gewinn (gesamt)"
     ],
     "tableHeaders": [
-      "Name",
-      "E-Mail",
-      "Rolle",
-      "Tracking",
-      "Prognose"
+      "Name des Kunden",
+      "E-Mail-Adresse",
+      "Kundenbeziehung",
+      "Aktuelle Tasks",
+      "Ausstehende Tasks"
     ],
     "actions": {
-      "tracking": "Tracking",
-      "forecast": "Prognose"
+      "tracking": "Tracking anzeigen",
+      "forecast": "Forecast anzeigen"
     }
   },
   "track_forcast": {
     "breadcrumbs": {
       "dashboard": "Dashboard /",
-      "kpi": "KPIs /",
+      "kpi": "Projekt KPIs /",
       "tracking": "Verfolgung",
       "forecast": "Prognose"
     },
     "tracking": {
-      "title": "Verfolgung",
+      "title": "Projekt Tracking KPIs",
       "trackingOverview": "Verfolgungsübersicht"
     },
     "forecast": {
-      "title": "Prognose",
+      "title": "Projekt Forecast KPIs",
       "forecastOverview": "Prognoseübersicht"
     },
     "tableHeaders": {
-      "projectId": "Projekt-ID",
+      "projectId": "Projekt",
       "projectName": "Projektname",
       "tasks": {
-        "openTasks": "Offene Aufgaben",
-        "inProgressTasks": "Aufgaben in Bearbeitung"
+        "openTasks": "Tasks (offen)",
+        "inProgressTasks": "Tasks (abgeschlossen)"
       },
-      "revenue": "Einnahmen",
+      "revenue": "Umsatz",
       "cost": "Kosten",
       "margin": "Marge"
     }
   },
   "freelancer_overview": {
     "breadcrumbs": {
-      "dashboard": "Dashboard /",
-      "freelancerOverview": "Freelancer-Analytik"
+      "dashboard": "Projekte /",
+      "freelancerOverview": "Freelancer KPIs"
     },
     "titles": {
-      "freelancerOverview": "Freelancer Übersicht",
+      "freelancerOverview": "Freelancer KPIs",
       "freelancerByRole": "Freelancer nach Rolle"
     },
     "filters": {
-      "textReliability": "Text Zuverlässigkeit",
-      "textQuality": "Text Qualität",
+      "textReliability": "Zuverlässigkeit",
+      "textQuality": "Textqualität",
+      "reliabilityPlaceholder": "Zuverlässigkeitsstufe auswählen",
+      "qualityPlaceholder": "Qualitätsstufe auswählen",
       "reliabilityOptions": {
-        "1": "Grün (0 bis 10)",
-        "2": "Gelb (11 bis 25)",
-        "3": "Rot (Über 25)"
+        "1": "Grün: 0 - 10 verpasste Fristen",
+        "2": "Gelb: 11 - 25 verpasste Fristen",
+        "3": "Rot: 25+ verpasste Fristen"
       },
       "qualityOptions": {
-        "1": "Grün (0 bis 10)",
-        "2": "Gelb (11 bis 25)",
-        "3": "Rot (Über 25)"
+       "1": "Grün: 0 - 10 verpasste Fristen",
+        "2": "Gelb: 11 - 25 verpasste Fristen",
+        "3": "Rot: 25+ verpasste Fristen"
       },
       "clearFilters": "Filter zurücksetzen",
       "applyFilters": "Filter anwenden"
@@ -750,14 +758,14 @@
     "freelancer_overview_table": {
       "tableHeaders": {
         "name": "Name",
-        "gmail": "Gmail",
-        "phone": "Telefon",
-        "openThisMonth": "Diesen Monat offen",
-        "assignedThisMonth": "Diesen Monat zugewiesen",
-        "totalAssigned": "Gesamt zugewiesen",
+        "gmail": "E-Mail-Adresse",
+        "phone": "Telefon-Nr",
+        "openThisMonth": "Aktuelle Task (offen)",
+        "assignedThisMonth": "Aktuelle Task (zugewiesen)",
+        "totalAssigned": "Task (insgesamt)",
         "role": "Rolle",
-        "reliabilityStatus": "Zuverlässigkeitsstatus",
-        "textQualityStatus": "Textqualitätsstatus",
+        "reliabilityStatus": "Zuverlässigkeit",
+        "textQualityStatus": "Textqualität",
         "totalDeadline": "Gesamtzahl der verpassten Fristen",
         "totalReturn": "Gesamtzahl der Rückgaben",
         "deadline": "Fristen verpasst",

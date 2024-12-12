@@ -44,18 +44,15 @@ const Forecast: React.FC = () => {
       <div className="flex items-center justify-between space-x-4 mb-6 mt-2">
         <ol className="flex items-center gap-2 text-left">
           <li>
-            <Link
-              className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
-              to="/dashboard"
-            >
-              {t("track_forcast.breadcrumbs.dashboard")}{" "}
               <Link
                 className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
                 to="/dashboard/kpi"
               >
                 {t("track_forcast.breadcrumbs.kpi")}
               </Link>
-            </Link>
+          </li>
+          <li>
+            {fullName} /
           </li>
           <li className="font-medium text-primary">
             {t("track_forcast.breadcrumbs.forecast")}
@@ -64,14 +61,8 @@ const Forecast: React.FC = () => {
       </div>
       <div className="flex justify-between items-center relative">
         <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
-          {t("track_forcast.forecast.title")}
+          {t("track_forcast.forecast.title")} {fullName} {`(${email})`}
         </h2>
-      </div>
-      <div className="flex justify-start items-center mt-2 space-x-2">
-        <p className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-          {fullName}
-        </p>
-        <p className="text-sm text-gray-600 dark:text-gray-400">{`(${email})`}</p>
       </div>
 
       {loading ? (

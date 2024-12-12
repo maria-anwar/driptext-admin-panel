@@ -26,6 +26,18 @@ const KpiInfoTable: React.FC<KpiTableProps> = ({ tableData, forecast }) => {
     setPage(1);
   };
 
+  const formatCurrency = (value) => {
+    try {
+      if (value == null || isNaN(value)) return `${value} €`;
+      const number = parseFloat(value).toFixed(3); 
+      let [integer, decimal] = number.split('.'); 
+      integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); 
+      return `${integer},${decimal} €`; 
+    } catch (error) {
+      return  `${value} €`; 
+    }
+  };
+
   const offset = (page - 1) * rowsPerPage;
   const paginatedProjects = tableData.slice(offset, offset + rowsPerPage);
 
@@ -42,7 +54,7 @@ const KpiInfoTable: React.FC<KpiTableProps> = ({ tableData, forecast }) => {
                 <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
                   {t("track_forcast.tableHeaders.projectName")}
                 </th>
-                <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className={` ${forecast? "min-w-[140px]":"min-w-[210px] "} py-4 px-4 font-semibold text-black dark:text-white`}>
                   {forecast
                     ? t("track_forcast.tableHeaders.tasks.openTasks")
                     : t("track_forcast.tableHeaders.tasks.inProgressTasks")}
@@ -73,7 +85,7 @@ const KpiInfoTable: React.FC<KpiTableProps> = ({ tableData, forecast }) => {
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white ">
+                    <p className="text-black dark:text-white text-center">
                       {}
                       {forecast ? data?.openTasks : data?.inProgressTasks}
                     </p>
@@ -81,18 +93,18 @@ const KpiInfoTable: React.FC<KpiTableProps> = ({ tableData, forecast }) => {
 
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white ">
-                      {data?.revenue.toFixed(3)}
+                      {formatCurrency(data?.revenue)}
                     </p>
                   </td>
 
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white capitalize">
-                      {data?.cost.toFixed(3)}
+                      {formatCurrency(data?.cost)}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white capitalize">
-                      {data?.margin.toFixed(3)}
+                      {formatCurrency(data?.margin)}
                     </p>
                   </td>
                 </tr>

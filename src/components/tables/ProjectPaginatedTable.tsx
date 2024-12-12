@@ -128,7 +128,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
                   {t("projects.performancePeriod")}
                 </th>
-                <th className="min-w-[230px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[270px] py-4 px-4 font-semibold text-black dark:text-white">
                   {t("projects.tasks")}
                 </th>
                 <th className="min-w-[160px] py-4 px-4 font-semibold text-black dark:text-white">
@@ -244,8 +244,8 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                         {project?.plan?.textsCount}/{project?.plan?.totalTexts}
                       </p>
                       <p className="text-black dark:text-white text-xs">
-                        open: {project?.openTasks} | final:{" "}
-                        {project?.finalTasks} | total:{" "}
+                      {t("projects.open")}: {project?.openTasks} | {t("projects.final")}:{" "}
+                        {project?.finalTasks} | {t("projects.total")}:{" "}
                         {project?.plan?.textsCount}
                       </p>
                       <div className="flex h-3 bg-gray-200 rounded pt-1">

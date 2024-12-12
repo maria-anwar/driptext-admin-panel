@@ -81,12 +81,15 @@
     "createdOn": "Created on",
     "freeTrial": "Ready",
     "finalStatus": "Final",
-    "notInitialized": "Not Initialized"
+    "notInitialized": "Not Initialized",
+    "open": "Open",
+    "final": "Final",
+    "total": "Total"
   },
   "overviewtask": "Tasks Overview",
   "breadcrumb": {
-    "dashboard": "Dashboard /",
-    "tasks": "Tasks",
+    "dashboard": "Project /",
+    "tasks": "All Tasks",
     "taskDetail": "Task Detail"
   },
   "heading": "Tasks",
@@ -110,7 +113,9 @@
       }
     },
     "dateRange": {
-      "label": "Date Range"
+      "label": "Date Range",
+      "start": "Start Date",
+      "end": "End Date"
     },
     "month": {
       "label": "Month"
@@ -384,7 +389,7 @@
   },
   "projectDetails": {
     "breadcrumb": {
-      "pageName": "Project Details"
+      "pageName": "Project"
     },
     "onboarding": {
       "incomplete": "Onboarding is not completed for this project, you can't add task"
@@ -644,20 +649,20 @@
   "menu": {
     "projects": "Projects",
     "tasks": "Tasks",
-    "kpis": "KPIs",
+    "kpis": "Project KPIs",
     "users": "Users",
     "systemSettings": "System settings",
     "driptextAcademy": "Driptext Academy",
     "profileSettings": "Profile Settings",
     "accountSettings": "Account Settings",
-    "freelancerOverview": "Freelancers Analytics"
+    "freelancerOverview": "Freelancer KPIs"
   },
   "logout": "Sign out",
   "kpi": {
     "pagetitle": "KPIs Overview",
     "breadcrumbs": {
-      "dashboard": "Dashboard /",
-      "kpi": "KPIs"
+      "dashboard": "Project /",
+      "kpi": "Project KPIs"
     },
     "filters": {
       "filter": "Filter",
@@ -691,20 +696,20 @@
   "track_forcast": {
     "breadcrumbs": {
       "dashboard": "Dashboard /",
-      "kpi": "KPIs /",
+      "kpi": "Project KPIs /",
       "tracking": "Tracking",
       "forecast": "Forecasting"
     },
     "tracking": {
-      "title": "Tracking",
+      "title": "Project Tracking KPIs",
       "trackingOverview": "Tracking Overview"
     },
     "forecast": {
-      "title": "Forecasting",
+      "title": "Project Forecasting KPIs",
       "forecastOverview": "Forecast Overview"
     },
     "tableHeaders": {
-      "projectId": "Project Id",
+      "projectId": "Project",
       "projectName": "Project Name",
       "tasks": {
         "openTasks": "Open Tasks",
@@ -717,16 +722,18 @@
   },
   "freelancer_overview": {
     "breadcrumbs": {
-      "dashboard": "Dashboard /",
-      "freelancerOverview": "Freelancers Analytics"
+      "dashboard": "Project /",
+      "freelancerOverview": "Freelancer KPIs"
     },
     "titles": {
-      "freelancerOverview": "Freelancers Overview",
+      "freelancerOverview": "Freelancer KPIs",
       "freelancerByRole": "Freelancers By Role"
     },
     "filters": {
       "textReliability": "Text Reliability",
       "textQuality": "Text Quality",
+      "reliabilityPlaceholder": "Select Reliability",
+      "qualityPlaceholder": "Select Quality",
       "reliabilityOptions": {
         "1": "Green (0 to 10)",
         "2": "Yellow (11 to 25)",
@@ -746,7 +753,7 @@
     "freelancer_overview_table": {
       "tableHeaders": {
         "name": "Name",
-        "gmail": "Gmail",
+        "gmail": "Email Address",
         "phone": "Phone",
         "openThisMonth": "Open This Month",
         "assignedThisMonth": "Assigned This Month",

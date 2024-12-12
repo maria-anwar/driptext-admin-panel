@@ -1,46 +1,43 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ClickOutside from "../tables/ClickOutside";
-import {useDispatch, useSelector} from 'react-redux'
-import {clearPersistedState} from '../../redux/store'
+import { useDispatch, useSelector } from "react-redux";
+import { clearPersistedState } from "../../redux/store";
 import { useTranslation } from "react-i18next";
 
-
 const DropdownUser = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const user = useSelector<any>((state) => state.user);
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   // const [firstName,setFirstName]=useState(user.data.user.firstName);
   // const [lastName,setLastName]=useState(user.data.user.lastName);
 
   const capitalizeFirstLetter = (word) => {
-    if (!word) return '';
+    if (!word) return "";
     return word.charAt(0).toUpperCase();
   };
 
-  const handleLogout= ()=>{
-    localStorage.removeItem('auth')
-    localStorage.removeItem('projectID')
-    dispatch(clearPersistedState())
-  }
+  const handleLogout = () => {
+    localStorage.removeItem("auth");
+    localStorage.removeItem("projectID");
+    dispatch(clearPersistedState());
+  };
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
-
-<Link
+      <Link
         onClick={() => setDropdownOpen(!dropdownOpen)}
         className="flex items-center gap-4 h-12"
         to="#"
       >
         <span className=" text-right ">
           <span className="block text-sm  font-medium text-black dark:text-white">
-          {user.user.data.user.firstName} {user.user.data.user.lastName}
+            {user.user.data.user.firstName} {user.user.data.user.lastName}
           </span>
           {/* <span className="block text-xs">UX Designer</span> */}
         </span>
 
-      
         <svg
           className=" fill-current "
           width="12"
@@ -57,13 +54,13 @@ const DropdownUser = () => {
           />
         </svg>
       </Link>
-            {/* <!-- Dropdown Start --> */}
-            {dropdownOpen && (
+      {/* <!-- Dropdown Start --> */}
+      {dropdownOpen && (
         <div
           className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark`}
         >
-          <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
-            {/* <li>
+          {/* <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark"> */}
+          {/* <li>
               <Link
                 to="profile"
                 className="flex items-center  gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
@@ -88,7 +85,7 @@ const DropdownUser = () => {
                 My Profile
               </Link>
             </li> */}
-            {/* <li>
+          {/* <li>
               <Link
                 to="#"
                 className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
@@ -109,7 +106,7 @@ const DropdownUser = () => {
                 My Contacts
               </Link>
             </li> */}
-            <li>
+          {/* <li>
               <Link
                 to="profile-settings"
                 className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out text-black dark:text-bodydark1 hover:text-primary lg:text-base"
@@ -133,9 +130,14 @@ const DropdownUser = () => {
                 </svg>
                 {t('menu.accountSettings')}
               </Link>
-            </li>
-          </ul>
-          <a href={'https://driptext-app.vercel.app'} target="_self" onClick={handleLogout}  className="cursor-pointer flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+            </li> */}
+
+          <a
+            href={"https://driptext-app.vercel.app"}
+            target="_self"
+            onClick={handleLogout}
+            className="cursor-pointer flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+          >
             <svg
               className="fill-current"
               width="22"
@@ -153,11 +155,11 @@ const DropdownUser = () => {
                 fill=""
               />
             </svg>
-           {t('logout')}
+            {t("logout")}
           </a>
         </div>
       )}
-      {/* <!-- Dropdown End --> */} 
+      {/* <!-- Dropdown End --> */}
     </ClickOutside>
   );
 };
