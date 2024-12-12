@@ -207,6 +207,7 @@
     "addUser": "Benutzer hinzufügen",
     "settings": "Einstellungen",
     "showInactive": "Inaktive Benutzer anzeigen",
+    "hideInactive": "Inaktive Benutzer ausblenden",
     "toggle": {
       "leads": {
         "show": "Leads anzeigen",

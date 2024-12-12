@@ -36,7 +36,10 @@ const Users: React.FC = () => {
   useEffect(() => {
     // Close the dropdown if clicking outside of it
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setDropdownOpen(false);
       }
     };
@@ -47,7 +50,6 @@ const Users: React.FC = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
 
   useEffect(() => {
     getUser();
@@ -140,19 +142,59 @@ const Users: React.FC = () => {
   return (
     <>
       <div className="mx-auto 3xl:px-6 py-3">
-        <ol className="flex items-center gap-2 text-left">
-          <li>
-            <Link
-              className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
-              to="/dashboard"
-            >
-              {t("user.breadcrumb.dashboard")}
-            </Link>
-          </li>
-          <li className="font-medium text-primary">
-            {t("user.breadcrumb.users")}
-          </li>
-        </ol>
+        <div className="flex justify-between items-center gap-x-2">
+          <ol className="flex items-center gap-2 text-left">
+            <li>
+              <Link
+                className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
+                to="/dashboard"
+              >
+                {t("user.breadcrumb.dashboard")}
+              </Link>
+            </li>
+            <li className="font-medium text-primary">
+              {t("user.breadcrumb.users")}
+            </li>
+          </ol>
+          <div className=" flex justify-center items-center gap-3">
+            <div className="flex items-center text-left relative group">
+              <input
+                type="checkbox"
+                className="h-6 w-6"
+                checked={showInactive}
+                onChange={handleStatusToggle}
+              />
+              <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-5 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+               {showInactive? `${t("user.showInactive")}` : `${t("user.hideInactive")}`}
+              </div>
+            </div>
+
+            <div className="flex items-center text-left relative group">
+              <ToggleSwitch
+                icon={toggleLeads ? faCheck : faTimes}
+                isOn={toggleLeads}
+                onToggle={handleToggleLeads}
+              />
+              <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-5 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                {!toggleLeads
+                  ? t("user.toggle.leads.show")
+                  : t("user.toggle.leads.hide")}
+              </div>
+            </div>
+            <div className="flex items-center text-left relative group">
+              <ToggleSwitch
+                icon={toggleClient ? faCheck : faTimes}
+                isOn={toggleClient}
+                onToggle={handleToggleClient}
+              />
+              <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-5 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                {!toggleClient
+                  ? t("user.toggle.client.show")
+                  : t("user.toggle.client.hide")}
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="flex justify-between items-center sm:flex-row gap-3 pt-3"></div>
         <div className="flex justify-between items-center sm:flex-row gap-3 pt-3">
           <h2 className="text-title-md2 font-semibold text-black dark:text-white">
@@ -187,7 +229,7 @@ const Users: React.FC = () => {
 
             <div
               onClick={handleAddManager}
-              className="inline-flex items-center cursor-pointer justify-center gap-2.5 bg-black py-3 text-sm xl:text-base  text-center font-medium text-white hover:bg-opacity-90 px-5"
+              className="relative group inline-flex items-center cursor-pointer justify-center gap-2.5 bg-black py-1.5 text-sm xl:text-base  text-center font-medium text-white hover:bg-opacity-90 px-2"
             >
               <span>
                 <svg
@@ -205,14 +247,16 @@ const Users: React.FC = () => {
                   />
                 </svg>
               </span>
-              <h2> {t("user.addUser")}</h2>
+              <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-7 left-1/2 transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  {t("user.addUser")}
+              </div>
             </div>
           </div>
         </div>
         {showAddManager ? (
           <AddManager handleClose={handleCloseManager} />
         ) : null}
-        <div className="flex justify-end items-end pt-3 pb-3 pr-2">
+        {/* <div className="flex justify-end items-end pt-3 pb-3 pr-2">
           <div className="relative">
             <button
               onClick={handleDropdownToggle}
@@ -227,11 +271,12 @@ const Users: React.FC = () => {
               />
             </button>
 
-            {/* Dropdown Content */}
             {dropdownOpen && (
-              <div ref={dropdownRef} className="absolute top-full mt-2 w-60 lg:right-0 xl:right-0 bg-white dark:bg-boxdark border border-gray-300 dark:border-gray-700 rounded shadow-lg z-10">
+              <div
+                ref={dropdownRef}
+                className="absolute top-full mt-2 w-60 lg:right-0 xl:right-0 bg-white dark:bg-boxdark border border-gray-300 dark:border-gray-700 rounded shadow-lg z-10"
+              >
                 <div className="p-4 space-y-4">
-                  {/* Checkbox */}
                   <div className="flex items-center text-left">
                     <input
                       type="checkbox"
@@ -241,8 +286,6 @@ const Users: React.FC = () => {
                     />
                     <span className="pl-2">{t("user.showInactive")}</span>
                   </div>
-
-                  {/* Toggle Button */}
                   <div className="flex items-center text-left">
                     <ToggleSwitch
                       icon={toggleLeads ? faCheck : faTimes}
@@ -271,16 +314,16 @@ const Users: React.FC = () => {
               </div>
             )}
           </div>
-        </div>
+        </div> */}
         {loading ? (
           <div className="rounded-sm border border-stroke mt-5 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1  w-full bg-slate-200 h-[300px] animate-pulse"></div>
         ) : (
-          // Sort filteredUserData before passing it to the table
+
           <UserPaginatedTable
             users={filteredUserData.sort((a, b) => {
               const nameA = `${a.firstName} ${a.lastName}`.toLowerCase();
               const nameB = `${b.firstName} ${b.lastName}`.toLowerCase();
-              return nameA.localeCompare(nameB); // Sort alphabetically
+              return nameA.localeCompare(nameB); 
             })}
             refreshUser={getUser}
           />

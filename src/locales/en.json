@@ -206,6 +206,7 @@
     "addUser": "Add User",
     "settings": "Settings",
     "showInactive": "Show inactive users",
+    "hideInactive": "Hide inactive users",
     "toggle": {
       "leads": {
         "show": "Show Leads",
