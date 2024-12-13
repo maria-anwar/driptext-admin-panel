@@ -58,7 +58,7 @@ const KpiTable: React.FC<KpiTableProps> = ({ users }) => {
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4">
-                <th className="min-w-[220px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[230px] py-4 px-4 font-semibold text-black dark:text-white">
                   {t("kpi.tableHeaders.0")}
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
@@ -79,14 +79,20 @@ const KpiTable: React.FC<KpiTableProps> = ({ users }) => {
               {paginatedProjects.map((user) => (
                 <tr className="text-left" key={user?._id}>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <div className="flex justify-start items-center">
-                    <p className="text-black uppercase w-7 h-7 text-center dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs  flex justify-center items-center">
-                    {user?.firstName.charAt(0)}
-                        {user?.lastName === "-" ? "" : user?.lastName.charAt(0)}
-                      </p>
-                      <p className="text-black pl-2 dark:text-white capitalize">
-                        {user?.firstName} {user?.lastName}
-                      </p>
+                    <div className="flex justify-start items-center gap-2 ">
+                      <div>
+                        <p className="text-black uppercase w-7 h-7 text-center dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs  flex justify-center items-center">
+                          {user?.firstName.charAt(0)}
+                          {user?.lastName === "-"
+                            ? ""
+                            : user?.lastName.charAt(0)}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-black  dark:text-white capitalize">
+                          {user?.firstName} {user?.lastName}
+                        </p>
+                      </div>
                     </div>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { Pagination } from "antd";
 import "antd/dist/reset.css";
-import "./custompagination.css"; 
+import "./custompagination.css";
 import { freelancerData } from "../../Types/Type";
 import { useTranslation } from "react-i18next";
-
-
 
 interface FreelancerOverviewTableProps {
   freelancers: freelancerData[];
 }
 
-const FreelancerOverviewTable: React.FC<FreelancerOverviewTableProps> = ({ freelancers }) => {
+const FreelancerOverviewTable: React.FC<FreelancerOverviewTableProps> = ({
+  freelancers,
+}) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -37,12 +37,36 @@ const FreelancerOverviewTable: React.FC<FreelancerOverviewTableProps> = ({ freel
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4">
-                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">{t('freelancer_overview.freelancer_overview_table.tableHeaders.name')}</th>
-                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">{t('freelancer_overview.freelancer_overview_table.tableHeaders.gmail')}</th>
-                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">{t('freelancer_overview.freelancer_overview_table.tableHeaders.phone')}</th>
-                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">{t('freelancer_overview.freelancer_overview_table.tableHeaders.openThisMonth')}</th>
-                <th className="min-w-[200px] py-4 px-4 font-semibold text-black dark:text-white">{t('freelancer_overview.freelancer_overview_table.tableHeaders.assignedThisMonth')}</th>
-                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">{t('freelancer_overview.freelancer_overview_table.tableHeaders.totalAssigned')}</th>
+                <th className="min-w-[230px] py-4 px-4 font-semibold text-black dark:text-white">
+                  {t(
+                    "freelancer_overview.freelancer_overview_table.tableHeaders.name"
+                  )}
+                </th>
+                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
+                  {t(
+                    "freelancer_overview.freelancer_overview_table.tableHeaders.gmail"
+                  )}
+                </th>
+                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
+                  {t(
+                    "freelancer_overview.freelancer_overview_table.tableHeaders.phone"
+                  )}
+                </th>
+                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
+                  {t(
+                    "freelancer_overview.freelancer_overview_table.tableHeaders.openThisMonth"
+                  )}
+                </th>
+                <th className="min-w-[200px] py-4 px-4 font-semibold text-black dark:text-white">
+                  {t(
+                    "freelancer_overview.freelancer_overview_table.tableHeaders.assignedThisMonth"
+                  )}
+                </th>
+                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
+                  {t(
+                    "freelancer_overview.freelancer_overview_table.tableHeaders.totalAssigned"
+                  )}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -50,30 +74,53 @@ const FreelancerOverviewTable: React.FC<FreelancerOverviewTableProps> = ({ freel
                 <tr className="text-left" key={freelancer._id}>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex justify-start items-center gap-x-2">
+                      <div>
                         <p className="text-black uppercase w-7 h-7 text-center dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs  flex justify-center items-center">
                           {freelancer?.firstName.charAt(0)}
-                          {freelancer?.lastName === "-" ? "" : freelancer?.lastName.charAt(0)}
+                          {freelancer?.lastName === "-"
+                            ? ""
+                            : freelancer?.lastName.charAt(0)}
                         </p>
-                    <p className="text-black dark:text-white capitalize">{freelancer?.firstName} {freelancer?.lastName}</p>
+                      </div>
+                      <div>
+                        <p className="text-black dark:text-white capitalize">
+                          {freelancer?.firstName} {freelancer?.lastName}
+                        </p>
+                      </div>
                     </div>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">{freelancer?.email}</p>
+                    <p className="text-black dark:text-white">
+                      {freelancer?.email}
+                    </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">{freelancer?.phone}</p>
+                    <p className="text-black dark:text-white">
+                      {freelancer?.phone}
+                    </p>
                   </td>
-                 
+
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white text-center">{freelancer?.openTasksThisMonth ? freelancer?.openTasksThisMonth: 0 }</p>
+                    <p className="text-black dark:text-white text-center">
+                      {freelancer?.openTasksThisMonth
+                        ? freelancer?.openTasksThisMonth
+                        : 0}
+                    </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white text-center">{freelancer?.taskAssignThisMonth  ? freelancer?.taskAssignThisMonth  : 0}</p>
+                    <p className="text-black dark:text-white text-center">
+                      {freelancer?.taskAssignThisMonth
+                        ? freelancer?.taskAssignThisMonth
+                        : 0}
+                    </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white text-center">{freelancer?.assignedTotalTasks ? freelancer?.assignedTotalTasks : 0}</p>
+                    <p className="text-black dark:text-white text-center">
+                      {freelancer?.assignedTotalTasks
+                        ? freelancer?.assignedTotalTasks
+                        : 0}
+                    </p>
                   </td>
-                 
                 </tr>
               ))}
             </tbody>
@@ -84,10 +131,18 @@ const FreelancerOverviewTable: React.FC<FreelancerOverviewTableProps> = ({ freel
               value={rowsPerPage}
               onChange={handleRowsPerPageChange}
             >
-              <option className="dark:text-black" value={5}>5</option>
-              <option className="dark:text-black" value={10}>10</option>
-              <option className="dark:text-black" value={25}>25</option>
-              <option className="dark:text-black" value={50}>50</option>
+              <option className="dark:text-black" value={5}>
+                5
+              </option>
+              <option className="dark:text-black" value={10}>
+                10
+              </option>
+              <option className="dark:text-black" value={25}>
+                25
+              </option>
+              <option className="dark:text-black" value={50}>
+                50
+              </option>
             </select>
             <Pagination
               current={page}
