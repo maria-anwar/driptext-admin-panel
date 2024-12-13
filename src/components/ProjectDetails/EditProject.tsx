@@ -53,8 +53,8 @@ const EditProject: React.FC<EditProjectProps> = ({
       speech = "du (klein geschrieben)";
     } else if (speech === "you (plural / informal)") {
       speech = "ihr/euch";
-    } else if (speech === "divers") {
-      speech = "divers";
+    } else if (speech === "Divers") {
+      speech = "Divers";
     } else if (speech === "No direct address") {
       speech = "Keine direkte Ansprache";
     }
@@ -66,15 +66,15 @@ const EditProject: React.FC<EditProjectProps> = ({
     } else if (perspective === "the editorial team") {
       perspective = "die Redaktion";
     } else if (perspective === "I") {
-      perspective = "ich";
-    } else if (perspective === "neutral") {
-      perspective = "neutral";
+      perspective = "Ich";
+    } else if (perspective === "Neutral") {
+      perspective = "Neutral";
     } else if (perspective === "uniform, but generally irrelevant") {
       perspective = "einheitlich, aber grundsätzlich egal";
     } else if (perspective === "we/our shop/our company") {
       perspective = "wir/unser Shop/unser Unternehmen";
-    } else if (perspective === "divers") {
-      perspective = "divers"; // No change needed since it's the same in both languages
+    } else if (perspective === "Divers") {
+      perspective = "Divers"; // No change needed since it's the same in both languages
     }
   } 
 
@@ -117,8 +117,8 @@ const EditProject: React.FC<EditProjectProps> = ({
         values.speech = "you (lowercase)";
       } else if (values.speech === "ihr/euch") {
         values.speech = "you (plural / informal)";
-      } else if (values.speech === "divers") {
-        values.speech = "divers";
+      } else if (values.speech === "Divers") {
+        values.speech = "Divers";
       }
     }
 
@@ -127,18 +127,18 @@ const EditProject: React.FC<EditProjectProps> = ({
         values.perspective = "the company/the shop";
       } else if (values.perspective === "die Redaktion") {
         values.perspective = "the editorial team";
-      } else if (values.perspective === "ich") {
+      } else if (values.perspective === "Ich") {
         values.perspective = "I";
-      } else if (values.perspective === "neutral") {
-        values.perspective = "neutral";
+      } else if (values.perspective === "Neutral") {
+        values.perspective = "Neutral";
       } else if (
         values.perspective === "einheitlich, aber grundsätzlich egal"
       ) {
         values.perspective = "uniform, but generally irrelevant";
       } else if (values.perspective === "wir/unser Shop/unser Unternehmen") {
         values.perspective = "we/our shop/our company";
-      } else if (values.perspective === "divers") {
-        values.perspective = "divers";
+      } else if (values.perspective === "Divers") {
+        values.perspective = "Divers";
       }
     }
     setLoading(true);
@@ -230,7 +230,7 @@ const EditProject: React.FC<EditProjectProps> = ({
                           ? "No direct address"
                           : "Keine direkte Ansprache"
                       }
-                      option6={currentLanguage === "en" ? "divers" : "divers"}
+                      option6={currentLanguage === "en" ? "Divers" : "Divers"}
                       value={values.speech}
                       errors={touched.speech ? errors.speech : ""}
                       onChange={handleChange}
@@ -251,14 +251,14 @@ const EditProject: React.FC<EditProjectProps> = ({
                           ? "the editorial team"
                           : "die Redaktion"
                       }
-                      option3={currentLanguage === "en" ? "I" : "ich"}
-                      option4={currentLanguage === "en" ? "neutral" : "neutral"}
+                      option3={currentLanguage === "en" ? "I" : "Ich"}
+                      option4={currentLanguage === "en" ? "Neutral" : "Neutral"}
                       option5={
                         currentLanguage === "en"
                           ? "uniform, but generally irrelevant"
                           : "einheitlich, aber grundsätzlich egal"
                       }
-                      option6={currentLanguage === "en" ? "divers" : "divers"}
+                      option6={currentLanguage === "en" ? "Divers" : "Divers"}
                       option7={
                         currentLanguage === "en"
                           ? "we/our shop/our company"
