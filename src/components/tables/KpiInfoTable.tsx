@@ -4,6 +4,7 @@ import "antd/dist/reset.css";
 import "./custompagination.css";
 import { Tracking } from "../../Types/Type";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 interface KpiTableProps {
   tableData: Tracking[];
@@ -12,6 +13,7 @@ interface KpiTableProps {
 
 const KpiInfoTable: React.FC<KpiTableProps> = ({ tableData, forecast }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -40,6 +42,10 @@ const KpiInfoTable: React.FC<KpiTableProps> = ({ tableData, forecast }) => {
 
   const offset = (page - 1) * rowsPerPage;
   const paginatedProjects = tableData.slice(offset, offset + rowsPerPage);
+  const handleProjectOverview = (id) => {
+    localStorage.setItem("projectID", id);
+    navigate("/dashboard/project-details");
+  }
 
   return (
     <div className="mt-6">
@@ -48,13 +54,13 @@ const KpiInfoTable: React.FC<KpiTableProps> = ({ tableData, forecast }) => {
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4">
-                <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[100px] py-4 px-4 font-semibold text-black dark:text-white">
                   {t("track_forcast.tableHeaders.projectId")}
                 </th>
-                <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
                   {t("track_forcast.tableHeaders.projectName")}
                 </th>
-                <th className={` ${forecast? "min-w-[140px]":"min-w-[210px] "} py-4 px-4 font-semibold text-black dark:text-white`}>
+                <th className={` ${forecast? "min-w-[140px] text-center":"min-w-[200px] text-center"} py-4 px-4 font-semibold text-black dark:text-white`}>
                   {forecast
                     ? t("track_forcast.tableHeaders.tasks.openTasks")
                     : t("track_forcast.tableHeaders.tasks.inProgressTasks")}
@@ -75,7 +81,7 @@ const KpiInfoTable: React.FC<KpiTableProps> = ({ tableData, forecast }) => {
               {paginatedProjects.map((data) => (
                 <tr className="text-left" key={data?._id}>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white ">
+                    <p className="text-primary cursor-pointer " onClick={()=>handleProjectOverview(data?.project?._id)}>
                       {data?.project?.projectId}
                     </p>
                   </td>
