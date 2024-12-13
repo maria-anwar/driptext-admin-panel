@@ -15,6 +15,7 @@ interface GroupDropdownFieldProps{
   option4:string,
   option5:string,
   option6?:string,
+  option7?:string,
   disabled?:boolean
 }
 
@@ -33,6 +34,7 @@ const GroupDropdownField:React.FC<GroupDropdownFieldProps> = ({
   option4,
   option5,
   option6,
+  option7,
   disabled
 }) => {
   console.log("value select: ", value)
@@ -61,6 +63,7 @@ const GroupDropdownField:React.FC<GroupDropdownFieldProps> = ({
             {option4 && (<option value={option4}>{option4}</option>)}
             {option5 && (<option value={option5}>{option5}</option>)}
             {option6 && (<option value={option6}>{option6}</option>)}
+            {option7 && (<option value={option7}>{option7}</option>)}
             
           </select>
           <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
@@ -83,7 +86,7 @@ const GroupDropdownField:React.FC<GroupDropdownFieldProps> = ({
         </div>
 
         {errors ? <div className="text-sm text-red-700">{errors}</div> : ""}
-        {/* <div className="text-red-700">'Erroe here'</div> */}
+        
       </div>
     </>
   );

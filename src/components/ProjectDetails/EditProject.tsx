@@ -37,11 +37,48 @@ const EditProject: React.FC<EditProjectProps> = ({
   handleRefreshData,
   onBoarding,
 }) => {
-  const {t}= useTranslation();
+  const {t,i18n}= useTranslation();
   const user = useSelector<any>((state) => state.user);
   const [userToken, setUserToken] = useState(user?.user?.token);
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null); 
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const currentLanguage = i18n.language;
+
+  if (currentLanguage === "de") {
+    if (speech === "She") {
+      speech = "Sie";
+    } else if (speech === "You (capitalized)") {
+      speech = "Du (groß geschrieben)";
+    } else if (speech === "you (lowercase)") {
+      speech = "du (klein geschrieben)";
+    } else if (speech === "you (plural / informal)") {
+      speech = "ihr/euch";
+    } else if (speech === "divers") {
+      speech = "divers";
+    } else if (speech === "No direct address") {
+      speech = "Keine direkte Ansprache";
+    }
+  }
+
+  if (currentLanguage === "de") {
+    if (perspective === "the company/the shop") {
+      perspective = "die Firma/der Shop";
+    } else if (perspective === "the editorial team") {
+      perspective = "die Redaktion";
+    } else if (perspective === "I") {
+      perspective = "ich";
+    } else if (perspective === "neutral") {
+      perspective = "neutral";
+    } else if (perspective === "uniform, but generally irrelevant") {
+      perspective = "einheitlich, aber grundsätzlich egal";
+    } else if (perspective === "we/our shop/our company") {
+      perspective = "wir/unser Shop/unser Unternehmen";
+    } else if (perspective === "divers") {
+      perspective = "divers"; // No change needed since it's the same in both languages
+    }
+  } 
+
+
   const [formData, setFormData] = useState<FormData>({
     speech: speech,
     perspective: perspective,
@@ -71,6 +108,39 @@ const EditProject: React.FC<EditProjectProps> = ({
   });
 
   const onSubmit = (values) => {
+    if (currentLanguage === "de") {
+      if (values.speech === "Sie") {
+        values.speech = "She";
+      } else if (values.speech === "Du (groß geschrieben)") {
+        values.speech = "You (capitalized)";
+      } else if (values.speech === "du (klein geschrieben)") {
+        values.speech = "you (lowercase)";
+      } else if (values.speech === "ihr/euch") {
+        values.speech = "you (plural / informal)";
+      } else if (values.speech === "divers") {
+        values.speech = "divers";
+      }
+    }
+
+    if (currentLanguage === "de") {
+      if (values.perspective === "die Firma/der Shop") {
+        values.perspective = "the company/the shop";
+      } else if (values.perspective === "die Redaktion") {
+        values.perspective = "the editorial team";
+      } else if (values.perspective === "ich") {
+        values.perspective = "I";
+      } else if (values.perspective === "neutral") {
+        values.perspective = "neutral";
+      } else if (
+        values.perspective === "einheitlich, aber grundsätzlich egal"
+      ) {
+        values.perspective = "uniform, but generally irrelevant";
+      } else if (values.perspective === "wir/unser Shop/unser Unternehmen") {
+        values.perspective = "we/our shop/our company";
+      } else if (values.perspective === "divers") {
+        values.perspective = "divers";
+      }
+    }
     setLoading(true);
     const payLoad = {
       projectId: projectId,
@@ -85,6 +155,7 @@ const EditProject: React.FC<EditProjectProps> = ({
       contentPurpose: values.contentPurpose,
       contentInfo: values.brand,
     };
+    console.log(payLoad);
 
     let token = userToken;
     axios.defaults.headers.common["access-token"] = token;
@@ -138,11 +209,28 @@ const EditProject: React.FC<EditProjectProps> = ({
                       id="speech"
                       name="speech"
                       placeholder=""
-                      option1="She"
-                      option2="You (with a capital Y)"
-                      option3="you (with a lower y)"
-                      option4="you"
-                      option5="no direct address"
+                      option1={currentLanguage === "en" ? "She" : "Sie"}
+                      option2={
+                        currentLanguage === "en"
+                          ? "You (capitalized)"
+                          : "Du (groß geschrieben)"
+                      }
+                      option3={
+                        currentLanguage === "en"
+                          ? "you (lowercase)"
+                          : "du (klein geschrieben)"
+                      }
+                      option4={
+                        currentLanguage === "en"
+                          ? "you (plural / informal)"
+                          : "ihr/euch"
+                      }
+                      option5={
+                        currentLanguage === "en"
+                          ? "No direct address"
+                          : "Keine direkte Ansprache"
+                      }
+                      option6={currentLanguage === "en" ? "divers" : "divers"}
                       value={values.speech}
                       errors={touched.speech ? errors.speech : ""}
                       onChange={handleChange}
@@ -153,12 +241,29 @@ const EditProject: React.FC<EditProjectProps> = ({
                       id="perspective"
                       name="perspective"
                       placeholder=""
-                      option1="we/our shop/our company"
-                      option2="the company/shop"
-                      option3="the editorial office"
-                      option4="I"
-                      option5="neutral"
-                      option6="uniform/but fundamentally irrelevant"
+                      option1={
+                        currentLanguage === "en"
+                          ? "the company/the shop"
+                          : "die Firma/der Shop"
+                      }
+                      option2={
+                        currentLanguage === "en"
+                          ? "the editorial team"
+                          : "die Redaktion"
+                      }
+                      option3={currentLanguage === "en" ? "I" : "ich"}
+                      option4={currentLanguage === "en" ? "neutral" : "neutral"}
+                      option5={
+                        currentLanguage === "en"
+                          ? "uniform, but generally irrelevant"
+                          : "einheitlich, aber grundsätzlich egal"
+                      }
+                      option6={currentLanguage === "en" ? "divers" : "divers"}
+                      option7={
+                        currentLanguage === "en"
+                          ? "we/our shop/our company"
+                          : "wir/unser Shop/unser Unternehmen"
+                      }
                       value={values.perspective}
                       errors={touched.perspective ? errors.perspective : ""}
                       onChange={handleChange}

@@ -68,7 +68,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   projectName,
   handleRefreshData,
 }) => {
-  const {t} = useTranslation();
+  const { t, i18n } = useTranslation();
   const user = useSelector<any>((state) => state.user);
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -76,11 +76,29 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [userToken, setUserToken] = useState(user?.user?.token);
 
-  const allRoles = ["Texter", "Lector","SEO-Optimizer"];
+  const allRoles = ["Texter", "Lector", "SEO-Optimizer"];
 
   const [showCard, setShowCard] = useState(task.readyToWork);
   const [memberModel, setMemberModel] = useState<boolean>(false);
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
+  const currentLanguage = i18n.language;
+
+  if (currentLanguage === "de") {
+    if (task.type === "Guide text") {
+      task.type = "Ratgebertext";
+    } else if (task.type === "Shop (Category)") {
+      task.type = "Shop (Kategorie)";
+    } else if (task.type === "Shop (Product)") {
+      task.type = "Shop (Produkt)";
+    } else if (task.type === "Definition/Wiki") {
+      task.type = "Definition/Wiki"; // No change needed
+    } else if (task.type === "Shop (Homepage)") {
+      task.type = "Shop (Startseite)";
+    } else if (task.type === "CMS Page") {
+      task.type = "CMS-Seite";
+    }
+  }
+
   const [formData, setFormData] = useState<FormData>({
     desiredWords: task.desiredNumberOfWords,
     topic: task.topic,
@@ -93,6 +111,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     date: task?.dueDate,
     wordCount: task.desiredNumberOfWords,
   });
+  console.log("formData", formData);
 
   useEffect(() => {
     let token = userToken;
@@ -111,10 +130,20 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   }, [task]);
 
   const validationSchema = Yup.object().shape({
-    topic: Yup.string().required(t("projectDetails.taskDetailModel.formValidation.topicRequired")),
-    textType: Yup.string().required(t("projectDetails.taskDetailModel.formValidation.textTypeRequired")),
-    keywords: Yup.string().required(t("projectDetails.taskDetailModel.formValidation.keywordsRequired")),
-    date: Yup.date().nullable().required(t("projectDetails.taskDetailModel.formValidation.dateRequired")),
+    topic: Yup.string().required(
+      t("projectDetails.taskDetailModel.formValidation.topicRequired")
+    ),
+    textType: Yup.string().required(
+      t("projectDetails.taskDetailModel.formValidation.textTypeRequired")
+    ),
+    keywords: Yup.string().required(
+      t("projectDetails.taskDetailModel.formValidation.keywordsRequired")
+    ),
+    date: Yup.date()
+      .nullable()
+      .required(
+        t("projectDetails.taskDetailModel.formValidation.dateRequired")
+      ),
   });
 
   const handleRoleSelect = (role: string, memberId: number) => {
@@ -182,6 +211,21 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   };
 
   const onSubmit = async (values) => {
+    if (currentLanguage === "de") {
+      if (values.textType === "Ratgebertext") {
+        values.textType = "Guide text";
+      } else if (values.textType === "Shop (Kategorie)") {
+        values.textType = "Shop (Category)";
+      } else if (values.textType === "Shop (Produkt)") {
+        values.textType = "Shop (Product)";
+      } else if (values.textType === "Definition/Wiki") {
+        values.textType = "Definition/Wiki";
+      } else if (values.textType === "Shop (Startseite)") {
+        values.textType = "Shop (Homepage)";
+      } else if (values.textType === "CMS-Seite") {
+        values.textType = "CMS Page";
+      }
+    }
     setLoading(true);
     let localDate = new Date(values.date);
     let dueDateFormatted = localDate.toLocaleDateString("en-CA"); // 'en-CA' uses YYYY-MM-DD format
@@ -194,7 +238,8 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
       comment: values.comments,
       wordCount: values.wordCount,
     };
-    console.log(payLoad);
+
+    console.log("Payload", payLoad);
 
     try {
       const response = await axios.post(
@@ -203,7 +248,6 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
       );
       if (response.status === 200) {
         handleRefreshData();
-        
       }
     } catch (error) {
       const err = error.response.data.message || "Failed to update task";
@@ -281,12 +325,12 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                         className="text-black dark:text-white text-sm lg:text-sm font-semibold 2xl:font-semibold pb-1"
                         htmlFor="wordReal"
                       >
-                       {t("projectDetails.taskDetailModel.wordReal")}
-
+                        {t("projectDetails.taskDetailModel.wordReal")}
                       </label>
                       <p className="w-full py-2 text-black dark:text-white">
-                      {Number(task?.actualNumberOfWords) ===1? 0 :task?.actualNumberOfWords}
-
+                        {Number(task?.actualNumberOfWords) === 1
+                          ? 0
+                          : task?.actualNumberOfWords}
                       </p>
                     </div>
                   </div>
@@ -316,7 +360,9 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                     </div>
                     <div className="w-1/2 ">
                       <GroupField
-                        label={t("projectDetails.taskDetailModel.wordCountExpected")}
+                        label={t(
+                          "projectDetails.taskDetailModel.wordCountExpected"
+                        )}
                         type="number"
                         placeholder="1500"
                         name="wordCount"
@@ -365,12 +411,32 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                       id="textType"
                       name="textType"
                       placeholder=""
-                      option1="Guide"
-                      option2="Shop (Category)"
-                      option3="Shop (Product)"
-                      option4="Definition/Wiki"
-                      option5="Shop (Home page)"
-                      option6="CMS page"
+                      option1={
+                        currentLanguage === "en" ? "Guide text" : "Ratgebertext"
+                      }
+                      option2={
+                        currentLanguage === "en"
+                          ? "Shop (Category)"
+                          : "Shop (Kategorie)"
+                      }
+                      option3={
+                        currentLanguage === "en"
+                          ? "Shop (Product)"
+                          : "Shop (Produkt)"
+                      }
+                      option4={
+                        currentLanguage === "en"
+                          ? "Definition/Wiki"
+                          : "Definition/Wiki"
+                      }
+                      option5={
+                        currentLanguage === "en"
+                          ? "Shop (Homepage)"
+                          : "Shop (Startseite)"
+                      }
+                      option6={
+                        currentLanguage === "en" ? "CMS Page" : "CMS-Seite"
+                      }
                       value={values.textType}
                       errors={touched.textType ? errors.textType : ""}
                       onChange={handleChange}
@@ -402,39 +468,47 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                   <div className="w-full pt-6">
                     <div className="flex justify-between items-center mb-6">
                       <h3 className="font-medium text-black dark:text-white">
-                      {t("projectDetails.taskDetailModel.projectMembers")}
+                        {t("projectDetails.taskDetailModel.projectMembers")}
                       </h3>
                       {!(task.texter && task.lector && task.seo) ? (
-                      <p
-                        className="w-5 h-5 bg-blue-500 text-white flex items-center justify-center cursor-pointer"
-                        onClick={handleMembers}
-                      >
-                        <FontAwesomeIcon icon={faPlus} className="text-sm" />
-                      </p>
-                    ) : null}
+                        <p
+                          className="w-5 h-5 bg-blue-500 text-white flex items-center justify-center cursor-pointer"
+                          onClick={handleMembers}
+                        >
+                          <FontAwesomeIcon icon={faPlus} className="text-sm" />
+                        </p>
+                      ) : null}
                     </div>
 
                     <TaskMember
                       name={showAssignedRoles(task.texter) ?? ""}
-                      label={t("projectDetails.projectMembers.freelancerRole.texter")}
+                      label={t(
+                        "projectDetails.projectMembers.freelancerRole.texter"
+                      )}
                       handleMembers={handleMembers}
                       hide={false}
                     />
                     <TaskMember
                       name={showAssignedRoles(task.lector) ?? ""}
-                      label={t("projectDetails.projectMembers.freelancerRole.lector")}
+                      label={t(
+                        "projectDetails.projectMembers.freelancerRole.lector"
+                      )}
                       handleMembers={handleMembers}
                       hide={false}
                     />
                     <TaskMember
                       name={showAssignedRoles(task.seo) ?? ""}
-                      label={t("projectDetails.projectMembers.freelancerRole.seo")}
+                      label={t(
+                        "projectDetails.projectMembers.freelancerRole.seo"
+                      )}
                       handleMembers={handleMembers}
                       hide={false}
                     />
                     <TaskMember
                       name={showAssignedRoles(task.metaLector) ?? ""}
-                      label={t("projectDetails.projectMembers.freelancerRole.metaLector")}
+                      label={t(
+                        "projectDetails.projectMembers.freelancerRole.metaLector"
+                      )}
                       handleMembers={handleMembers}
                       hide={false}
                     />
@@ -454,7 +528,9 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                     disabled={loading}
                     className="px-4 py-2 bg-blue-500 hover:bg-blue-500/90 text-white rounded"
                   >
-                    {loading ? t("projectDetails.taskDetailModel.submittingButton") : t("projectDetails.taskDetailModel.submitButton")}
+                    {loading
+                      ? t("projectDetails.taskDetailModel.submittingButton")
+                      : t("projectDetails.taskDetailModel.submitButton")}
                   </button>
                 </div>
                 {error && (
