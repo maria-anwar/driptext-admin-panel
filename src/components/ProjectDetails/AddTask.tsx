@@ -28,21 +28,22 @@ const AddModel: React.FC<AddModelProps> = ({
   handleCloseAdd,
   getTaskData,
 }) => {
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
   const user = useSelector<any>((state) => state.user);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [userToken, setUserToken] = useState(user.user.token);
+  const currentLanguage = i18n.language;
 
   const initialValues = {
     projectId: projectId,
     projectName: projectName,
     userId: userId,
-    date: null, // Initialize as null for date
+    date: null, 
     topic: "",
     keywords: "",
-    textType: "Guide",
+    textType: currentLanguage === "en" ? "Guide text" : "Ratgebertext",
     wordCount: 1500,
     comment: "",
   };
@@ -56,6 +57,26 @@ const AddModel: React.FC<AddModelProps> = ({
   });
 
   const onSubmit = (values: typeof initialValues) => {
+    if(values.keywords !== null && currentLanguage === "de") {
+      if (values.textType === "Ratgebertext") {
+        values.textType = "Guide text";
+      }
+      else if (values.textType === "Shop (Kategorie)") {
+        values.textType = "Shop (Category)";
+      }
+      else if (values.textType === "Shop (Produkt)") {
+        values.textType = "Shop (Product)";
+      }
+      else if (values.textType === "Definition/Wiki") {
+        values.textType = "Definition/Wiki";
+      }
+      else if (values.textType === "Shop (Startseite)") {
+        values.textType = "Shop (Homepage)";
+      }
+      else if (values.textType === "CMS-Seite") {
+        values.textType = "CMS Page";
+      }
+    }
     setLoading(true);
     let token = userToken;
     axios.defaults.headers.common["access-token"] = token;
@@ -164,12 +185,32 @@ const AddModel: React.FC<AddModelProps> = ({
                   id="textType"
                   name="textType"
                   placeholder=""
-                  option1="Guide"
-                  option2="Shop (Category)"
-                  option3="Shop (Product)"
-                  option4="Definition/Wiki"
-                  option5="Shop (Home page)"
-                  option6="CMS page"
+                  option1={
+                    currentLanguage === "en" ? "Guide text" : "Ratgebertext"
+                  }
+                  option2={
+                    currentLanguage === "en"
+                      ? "Shop (Category)"
+                      : "Shop (Kategorie)"
+                  }
+                  option3={
+                    currentLanguage === "en"
+                      ? "Shop (Product)"
+                      : "Shop (Produkt)"
+                  }
+                  option4={
+                    currentLanguage === "en"
+                      ? "Definition/Wiki"
+                      : "Definition/Wiki"
+                  }
+                  option5={
+                    currentLanguage === "en"
+                      ? "Shop (Homepage)"
+                      : "Shop (Startseite)"
+                  }
+                  option6={
+                    currentLanguage === "en" ? "CMS Page" : "CMS-Seite"
+                  }
                   value={values.textType}
                   errors={touched.textType ? errors.textType : ""}
                   onChange={handleChange}

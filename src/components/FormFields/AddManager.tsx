@@ -134,7 +134,7 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
                   <FontAwesomeIcon
                     className="absolute right-3 top-15 transform -translate-y-1/2 cursor-pointer"
                     onClick={() => setPasswordVisible(!passwordVisible)} // Toggle visibility
-                    icon={passwordVisible ? faEye :  faEyeSlash}
+                    icon={passwordVisible ? faEyeSlash :  faEye}
                   />
                 </div>
 
