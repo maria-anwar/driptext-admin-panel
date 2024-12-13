@@ -404,7 +404,8 @@
   },
   "projectDetails": {
     "breadcrumb": {
-      "pageName": "Projekt"
+      "pageName": "Projekt",
+      "peojectdetail": "Projektdetails"
     },
     "onboarding": {
       "incomplete": "Das Onboarding für dieses Projekt ist nicht abgeschlossen, Sie können keine Tasks hinzufügen"

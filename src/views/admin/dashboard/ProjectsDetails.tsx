@@ -201,6 +201,7 @@ const ProjectsDetails: React.FC = () => {
       <div>
         <div className="mx-auto">
           <Breadcrumb
+            homeName={t("projectDetails.breadcrumb.peojectdetail")}
             pageName={t("projectDetails.breadcrumb.pageName")}
             link={` ${projectDetails?.projectId ?? ""}${
               projectDetails?.projectId ? ":" : ""

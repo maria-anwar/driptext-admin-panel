@@ -5,8 +5,9 @@ interface BreadcrumbProps {
   pageName: string;
   link?: string;
   linkshift?: string;
+  homeName?: string;
 }
-const Breadcrumb = ({ pageName ,link,linkshift}: BreadcrumbProps) => {
+const Breadcrumb = ({ pageName ,link,linkshift,homeName}: BreadcrumbProps) => {
   const {t} = useTranslation();
   return (
     <div className="mb-6 flex flex-col gap-6  items-start justify-start">
@@ -24,7 +25,7 @@ const Breadcrumb = ({ pageName ,link,linkshift}: BreadcrumbProps) => {
         </ol>
       </nav>
       <h2 className="text-title-md2 font-semibold text-black dark:text-white">
-        {link ? `${pageName} details zu ${link}` : `${pageName}`}
+        {link ? `${homeName} zu ${link}` : `${pageName}`}
       </h2>
     </div>
   );
