@@ -8,12 +8,13 @@ import useTitle from "../../../hooks/useTitle";
 import { useTranslation } from "react-i18next";
 
 const TaskDetails: React.FC = () => {
-  const {t} = useTranslation();
+  const {t,i18n} = useTranslation();
   const user = useSelector<any>((state) => state.user);
   const [loading, setLoading] = useState<boolean>(false);
   const [taskdetails, setTaskDetails] = useState(null);
   const [project, setproject] = useState(null);
   const taskId = localStorage.getItem("taskID");
+  const currentLanguage = i18n.language;
 
   useEffect(() => {
     getTaskData();
@@ -39,6 +40,29 @@ const TaskDetails: React.FC = () => {
       });
   };
   useTitle(`${taskdetails?.taskName ?? ''}:Task`);
+
+  const statusMap: { [key: string]: string } = {
+    "ready to work": "Bereit zu starten",
+    "in progress": "In Bearbeitung",
+    "ready for rivision (lector)": "Bereit für Revision (Lektor)",
+    "in rivision (lector)": "In Revision (Lektor)",
+    "ready for rivision (meta lector)": "Bereit für Revision (Meta-Lektor)",
+    "in rivision (meta lector)": "In Revision (Meta-Lektor)",
+    "ready for proofreading": "Wird lektoriert",
+    "proofreading in progress": "Im Lektorat",
+    "ready for seo optimization": "Bereit für SEO-Optimierung",
+    "seo optimization in progress": "Wird SEO-optimiert",
+    "ready for 2nd proofreading": "Im Meta-Lektorat",
+    "2nd proofreading in progress": "Im Meta-Lektorat",
+    "free trial": "Kostenlose Testversion",
+    "final": "Texterstellung abgeschlossen"
+  };
+  
+  const handleStatusGerman = (statusFilter: string): string => {
+    return currentLanguage === "de" && statusMap[statusFilter]
+      ? statusMap[statusFilter]  
+      : statusFilter;           
+  };
 
 
   const FreelancerInfo = ({ label, name }) => {
@@ -245,7 +269,7 @@ const TaskDetails: React.FC = () => {
                         "bg-red-500/20 text-red-500"
                       }`}
                   >
-                    {taskdetails?.status || ""}
+                    {handleStatusGerman(taskdetails?.status?.toLowerCase()) || ""}
                   </span>
                 </div>
                 <div className="flex justify-start items-start flex-col">
