@@ -29,7 +29,7 @@ import { useTranslation } from "react-i18next";
 import AddModel from "../../../components/ProjectDetails/AddTask";
 
 const ProjectsDetails: React.FC = () => {
-  const { t } = useTranslation();
+  const { t , i18n } = useTranslation();
   const navigate = useNavigate();
   const user = useSelector<any>((state) => state.user);
   const projectId = localStorage.getItem("projectID");
@@ -47,6 +47,7 @@ const ProjectsDetails: React.FC = () => {
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [editManager, setEditManager] = useState<boolean>(false);
   const [addModel, setAddModel] = useState(false);
+  const currentLanguage = i18n.language;
 
   useEffect(() => {
     getTaskData();
@@ -117,6 +118,18 @@ const ProjectsDetails: React.FC = () => {
     const token = userToken;
     axios.defaults.headers.common["access-token"] = token;
 
+    if (currentLanguage === "de") {
+      if (role === "Texter") {
+        role = "Texter";
+      } else if (role === "Lektor") {
+        role = "Lector";
+      } else if (role === "SEO-Optimierer") {
+        role = "SEO-Optimizer";
+      } else if(role === "Meta-Lektor") {
+        role = "Meta-lector";
+      }
+    }
+
     const payload = {
       projectId: projectId,
       freelancerId: memberId.toString(),
@@ -171,7 +184,7 @@ const ProjectsDetails: React.FC = () => {
     }
   };
 
-  const allRoles = ["Texter", "Lector", "SEO-Optimizer", "Meta-lector"];
+  const allRoles = [t('projectDetails.role.Texter'), t('projectDetails.role.Lektor'), t('projectDetails.role.SEO-Optimierer'), t('projectDetails.role.Meta-Lektor')];
 
   const handleMembers = () => {
     setMemberModel(true);

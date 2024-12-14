@@ -29,7 +29,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
   projectName,
   handleRefreshData,
 }) => {
-  const {t} = useTranslation();
+  const {t,i18n} = useTranslation();
   const user = useSelector<any>((state) => state.user);
   const userToken = user?.user?.token;
   const [showDetailsDialog, setShowDetailsDialog] = useState<boolean>(false);
@@ -37,9 +37,10 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
   const [showMembersDialog, setShowMembersDialog] = useState<boolean>(false);
   const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
   const [memberModel, setMemberModel] = useState<boolean>(false);
+  const currentLanguage = i18n.language;
 
 
-  const allRoles = ["Texter", "Lector","SEO-Optimizer"];
+  const allRoles = [t('projectDetails.role.Texter'), t('projectDetails.role.Lektor'), t('projectDetails.role.SEO-Optimierer') ];
 
   const showAssignedRoles = (memberId: string | null) => {
     const foundFreelancer = freelancer.find((f) => f._id === memberId);
@@ -53,13 +54,23 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
   const handleRoleSelect = (role: string, memberId: number) => {
     const token = userToken;
     axios.defaults.headers.common["access-token"] = token;
-
+     if (currentLanguage === "de") {
+      if (role === "Texter") {
+        role = "Texter";
+      } else if (role === "Lektor") {
+        role = "Lector";
+      } else if (role === "SEO-Optimierer") {
+        role = "SEO-Optimizer";
+      } else if(role === "Meta-Lektor") {
+        role = "Meta-lector";
+      }
+    }
+     
     const payload = {
       taskId: task._id,
       freelancerId: memberId?.toString(),
       role: role.toString(),
     };
-    console.log(payload);
 
     axios
       .post(
@@ -68,8 +79,6 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
       )
       .then((response) => {
         const projectDataArray = response;
-        console.log(payload);
-        console.log(projectDataArray);
         setDropdownVisible(null);
         handleRefreshData();
         handleCloseMemberModel();
@@ -125,6 +134,29 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
     );
   };
 
+  const statusMap: { [key: string]: string } = {
+    "ready to work": "Bereit zu starten",
+    "in progress": "In Bearbeitung",
+    "ready for rivision (lector)": "Bereit für Revision (Lektor)",
+    "in rivision (lector)": "In Revision (Lektor)",
+    "ready for rivision (meta lector)": "Bereit für Revision (Meta-Lektor)",
+    "in rivision (meta lector)": "In Revision (Meta-Lektor)",
+    "ready for proofreading": "Wird lektoriert",
+    "proofreading in progress": "Im Lektorat",
+    "ready for seo optimization": "Bereit für SEO-Optimierung",
+    "seo optimization in progress": "Wird SEO-optimiert",
+    "ready for 2nd proofreading": "Im Meta-Lektorat",
+    "2nd proofreading in progress": "Im Meta-Lektorat",
+    "free trial": "Kostenlose Testversion",
+    "final": "Texterstellung abgeschlossen"
+  };
+  
+  const handleStatusGerman = (statusFilter: string): string => {
+    return currentLanguage === "de" && statusMap[statusFilter]
+      ? statusMap[statusFilter]  
+      : statusFilter;           
+  };
+
   return (
     <div className="mt-3">
       <div className="rounded-sm border border-stroke bg-white pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -132,7 +164,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4">
-                <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[200px] py-4 px-4 font-semibold text-black dark:text-white">
                   {t("projectDetails.taskTable.headers.status")}
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
@@ -194,7 +226,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                               : "bg-violet-500/20 text-violet-500"
                           }`}
                       >
-                        {task.status}
+                        {handleStatusGerman(task?.status.toLowerCase())}
                       </p>
                     </div>
                   </td>
@@ -205,7 +237,7 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                       rel="noopener noreferrer"
                       className="text-blue-500 underline-none flex items-center justify-start"
                     >
-                      <span className="px-1">{task.taskName}</span>
+                      <span className="px-1">{task?.taskName}</span>
                     </a>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -226,26 +258,26 @@ const ProjectTaskTable: React.FC<ProjectProps> = ({
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white text-sm">
-                      {task.keywords ?? ""}
+                      {task?.keywords ?? ""}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className="flex justify-between items-center">
                       <WorkerComponent
                         label="T"
-                        name={showAssignedRoles(task.texter) ?? ""}
+                        name={showAssignedRoles(task?.texter) ?? ""}
                       />
                       <WorkerComponent
                         label="L"
-                        name={showAssignedRoles(task.lector) ?? ""}
+                        name={showAssignedRoles(task?.lector) ?? ""}
                       />
                       <WorkerComponent
                         label="S"
-                        name={showAssignedRoles(task.seo) ?? ""}
+                        name={showAssignedRoles(task?.seo) ?? ""}
                       />
                       <WorkerComponent
                         label="M"
-                        name={showAssignedRoles(task.metaLector) ?? ""}
+                        name={showAssignedRoles(task?.metaLector) ?? ""}
                       />
                     </div>
                   </td>

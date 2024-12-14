@@ -423,6 +423,12 @@
       "taskPerMonth": "Anzahl Task pro Monat",
       "performancePeriod": "Leistungszeitraum"
     },
+    "role": {
+      "Texter": "Texter",
+      "Lektor": "Lektor",
+      "Meta-Lektor": "Meta-Lektor",
+      "SEO-Optimierer": "SEO-Optimierer"
+    },
     "projectMembers": {
       "heading": "Freelancer",
       "addFreelancerButton": "Freelancer hinzufügen",

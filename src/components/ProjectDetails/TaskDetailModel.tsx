@@ -257,6 +257,29 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     }
   };
 
+  const statusMap: { [key: string]: string } = {
+    "ready to work": "Bereit zu starten",
+    "in progress": "In Bearbeitung",
+    "ready for rivision (lector)": "Bereit für Revision (Lektor)",
+    "in rivision (lector)": "In Revision (Lektor)",
+    "ready for rivision (meta lector)": "Bereit für Revision (Meta-Lektor)",
+    "in rivision (meta lector)": "In Revision (Meta-Lektor)",
+    "ready for proofreading": "Wird lektoriert",
+    "proofreading in progress": "Im Lektorat",
+    "ready for seo optimization": "Bereit für SEO-Optimierung",
+    "seo optimization in progress": "Wird SEO-optimiert",
+    "ready for 2nd proofreading": "Im Meta-Lektorat",
+    "2nd proofreading in progress": "Im Meta-Lektorat",
+    "free trial": "Kostenlose Testversion",
+    "final": "Texterstellung abgeschlossen"
+  };
+  
+  const handleStatusGerman = (statusFilter: string): string => {
+    return currentLanguage === "de" && statusMap[statusFilter]
+      ? statusMap[statusFilter]  
+      : statusFilter;           
+  };
+
   return (
     <>
       <Formik
@@ -317,7 +340,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                             : " text-violet-500"
                         }`}
                       >
-                        {task.status}
+                        { handleStatusGerman(task.status.toLowerCase())}
                       </p>
                     </div>
                     <div className="w-1/2">

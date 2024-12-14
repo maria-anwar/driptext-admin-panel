@@ -15,14 +15,13 @@ import TaskDetails from "./views/admin/dashboard/TaskDetails";
 import KPI from "./views/admin/dashboard/KPI";
 import Tracking from "./views/admin/dashboard/Tracking";
 import Forecast from "./views/admin/dashboard/Forecast";
-import NotFound from './views/NotFound';
+import NotFound from "./views/NotFound";
 import FreelancerOverview from "./views/admin/dashboard/FreelancerOverview";
 import RedirectRoute from "./views/auth/RedirectRoute";
 
 const WebRoutes = () => {
   return (
     <>
-      
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SignIn />} />
@@ -48,7 +47,10 @@ const WebRoutes = () => {
             <Route path="kpi" element={<KPI />} />
             <Route path="kpi/tracking" element={<Tracking />} />
             <Route path="kpi/forecast" element={<Forecast />} />
-            <Route path="freelancer-overview" element={<FreelancerOverview />} />
+            <Route
+              path="freelancer-overview"
+              element={<FreelancerOverview />}
+            />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

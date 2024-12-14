@@ -16,10 +16,11 @@ interface PaginatedTableProps {
 }
 
 const TasksTable: React.FC<PaginatedTableProps> = ({ tasks, freelancer }) => {
-  const { t } = useTranslation(); // Adding translation hook
+  const { t, i18n } = useTranslation(); // Adding translation hook
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const navigate = useNavigate();
+  const currentLanguage = i18n.language;
 
   const showAssignedRoles = (memberId: string | null) => {
     const foundFreelancer = freelancer.find(
@@ -59,7 +60,7 @@ const TasksTable: React.FC<PaginatedTableProps> = ({ tasks, freelancer }) => {
           {label}
         </p>
         <p className="text-black uppercase w-7 h-7 text-center dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs  flex justify-center items-center">
-        {getInitials(name)}
+          {getInitials(name)}
         </p>
       </div>
     );
@@ -68,6 +69,30 @@ const TasksTable: React.FC<PaginatedTableProps> = ({ tasks, freelancer }) => {
   const offset = (page - 1) * rowsPerPage;
   const paginatedProjects = tasks.slice(offset, offset + rowsPerPage);
 
+  const statusMap: { [key: string]: string } = {
+    "ready to work": "Bereit zu starten",
+    "in progress": "In Bearbeitung",
+    "ready for rivision (lector)": "Bereit für Revision (Lektor)",
+    "in rivision (lector)": "In Revision (Lektor)",
+    "ready for rivision (meta lector)": "Bereit für Revision (Meta-Lektor)",
+    "in rivision (meta lector)": "In Revision (Meta-Lektor)",
+    "ready for proofreading": "Wird lektoriert",
+    "proofreading in progress": "Im Lektorat",
+    "ready for seo optimization": "Bereit für SEO-Optimierung",
+    "seo optimization in progress": "Wird SEO-optimiert",
+    "ready for 2nd proofreading": "Im Meta-Lektorat",
+    "2nd proofreading in progress": "Im Meta-Lektorat",
+    "free trial": "Kostenlose Testversion",
+    "final": "Texterstellung abgeschlossen"
+  };
+  
+  const handleStatusGerman = (statusFilter: string): string => {
+    return currentLanguage === "de" && statusMap[statusFilter]
+      ? statusMap[statusFilter]  
+      : statusFilter;           
+  };
+  
+
   return (
     <div className="mt-6">
       <div className="rounded-sm border border-stroke bg-white pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 ">
@@ -75,26 +100,26 @@ const TasksTable: React.FC<PaginatedTableProps> = ({ tasks, freelancer }) => {
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-3 text-left dark:bg-meta-4">
-                <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
-                  {t('tasksTable.status')}
+                <th className="min-w-[200px] py-4 px-4 font-semibold text-black dark:text-white">
+                  {t("tasksTable.status")}
                 </th>
                 <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
-                  {t('tasksTable.googleLink')}
+                  {t("tasksTable.googleLink")}
                 </th>
                 <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
-                  {t('tasksTable.deadline')}
-                </th>
-                <th className="min-w-[130px] py-4 px-4 font-semibold text-black dark:text-white">
-                  {t('tasksTable.wordCount')}
-                </th>
-                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
-                  {t('tasksTable.keywords')}
+                  {t("tasksTable.deadline")}
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
-                  {t('tasksTable.team')}
+                  {t("tasksTable.wordCount")}
+                </th>
+                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
+                  {t("tasksTable.keywords")}
+                </th>
+                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
+                  {t("tasksTable.team")}
                 </th>
                 <th className="min-w-[100px] py-4 px-4 font-semibold text-black dark:text-white">
-                  {t('tasksTable.action')}
+                  {t("tasksTable.action")}
                 </th>
               </tr>
             </thead>
@@ -114,22 +139,28 @@ const TasksTable: React.FC<PaginatedTableProps> = ({ tasks, freelancer }) => {
                               ? "bg-yellow-500/20 text-yellow-500"
                               : task.status.toUpperCase() === "IN PROGRESS"
                               ? "bg-blue-500/20 text-blue-500"
-                              : task.status.toUpperCase() === "READY FOR PROOFREADING"
+                              : task.status.toUpperCase() ===
+                                "READY FOR PROOFREADING"
                               ? "bg-orange-500/20 text-orange-500"
-                              : task.status.toUpperCase() === "PROOFREADING IN PROGRESS"
+                              : task.status.toUpperCase() ===
+                                "PROOFREADING IN PROGRESS"
                               ? "bg-purple-500/20 text-purple-500"
-                              : task.status.toUpperCase() === "READY FOR SEO OPTIMIZATION"
+                              : task.status.toUpperCase() ===
+                                "READY FOR SEO OPTIMIZATION"
                               ? "bg-indigo-500/20 text-indigo-500"
-                              : task.status.toUpperCase() === "SEO OPTIMIZATION IN PROGRESS"
+                              : task.status.toUpperCase() ===
+                                "SEO OPTIMIZATION IN PROGRESS"
                               ? "bg-pink-500/20 text-pink-500"
-                              : task.status.toUpperCase() === "READY FOR 2ND PROOFREADING"
+                              : task.status.toUpperCase() ===
+                                "READY FOR 2ND PROOFREADING"
                               ? "bg-violet-500/20 text-violet-500"
-                              : task.status.toUpperCase() === "2ND PROOFREADING IN PROGRESS"
+                              : task.status.toUpperCase() ===
+                                "2ND PROOFREADING IN PROGRESS"
                               ? "bg-lime-300/20 text-lime-700"
                               : "bg-red-500/20 text-red-500"
                           }`}
                       >
-                        {task?.status}
+                        {handleStatusGerman(task?.status.toLowerCase())}
                       </p>
                     </div>
                   </td>
@@ -147,18 +178,29 @@ const TasksTable: React.FC<PaginatedTableProps> = ({ tasks, freelancer }) => {
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p
                       className={`text-sm text-white px-1 py-1 rounded-full text-center flex justify-center items-center 
-                        ${new Date(task?.dueDate).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0) || task?.status==='Final' ? 'bg-green-600' : 'bg-red-600'}
+                        ${
+                          new Date(task?.dueDate).setHours(0, 0, 0, 0) >=
+                            new Date().setHours(0, 0, 0, 0) ||
+                          task?.status === "Final"
+                            ? "bg-green-600"
+                            : "bg-red-600"
+                        }
                       `}
                     >
                       <span className="px-1">
-                        {task.status === 'Final' ? t('tasksTable.statusLabels.final') : formatDate(task?.dueDate)}
+                        {task.status === "Final"
+                          ? t("tasksTable.statusLabels.final")
+                          : formatDate(task?.dueDate)}
                       </span>
                     </p>
                   </td>
 
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white ">
-                      {Number(task?.actualNumberOfWords) === 1 ? 0 : task?.actualNumberOfWords}/{task?.desiredNumberOfWords}
+                      {Number(task?.actualNumberOfWords) === 1
+                        ? 0
+                        : task?.actualNumberOfWords}
+                      /{task?.desiredNumberOfWords}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -197,7 +239,7 @@ const TasksTable: React.FC<PaginatedTableProps> = ({ tasks, freelancer }) => {
                     >
                       <FontAwesomeIcon className="text-white" icon={faEye} />
                       <p className="text-white text-base font-medium text-center py-1 px-2">
-                        {t('tasksTable.view')}
+                        {t("tasksTable.view")}
                       </p>
                     </div>
                   </td>
