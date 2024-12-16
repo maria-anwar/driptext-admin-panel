@@ -84,7 +84,8 @@
     "notInitialized": "Not Initialized",
     "open": "Open",
     "final": "Final",
-    "total": "Total"
+    "total": "Total",
+    "nosubscription": "No Subscription"
   },
   "overviewtask": "Tasks Overview",
   "breadcrumb": {

@@ -28,7 +28,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
   freelancer,
   handleRefreshData,
 }) => {
-  const { t ,i18n} = useTranslation();
+  const { t, i18n } = useTranslation();
   const user = useSelector<any>((state) => state.user);
   const [userToken, setUserToken] = useState(user?.user?.token);
   const [page, setPage] = useState(1);
@@ -84,11 +84,37 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
     navigate("project-details");
   };
 
+
   const formatDate = (dateString: Date | string) => {
     if (!dateString) return "";
+    
     const date = new Date(dateString);
-    return format(date, "MMMM yyyy"); // "August 2025"
+    const status = format(date, "MMMM yyyy");
+    
+    if (currentLanguage === "en") {
+      return status;
+    }
+  
+    const [month, year] = status.split(" ");
+    const monthTranslations: { [key: string]: string } = {
+      January: "Januar",
+      February: "Februar",
+      March: "März",
+      April: "April",
+      May: "Mai",
+      June: "Juni",
+      July: "Juli",
+      August: "August",
+      September: "September",
+      October: "Oktober",
+      November: "November",
+      December: "Dezember",
+    };
+  
+    return monthTranslations[month] ? `${monthTranslations[month]} ${year}` : "Invalid month";
   };
+  
+  
 
   const WorkerComponent: React.FC<{ label: string; name: string }> = ({
     label,
@@ -100,7 +126,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
           {label}
         </p>
         <p className="text-black uppercase w-7 h-7 text-center dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs  flex justify-center items-center">
-        {getInitials(name)}
+          {getInitials(name)}
         </p>
       </div>
     );
@@ -118,18 +144,16 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
       } else {
         return status;
       }
-    }
-    else if (currentLanguage === "en") {
+    } else if (currentLanguage === "en") {
       if (status === "FREE TRIAL" || status === "READY") {
         return "Ready";
       } else if (status === "NOT INITALIZED") {
         return "Waiting for onboarding";
-      }
-      else {
+      } else {
         return status;
-    } 
-  }
-};
+      }
+    }
+  };
 
   return (
     <div className="mt-6">
@@ -154,10 +178,10 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                 <th className="min-w-[270px] py-4 px-4 font-semibold text-black dark:text-white">
                   {t("projects.tasks")}
                 </th>
-                <th className="min-w-[160px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[170px] py-4 px-4 font-semibold text-black dark:text-white">
                   {t("projects.team")}
                 </th>
-                <th className="min-w-[100px] py-4 px-4 font-medsemiboldium text-black dark:text-white">
+                <th className="min-w-[100px] py-4 px-4 font-medsemiboldium text-black dark:text-white ">
                   {t("projects.onboarded")}
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
@@ -201,7 +225,9 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                             : "bg-violet-500/20 text-violet-500"
                         }`}
                       >
-                        {handleProjectStatus(project?.projectStatus.toUpperCase())}
+                        {handleProjectStatus(
+                          project?.projectStatus.toUpperCase()
+                        )}
                       </p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -253,7 +279,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                         }`}
                       >
                         {project?.plan?.endDate === null
-                          ? "No Subscription"
+                          ? t("projects.nosubscription")
                           : `${formatDate(project?.plan?.endDate)}`}
                       </p>
                     </td>
@@ -262,9 +288,9 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                         {project?.plan?.textsCount}/{project?.plan?.totalTexts}
                       </p>
                       <p className="text-black dark:text-white text-xs">
-                      {t("projects.open")}: {project?.openTasks} | {t("projects.final")}:{" "}
-                        {project?.finalTasks} | {t("projects.total")}:{" "}
-                        {project?.plan?.textsCount}
+                        {t("projects.open")}: {project?.openTasks} |{" "}
+                        {t("projects.final")}: {project?.finalTasks} |{" "}
+                        {t("projects.total")}: {project?.plan?.textsCount}
                       </p>
                       <div className="flex h-3 bg-gray-200 rounded pt-1">
                         <progress
@@ -314,7 +340,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                         <div
                           className={` ${
                             project?.lector && project?.seo && project?.texter
-                               ? "bg-blue-500 hover:bg-blue-500/90"
+                              ? "bg-blue-500 hover:bg-blue-500/90"
                               : "bg-yellow-400/80 hover:bg-yellow-400"
                           } w-28 h-9 flex justify-center items-center rounded cursor-pointer`}
                           onClick={() => handleProject(project._id)}
