@@ -56,13 +56,13 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                     "freelancer_overview.freelancer_overview_table.tableHeaders.gmail"
                   )}
                 </th>
-                <th className="min-w-[180px] py-5 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[180px] py-5 px-4 font-semibold text-black dark:text-white ">
                   {t(
                     "freelancer_overview.freelancer_overview_table.tableHeaders.role"
                   )}
                 </th>
-                <th className="min-w-[180px]  py-5 px-4 font-semibold text-black dark:text-white">
-                  <div className={"relative group "}>
+                <th className="min-w-[180px]  py-5 px-4 font-semibold text-black dark:text-white text-center">
+                  <div className={"relative group text-center "}>
                     {t(
                       "freelancer_overview.freelancer_overview_table.tableHeaders.reliabilityStatus"
                     )}
@@ -73,8 +73,8 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                     </div>
                   </div>
                 </th>
-                <th className="min-w-[180px] py-5 px-4 font-semibold text-black dark:text-white">
-                  <div className={"relative group "}>
+                <th className="min-w-[180px] py-5 px-4 font-semibold text-black dark:text-white text-center">
+                  <div className={"relative group text-center"}>
                     {t(
                       "freelancer_overview.freelancer_overview_table.tableHeaders.textQualityStatus"
                     )}
@@ -119,8 +119,9 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <div className=" flex justify-center items-center">
                     <div
-                      className={`w-4 h-4 relative group rounded-full ml-[60px] transition-all duration-300 ease-in-out ${
+                      className={`w-4 h-4 relative group rounded-full  transition-all duration-300 ease-in-out  ${
                         freelancer?.deadlineTasks <= 10
                           ? "bg-green-500"
                           : freelancer?.deadlineTasks >= 11 &&
@@ -135,10 +136,13 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                     )}: {freelancer?.deadlineTasks}/{freelancer?.totalTasks}
                       </div>
                     </div>
+                    </div>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <div className=" flex justify-center items-center">
+
                     <div
-                      className={`w-4 h-4 relative group rounded-full ml-[68px] transition-all duration-300 ease-in-out ${
+                      className={`w-4 h-4 relative group rounded-full  transition-all duration-300 ease-in-out ${
                         freelancer?.returnTasks <= 10
                           ? "bg-green-500"
                           : freelancer?.returnTasks >= 11 &&
@@ -152,6 +156,7 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                       "freelancer_overview.freelancer_overview_table.tableHeaders.return"
                     )}: {freelancer?.returnTasks}/{freelancer?.totalTasks}
                       </div>
+                    </div>
                     </div>
                   </td>
                 </tr>

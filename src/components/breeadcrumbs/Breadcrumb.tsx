@@ -18,10 +18,10 @@ const Breadcrumb = ({ pageName ,link,linkshift,homeName}: BreadcrumbProps) => {
               className="font-medium text-black hover:text-black dark:text-bodydark dark:hover:text-bodydark"
               to="/dashboard"
             >
-              {t('projects.dashboard')}
+              {pageName}
             </Link>
           </li>
-          <li className="font-medium text-primary">{pageName}{linkshift}{link}</li>
+          <li className="font-medium text-primary">{linkshift}{link}</li>
         </ol>
       </nav>
       <h2 className="text-title-md2 font-semibold text-black dark:text-white">
