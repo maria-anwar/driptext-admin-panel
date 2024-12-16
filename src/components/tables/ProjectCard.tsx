@@ -12,7 +12,8 @@ interface ProjectCardProps {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ projects, freelancer }) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t,i18n } = useTranslation();
+  const currentLanguage = i18n.language;
 
   const showAssignedRoles = (memberId: string | null) => {
     const foundFreelancer = freelancer.find((f) => f._id === memberId);
@@ -44,6 +45,27 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects, freelancer }) => {
     localStorage.setItem("projectID", project._id);
     navigate("project-details");
   };
+  const handleProjectStatus = (status: string) => {
+    if (currentLanguage === "de") {
+      if (status === "FREE TRIAL" || status === "READY") {
+        return "Bereit";
+      } else if (status === "NOT INITALIZED") {
+        return "Warten auf Onboarding";
+      } else {
+        return status;
+      }
+    }
+    else if (currentLanguage === "en") {
+      if (status === "FREE TRIAL" || status === "READY") {
+        return "Ready";
+      } else if (status === "NOT INITALIZED") {
+        return "Waiting for onboarding";
+      }
+      else {
+        return status;
+    } 
+  }
+};
 
   return (
     <>
@@ -109,11 +131,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projects, freelancer }) => {
                     : " text-violet-500"
                 }`}
               >
-                {project.projectStatus.toUpperCase() === "FREE TRIAL"
-                  ? "Ready"
-                  : project.projectStatus.toUpperCase() === "NOT INITALIZED"
-                  ? "Wating for onboarding"
-                  : project.projectStatus}
+                {handleProjectStatus(project.projectStatus.toUpperCase())}
               </span>
             </p>
           </div>

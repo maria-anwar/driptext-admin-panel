@@ -84,7 +84,8 @@
     "notInitialized": "Nicht initialisiert",
     "open": "Offen",
     "final": "Abgeschlossen",
-    "total": "Insgesamt"
+    "total": "Insgesamt",
+    "nosubscription": "Keine Abonnement"
   },
   "overviewtask": "Übersicht der Tasks",
   "breadcrumb": {
