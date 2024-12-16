@@ -76,7 +76,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [userToken, setUserToken] = useState(user?.user?.token);
 
-  const allRoles = ["Texter", "Lector", "SEO-Optimizer"];
+  const allRoles = [t('projectDetails.role.Texter'), t('projectDetails.role.Lektor'), t('projectDetails.role.SEO-Optimierer') ];
 
   const [showCard, setShowCard] = useState(task.readyToWork);
   const [memberModel, setMemberModel] = useState<boolean>(false);
@@ -150,6 +150,19 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
     setDropdownVisible(null);
     handleCloseMemberModel();
     closeModel();
+
+     if (currentLanguage === "de") {
+      if (role === "Texter") {
+        role = "Texter";
+      } else if (role === "Lektor") {
+        role = "Lector";
+      } else if (role === "SEO-Optimierer") {
+        role = "SEO-Optimizer";
+      } else if(role === "Meta-Lektor") {
+        role = "Meta-lector";
+      }
+    }
+     
 
     const token = userToken;
     axios.defaults.headers.common["access-token"] = token;

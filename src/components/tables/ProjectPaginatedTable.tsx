@@ -28,12 +28,13 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
   freelancer,
   handleRefreshData,
 }) => {
-  const { t } = useTranslation();
+  const { t ,i18n} = useTranslation();
   const user = useSelector<any>((state) => state.user);
   const [userToken, setUserToken] = useState(user?.user?.token);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const navigate = useNavigate();
+  const currentLanguage = i18n.language;
 
   const handleRevert = (projectId: string) => {
     let token = userToken;
@@ -108,6 +109,28 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
   const offset = (page - 1) * rowsPerPage;
   const paginatedProjects = projects.slice(offset, offset + rowsPerPage);
 
+  const handleProjectStatus = (status: string) => {
+    if (currentLanguage === "de") {
+      if (status === "FREE TRIAL" || status === "READY") {
+        return "Bereit";
+      } else if (status === "NOT INITALIZED") {
+        return "Warten auf Onboarding";
+      } else {
+        return status;
+      }
+    }
+    else if (currentLanguage === "en") {
+      if (status === "FREE TRIAL" || status === "READY") {
+        return "Ready";
+      } else if (status === "NOT INITALIZED") {
+        return "Waiting for onboarding";
+      }
+      else {
+        return status;
+    } 
+  }
+};
+
   return (
     <div className="mt-6">
       <div className="rounded-sm border border-stroke bg-white pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 ">
@@ -178,12 +201,7 @@ const ProjectPaginatedTable: React.FC<PaginatedTableProps> = ({
                             : "bg-violet-500/20 text-violet-500"
                         }`}
                       >
-                        {project?.projectStatus.toUpperCase() === "FREE TRIAL"
-                          ? "Ready"
-                          : project?.projectStatus.toUpperCase() ===
-                            "NOT INITALIZED"
-                          ? "Waiting for onboarding"
-                          : project?.projectStatus.toUpperCase()}
+                        {handleProjectStatus(project?.projectStatus.toUpperCase())}
                       </p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
