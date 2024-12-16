@@ -21,7 +21,41 @@ const AccordionData: React.FC<AccordionDataProps> = ({
   projectName,
   onBoarding,
 }) => {
-  const {t} = useTranslation();
+  const {t,i18n} = useTranslation();
+  const currentLanguage = i18n.language;
+  if (currentLanguage === "de") {
+    if (speech === "She") {
+      speech = "Sie";
+    } else if (speech === "You (capitalized)") {
+      speech = "Du (groß geschrieben)";
+    } else if (speech === "you (lowercase)") {
+      speech = "du (klein geschrieben)";
+    } else if (speech === "you (plural / informal)") {
+      speech = "ihr/euch";
+    } else if (speech === "Divers") {
+      speech = "Divers";
+    } else if (speech === "No direct address") {
+      speech = "Keine direkte Ansprache";
+    }
+  }
+
+  if (currentLanguage === "de") {
+    if (perspective === "the company/the shop") {
+      perspective = "die Firma/der Shop";
+    } else if (perspective === "the editorial team") {
+      perspective = "die Redaktion";
+    } else if (perspective === "I") {
+      perspective = "Ich";
+    } else if (perspective === "Neutral") {
+      perspective = "Neutral";
+    } else if (perspective === "uniform, but generally irrelevant") {
+      perspective = "einheitlich, aber grundsätzlich egal";
+    } else if (perspective === "we/our shop/our company") {
+      perspective = "wir/unser Shop/unser Unternehmen";
+    } else if (perspective === "Divers") {
+      perspective = "Divers"; // No change needed since it's the same in both languages
+    }
+  }
   return (
     <Accordion allowToggle className={`appearance-none border-none py-4 `}>
       <AccordionItem
