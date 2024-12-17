@@ -257,13 +257,9 @@ const ProjectsDetails: React.FC = () => {
 
   const formatDateUnSub = (dateString: Date | string) => {
     if (!dateString) return "";
-
     const date = new Date(dateString);
-
-    // Use toLocaleString to format the month and year, based on the current language
     const locale = currentLanguage === "en" ? "en-US" : "de-DE";
     const formattedDate = date.toLocaleString(locale, {  month: "long" });
-
     return formattedDate;
 };
 
