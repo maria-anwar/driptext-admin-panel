@@ -151,6 +151,7 @@ const ProjectsDetails: React.FC = () => {
         );
       });
   };
+
   const handleDeleteApi = () => {
     let token = userToken;
     axios.defaults.headers.common["access-token"] = token;
@@ -203,11 +204,69 @@ const ProjectsDetails: React.FC = () => {
     setDropdownVisible((prev) => (prev === memberId ? null : memberId));
   };
 
-  const formatDate = (dateString: Date | string) => {
+ const formatDate = (dateString: Date | string) => {
     if (!dateString) return "";
+    
     const date = new Date(dateString);
-    return format(date, "MMMM yyyy"); // "August 2025"
+    const status = format(date, "MMMM yyyy");
+    
+    if (currentLanguage === "en") {
+      return status;
+    }
+  
+    const [month, year] = status.split(" ");
+    const monthTranslations: { [key: string]: string } = {
+      January: "Januar",
+      February: "Februar",
+      March: "März",
+      April: "April",
+      May: "Mai",
+      June: "Juni",
+      July: "Juli",
+      August: "August",
+      September: "September",
+      October: "Oktober",
+      November: "November",
+      December: "Dezember",
+    };
+  
+    return monthTranslations[month] ? `${monthTranslations[month]} ${year}` : "Invalid month";
   };
+
+ 
+
+  const handleProjectStatus = (status: string) => {
+    if (currentLanguage === "de") {
+      if (status === "FREE TRIAL" || status === "READY") {
+        return "Bereit";
+      } else if (status === "NOT INITALIZED") {
+        return "Warten auf Onboarding";
+      } else {
+        return status;
+      }
+    } else if (currentLanguage === "en") {
+      if (status === "FREE TRIAL" || status === "READY") {
+        return "Ready";
+      } else if (status === "NOT INITALIZED") {
+        return "Waiting for onboarding";
+      } else {
+        return status;
+      }
+    }
+  };
+
+  const formatDateUnSub = (dateString: Date | string) => {
+    if (!dateString) return "";
+
+    const date = new Date(dateString);
+
+    // Use toLocaleString to format the month and year, based on the current language
+    const locale = currentLanguage === "en" ? "en-US" : "de-DE";
+    const formattedDate = date.toLocaleString(locale, {  month: "long" });
+
+    return formattedDate;
+};
+
 
   return (
     <>
@@ -270,10 +329,7 @@ const ProjectsDetails: React.FC = () => {
                         <TaskComponent
                           label={t("projectDetails.taskStatus.status")}
                           name={
-                            projectDetails?.projectStatus.toUpperCase() ===
-                            "FREE TRIAL"
-                              ? "Ready"
-                              : projectDetails?.projectStatus
+                            handleProjectStatus(projectDetails?.projectStatus.toUpperCase())
                           }
                         />
                         <TaskComponent
@@ -305,9 +361,7 @@ const ProjectsDetails: React.FC = () => {
                           <p className="text-black dark:text-white">
                             {typeof plan?.endDate === "string"
                               ? formatDate(plan?.endDate)
-                              : `${new Date().toLocaleString("default", {
-                                  month: "long",
-                                })} (no subscription)`}
+                              : `${formatDateUnSub(new Date())} (${t("projectDetails.taskStatus.nosubscriiton")})`}
                           </p>
                         </div>
                       </div>

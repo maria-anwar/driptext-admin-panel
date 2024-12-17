@@ -422,7 +422,8 @@
       "maxTasks": "Max Tasks",
       "duration": "Duration",
       "taskPerMonth": "Task per month",
-      "performancePeriod": "Performance Period"
+      "performancePeriod": "Performance Period",
+      "nosubscriiton": "No subscription"
     },
     "role": {
       "Texter": "Texter",
