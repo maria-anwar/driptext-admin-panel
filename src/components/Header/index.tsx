@@ -162,10 +162,10 @@ const Header = (props: {
               />{" "}
             </button>
             {isOpen && (
-              <div className="absolute right-0 mt-2 bg-white dark:bg-boxdark ring-1 p-4 shadow-md rounded py-2">
+              <div  className={`absolute right-0 mt-4 flex w-32 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark`}>
                 <button
                   onClick={() => changeYourLanguage("en")}
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left hover:text-primary"
+                  className="h-10 mt-2  text-gray-800 hover:bg-gray-200 w-full text-center hover:text-primary flex justify-center items-center"
                   title="Switch to English"
                 >
                   English
@@ -173,7 +173,7 @@ const Header = (props: {
                 <span className="block border-t border-gray-200 my-2"></span>
                 <button
                   onClick={() => changeYourLanguage("de")}
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left hover:text-primary"
+                  className="h-10 -mt-2 mb-3 pt-2.5  text-gray-800 hover:bg-gray-200 w-full text-center hover:text-primary flex justify-center items-center"
                   title="Switch to German"
                 >
                   German

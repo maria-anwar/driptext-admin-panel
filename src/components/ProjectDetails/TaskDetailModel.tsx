@@ -555,14 +555,14 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
                   <button
                     type="reset"
                     onClick={handleCancel}
-                    className="px-4 py-2 bg-gray-500 bg-transparent border border-neutral-200 text-black dark:text-white rounded"
+                    className="flex justify-center bg-transparent rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white hover:border-primary transition-all duration-300"
                   >
                     {t("projectDetails.taskDetailModel.cancelButton")}
                   </button>
                   <button
                     type="submit"
                     disabled={loading}
-                    className="px-4 py-2 bg-blue-500 hover:bg-blue-500/90 text-white rounded"
+                    className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                   >
                     {loading
                       ? t("projectDetails.taskDetailModel.submittingButton")

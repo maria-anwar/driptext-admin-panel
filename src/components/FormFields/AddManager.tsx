@@ -140,15 +140,15 @@ const AddManager: React.FC<AddManagerProps> = ({ handleClose }) => {
 
                 <div className="flex justify-end items-center gap-3 pt-4">
                   <button
-                    className="my-3 text-black dark:text-white flex justify-center rounded bg-transparent border border-slate-200 py-1.5 px-6 font-medium"
-                    type="button"
+className="flex justify-center bg-transparent rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white hover:border-primary transition-all duration-300"
+type="button"
                     onClick={handleClose}
                   >
                    {t('user.addManager.form.buttons.cancel')}
                   </button>
                   <button
-                    className={`my-3 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90 ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
-                    type="submit"
+                  className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                  type="submit"
                     disabled={loading}
                   >
                     {loading ? t('user.addManager.form.buttons.saving') : t('user.addManager.form.buttons.save')}

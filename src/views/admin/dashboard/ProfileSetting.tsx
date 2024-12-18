@@ -11,14 +11,16 @@ import { useTranslation } from "react-i18next";
 const ProfileSettings: React.FC = () => {
   const { t } = useTranslation(); // Access translation function
   useTitle(t("profileSettings.pageTitle"));
-  
+
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [email, setEmail] = useState(user.user.data.user.email || "");
-  const [firstName, setFirstName] = useState(user.user.data.user.firstName || "");
+  const [firstName, setFirstName] = useState(
+    user.user.data.user.firstName || ""
+  );
   const [lastName, setLastName] = useState(user.user.data.user.lastName || "");
 
   const handleUpdate = async (e) => {
@@ -37,8 +39,12 @@ const ProfileSettings: React.FC = () => {
     await axios
       .post(`${import.meta.env.VITE_DB_URL}/admin/updateAdminProfile`, payload)
       .then((response) => {
-        dispatch(updateUserFields({ path: "data.user.firstName", value: firstName }));
-        dispatch(updateUserFields({ path: "data.user.lastName", value: lastName }));
+        dispatch(
+          updateUserFields({ path: "data.user.firstName", value: firstName })
+        );
+        dispatch(
+          updateUserFields({ path: "data.user.lastName", value: lastName })
+        );
         dispatch(updateUserFields({ path: "data.user.email", value: email }));
         setError(false);
       })
@@ -108,7 +114,9 @@ const ProfileSettings: React.FC = () => {
                       type="text"
                       name="fullName"
                       id="fullName"
-                      placeholder={t("profileSettings.personalInformation.placeholders.firstName")}
+                      placeholder={t(
+                        "profileSettings.personalInformation.placeholders.firstName"
+                      )}
                       onChange={(e) => setFirstName(e.target.value)}
                       value={firstName}
                     />
@@ -151,7 +159,9 @@ const ProfileSettings: React.FC = () => {
                       type="text"
                       name="lastName"
                       id="lastName"
-                      placeholder={t("profileSettings.personalInformation.placeholders.lastName")}
+                      placeholder={t(
+                        "profileSettings.personalInformation.placeholders.lastName"
+                      )}
                       onChange={(e) => setLastName(e.target.value)}
                       value={lastName}
                     />
@@ -195,7 +205,9 @@ const ProfileSettings: React.FC = () => {
                     type="email"
                     name="emailAddress"
                     id="emailAddress"
-                    placeholder={t("profileSettings.personalInformation.placeholders.email")}
+                    placeholder={t(
+                      "profileSettings.personalInformation.placeholders.email"
+                    )}
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
                   />
@@ -204,7 +216,7 @@ const ProfileSettings: React.FC = () => {
 
               <div className="flex justify-end gap-4.5">
                 <button
-                  className="flex justify-center bg-transparent rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                  className="flex justify-center bg-transparent rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white hover:border-primary transition-all duration-300"
                   type="submit"
                   onClick={handleCancel}
                 >
@@ -216,10 +228,14 @@ const ProfileSettings: React.FC = () => {
                   disabled={loading}
                   onClick={handleUpdate}
                 >
-                  {loading ? t("profileSettings.buttons.loadingUpdate") : t("profileSettings.buttons.update")}
+                  {loading
+                    ? t("profileSettings.buttons.loadingUpdate")
+                    : t("profileSettings.buttons.update")}
                 </button>
               </div>
-              {error && <p className="text-red-500 text-right pt-4">{errorMessage}</p>}
+              {error && (
+                <p className="text-red-500 text-right pt-4">{errorMessage}</p>
+              )}
             </form>
           </div>
         </div>

@@ -237,9 +237,9 @@ const AddModel: React.FC<AddModelProps> = ({
                   errors={touched.comment ? errors.comment : ""}
                   onChange={handleChange}
                 />
-                <div className="flex justify-end items-center gap-3 pt-4">
+                <div className="flex justify-end items-center gap-3 pt-6">
                   <button
-                    className={`my-3 ring-1 ring-primary text-black dark:text-white flex justify-center rounded bg-transparent dark:ring-1 dark:ring-slate-200 py-1.5 px-6 font-medium ${
+                    className={`flex justify-center bg-transparent rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white hover:border-primary transition-all duration-300 ${
                       loading ? "cursor-not-allowed" : "cursor-pointer"
                     }`}
                     type="button"
@@ -249,7 +249,7 @@ const AddModel: React.FC<AddModelProps> = ({
                     {t('projectDetails.addTask.form.cancelButton')}
                   </button>
                   <button
-                    className={`my-3 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90 ${
+                    className={`flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90 ${
                       loading ? "cursor-not-allowed" : "cursor-pointer"
                     }`}
                     type="submit"
