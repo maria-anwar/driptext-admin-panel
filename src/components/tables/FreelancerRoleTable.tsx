@@ -56,7 +56,7 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                     "freelancer_overview.freelancer_overview_table.tableHeaders.role"
                   )}
                 </th>
-                <th className="min-w-[220px] py-5 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[250px] py-5 px-4 font-semibold text-black dark:text-white">
                   {t(
                     "freelancer_overview.freelancer_overview_table.tableHeaders.gmail"
                   )}
@@ -67,20 +67,26 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                     "freelancer_overview.freelancer_overview_table.tableHeaders.phone"
                   )}
                   </th>
-                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[200px] py-4 px-4 font-semibold text-black dark:text-white">
+                  <div className="text-center">
                   {t(
                     "freelancer_overview.freelancer_overview_table.tableHeaders.openThisMonth"
                   )}
+                  </div>
                 </th>
                 <th className="min-w-[200px] py-4 px-4 font-semibold text-black dark:text-white">
+                <div className="text-center">
                   {t(
                     "freelancer_overview.freelancer_overview_table.tableHeaders.assignedThisMonth"
                   )}
+                  </div>
                 </th>
-                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
+                <th className="min-w-[200px] py-4 px-4 font-semibold text-black dark:text-white">
+                <div className="text-center">
                   {t(
                     "freelancer_overview.freelancer_overview_table.tableHeaders.totalAssigned"
                   )}
+                  </div>
                 </th>
                 <th className="min-w-[180px]  py-5 px-4 font-semibold text-black dark:text-white text-center">
                   <div className={"relative group text-center "}>
@@ -115,16 +121,16 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                     <div className="flex justify-start items-center gap-x-2">
                       <div>
                       <p className="text-black uppercase w-7 h-7 text-center dark:text-white bg-slate-200 dark:bg-slate-600 rounded-full text-xs  flex justify-center items-center">
-                        {freelancer?.freelancer?.firstName.charAt(0)}
-                        {freelancer?.freelancer?.lastName === "-"
+                        {freelancer?.firstName.charAt(0)}
+                        {freelancer?.lastName === "-"
                           ? ""
-                          : freelancer?.freelancer?.lastName.charAt(0)}
+                          : freelancer?.lastName.charAt(0)}
                       </p>
                       </div>
                       <div>
                       <p className="text-black dark:text-white capitalize">
-                        {freelancer?.freelancer?.firstName}{" "}
-                        {freelancer?.freelancer?.lastName}
+                        {freelancer?.firstName}{" "}
+                        {freelancer?.lastName}
                       </p>
                       </div>
                     </div>
@@ -136,7 +142,7 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
-                      {freelancer?.freelancer?.email}
+                      {freelancer?.email}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -181,7 +187,7 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                       <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-8 left-2  transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-3 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                       {t(
                       "freelancer_overview.freelancer_overview_table.tableHeaders.deadline"
-                    )}: {freelancer?.deadlineTasks}/{freelancer?.totalTasks}
+                    )}: {freelancer?.deadlineTasks}/{freelancer?.assignedTotalTasks}
                       </div>
                     </div>
                     </div>
@@ -202,7 +208,7 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                       <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-8 left-2  transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-3 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                       {t(
                       "freelancer_overview.freelancer_overview_table.tableHeaders.return"
-                    )}: {freelancer?.returnTasks}/{freelancer?.totalTasks}
+                    )}: {freelancer?.returnTasks}/{freelancer?.assignedTotalTasks}
                       </div>
                     </div>
                     </div>

@@ -30,7 +30,6 @@ const FreelancerOverview: React.FC = () => {
 
   useEffect(() => {
     getTaskData();
-    getTaskCost();
   }, [user]);
 
   const getTaskData = async () => {
@@ -40,23 +39,8 @@ const FreelancerOverview: React.FC = () => {
     await axios
       .get(`${import.meta.env.VITE_DB_URL}/admin/getFreelancersKPI`)
       .then((response) => {
-        setFreelancers(response.data.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching project details:", err);
-        setLoading(false);
-      });
-  };
-
-  const getTaskCost = async () => {
-    setLoading(true);
-    let token = user?.user?.token;
-    axios.defaults.headers.common["access-token"] = token;
-    await axios
-      .get(`${import.meta.env.VITE_DB_URL}/admin/getFreelancerTrafficLights`)
-      .then((response) => {
-        setCostTraficData(response.data.data);
+        console.log("response", response.data.data);
+              setCostTraficData(response.data.data);
         setFilteredFreelancers(response.data.data);
         setLoading(false);
       })
@@ -65,6 +49,23 @@ const FreelancerOverview: React.FC = () => {
         setLoading(false);
       });
   };
+
+  // const getTaskCost = async () => {
+  //   setLoading(true);
+  //   let token = user?.user?.token;
+  //   axios.defaults.headers.common["access-token"] = token;
+  //   await axios
+  //     .get(`${import.meta.env.VITE_DB_URL}/admin/getFreelancerTrafficLights`)
+  //     .then((response) => {
+  //       setCostTraficData(response.data.data);
+  //       setFilteredFreelancers(response.data.data);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error fetching project details:", err);
+  //       setLoading(false);
+  //     });
+  // };
 
   const applyFilters = () => {
     let filtered = [...costTraficData];
@@ -120,20 +121,11 @@ const FreelancerOverview: React.FC = () => {
           <li className="font-medium text-primary"> {t('freelancer_overview.breadcrumbs.freelancerOverview')}</li>
         </ol>
       </div>
-      <div className="flex justify-between items-center relative">
-        <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
-        {t('freelancer_overview.titles.freelancerOverview')}
-        </h2>
-      </div>
 
-      {loading ? (
-        <div className="mt-4 rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 w-full bg-slate-200 h-[350px] animate-pulse"></div>
-      ) : (
-        <FreelancerOverviewTable freelancers={Freelancers} />
-      )}
+
       <div className="flex justify-between items-center relative mt-10">
-        <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
-        {t('freelancer_overview.titles.freelancerByRole')}
+      <h2 className="text-title-md2 font-semibold text-black dark:text-white pb-2 lg:pb-0">
+        {t('freelancer_overview.titles.freelancerOverview')}
         </h2>
         <div>
           <button
@@ -214,6 +206,7 @@ const FreelancerOverview: React.FC = () => {
       {loading ? (
         <div className="mt-4 rounded-sm border border-stroke pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 w-full bg-slate-200 h-[350px] animate-pulse"></div>
       ) : (
+       
         <FreelancerRoleTable freelancers={filteredFreelancers} />
       )}
     </div>
