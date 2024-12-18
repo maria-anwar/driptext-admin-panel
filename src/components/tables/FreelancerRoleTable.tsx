@@ -51,14 +51,35 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                     "freelancer_overview.freelancer_overview_table.tableHeaders.name"
                   )}
                 </th>
+                <th className="min-w-[180px] py-5 px-4 font-semibold text-black dark:text-white ">
+                  {t(
+                    "freelancer_overview.freelancer_overview_table.tableHeaders.role"
+                  )}
+                </th>
                 <th className="min-w-[220px] py-5 px-4 font-semibold text-black dark:text-white">
                   {t(
                     "freelancer_overview.freelancer_overview_table.tableHeaders.gmail"
                   )}
                 </th>
-                <th className="min-w-[180px] py-5 px-4 font-semibold text-black dark:text-white ">
+   
+                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
                   {t(
-                    "freelancer_overview.freelancer_overview_table.tableHeaders.role"
+                    "freelancer_overview.freelancer_overview_table.tableHeaders.phone"
+                  )}
+                  </th>
+                <th className="min-w-[180px] py-4 px-4 font-semibold text-black dark:text-white">
+                  {t(
+                    "freelancer_overview.freelancer_overview_table.tableHeaders.openThisMonth"
+                  )}
+                </th>
+                <th className="min-w-[200px] py-4 px-4 font-semibold text-black dark:text-white">
+                  {t(
+                    "freelancer_overview.freelancer_overview_table.tableHeaders.assignedThisMonth"
+                  )}
+                </th>
+                <th className="min-w-[150px] py-4 px-4 font-semibold text-black dark:text-white">
+                  {t(
+                    "freelancer_overview.freelancer_overview_table.tableHeaders.totalAssigned"
                   )}
                 </th>
                 <th className="min-w-[180px]  py-5 px-4 font-semibold text-black dark:text-white text-center">
@@ -110,14 +131,41 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
+                      {freelancer?.role}
+                    </p>
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p className="text-black dark:text-white">
                       {freelancer?.freelancer?.email}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
-                      {freelancer?.role}
+                      {freelancer?.phone}
                     </p>
                   </td>
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p className="text-black dark:text-white text-center">
+                      {freelancer?.openTasksThisMonth
+                        ? freelancer?.openTasksThisMonth
+                        : 0}
+                    </p>
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p className="text-black dark:text-white text-center">
+                      {freelancer?.taskAssignThisMonth
+                        ? freelancer?.taskAssignThisMonth
+                        : 0}
+                    </p>
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p className="text-black dark:text-white text-center">
+                      {freelancer?.assignedTotalTasks
+                        ? freelancer?.assignedTotalTasks
+                        : 0}
+                    </p>
+                  </td>
+
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <div className=" flex justify-center items-center">
                     <div
