@@ -147,10 +147,6 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
   });
 
   const handleRoleSelect = (role: string, memberId: number) => {
-    setDropdownVisible(null);
-    handleCloseMemberModel();
-    closeModel();
-
      if (currentLanguage === "de") {
       if (role === "Texter") {
         role = "Texter";
@@ -162,8 +158,7 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
         role = "Meta-lector";
       }
     }
-     
-
+    
     const token = userToken;
     axios.defaults.headers.common["access-token"] = token;
 
@@ -181,6 +176,9 @@ const TaskDetailModel: React.FC<TaskDetailModelProps> = ({
       )
       .then((response) => {
         const projectDataArray = response;
+        setDropdownVisible(null);
+        handleCloseMemberModel();
+        closeModel();
         handleRefreshData();
       })
       .catch((err) => {
