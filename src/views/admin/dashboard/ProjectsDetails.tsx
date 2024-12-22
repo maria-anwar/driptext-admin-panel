@@ -113,8 +113,8 @@ const ProjectsDetails: React.FC = () => {
   };
 
   const handleRoleSelect = (role: string, memberId: number) => {
-    setDropdownVisible(null);
-    handleCloseMemberModel();
+ 
+
     const token = userToken;
     axios.defaults.headers.common["access-token"] = token;
 
@@ -142,6 +142,8 @@ const ProjectsDetails: React.FC = () => {
         payload
       )
       .then((response) => {
+        setDropdownVisible(null);
+        handleCloseMemberModel();
         getTaskData();
       })
       .catch((err) => {
