@@ -721,8 +721,8 @@
     "breadcrumbs": {
       "dashboard": "Dashboard /",
       "kpi": "Projekt KPIs /",
-      "tracking": "Verfolgung",
-      "forecast": "Prognose"
+      "tracking": "Tracking",
+      "forecast": "Forecasting"
     },
     "tracking": {
       "title": "Projekt Tracking KPIs",
