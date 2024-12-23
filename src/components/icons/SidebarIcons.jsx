@@ -53,7 +53,7 @@ const SidebarIcons = [
             <rect
               width="18"
               height="18"
-              fill="white"
+              fill="#DEE4EE"
               transform="translate(0 0.052124)"
             />
           </clipPath>
@@ -143,11 +143,11 @@ const SidebarIcons = [
   {
     kpi: (
       <svg
-        fill="#FFFFFF"
+        fill="#DEE4EE"
         viewBox="0 0 60 60"
         className="w-5 h-5"
         xmlns="http://www.w3.org/2000/svg"
-        stroke="#FFFFFF"
+        stroke="#DEE4EE"
       >
         <g>
           <path
@@ -171,7 +171,7 @@ const SidebarIcons = [
     ),
     freelancerOerview:(
       <svg
-      fill="#FFFFFF"
+      fill="#DEE4EE"
       viewBox="0 0 32 32"
       className="w-5 h-5"
       xmlns="http://www.w3.org/2000/svg"
