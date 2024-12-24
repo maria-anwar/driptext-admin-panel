@@ -450,9 +450,9 @@
         "heading": "Onboarding Daten",
         "generalInformation": {
           "title": "1. Allgemeine Informationen:",
-          "speechLabel": "Rede",
+          "speechLabel": "Sprache",
           "perspectiveLabel": "Perspektive",
-          "websiteLabel": "Website"
+          "websiteLabel": "Domain"
         },
         "companyInformation": {
           "title": "2. Unternehmensinformationen",
