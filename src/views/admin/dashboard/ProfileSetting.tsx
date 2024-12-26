@@ -9,7 +9,7 @@ import useTitle from "../../../hooks/useTitle";
 import { useTranslation } from "react-i18next";
 
 const ProfileSettings: React.FC = () => {
-  const { t } = useTranslation(); // Access translation function
+  const { t, i18n } = useTranslation(); // Access translation function
   useTitle(t("profileSettings.pageTitle"));
 
   const user = useSelector((state) => state.user);
@@ -22,6 +22,7 @@ const ProfileSettings: React.FC = () => {
     user.user.data.user.firstName || ""
   );
   const [lastName, setLastName] = useState(user.user.data.user.lastName || "");
+  const currentLanguage = i18n.language;
 
   const handleUpdate = async (e) => {
     setLoading(true);
@@ -49,9 +50,21 @@ const ProfileSettings: React.FC = () => {
         setError(false);
       })
       .catch((err) => {
+        const errorMessage =
+          err?.response?.data?.message || "An unknown error occurred"; // Define errorMessage here
+        if (currentLanguage === "de") {
+          const errorMessageLower = errorMessage.toLowerCase();
+          if (errorMessageLower === "this email already exists as freelancer") {
+            setErrorMessage("Diese E-Mail existiert bereits als Freelancer");
+          } else if (errorMessageLower === "email already exists") {
+            setErrorMessage("E-Mail existiert bereits");
+          } else {
+            setErrorMessage(errorMessage);
+          }
+        } else {
+          setErrorMessage(errorMessage);
+        }
         setError(true);
-        setErrorMessage(err.response.data.message);
-        console.error(t("profileSettings.messages.error"), err);
       })
       .finally(() => {
         setLoading(false);
@@ -234,7 +247,7 @@ const ProfileSettings: React.FC = () => {
                 </button>
               </div>
               {error && (
-                <p className="text-red-500 text-right pt-4">{errorMessage}</p>
+                <p className="text-red-500 text-left pt-4">{errorMessage}</p>
               )}
             </form>
           </div>
