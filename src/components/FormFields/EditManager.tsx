@@ -21,7 +21,7 @@ interface EditManagerProps {
 }
 
 const EditManager: React.FC<EditManagerProps> = ({ handleClose, editUser }) => {
-  const {t} = useTranslation();
+  const { t, i18n } = useTranslation();
   const user = useSelector((state: any) => state.user);
   const userToken = user.user.token;
   const [loading, setLoading] = useState(false);
@@ -33,13 +33,18 @@ const EditManager: React.FC<EditManagerProps> = ({ handleClose, editUser }) => {
     lastName: editUser?.lastName || "",
     email: editUser?.email || "",
   };
+  const currentLanguage = i18n.language;
 
   const validationSchema = Yup.object().shape({
-    firstName: Yup.string().required(t('user.editManager.form.fields.firstName.error')),
-    lastName: Yup.string().required(t('user.editManager.form.fields.lastName.error')),
+    firstName: Yup.string().required(
+      t("user.editManager.form.fields.firstName.error")
+    ),
+    lastName: Yup.string().required(
+      t("user.editManager.form.fields.lastName.error")
+    ),
     email: Yup.string()
-      .email(t('user.editManager.form.fields.email.invalidEmail'))
-      .required(t('user.editManager.form.fields.email.error')),
+      .email(t("user.editManager.form.fields.email.invalidEmail"))
+      .required(t("user.editManager.form.fields.email.error")),
   });
 
   const onSubmit = async (values: typeof initialValues) => {
@@ -63,9 +68,23 @@ const EditManager: React.FC<EditManagerProps> = ({ handleClose, editUser }) => {
         setLoading(false);
       })
       .catch((error) => {
-        setErrorMessage(
-          error.response?.data?.message || "Error adding manager"
-        );
+        const errorMessage =
+          error.response?.data?.message ||
+          error.message ||
+          "Error adding manager";
+
+        if (currentLanguage === "de") {
+          const errorMessageLower = errorMessage.toLowerCase();
+          if (errorMessageLower === "this email already exists as freelance") {
+            setErrorMessage("Diese E-Mail existiert bereits als Freelancer");
+          } else if (errorMessageLower === "email already exists") {
+            setErrorMessage("E-Mail existiert bereits");
+          } else {
+            setErrorMessage(errorMessage);
+          }
+        } else {
+          setErrorMessage(errorMessage);
+        }
         setError(true);
         setLoading(false);
       });
@@ -83,7 +102,7 @@ const EditManager: React.FC<EditManagerProps> = ({ handleClose, editUser }) => {
             <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
               <div className="flex justify-between items-center mb-5">
                 <h2 className="text-xl font-bold dark:text-white pr-12">
-                {t('user.editManager.form.header')}
+                  {t("user.editManager.form.header")}
                 </h2>
                 <FontAwesomeIcon
                   className="cursor-pointer text-lg text-red-500 pl-12"
@@ -93,34 +112,40 @@ const EditManager: React.FC<EditManagerProps> = ({ handleClose, editUser }) => {
               </div>
               <div>
                 <GroupField
-                  label={t('user.editManager.form.fields.firstName.label')}
+                  label={t("user.editManager.form.fields.firstName.label")}
                   type="text"
-                  placeholder={t('user.editManager.form.fields.firstName.placeholder')}
+                  placeholder={t(
+                    "user.editManager.form.fields.firstName.placeholder"
+                  )}
                   name="firstName"
                   id="firstName"
                   value={values.firstName} // Ensure value is set
                   onChange={handleChange}
-                  errors={touched.firstName ? errors.firstName : ''}
+                  errors={touched.firstName ? errors.firstName : ""}
                 />
                 <GroupField
-                  label={t('user.editManager.form.fields.lastName.label')}
+                  label={t("user.editManager.form.fields.lastName.label")}
                   type="text"
-                  placeholder={t('user.editManager.form.fields.lastName.placeholder')}
+                  placeholder={t(
+                    "user.editManager.form.fields.lastName.placeholder"
+                  )}
                   name="lastName"
                   id="lastName"
                   value={values.lastName} // Ensure value is set
                   onChange={handleChange}
-                  errors={touched.lastName ? errors.lastName :''}
+                  errors={touched.lastName ? errors.lastName : ""}
                 />
                 <GroupField
-                  label={t('user.editManager.form.fields.email.label')}
+                  label={t("user.editManager.form.fields.email.label")}
                   type="email"
-                  placeholder={t('user.editManager.form.fields.email.placeholder')}
+                  placeholder={t(
+                    "user.editManager.form.fields.email.placeholder"
+                  )}
                   name="email"
                   id="email"
                   value={values.email} // Ensure value is set
                   onChange={handleChange}
-                  errors={touched.email ? errors.email : ''}
+                  errors={touched.email ? errors.email : ""}
                 />
                 <div className="flex justify-end items-center gap-3 pt-4">
                   <button
@@ -128,7 +153,7 @@ const EditManager: React.FC<EditManagerProps> = ({ handleClose, editUser }) => {
                     type="button"
                     onClick={handleClose}
                   >
-                    {t('user.editManager.form.buttons.cancel')}
+                    {t("user.editManager.form.buttons.cancel")}
                   </button>
                   <button
                     className={`my-3 flex justify-center rounded bg-primary py-1.5 px-6 font-medium text-gray hover:bg-opacity-90 ${
@@ -137,7 +162,9 @@ const EditManager: React.FC<EditManagerProps> = ({ handleClose, editUser }) => {
                     type="submit"
                     disabled={loading}
                   >
-                    {loading ? t('user.editManager.form.buttons.updating'): t('user.editManager.form.buttons.update')}
+                    {loading
+                      ? t("user.editManager.form.buttons.updating")
+                      : t("user.editManager.form.buttons.update")}
                   </button>
                 </div>
                 {error && (

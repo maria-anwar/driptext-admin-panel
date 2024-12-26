@@ -28,7 +28,7 @@ const AddModel: React.FC<AddModelProps> = ({
   handleCloseAdd,
   getTaskData,
 }) => {
-  const { t,i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const user = useSelector<any>((state) => state.user);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -40,7 +40,7 @@ const AddModel: React.FC<AddModelProps> = ({
     projectId: projectId,
     projectName: projectName,
     userId: userId,
-    date: null, 
+    date: null,
     topic: "",
     keywords: "",
     textType: currentLanguage === "en" ? "Guide text" : "Ratgebertext",
@@ -49,31 +49,36 @@ const AddModel: React.FC<AddModelProps> = ({
   };
 
   const validationSchema = Yup.object().shape({
-    date: Yup.date().nullable().required(t('projectDetails.addTask.validationNames.date')), // Ensure date is required and nullable
-    topic: Yup.string().required(t('projectDetails.addTask.validationNames.topic')),
-    keywords: Yup.string().required(t('projectDetails.addTask.validationNames.keywords')),
-    textType: Yup.string().required(t('projectDetails.addTask.validationNames.textType')),
-    wordCount: Yup.number().required(t('projectDetails.addTask.validationNames.wordCount')),
+    date: Yup.date()
+      .nullable()
+      .required(t("projectDetails.addTask.validationNames.date")), // Ensure date is required and nullable
+    topic: Yup.string().required(
+      t("projectDetails.addTask.validationNames.topic")
+    ),
+    keywords: Yup.string().required(
+      t("projectDetails.addTask.validationNames.keywords")
+    ),
+    textType: Yup.string().required(
+      t("projectDetails.addTask.validationNames.textType")
+    ),
+    wordCount: Yup.number().required(
+      t("projectDetails.addTask.validationNames.wordCount")
+    ),
   });
 
   const onSubmit = (values: typeof initialValues) => {
-    if(values.keywords !== null && currentLanguage === "de") {
+    if (values.keywords !== null && currentLanguage === "de") {
       if (values.textType === "Ratgebertext") {
         values.textType = "Guide text";
-      }
-      else if (values.textType === "Shop (Kategorie)") {
+      } else if (values.textType === "Shop (Kategorie)") {
         values.textType = "Shop (Category)";
-      }
-      else if (values.textType === "Shop (Produkt)") {
+      } else if (values.textType === "Shop (Produkt)") {
         values.textType = "Shop (Product)";
-      }
-      else if (values.textType === "Definition/Wiki") {
+      } else if (values.textType === "Definition/Wiki") {
         values.textType = "Definition/Wiki";
-      }
-      else if (values.textType === "Shop (Startseite)") {
+      } else if (values.textType === "Shop (Startseite)") {
         values.textType = "Shop (Homepage)";
-      }
-      else if (values.textType === "CMS-Seite") {
+      } else if (values.textType === "CMS-Seite") {
         values.textType = "CMS Page";
       }
     }
@@ -105,7 +110,31 @@ const AddModel: React.FC<AddModelProps> = ({
         getTaskData();
       })
       .catch((err) => {
-        setErrorMessage(err.response.data.message || "Error in adding task");
+        const errorMessage =
+          err?.response?.data?.message || "Error in adding task"; // Define errorMessage here
+        if (currentLanguage === "de") {
+          const errorMessageLower = errorMessage.toLowerCase();
+          if (errorMessageLower === "as free trial gives only 1 task") {
+            setErrorMessage(
+              "Da die kostenlose Probeversion nur 1 Aufgabe ermöglicht"
+            );
+          } else if (errorMessageLower === "user don't have subscription") {
+            setErrorMessage("Der Benutzer hat kein Abonnement");
+          } else if (
+            errorMessageLower === "this user's have used all his texts"
+          ) {
+            setErrorMessage("Dieser Benutzer hat alle seine Texte verbraucht");
+          } else if (
+            errorMessageLower === "this user's subscription is expired"
+          ) {
+            setErrorMessage("Das Abonnement dieses Benutzers ist abgelaufen");
+          } else {
+            setErrorMessage(errorMessage);
+          }
+        } else {
+          setErrorMessage(errorMessage);
+        }
+
         setError(true);
         setLoading(false);
       });
@@ -123,7 +152,7 @@ const AddModel: React.FC<AddModelProps> = ({
             <div className="bg-white dark:bg-black p-6 rounded shadow-lg lg:w-6/12 xl:w-6/12 2xl:w-6/12 3xl:w-5/12 max-h-[90vh] overflow-y-auto scrollbar-hide">
               <div className="flex justify-between items-center mb-5">
                 <h2 className="text-xl font-bold dark:text-white pr-12">
-                  {t('projectDetails.addTask.label')}
+                  {t("projectDetails.addTask.label")}
                 </h2>
                 <FontAwesomeIcon
                   className="cursor-pointer text-lg text-red-500 pl-12"
@@ -133,10 +162,10 @@ const AddModel: React.FC<AddModelProps> = ({
               </div>
               <div>
                 <h2 className="text-black dark:text-white text-base font-semibold lg:mt-3">
-                {t('projectDetails.addTask.form.generalInformation')}
+                  {t("projectDetails.addTask.form.generalInformation")}
                 </h2>
                 <GroupDateField
-                  label={t('projectDetails.addTask.form.selectDateLabel')}
+                  label={t("projectDetails.addTask.form.selectDateLabel")}
                   name="date"
                   id="date"
                   value={values.date}
@@ -144,12 +173,16 @@ const AddModel: React.FC<AddModelProps> = ({
                   errors={touched.date ? errors.date : ""}
                   minDate={new Date()}
                   dateFormat="dd-MM-yyyy"
-                  placeholderText={t('projectDetails.addTask.placeholders.selectDateTooltip')}
+                  placeholderText={t(
+                    "projectDetails.addTask.placeholders.selectDateTooltip"
+                  )}
                 />
                 <GroupField
-                  label={t('projectDetails.addTask.form.projectLabel')}
+                  label={t("projectDetails.addTask.form.projectLabel")}
                   type="text"
-                  placeholder={t('projectDetails.addTask.placeholders.projectPlaceholder')}
+                  placeholder={t(
+                    "projectDetails.addTask.placeholders.projectPlaceholder"
+                  )}
                   name="projectName"
                   id="projectName"
                   value={values.projectName}
@@ -158,9 +191,11 @@ const AddModel: React.FC<AddModelProps> = ({
                   disabled={true}
                 />
                 <GroupField
-                  label={t('projectDetails.addTask.form.topicLabel')}
+                  label={t("projectDetails.addTask.form.topicLabel")}
                   type="text"
-                  placeholder={t('projectDetails.addTask.placeholders.topicPlaceholder')}
+                  placeholder={t(
+                    "projectDetails.addTask.placeholders.topicPlaceholder"
+                  )}
                   name="topic"
                   id="topic"
                   value={values.topic}
@@ -169,9 +204,11 @@ const AddModel: React.FC<AddModelProps> = ({
                 />
 
                 <GroupField
-                  label={t('projectDetails.addTask.form.keywordLabel')}
+                  label={t("projectDetails.addTask.form.keywordLabel")}
                   type="text"
-                  placeholder={t('projectDetails.addTask.placeholders.keywordsPlaceholder')}
+                  placeholder={t(
+                    "projectDetails.addTask.placeholders.keywordsPlaceholder"
+                  )}
                   name="keywords"
                   id="keywords"
                   value={values.keywords}
@@ -180,7 +217,7 @@ const AddModel: React.FC<AddModelProps> = ({
                 />
 
                 <GroupDropdownField
-                  label={t('projectDetails.addTask.form.keywordTypeLabel')}
+                  label={t("projectDetails.addTask.form.keywordTypeLabel")}
                   type="text"
                   id="textType"
                   name="textType"
@@ -208,17 +245,17 @@ const AddModel: React.FC<AddModelProps> = ({
                       ? "Shop (Homepage)"
                       : "Shop (Startseite)"
                   }
-                  option6={
-                    currentLanguage === "en" ? "CMS Page" : "CMS-Seite"
-                  }
+                  option6={currentLanguage === "en" ? "CMS Page" : "CMS-Seite"}
                   value={values.textType}
                   errors={touched.textType ? errors.textType : ""}
                   onChange={handleChange}
                 />
                 <GroupField
-                  label={t('projectDetails.addTask.form.wordCountLabel')}
+                  label={t("projectDetails.addTask.form.wordCountLabel")}
                   type="number"
-                  placeholder={t('projectDetails.addTask.placeholders.wordCountPlaceholder')}
+                  placeholder={t(
+                    "projectDetails.addTask.placeholders.wordCountPlaceholder"
+                  )}
                   name="wordCount"
                   id="wordCount"
                   value={values.wordCount}
@@ -228,9 +265,11 @@ const AddModel: React.FC<AddModelProps> = ({
                 />
 
                 <GroupTextArea
-                  label={t('projectDetails.addTask.form.commentLabel')}
+                  label={t("projectDetails.addTask.form.commentLabel")}
                   type="text"
-                  placeholder={t('projectDetails.addTask.placeholders.commentPlaceholder')}
+                  placeholder={t(
+                    "projectDetails.addTask.placeholders.commentPlaceholder"
+                  )}
                   id="comment"
                   name="comment"
                   value={values.comment}
@@ -246,7 +285,7 @@ const AddModel: React.FC<AddModelProps> = ({
                     onClick={handleCloseAdd}
                     disabled={loading}
                   >
-                    {t('projectDetails.addTask.form.cancelButton')}
+                    {t("projectDetails.addTask.form.cancelButton")}
                   </button>
                   <button
                     className={`flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90 ${
@@ -255,11 +294,16 @@ const AddModel: React.FC<AddModelProps> = ({
                     type="submit"
                     disabled={loading}
                   >
-                    {loading ? t('projectDetails.addTask.form.savingButton') : t('projectDetails.addTask.form.saveButton')}
+                    {loading
+                      ? t("projectDetails.addTask.form.savingButton")
+                      : t("projectDetails.addTask.form.saveButton")}
                   </button>
                 </div>
                 {error && (
-                  <div id="email" className="mt-2 text-sm text-red-500 text-center">
+                  <div
+                    id="email"
+                    className="mt-2 text-sm text-red-500 text-center"
+                  >
                     {errorMessage}
                   </div>
                 )}
