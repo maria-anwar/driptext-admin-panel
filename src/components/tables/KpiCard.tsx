@@ -49,7 +49,7 @@ const KpiBlock: React.FC<{
         </p>
       </div>
       <div>
-        <p className="text-black/70  dark:text-white/70 font-semibold ">{title}</p>
+        <p className="text-[#64748B]  dark:text-white/70 font-medium ">{title}</p>
         <h1 className="text-black dark:text-white font-medium text-2xl">
           {formatCurrency(value)}
         </h1>
