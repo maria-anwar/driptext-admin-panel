@@ -20,9 +20,14 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
   const totalReturnTasks = freelancers
     .map((freelancer) => freelancer.returnTasks)
     .reduce((total, current) => total + current, 0);
+    
 
   const totalDeadlineTasks = freelancers
     .map((freelancer) => freelancer.deadlineTasks)
+    .reduce((total, current) => total + current, 0);
+
+    const assignTotalTasks = freelancers
+    .map((freelancer) => freelancer.assignedTotalTasks)
     .reduce((total, current) => total + current, 0);
 
   const handlePageChange = (page: number) => {
@@ -96,7 +101,7 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                     <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-6 left-16  transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-3 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                     {t(
                       "freelancer_overview.freelancer_overview_table.tableHeaders.totalDeadline"
-                    )}: {totalDeadlineTasks}
+                    )}: {totalDeadlineTasks} / {assignTotalTasks}
                     </div>
                   </div>
                 </th>
@@ -108,7 +113,7 @@ const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
                     <div className="z-99999 shadow-md w-max text-center absolute hidden group-hover:block top-0 -mt-6 left-18  transform -translate-x-1/2 bg-slate-100 ring-1 ring-slate-200v dark:ring-0 text-black dark:bg-black dark:text-white text-xs py-1 px-3 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                     {t(
                       "freelancer_overview.freelancer_overview_table.tableHeaders.totalReturn"
-                    )}: {totalReturnTasks}
+                    )}: {totalReturnTasks} / {assignTotalTasks}
                     </div>
                   </div>
                 </th>
