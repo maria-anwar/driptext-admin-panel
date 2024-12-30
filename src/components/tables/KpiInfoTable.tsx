@@ -31,7 +31,7 @@ const KpiInfoTable: React.FC<KpiTableProps> = ({ tableData, forecast }) => {
   const formatCurrency = (value) => {
     try {
       if (value == null || isNaN(value)) return `${value} €`;
-      const number = parseFloat(value).toFixed(3); 
+      const number = parseFloat(value).toFixed(2); 
       let [integer, decimal] = number.split('.'); 
       integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); 
       return `${integer},${decimal} €`; 
@@ -106,18 +106,18 @@ const KpiInfoTable: React.FC<KpiTableProps> = ({ tableData, forecast }) => {
 
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white ">
-                      {formatCurrency(data?.revenue)}
+                      {data?.revenue ==0 ? `${data?.revenue} €` : formatCurrency(data?.revenue)}
                     </p>
                   </td>
 
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white capitalize">
-                      {formatCurrency(data?.cost)}
+                      {data?.cost ==0 ? `${data?.cost} €` : formatCurrency(data?.cost)}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white capitalize">
-                      {formatCurrency(data?.margin)}
+                      {data?.margin ==0 ? `${data?.margin} €` : formatCurrency(data?.margin)}
                     </p>
                   </td>
                 </tr>
