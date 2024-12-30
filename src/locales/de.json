@@ -73,7 +73,7 @@
     "team": "Team",
     "onboarded": "Onboarding erhalten",
     "action": "Aktion",
-    "noSubscription": "Keine Abonnement",
+    "noSubscription": "Kein Abonnement",
     "view": "Details",
     "revert": "Rückgängig machen",
     "waitingForOnboarding": "Warten auf Onboarding",
@@ -85,7 +85,7 @@
     "open": "Offen",
     "final": "Abgeschlossen",
     "total": "Insgesamt",
-    "nosubscription": "Keine Abonnement"
+    "nosubscription": "Kein Abonnement"
   },
   "overviewtask": "Übersicht der Tasks",
   "breadcrumb": {
@@ -409,7 +409,7 @@
       "peojectdetail": "Projektdetails"
     },
     "onboarding": {
-      "incomplete": "Das Onboarding für dieses Projekt ist nicht abgeschlossen, Sie können keine Tasks hinzufügen"
+      "incomplete": "Das Onboarding für dieses Projekt ist nicht abgeschlossen, Sie können Kein Tasks hinzufügen"
     },
     "folder": {
       "heading": "Ordner",
@@ -423,7 +423,7 @@
       "duration": "Dauer",
       "taskPerMonth": "Anzahl Task pro Monat",
       "performancePeriod": "Leistungszeitraum",
-      "nosubscriiton": "Keine abonnement"
+      "nosubscriiton": "Kein Abonnement"
     },
     "role": {
       "Texter": "Texter",

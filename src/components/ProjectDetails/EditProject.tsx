@@ -57,6 +57,8 @@ const EditProject: React.FC<EditProjectProps> = ({
       speech = "Divers";
     } else if (speech === "No direct address") {
       speech = "Keine direkte Ansprache";
+    } else{
+      speech = "She";
     }
   }
 
@@ -75,6 +77,8 @@ const EditProject: React.FC<EditProjectProps> = ({
       perspective = "wir/unser Shop/unser Unternehmen";
     } else if (perspective === "Divers") {
       perspective = "Divers"; // No change needed since it's the same in both languages
+    } else {
+      perspective = "die Firma/der Shop";
     }
   } 
 
