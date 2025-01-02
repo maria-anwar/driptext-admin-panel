@@ -12,6 +12,7 @@ interface FreelancerRoleTableProps {
 const FreelancerRoleTable: React.FC<FreelancerRoleTableProps> = ({
   freelancers,
 }) => {
+  console.log(freelancers);
   const { t } = useTranslation();
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
