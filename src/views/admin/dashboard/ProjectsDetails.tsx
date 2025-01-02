@@ -342,9 +342,7 @@ const ProjectsDetails: React.FC = () => {
                           label={t("projectDetails.taskStatus.duration")}
                           name={
                             plan?.duration === null
-                              ? `${new Date().toLocaleString("default", {
-                                  month: "long",
-                                })}`
+                              ? `${formatDateUnSub(new Date())}`
                               : `${plan?.duration} month`
                           }
                         />
